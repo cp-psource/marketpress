@@ -327,14 +327,14 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 }
 
 if ( ! function_exists( 'mp_global_products_nav' ) ) {
-	function mp_global_products_nav( $echo = true, $per_page, $count ) {
+	function mp_global_products_nav( $per_page, $count, $echo = true ) {
 		$html      = '';
 		$paged     = 1;
 		$max_pages = ceil( $count / $per_page );
 
 		if ( $max_pages > 1 ) {
 			$big = 999999999;
-			
+
 			if ( get_query_var( 'paged' ) != '' ) {
 				$paged  = intval( get_query_var( 'paged' ) );
 			} elseif ( get_query_var( 'page' ) != '' ) {
@@ -367,7 +367,7 @@ if ( ! function_exists( 'mp_global_products_nav' ) ) {
 		 * @since 3.0
 		 *
 		 * @param string $html
-		 * @param WP_Query $custom_query
+		 * @param int $per_page
 		 */
 		$html = apply_filters( 'mp_global_products_nav', $html, $per_page );
 
