@@ -2768,65 +2768,65 @@ endif;
 
 if ( ! function_exists( 'mp_products_nav' ) ) :
 
-	/**
-	 * Get the current product list/grid navigation
-	 *
-	 * @param bool $echo Optional, whether to echo. Defaults to true
-	 * @param WP_Query object $custom_query
-	 */
-	function mp_products_nav( $echo = true, $custom_query ) {
-		$html = '';
+/**
+ * Get the current product list/grid navigation
+ *
+ * @param WP_Query $custom_query The custom query object.
+ * @param bool $echo Optional, whether to echo. Defaults to true.
+ */
+function mp_products_nav( $custom_query, $echo = true ) {
+    $html = '';
 
-		if ( $custom_query->max_num_pages > 1 ) {
-			$big = 999999999;
+    if ( $custom_query->max_num_pages > 1 ) {
+        $big = 999999999;
 
-			$html = '
-				<nav class="mp_listings_nav">';
+        $html = '
+            <nav class="mp_listings_nav">';
 
-			/* $html .= paginate_links( array(
-			  'base'		 => '%_%',
-			  'format'	 => '?paged=%#%',
-			  'total'		 => $custom_query->max_num_pages,
-			  'current'	 => max( 1, $custom_query->get( 'paged' ) ),
-			  'prev_text'	 => __( 'Prev', 'mp' ),
-			  'next_text'	 => __( 'Next', 'mp' ),
-			  ) ); */
+        /* $html .= paginate_links( array(
+          'base'        => '%_%',
+          'format'      => '?paged=%#%',
+          'total'       => $custom_query->max_num_pages,
+          'current'     => max( 1, $custom_query->get( 'paged' ) ),
+          'prev_text'   => __( 'Prev', 'mp' ),
+          'next_text'   => __( 'Next', 'mp' ),
+          ) ); */
 
-			//echo 'current_page:'.$custom_query->get( 'paged' );
+        // echo 'current_page:'.$custom_query->get( 'paged' );
 
-			$html .= paginate_links( array(
-				'base'         => '?paged=%#%', //'%_%',
-				'format'       => '', //?paged=%#%
-				'total'        => $custom_query->max_num_pages,
-				'current'      => max( 1, $custom_query->get( 'paged' ) ),
-				'show_all'     => false,
-				'prev_next'    => true,
-				'prev_text'    => __( 'Prev', 'mp' ),
-				'next_text'    => __( 'Next', 'mp' ),
-				'add_args'     => true,
-				'add_fragment' => '',
-			) );
+        $html .= paginate_links( array(
+            'base'         => '?paged=%#%', //'%_%',
+            'format'       => '', //?paged=%#%
+            'total'        => $custom_query->max_num_pages,
+            'current'      => max( 1, $custom_query->get( 'paged' ) ),
+            'show_all'     => false,
+            'prev_next'    => true,
+            'prev_text'    => __( 'Prev', 'mp' ),
+            'next_text'    => __( 'Next', 'mp' ),
+            'add_args'     => true,
+            'add_fragment' => '',
+        ) );
 
-			$html .= '
-				</nav>';
-		}
+        $html .= '
+            </nav>';
+    }
 
-		/**
-		 * Filter the products nav html
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $html
-		 * @param WP_Query $custom_query
-		 */
-		$html = apply_filters( 'mp_products_nav', $html, $custom_query );
+    /**
+     * Filter the products nav html
+     *
+     * @since 3.0
+     *
+     * @param string $html
+     * @param WP_Query $custom_query
+     */
+    $html = apply_filters( 'mp_products_nav', $html, $custom_query );
 
-		if ( $echo ) {
-			echo $html;
-		} else {
-			return $html;
-		}
-	}
+    if ( $echo ) {
+        echo $html;
+    } else {
+        return $html;
+    }
+}
 
 endif;
 

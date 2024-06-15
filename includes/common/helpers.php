@@ -1001,26 +1001,32 @@ endif;
 
 if ( ! function_exists( 'mp_get_session_value' ) ) :
 
-	/**
-	 * Safely retreives a value from the $_SESSION array
-	 *
-	 * NOTE: this function is designed to only be used on cart and checkout pages.
-	 * Use them any where else and they will not work as the session is only started
-	 * on these pages!
-	 *
-	 * @since 3.0
-	 * @uses mp_arr_get_value()
-	 *
-	 * @param string $key (e.g. key1->key2->key3)
-	 * @param mixed $default The default value to return if $key is not found within $array
-	 *
-	 * @return mixed
-	 */
-	function mp_get_session_value( $key, $default = false ) {
-		mp_public()->start_session();
+/**
+ * Safely retrieves a value from the $_SESSION array
+ *
+ * NOTE: this function is designed to only be used on cart and checkout pages.
+ * Use them anywhere else and they will not work as the session is only started
+ * on these pages!
+ *
+ * @since 3.0
+ * @uses mp_arr_get_value()
+ *
+ * @param string $key (e.g. key1->key2->key3)
+ * @param mixed $default The default value to return if $key is not found within $array
+ *
+ * @return mixed
+ */
+function mp_get_session_value( $key, $default = false ) {
+    // Ensure the session is started
+    mp_public()->start_session();
 
-		return mp_arr_get_value( $key, $_SESSION, $default );
-	}
+    // Check if $_SESSION is set and is an array
+    if (!isset($_SESSION) || !is_array($_SESSION)) {
+        return $default;
+    }
+
+    return mp_arr_get_value( $key, $_SESSION, $default );
+}
 
 endif;
 
