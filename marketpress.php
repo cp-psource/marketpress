@@ -1,19 +1,18 @@
 <?php
 /*
 Plugin Name: MarketPress
-Plugin URI:  https://premium.wpmudev.org/project/e-commerce/
+Plugin URI:  https://cp-psource.github.io/marketpress/
 Description: The complete WordPress ecommerce plugin - works perfectly with BuddyPress and Multisite too to create a social marketplace, where you can take a percentage! Activate the plugin, adjust your settings then add some products to your store.
 Version:     3.2.7
-Author:      WPMU DEV
-Author URI:  http://premium.wpmudev.org
+Author:      PSOURCE
+Author URI:  https://github.com/cp-psource
 Text Domain: mp
-WDP ID:      144
 
 @package Marketpress
 */
 
 /*
-Copyright 2009-2015 Incsub (http://incsub.com)
+Copyright 2016-2024 PSOURCE (https://github.com/cp-psource)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License (Version 2 - GPLv2) as
@@ -30,6 +29,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
 
 Plugin Authors: Marko Miljus (Incsub), Aaron Edwards (Incsub), Hoang Ngo (Incsub), Jonathan Cowher (Incsub), Ricardo Freitas (Incsub), Cvetan Cvetanov (Incsub), Julien Zerbib (Incsub), Sabri Bouchaala (Incsub), Emmanuel Laborin (Incsub)
 */
+
+/**
+ * @@@@@@@@@@@@@@@@@ PS UPDATER 1.3 @@@@@@@@@@@
+ **/
+require 'psource/psource-plugin-update/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+ 
+$myUpdateChecker = PucFactory::buildUpdateChecker(
+	'https://github.com/cp-psource/marketpress',
+	__FILE__,
+	'marketpress'
+);
+ 
+//Set the branch that contains the stable release.
+$myUpdateChecker->setBranch('main');
+
+/**
+ * @@@@@@@@@@@@@@@@@ ENDE PS UPDATER 1.3 @@@@@@@@@@@
+ **/
 
 define( 'MP_VERSION', '3.2.7' );
 

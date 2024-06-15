@@ -1,10 +1,10 @@
 === MarketPress - WordPress eCommerce  ===
-Contributors: WPMUDEV
+Contributors: PSOURCE
 Tags: E-commerce, ecommerce, storefront, sell, store, shopping, cart, payment gateways, digital downloads, online store
 Requires at least: 3.7
-Requires PHP: 5.2
-Tested up to: 4.8.2
-Stable tag: trunk
+Requires PHP: 7.4
+Tested up to: 6.5.4
+Stable tag: main
 
 Full-power ecommerce marketplace for WordPress and Multisite. 100% free and no extensions required.
 
@@ -108,7 +108,7 @@ When youвЂ™re running out of any of your products, MarketPress will let you 
 = Setup Wizard Included =
 ItвЂ™s big and powerful but donвЂ™t worry...the MarketPress setup wizard will walk you through setting up your store, step-by-step, so you donвЂ™t have to think about whatвЂ™s going on behind the scenes.
 
-If you run into any problems getting started, <a href="https://premium.wpmudev.org/project/e-commerce/#usage">MarketPress</a> is well documented and our support team is available around the clock to answer any questions you may have.
+If you run into any problems getting started, <a href="https://cp-psource.github.io/marketpress/#usage">MarketPress</a> is well documented and our support team is available around the clock to answer any questions you may have.
 
 So what are you waiting for? Get started with <a href="http://premium.wpmudev.org/project/e-commerce/">MarketPress ecommerce</a> today. Everything you need to start and grow your online store.
 

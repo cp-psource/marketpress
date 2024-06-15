@@ -9414,7 +9414,7 @@ msgid "MarketPress"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "https://premium.wpmudev.org/project/e-commerce/"
+msgid "https://cp-psource.github.io/marketpress/"
 msgstr ""
 
 #. Description of the plugin/theme
