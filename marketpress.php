@@ -48,7 +48,6 @@ $myUpdateChecker->setBranch('main');
 /**
  * @@@@@@@@@@@@@@@@@ ENDE PS UPDATER 1.3 @@@@@@@@@@@
  **/
-
 define( 'MP_VERSION', '3.2.7' );
 
 /**
@@ -481,11 +480,7 @@ class Marketpress {
 			 * @return string
 			 */
 			function mp_get_plugin_slug() {
-				if ( file_exists( dirname( __FILE__ ) . '/includes/admin/dash-notice/wpmudev-dash-notification.php' ) ) {
-					return 'marketpress/marketpress.php';
-				} else {
-					return 'wordpress-ecommerce/marketpress.php';
-				}
+				return 'marketpress/marketpress.php';
 			}
 		}
 
