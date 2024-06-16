@@ -79,7 +79,7 @@ function mp_global_tag_cloud( $echo = true, $limit = 45, $seperator = ' ', $incl
 		$tag_link   = '#' != $tag['link'] ? esc_url( $tag['link'] ) : '#';
 		$tag_id     = isset( $tags[ $key ]['id'] ) ? $tags[ $key ]['id'] : $key;
 		$tag_name   = $tags[ $key ]['name'];
-		$a[]        = "<a href='$tag_link' class='tag-link-$tag_id' title='" . esc_attr( $real_count ) . ' ' . __( 'Products', 'mp' ) . "' style='font-size: " .
+		$a[]        = "<a href='$tag_link' class='tag-link-$tag_id' title='" . esc_attr( $real_count ) . ' ' . __( 'Produkt', 'mp' ) . "' style='font-size: " .
 		              ( 8 + ( ( $count - $min_count ) * $font_step ) )
 		              . "pt;'>$tag_name</a>";
 	}
@@ -110,7 +110,7 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 
 		if ( isset( $args['widget_id'] ) && ! empty( $args['widget_id'] ) ) {
 			$args['widget_id'] = str_replace( 'mp_global_product_list_widget-', '', $args['widget_id'] );
-			
+
 			$widget_settings = get_option( 'widget_mp_global_product_list_widget' );
 
 			if ( isset( $widget_settings[ $args['widget_id'] ] ) ) {
@@ -194,7 +194,7 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 				$query['orderby'] = mp_get_setting( 'order_by' );
 			}
 		}
-		
+
 		if ( ! is_null( $args['limit'] ) ) {
 			$query['posts_per_page'] = intval( $args['limit'] );
 			$args['nopaging'] 		 = true;
@@ -221,11 +221,11 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 		$join  = "";
 		$where = " WHERE post_status = 'publish' AND blog_public = 1";
 		$group = "";
-		
+
 		if ( ! empty( $args['category'] ) || ! empty( $args['tag'] ) ) {
 			$join .= " INNER JOIN {$wpdb->base_prefix}mp_term_relationships rel ON rel.post_id = products.id";
 			$join .= " INNER JOIN {$wpdb->base_prefix}mp_terms terms ON terms.term_id = rel.term_id";
-			
+
 			if( ! empty( $args['category'] ) ) {
 				if ( is_numeric( $args['category'] ) ) {
 					$where .= $wpdb->prepare( " AND terms.term_id=%d", $args['category'] );
@@ -233,7 +233,7 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 					$where .= $wpdb->prepare( " AND terms.slug=%s", $args['category'] );
 				}
 			}
-			
+
 			if( ! empty( $args['tag'] ) ) {
 				if ( is_numeric( $args['tag'] ) ) {
 					$where .= $wpdb->prepare( " AND terms.term_id=%d", $args['tag'] );
@@ -241,7 +241,7 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 					$where .= $wpdb->prepare( " AND terms.slug=%s", $args['tag'] );
 				}
 			}
-			
+
 			$group .= " GROUP BY products.post_id";
 		}
 
@@ -255,7 +255,9 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 				case 'date':
 					$orderby = 'post_modified';
 					break;
-
+				case 'rand':
+					$orderby = 'RAND()'; // Hier den korrekten Ausdruck für die zufällige Sortierung verwenden
+					break;
 			}
 			$order = " ORDER BY " . $orderby;
 		}
@@ -263,9 +265,15 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 			$order .= " " . mp_arr_get_value( 'order', $query );
 		}
 		$paging = "";
-		if ( mp_arr_get_value( 'posts_per_page', $query, 0 ) > 0 ) {
-			$limit  = mp_arr_get_value( 'posts_per_page', $query, 0 );
-			$offset = mp_arr_get_value( 'offset', $query );
+		if (mp_arr_get_value('posts_per_page', $query, 0) > 0) {
+			$limit  = mp_arr_get_value('posts_per_page', $query, 0);
+			$offset = mp_arr_get_value('offset', $query);
+
+			// Prüfe, ob $offset negativ ist und setze es auf 0, falls ja
+			if ($offset < 0) {
+				$offset = 0;
+			}
+
 			$paging = " LIMIT $offset,$limit";
 		}
 
@@ -278,7 +286,7 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 		if ( ! is_null( $args['list_view'] ) ) {
 			$layout_type = $args['list_view'] ? 'list' : 'grid';
 		}
-		
+
 		// Build content
 		$content = '';
 
@@ -296,11 +304,11 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 		if ( $last = count( $custom_query ) ) {
 			if( isset( $args['context'] ) && $args['context'] == 'widget' ) {
 				$content .= _mp3_global_products_html_widget( $custom_query, $args );
-			} else { 
+			} else {
 				$content .= _mp3_global_products_html_grid( $custom_query, $args );
 			}
 		} else {
-			$content .= '<div id="mp_no_products">' . apply_filters( 'mp_global_product_list_none', __( 'No Products', 'mp' ) ) . '</div>';
+			$content .= '<div id="mp_no_products">' . apply_filters( 'mp_global_product_list_none', __( 'Keine Produkte vorhanden', 'mp' ) ) . '</div>';
 		}
 
 		$content .= '</section><!-- end mp-products -->';
@@ -327,57 +335,62 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 }
 
 if ( ! function_exists( 'mp_global_products_nav' ) ) {
-	function mp_global_products_nav( $per_page, $count, $echo = true ) {
-		$html      = '';
-		$paged     = 1;
-		$max_pages = ceil( $count / $per_page );
+    function mp_global_products_nav( $per_page, $count, $echo = true ) {
+        $html      = '';
+        $paged     = 1;
 
-		if ( $max_pages > 1 ) {
-			$big = 999999999;
+        // Überprüfen, ob sowohl $per_page als auch $count gültige Werte haben
+        if ( $per_page > 0 && $count > 0 ) {
+            $max_pages = ceil( $count / $per_page );
 
-			if ( get_query_var( 'paged' ) != '' ) {
-				$paged  = intval( get_query_var( 'paged' ) );
-			} elseif ( get_query_var( 'page' ) != '' ) {
-				$paged  = intval( get_query_var( 'page' ) );
-			}
+            if ( $max_pages > 1 ) {
+                $big = 999999999;
+                
+                if ( get_query_var( 'paged' ) != '' ) {
+                    $paged  = intval( get_query_var( 'paged' ) );
+                } elseif ( get_query_var( 'page' ) != '' ) {
+                    $paged  = intval( get_query_var( 'page' ) );
+                }
 
-			$html = '
-				<nav class="mp_listings_nav">';
+                $html = '
+                    <nav class="mp_listings_nav">';
 
-			$html .= paginate_links( array(
-				'base'         => '?paged=%#%', //'%_%',
-				'format'       => '', //?paged=%#%
-				'total'        => $max_pages,
-				'current'      => max( 1, $paged ),
-				'show_all'     => false,
-				'prev_next'    => true,
-				'prev_text'    => __( 'Prev', 'mp' ),
-				'next_text'    => __( 'Next', 'mp' ),
-				'add_args'     => true,
-				'add_fragment' => '',
-			) );
+                $html .= paginate_links( array(
+                    'base'         => '?paged=%#%', //'%_%',
+                    'format'       => '', //?paged=%#%
+                    'total'        => $max_pages,
+                    'current'      => max( 1, $paged ),
+                    'show_all'     => false,
+                    'prev_next'    => true,
+                    'prev_text'    => __( 'Prev', 'mp' ),
+                    'next_text'    => __( 'Next', 'mp' ),
+                    'add_args'     => true,
+                    'add_fragment' => '',
+                ) );
 
-			$html .= '
-				</nav>';
-		}
+                $html .= '
+                    </nav>';
+            }
+        }
 
-		/**
-		 * Filter the products nav html
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $html
-		 * @param int $per_page
-		 */
-		$html = apply_filters( 'mp_global_products_nav', $html, $per_page );
+        /**
+         * Filter the products nav html
+         *
+         * @since 3.0
+         *
+         * @param string $html
+         * @param WP_Query $custom_query
+         */
+        $html = apply_filters( 'mp_global_products_nav', $html, $per_page );
 
-		if ( $echo ) {
-			echo $html;
-		} else {
-			return $html;
-		}
-	}
+        if ( $echo ) {
+            echo $html;
+        } else {
+            return $html;
+        }
+    }
 }
+
 
 if ( ! function_exists( 'mp_global_products_filter' ) ) :
 
@@ -396,15 +409,15 @@ if ( ! function_exists( 'mp_global_products_filter' ) ) :
 	function mp_global_products_filter( $hidden = false, $per_page = null, $query = null, $args = array() ) {
 		$current_order = strtolower( get_query_var( 'order_by' ) . '-' . get_query_var( 'order' ) );
 		$options       = array(
-			array( '0', '', __( 'Default', 'mp' ) ),
-			array( 'date', 'desc', __( 'Release Date (Latest to Oldest)', 'mp' ) ),
-			array( 'date', 'asc', __( 'Release Date (Oldest to Latest)', 'mp' ) ),
+			array( '0', '', __( 'Standard', 'mp' ) ),
+			array( 'date', 'desc', __( 'Erscheinungsdatum (Neueste bis Älteste)', 'mp' ) ),
+			array( 'date', 'asc', __( 'Veröffentlichungsdatum (älteste bis neueste)', 'mp' ) ),
 			array( 'title', 'asc', __( 'Name (A-Z)', 'mp' ) ),
 			array( 'title', 'desc', __( 'Name (Z-A)', 'mp' ) ),
-			array( 'price', 'asc', __( 'Price (Low to High)', 'mp' ) ),
-			array( 'price', 'desc', __( 'Price (High to Low)', 'mp' ) ),
-			array( 'sales', 'desc', __( 'Popularity (Most Popular - Least Popular)', 'mp' ) ),
-			array( 'sales', 'asc', __( 'Popularity (Least Popular - Most Popular)', 'mp' ) )
+			array( 'price', 'asc', __( 'Preis (niedrig bis hoch)', 'mp' ) ),
+			array( 'price', 'desc', __( 'Preis (hoch bis niedrig)', 'mp' ) ),
+			array( 'sales', 'desc', __( 'Popularität (am beliebtesten - am wenigsten beliebt', 'mp' ) ),
+			array( 'sales', 'asc', __( 'Popularität (am wenigsten beliebt - am beliebtesten)', 'mp' ) )
 		);
 		$options_html  = '';
 		foreach ( $options as $k => $t ) {
@@ -417,11 +430,11 @@ if ( ! function_exists( 'mp_global_products_filter' ) ) :
 		}
 
 		global $wpdb;
-		
+
 		/*
-		
+
 		Product category filter is not used anymore
-		
+
 		$sql     = "SELECT * FROM {$wpdb->base_prefix}mp_terms WHERE `type`='product_category'";
 		$results = $wpdb->get_results( $sql );
 
@@ -431,22 +444,22 @@ if ( ! function_exists( 'mp_global_products_filter' ) ) :
 			$terms .= '<option value="' . $term->term_id . '">' . $term->name . '</option>';
 		}
 		$terms .= '</select>';
-		
+
 		<div class="mp_form_field mp_products_filter_field mp_products_filter_category" data-placeholder="' . __( 'Product Category', 'mp' ) . '">
 			<label for="mp_product_category" class="mp_form_label">' . __( 'Category', 'mp' ) . '</label>
 			' . $terms . '
 		</div><!-- mp_listing_products_category -->
-		
+
 		*/
 		$return = '
 <a name="mp-product-list-top"></a>
 <div class="mp_list_filter"' . ( ( $hidden ) ? ' style="display:none"' : '' ) . '>
 	<form id="mp_global_product_list_refine" name="mp_global_product_list_refine" class="mp-form mp_global_product_list_refine clearfix" method="get">
 		<div class="mp_form_fields">
-		
+
 		<div class="mp_form_field mp_products_filter_field mp_products_filter_orderby">
-			<label for="mp_sort_orderby" class="mp_form_label">' . __( 'Order By', 'mp' ) . '</label>
-			<select id="mp-sort-order" class="mp_select2" name="order" data-placeholder="' . __( 'Product Category', 'mp' ) . '">
+			<label for="mp_sort_orderby" class="mp_form_label">' . __( 'Sortieren nach', 'mp' ) . '</label>
+			<select id="mp-sort-order" class="mp_select2" name="order" data-placeholder="' . __( 'Produktkategorie', 'mp' ) . '">
 				' . $options_html . '
 			</select>
 		</div>' .
@@ -566,9 +579,8 @@ if ( ! function_exists( '_mp3_global_products_html' ) ) {
 					}
 				}
 
-				$class = array_filter($class, function($s) {
-					return ! empty($s);
-				});
+				//$class = array_filter( $class, create_function( '$s', 'return ( ! empty( $s ) );' ) );
+				$class = array_filter( $class, function($s) {return ( ! empty( $s ) );} );
 
 				$image_alignment = mp_get_setting( 'image_alignment_list' );
 
@@ -578,22 +590,22 @@ if ( ! function_exists( '_mp3_global_products_html' ) ) {
 					$img = '<div class="mp_product_images">' . $img . '</div>';
 				}
 
-				$button = '<a class="mp_button mp_link-buynow" href="' . $product->url( false ) . '">' . __( 'Buy Now', 'mp' ) . '</a>';
+				$button = '<a class="mp_button mp_link-buynow" href="' . $product->url( false ) . '">' . __( 'Mehr Details & Shoppen', 'mp' ) . '</a>';
 
 				$html .= '
 				<div class="mp_product_item' . ( ( 'grid' == $view ) ? ' mp_product_item-col-' . $per_row : '' ) . '">
-					<div itemscope itemtype="http://schema.org/Product" class="mp_product' . ( ( strlen( $img ) > 0 ) ? ' mp_product-has-image' . $align_class : '' ) . ' ' . implode( $class, ' ' ) . '">
+					<div itemscope itemtype="http://schema.org/Product" class="mp_product' . ( ( strlen( $img ) > 0 ) ? ' mp_product-has-image' . $align_class : '' ) . ' ' . implode(' ', $class) . '">
 						' . $img . '
 						<div class="mp_product_details">
 
 							<div class="mp_product_meta">
 								<h3 class="mp_product_name entry-title" itemprop="name">
-	 								<a href="' . $product->url( false ) . '">' . $product->title( false ) . '</a>
-	 							</h3>
-								' . ( mp_arr_get_value( 'show_price', $args, - 1 ) != 0 ? $product->display_price( false ) : null ) . '
- 								' . $mp_product_list_content . '
+									<a href="' . $product->url( false ) . '">' . $product->title( false ) . '</a>
+								</h3>
+								' . ( mp_arr_get_value( 'show_price', $args, -1 ) != 0 ? $product->display_price( false ) : null ) . '
+								' . $mp_product_list_content . '
 
- 								<div class="mp_social_shares">
+								<div class="mp_social_shares">
 									' . $pinit . '
 									' . $fb . '
 									' . $twitter . '
@@ -606,7 +618,7 @@ if ( ! function_exists( '_mp3_global_products_html' ) ) {
 								' . apply_filters( 'mp_product_list_meta', '', $product->ID ) . '
 							</div><!-- end mp_product_callout -->
 
- 						</div><!-- end mp_product_details -->
+						</div><!-- end mp_product_details -->
 
 						<div style="display:none">
 							<span class="entry-title">' . $product->title( false ) . '</span> was last modified:
@@ -622,7 +634,7 @@ if ( ! function_exists( '_mp3_global_products_html' ) ) {
 				}
 			}
 		} else {
-			$html .= '<div class="mp_widget_empty">' . __( 'No Products', 'mp' ) . '</div><!-- end mp_widget_empty -->';
+			$html .= '<div class="mp_widget_empty">' . __( 'Keine Produkte', 'mp' ) . '</div><!-- end mp_widget_empty -->';
 		}
 
 		switch_to_blog( $current_blog_id );
@@ -706,9 +718,9 @@ if ( ! function_exists( '_mp_global_products_html' ) ) {
 				}
 			}
 
-			$class = array_filter($class, function($s) {
-				return ! empty($s);
-			});
+			//$class = array_filter( $class, create_function( '$s', 'return ( ! empty( $s ) );' ) );
+			$class = array_filter( $class, function($s) {return ( ! empty( $s ) );} );
+
 
 			$html .= '
 				<div itemscope itemtype="http://schema.org/Product" class="hentry mp_one_tile ' . implode( $class, ' ' ) . ' ' . ( ( 'grid' == $view ) ? 'mp-grid-col-' . $per_row : '' ) . '"><!--style="width: ' . $width . '"-->
@@ -731,7 +743,7 @@ if ( ! function_exists( '_mp_global_products_html' ) ) {
 
 						<div class="mp_price_buy">
 							' . $product->display_price( false ) . '
-							<a class="mp-button mp_link_buynow" href="' . esc_url( $product->url( false ) ) . '">' . __( 'Buy Now &raquo;', 'mp' ) . '</a>
+							<a class="mp-button mp_link_buynow" href="' . esc_url( $product->url( false ) ) . '">' . __( 'Jetzt kaufen &raquo;', 'mp' ) . '</a>
 							' . apply_filters( 'mp_product_list_meta', '', $product->ID ) . '
 						</div>
 
@@ -783,12 +795,12 @@ if ( ! function_exists( 'mp_global_taxonomy_list' ) ) :
 		extract( $atts );
 
 		//build the sql
-		$sql     = $wpdb->prepare( "SELECT t.* FROM {$wpdb->base_prefix}mp_terms AS t 
+		$sql     = $wpdb->prepare( "SELECT t.* FROM {$wpdb->base_prefix}mp_terms AS t
 			LEFT JOIN {$wpdb->base_prefix}mp_term_relationships AS r ON t.term_id = r.term_id
-			WHERE `type`=%s AND r.public = 1 
+			WHERE `type`=%s AND r.public = 1
 			GROUP BY t.term_id HAVING COUNT(r.term_id) > 0", $taxonomy );
 		$results = $wpdb->get_results( $sql );
-		
+
 		if ( $taxonomy == 'product_tag' ) {
 			$html = _mp_global_tags_cloud( $results, $taxonomy );
 		} else {
@@ -816,7 +828,7 @@ if ( ! function_exists( '_mp_global_categories_list' ) ) {
 			}
 			$html .= '</ul>';
 		} else {
-			$html .= '<div id="mp_category_list">' . __( 'No Categories', 'mp' ) . '</div>';
+			$html .= '<div id="mp_category_list">' . __( 'Keine Kategorien', 'mp' ) . '</div>';
 		}
 
 		return $html;

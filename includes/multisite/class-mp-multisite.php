@@ -45,7 +45,7 @@ class MP_Multisite {
 		if ( ! is_plugin_active_for_network( mp_get_plugin_slug() ) ) {
 			return;
 		}
-		
+
 		$this->maybe_install();
 		//we will need to register a post type use for index
 		if ( mp_get_network_setting( 'global_cart' ) ) {
@@ -60,7 +60,7 @@ class MP_Multisite {
 		add_filter( 'query_vars', array( &$this, 'add_query_vars' ) );
 
 		add_filter( 'mp_gateway_api/get_gateways', array( &$this, 'get_gateways' ) );
-		
+
 		$settings = get_site_option( 'mp_network_settings', array() );
 		if ( ( isset($settings['main_blog']) && mp_is_main_site() ) || isset($settings['main_blog']) && !$settings['main_blog'] ) {
 			//shortcode
@@ -68,7 +68,7 @@ class MP_Multisite {
 			add_shortcode( 'mp_global_categories_list', array( &$this, 'mp_global_categories_list_sc' ) );
 			add_shortcode( 'mp_global_tag_cloud', array( &$this, 'mp_global_tag_cloud_sc' ) );
 		}
-		
+
 		//filter global product list
 		add_action( 'wp_ajax_mp_global_update_product_list', array( &$this, 'filter_products' ) );
 		add_action( 'wp_ajax_nopriv_mp_global_update_product_list', array( &$this, 'filter_products' ) );
@@ -103,7 +103,7 @@ class MP_Multisite {
 
 		$screen = mp_get_current_screen();
 
-		if ( $screen->id == 'store-settings_page_store-setup-wizard' ) {
+		if ( $screen->id == 'shop-einstellungen_page_store-setup-wizard' ) {
 			//user already inside this first time, return
 			update_option( 'mp_subsite_need_redirect', 0 );
 			return;
@@ -113,9 +113,9 @@ class MP_Multisite {
 			'product',
 			'edit-product',
 			'edit-mp_order',
-			'toplevel_page_store-settings'
+			'toplevel_page_shop-einstellungen'
 		);
-		$base = 'store-settings_page';
+		$base = 'shop-einstellungen_page';
 		if ( ( in_array( $screen->id, $ids ) || strpos( $screen->id, $base ) === 0 ) ) {
 			update_option( 'mp_subsite_need_redirect', 0 );
 			wp_redirect( admin_url( 'admin.php?page=store-setup-wizard' ) );
@@ -429,7 +429,7 @@ class MP_Multisite {
 		$sql = $wpdb->prepare( "DELETE p.*, r.* FROM {$wpdb->base_prefix}mp_products p LEFT JOIN {$wpdb->base_prefix}mp_term_relationships r ON p.id = r.post_id WHERE p.site_id = {$wpdb->siteid} AND p.blog_id = {$blog_id} AND p.post_id = %d", $product_id );
 		$wpdb->query( $sql );
 
-		$sql_r = $wpdb->prepare( "DELETE FROM {$wpdb->base_prefix}mp_term_relationships WHERE post_id = %d and blog_id = %d", $product_id, $blog_id );		
+		$sql_r = $wpdb->prepare( "DELETE FROM {$wpdb->base_prefix}mp_term_relationships WHERE post_id = %d and blog_id = %d", $product_id, $blog_id );
 		$wpdb->query( $sql_r );
 	}
 
@@ -620,6 +620,10 @@ class MP_Multisite {
 	 * @return string
 	 */
 	function mp_list_global_products_sc( $atts ) {
+		if ( ! is_array( $atts ) ) {
+			$atts = array();
+		}
+
 		$atts['echo'] = false;
 		if ( $var = get_query_var( 'mp_global_category' ) ) {
 			$atts['category'] = $var;
@@ -680,7 +684,7 @@ class MP_Multisite {
 
 		$wpdb->query( "DROP TABLE IF EXISTS $table1, $table2, $table3" );
 	}
-	
+
 	/**
 	 * Truncate index table
 	 *
@@ -866,7 +870,7 @@ class MP_Multisite {
 	 * When using switch_to_blog $wp_rewrite permastructs don't get updated so
 	 * this is required to get the correct product url.
 	 *
-	 * See https://core.trac.wordpress.org/ticket/20861 for more info.
+	 * See https://core.trac.classicpress.org/ticket/20861 for more info.
 	 *
 	 * @since 3.0
 	 * @access public
