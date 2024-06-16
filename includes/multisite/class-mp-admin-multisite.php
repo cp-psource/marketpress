@@ -50,21 +50,21 @@ class MP_Admin_Multisite {
 			add_action( 'init', array( &$this, 'init_metaboxes' ) );
 			add_action( 'network_admin_menu', array( &$this, 'add_menu_items' ) );
 			add_action( 'admin_enqueue_scripts', array( &$this, 'enqueue_styles_scripts' ) );
-			add_action( 'psource_field/print_scripts/network_store_page', array(
+			add_action( 'wpmudev_field/print_scripts/network_store_page', array(
 				&$this,
 				'print_network_store_page_scripts'
 			) );
-			add_filter( 'psource_field/after_field', array( &$this, 'display_create_page_button' ), 10, 2 );
-			add_action( 'psource_field/print_scripts', array( &$this, 'create_store_page_js' ) );
+			add_filter( 'wpmudev_field/after_field', array( &$this, 'display_create_page_button' ), 10, 2 );
+			add_action( 'wpmudev_field/print_scripts', array( &$this, 'create_store_page_js' ) );
 		}
 		add_action( 'wp_ajax_mp_index_products', array( &$this, 'index_products' ) );
 		if ( mp_get_network_setting( 'global_cart' ) ) {
-			add_filter( 'psource_field/get_value/gateways[allowed][' . mp_get_network_setting( 'global_gateway', '' ) . ']', array(
+			add_filter( 'wpmudev_field/get_value/gateways[allowed][' . mp_get_network_setting( 'global_gateway', '' ) . ']', array(
 				&$this,
 				'force_check_global_gateway'
 			), 10, 4 );
 
-			add_filter('psource_field/before_get_value', array(&$this, 'global_currency_options'), 10, 4);
+			add_filter('wpmudev_field/before_get_value', array(&$this, 'global_currency_options'), 10, 4);
 		}
 		//On blog status change update blog_public status
 		add_action( 'activate_blog', array( $this, 'set_blog_public_global_products' ) );
@@ -84,7 +84,7 @@ class MP_Admin_Multisite {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @filter psource_field/get_value/gateways[allowed][ {global_gateway} ]
+	 * @filter wpmudev_field/get_value/gateways[allowed][ {global_gateway} ]
 	 */
 	public function force_check_global_gateway( $value, $post_id, $raw, $field ) {
 		return 1;
@@ -98,7 +98,7 @@ class MP_Admin_Multisite {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @action psource_field/print_scripts/network_store_page
+	 * @action wpmudev_field/print_scripts/network_store_page
 	 */
 	public function print_network_store_page_scripts( $field ) {
 		?>
@@ -502,7 +502,7 @@ class MP_Admin_Multisite {
 					 *
 					 * @since 3.0
 					 */
-					do_action( 'psource_metabox/render_settings_metaboxes' );
+					do_action( 'wpmudev_metabox/render_settings_metaboxes' );
 					?>
 				</form>
 			</div>
@@ -559,7 +559,7 @@ class MP_Admin_Multisite {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * filter psource_field/after_field
+	 * filter wpmudev_field/after_field
 	 */
 	public function display_create_page_button( $html, $field ) {
 		switch ( $field->args['original_name'] ) {
@@ -595,7 +595,7 @@ class MP_Admin_Multisite {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @action psource_field/print_scripts
+	 * @action wpmudev_field/print_scripts
 	 */
 	public function create_store_page_js( $field ) {
 		if ( $field->args['original_name'] !== 'pages[network_store_page]' ) {
