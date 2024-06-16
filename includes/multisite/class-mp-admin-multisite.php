@@ -166,7 +166,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_general_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-general',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Shopnetzwerk Einstellungen', 'mp' ),
@@ -192,7 +192,7 @@ class MP_Admin_Multisite {
 	public function init_global_currency_metabox(){
 		if( mp_get_network_setting( 'global_cart' ) ){
 
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'               => 'mp-global-store-currency',
 				'page_slugs'       => array( 'network-shop-einstellungen' ),
 				'title'            => __( 'Netzwerkwährung', 'mp' ),
@@ -279,7 +279,7 @@ class MP_Admin_Multisite {
 		$html = sprintf( __( "%d Produkte wurden im Netzwerk indexiert", "mp" ), $count ) . '<br/><br/>';
 		$html .= '<button type="button" class="button mp_index_products">' . __( "Produkte indexieren", "mp" ) . '</button>';
 		$html .= '<p class="index-status" style="display: none;">' . __( "Index läuft, bitte warten...", "mp" ) . '</p>';
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-post-indexer',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Produkt Indexierung', 'mp' ),
@@ -344,7 +344,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_global_gateway_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-global-gateway',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Netzwerk Zahlungsgateway', 'mp' ),
@@ -384,7 +384,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_gateway_permissions_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-gateway-permissions',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Gateway-Berechtigungen', 'mp' ),
@@ -432,7 +432,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_theme_permissions_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-theme-permissions',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Theme Berechtigungen', 'mp' ),
@@ -498,7 +498,7 @@ class MP_Admin_Multisite {
 				<form id="mp-main-form" method="post" action="<?php echo add_query_arg( array() ); ?>">
 					<?php
 					/**
-					 * Render PSOURCE Metabox settings
+					 * Render WPMUDEV Metabox settings
 					 *
 					 * @since 3.0
 					 */
@@ -517,7 +517,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_network_pages() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-settings-network-pages-slugs',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Netzwerkmarktplatz Seiten', 'mp' ),
