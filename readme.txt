@@ -151,6 +151,11 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 
 == Changelog ==
 
+= 3.2.8 =
+
+* New: Development by PSOURCE
+* Fix: PhP8, jQuery3 Updates
+
 = 3.2.7 =
 * Enhance: Update translation strings
 * Fixed: Potential php object injection vulnerability

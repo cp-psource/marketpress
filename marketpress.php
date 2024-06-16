@@ -3,7 +3,7 @@
 Plugin Name: MarketPress
 Plugin URI:  https://cp-psource.github.io/marketpress/
 Description: The complete WordPress ecommerce plugin - works perfectly with BuddyPress and Multisite too to create a social marketplace, where you can take a percentage! Activate the plugin, adjust your settings then add some products to your store.
-Version:     3.2.7
+Version:     3.2.8
 Author:      PSOURCE
 Author URI:  https://github.com/cp-psource
 Text Domain: mp
@@ -48,7 +48,7 @@ $myUpdateChecker->setBranch('main');
 /**
  * @@@@@@@@@@@@@@@@@ ENDE PS UPDATER 1.3 @@@@@@@@@@@
  **/
-define( 'MP_VERSION', '3.2.7' );
+define( 'MP_VERSION', '3.2.8' );
 
 /**
  * Main class Marketpress.
