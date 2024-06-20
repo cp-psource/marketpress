@@ -7,6 +7,7 @@ Version:     3.2.8
 Author:      PSOURCE
 Author URI:  https://github.com/cp-psource
 Text Domain: mp
+Domain Path: languages
 
 @package Marketpress
 */
@@ -26,8 +27,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
-
-Plugin Authors: Marko Miljus (Incsub), Aaron Edwards (Incsub), Hoang Ngo (Incsub), Jonathan Cowher (Incsub), Ricardo Freitas (Incsub), Cvetan Cvetanov (Incsub), Julien Zerbib (Incsub), Sabri Bouchaala (Incsub), Emmanuel Laborin (Incsub)
 */
 
 /**
