@@ -1476,7 +1476,7 @@ class MP_Shortcode_Builder {
 			|| ( isset( $screenpage->post_type ) && ( $screenpage->post_type == "product" || $screenpage->post_type == "incsub_event" || $screenpage->post_type == "post" || $screenpage->post_type == "mp_order" || $screenpage->post_type == "mp_coupon" || $screenpage->post_type == "page") ) )  {
 
 			wp_enqueue_style( 'colorbox', mp_plugin_url( 'includes/admin/ui/colorbox/colorbox.css' ), false, MP_VERSION );
-			wp_enqueue_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox-min.js' ), false, MP_VERSION );
+			wp_enqueue_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox.js' ), false, MP_VERSION );
 
 			wp_enqueue_style( 'mp-select2', mp_plugin_url( 'ui/select2/select2.css' ), false, MP_VERSION );
 			wp_enqueue_script( 'mp-select2', mp_plugin_url( 'ui/select2/select2.js' ), false, MP_VERSION );

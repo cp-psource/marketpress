@@ -89,7 +89,7 @@ jQuery( document ).ready( function( $ ) {
         } );
     }
 
-    $( window ).resize( function( ) {
+    $(window).on('load', function() {
         mp_variation_message();
     } );
 

@@ -131,7 +131,7 @@ class MP_Products_Screen {
 	 */
 	public function enqueue_styles_scripts() {
 		wp_enqueue_style( 'colorbox', mp_plugin_url( 'includes/admin/ui/colorbox/colorbox.css' ), false, '1.5.10' );
-		wp_enqueue_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox-min.js' ), false, '1.5.10' );
+		wp_enqueue_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox.js' ), false, '1.5.10' );
 	}
 
 	/**
