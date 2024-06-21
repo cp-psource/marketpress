@@ -489,43 +489,36 @@
 
         // name.length here should be zero
         return result;
-    }
-    ;
+    };
 
     /**
      * Hooks up specified events in the scope of the current object.
      * @author agorbatchev
      * @date 2011/08/09
      */
-    function hookupEvents()
-    {
-        var args = slice.apply( arguments ),
+    function hookupEvents() {
+        var args = Array.prototype.slice.apply(arguments),
             self = this,
             target = args.length === 1 ? self : args.shift(),
-            event
-            ;
+            event;
 
-        args = args[0] || { };
+        args = args[0] || {};
 
-        function bind( event, handler )
-        {
-            target.bind( event, function()
-            {
+        function bind(event, handler) {
+            $(target).on(event, function() {
                 // apply handler to our PLUGIN object, not the target
-                return handler.apply( self, arguments );
-            } );
+                return handler.apply(self, arguments);
+            });
         }
 
-        for ( event in args )
-            bind( event, args[event] );
-    }
-    ;
+        for (event in args) {
+            bind(event, args[event]);
+        }
+    };
 
-    function formDataObject( input, form )
-    {
+    function formDataObject( input, form ) {
         return { 'input': input, 'form': form };
-    }
-    ;
+    };
 
     //--------------------------------------------------------------------------------
     // ItemManager core component
@@ -543,9 +536,7 @@
      * @date 2011/08/19
      * @id ItemManager.init
      */
-    p.init = function( core )
-    {
-    };
+    p.init = function( core ) {};
 
     /**
      * Filters out items from the list that don't match the query and returns remaining items. Default 
@@ -560,14 +551,11 @@
      * @date 2011/08/19
      * @id ItemManager.filter
      */
-    p.filter = function( list, query )
-    {
+    p.filter = function( list, query ) {
         var result = [ ],
-            i, item
-            ;
+            i, item;
 
-        for ( i = 0; i < list.length; i++ )
-        {
+        for ( i = 0; i < list.length; i++ ) {
             item = list[i];
             if ( this.itemContains( item, query ) )
                 result.push( item );
@@ -589,8 +577,7 @@
      * @date 2011/08/19
      * @id ItemManager.itemContains
      */
-    p.itemContains = function( item, needle )
-    {
+    p.itemContains = function( item, needle ) {
         return this.itemToString( item ).toLowerCase().indexOf( needle.toLowerCase() ) == 0;
     };
 
@@ -666,8 +653,7 @@
      * @date 2011/08/19
      * @id TextExt.init
      */
-    p.init = function( input, opts )
-    {
+    p.init = function( input, opts ) {
         var self = this,
             hiddenInput,
             itemManager,
@@ -683,22 +669,21 @@
         hiddenInput = $( self.opts( OPT_HTML_HIDDEN ) );
 
         input
-            .wrap( container )
-            .keydown( function( e ) {
-                return self.onKeyDown( e )
-            } )
-            .keyup( function( e ) {
-                return self.onKeyUp( e )
-            } )
-            .data( 'textext', self )
-            ;
-
+            .wrap(container)
+            .on('keydown', function(e) {
+                return self.onKeyDown(e);
+            })
+            .on('keyup', function(e) {
+                return self.onKeyUp(e);
+            })
+            .data('textext', self);
+        
         // keep references to html elements using jQuery.data() to avoid circular references
-        $( self ).data( {
+        $(self).data({
             'hiddenInput': hiddenInput,
-            'wrapElement': input.parents( '.text-wrap' ).first(),
+            'wrapElement': input.parents('.text-wrap').first(),
             'input': input
-        } );
+        });    
 
         // set the name of the hidden input to the text input's name
         hiddenInput.attr( 'name', input.attr( 'name' ) );
@@ -872,7 +857,7 @@
      */
     p.bind = function( event, handler )
     {
-        this.input().bind( event, handler );
+        this.input().on( event, handler );
     };
 
     /**
@@ -1077,14 +1062,17 @@
      * @date 2011/08/22
      * @id TextExt.getFormData
      */
-    p.getFormData = function( keyCode )
-    {
+    p.getFormData = function( keyCode ) {
         var self = this,
             data = self.getWeightedEventResponse( EVENT_GET_FORM_DATA, keyCode || 0 )
             ;
 
-        self.trigger( EVENT_SET_FORM_DATA, data['form'] );
-        self.trigger( EVENT_SET_INPUT_DATA, data['input'] );
+        if (data && typeof data['form'] !== 'undefined') {
+            self.trigger( EVENT_SET_FORM_DATA, data['form'] );
+        }
+        if (data && typeof data['input'] !== 'undefined') {
+            self.trigger( EVENT_SET_INPUT_DATA, data['input'] );
+        }
     };
 
     //--------------------------------------------------------------------------------

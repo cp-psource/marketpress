@@ -87,7 +87,7 @@ jQuery( document ).ready( function( $ ) {
         e.preventDefault( );
     } );
 
-    $( '#mp-product-price-inventory-variants-metabox' ).keydown( function( event ) {//window
+    $('#mp-product-price-inventory-variants-metabox').on('keydown', function(event) {//window
         if ( event.keyCode == 13 ) {
             event.preventDefault();
             return false;

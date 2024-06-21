@@ -93,12 +93,14 @@ jQuery( document ).ready( function( $ ) {
         mp_variation_message();
     } );
 
-    $( window ).resize( );
-    /* Variations product name set */
-    $( '.mp_variations_product_name' ).html( $( '#title' ).val( ) );
-    $( '#title' ).keyup( function( ) {
-        $( '.mp_variations_product_name' ).html( $( '#title' ).val( ) );
-    } );
+    $(window).on('resize', function() {
+        // Variations product name set
+        $('.mp_variations_product_name').html($('#title').val());
+    });
+    
+    $('#title').on('keyup', function() {
+        $('.mp_variations_product_name').html($('#title').val());
+    });
 
     $( '.repeat' ).each( function( ) {
         $( this ).repeatable_fields( );
@@ -214,9 +216,9 @@ jQuery( document ).ready( function( $ ) {
 
             if ( variation_errors == 0 ) {
 
-//alert($( '#original_publish' ).val());
+                //alert($( '#original_publish' ).val());
                 if ( $( '#original_publish' ).val() == 'Publish' ) {
-//$( '.mp-admin-overlay' ).show();
+                    //$( '.mp-admin-overlay' ).show();
                     $( '#save-post' ).removeAttr( 'disabled' );
                     //$( '#save-post' ).prop( 'disabled', false );
                     $( '#save-post' ).click();
@@ -225,7 +227,7 @@ jQuery( document ).ready( function( $ ) {
 
                 if ( $( '#original_publish' ).val() == 'Update' ) {
 
-//$( '.mp-admin-overlay' ).show();
+                    //$( '.mp-admin-overlay' ).show();
                     if ( caller_id == 'mp_make_combinations' ) {
                         $( '#publish' ).removeAttr( 'disabled' );
                         //$( '#publish' ).prop( 'disabled', false );
@@ -248,7 +250,7 @@ jQuery( document ).ready( function( $ ) {
 
     } );
 
-    $( '.mp-add-new-variation' ).click();
+    $('.mp-add-new-variation').trigger('click');
 
 } );
 /* INLINE EDIT */
@@ -396,7 +398,7 @@ jQuery( document ).ready( function( $ ) {
             $( this ).blur( );
         }
 	});
-    $( '#mp-product-price-inventory-variants-metabox' ).keydown( function( event ) {//window
+    $('#mp-product-price-inventory-variants-metabox').on('keydown', function(event) {//window
         if ( event.keyCode == 13 ) {
             event.preventDefault( );
             return false;

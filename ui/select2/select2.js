@@ -1151,7 +1151,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             // some validation frameworks ignore the change event and listen instead to keyup, click for selects
             // so here we trigger the click event manually
-            this.opts.element.click();
+            this.opts.element.click(function() {});
 
             // ValidationEngine ignores the change event and listens instead to blur
             // so here we trigger the blur event manually if so desired
@@ -1972,16 +1972,15 @@ the specific language governing permissions and limitations under the Apache Lic
                 this.search.val(this.focusser.val());
             }
             if (this.opts.shouldFocusInput(this)) {
-                this.search.focus();
-                // move the cursor to the end after focussing, otherwise it will be at the beginning and
-                // new text will appear *before* focusser.val()
-                el = this.search.get(0);
+                this.search.focus(function() {});
+                // Den Cursor ans Ende setzen, nachdem der Fokus gesetzt wurde
+                var el = this.search.get(0);
                 if (el.createTextRange) {
-                    range = el.createTextRange();
+                    var range = el.createTextRange();
                     range.collapse(false);
                     range.select();
                 } else if (el.setSelectionRange) {
-                    len = this.search.val().length;
+                    var len = this.search.val().length;
                     el.setSelectionRange(len, len);
                 }
             }
@@ -2133,7 +2132,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 if (document.activeElement === this.body.get(0)) {
                     window.setTimeout(this.bind(function() {
                         if (this.opened()) {
-                            this.search.focus();
+                            this.search.focus(function() {});
                         }
                     }), 0);
                 }
@@ -2207,7 +2206,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             dropdown.on("mousedown touchstart", this.bind(function() {
                 if (this.opts.shouldFocusInput(this)) {
-                    this.search.focus();
+                    this.search.focus(function() {});
                 }
             }));
 
@@ -2895,7 +2894,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.updateResults(true);
             if (this.opts.shouldFocusInput(this)) {
-                this.search.focus();
+                this.search.focus(function() {});
             }
             this.opts.element.trigger($.Event("select2-open"));
         },
@@ -2909,7 +2908,7 @@ the specific language governing permissions and limitations under the Apache Lic
         // multi
         focus: function () {
             this.close();
-            this.search.focus();
+            this.search.focus(function() {});
         },
 
         // multi
