@@ -1,11 +1,5 @@
 # MarketPress eCommerce
 
-**INACTIVE NOTICE: This plugin is unsupported by WPMUDEV, we've published it here for those technical types who might want to fork and maintain it for their needs.**
-
-## Translations
-
-Translation files can be found at https://github.com/wpmudev/translations
-
 ## Sell everything from digital downloads to physical goods. MarketPress is the eCommerce plugin that does it all – no extensions required.
 
 MarketPress offers the easiest way to sell anything online with tons of built-in core features and simple configuration. Whether you want to set up an individual storefront online or an entire eCommerce network for stores, MarketPress is the go-to solution for WordPress and Multisite SuperPowers. Guide customers through browsing your products to adding items to their cart, and then on to checkout and delivery. You can even provide updates on the status of customer orders. 
@@ -14,7 +8,7 @@ MarketPress offers the easiest way to sell anything online with tons of built-in
 
 MarketPress 3.0 is our most ambitious plugin update to date. It brings together hundreds of hours of development time, along with member requests and feedback. MarketPress has never been easier, from customer acquisition to checkout, and it keeps getting better.
 
-![marketpress-coupon-735x470](https://premium.wpmudev.org/wp-content/uploads/2010/06/marketpress-coupon-735x470.jpg)
+![marketpress-coupon-735x470](./assets/images/marketpress-coupon-735x470.jpg)
 
  Coupons is just one example of our growing catalog of add-ons.
 
@@ -22,7 +16,7 @@ MarketPress 3.0 is our most ambitious plugin update to date. It brings together 
 
 Whether you want to sell custom t-shirts you designed and screen printed yourself in your garage, downloadable copies of your band’s latest EP, or even your time as a consultant, MarketPress makes it all possible. 
 
-![similar-products-735x470](https://premium.wpmudev.org/wp-content/uploads/2010/06/similar-products-735x470-583x373.jpg)
+![similar-products-735x470](./assets/images/similar-products-735x470-583x373.jpg)
 
  Variations are more powerful and easier to use.
 
@@ -36,7 +30,7 @@ Variations have been written from the ground up, so now you can create unlimited
 
 Accept payments using 15 popular payment processors, including Stripe, PayPal and Authorize.net. Make it easy for anyone to pay you. Smooth transaction processing is essential when building trust and customer loyalty.
 
-![credit-card-735x470](https://premium.wpmudev.org/wp-content/uploads/2010/06/credit-card-735x470.jpg)
+![credit-card-735x470](./assets/images/credit-card-735x470.jpg)
 
  More built-in payment options.
 
@@ -46,19 +40,19 @@ Accept payments using 15 popular payment processors, including Stripe, PayPal an
 
 **We provide all the tools you need to market your products the way you want – without the need to pay for pricey extensions.**
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/cart-1x.png)
+![image](./assets/icons/cart-1x.png)
 
 **Cart Behavior**
 
 Choose whether users remain on the current product pages or are redirected to checkout when they add a product to their cart.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/social-1x.png)
+![image](./assets/icons/social-1x.png)
 
 **Social Settings**
 
 Encourage customers to share your products with their friends and family with Pinterest, Facebook and Twitter shares buttons.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/manage-checkout-1x.png)
+![image](./assets/icons/manage-checkout-1x.png)
 
 **Manage the Checkout Process**
 

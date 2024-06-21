@@ -190,7 +190,7 @@ class MP_Admin {
 		get_current_screen()->add_help_tab( array(
 			'id'		 => 'marketpress-help',
 			'title'		 => __( 'MarketPress Instructions', 'mp' ),
-			'content'	 => '<iframe src="//premium.wpmudev.org/wdp-un.php?action=help&id=144" width="100%" height="600px"></iframe>'
+			'content'	 => '<iframe src="//cp-psource.github.io/marketpress/instructions.html" width="100%" height="600px"></iframe>'
 		) );
 	}
 
