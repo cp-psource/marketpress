@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2024-06-21 18:26+0000\n"
+"PO-Revision-Date: 2024-06-21 18:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: Deutsch\n"
 "X-Generator: Loco https://localise.biz/\n"
@@ -1974,7 +1974,7 @@ msgstr ""
 #: includes/admin/class-mp-setup-wizard.php:493
 #: includes/admin/store-settings/class-mp-store-settings-general.php:472
 msgid "%s Tax Rate"
-msgstr "%s Steuersatz"
+msgstr ""
 
 #: includes/admin/class-mp-setup-wizard.php:506
 #: includes/admin/store-settings/class-mp-store-settings-general.php:485
@@ -4764,7 +4764,7 @@ msgstr ""
 #: includes/common/shipping-modules/mp-usps.php:167
 #: includes/common/shipping-modules/mp-weight-rate.php:110
 msgid "%s Settings"
-msgstr "%s Einstellungen"
+msgstr ""
 
 #: includes/common/payment-gateways/2checkout.php:327
 msgid ""
@@ -4970,7 +4970,7 @@ msgstr ""
 
 #: includes/common/payment-gateways/_cubepoints.php:124
 msgid "%s Store Purchase"
-msgstr "%s Store-Kauf"
+msgstr ""
 
 #: includes/common/payment-gateways/_cubepoints.php:133
 #: includes/common/payment-gateways/_cubepoints.php:197
@@ -5050,7 +5050,7 @@ msgstr ""
 #: includes/common/payment-gateways/paypal-express.php:320
 #: includes/common/payment-gateways/paypal-express.php:471
 msgid "%s Store Purchase - Order ID: %s"
-msgstr "%s Store-Kauf - Bestell-ID: %s"
+msgstr ""
 
 #: includes/common/payment-gateways/_ideal.php:247
 #: includes/common/payment-gateways/_payway.php:199
@@ -5900,7 +5900,7 @@ msgstr ""
 #: includes/common/payment-gateways/pin.php:238
 #: includes/common/payment-gateways/simplify.php:171
 msgid "%s Store Purchase - Order ID: %s, Email: %s"
-msgstr "%s Store-Kauf - Bestell-ID: %s, E-Mail: %s"
+msgstr ""
 
 #: includes/common/payment-gateways/paymill.php:270
 #: includes/common/payment-gateways/simplify.php:179
@@ -7410,7 +7410,7 @@ msgstr ""
 
 #: includes/common/payment-gateways/stripe.php:356
 msgid "%s Store Purchase - Order ID - %s, Email - %s"
-msgstr "%s Store-Kauf - Bestell-ID - %s, E-Mail - %s"
+msgstr ""
 
 #: includes/common/payment-gateways/stripe.php:385
 msgid "There was an error processing your card - \"%s\". Please try again."

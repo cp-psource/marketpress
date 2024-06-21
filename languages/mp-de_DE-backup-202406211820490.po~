@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2024-06-21 18:26+0000\n"
+"PO-Revision-Date: 2024-06-20 20:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: Deutsch\n"
 "X-Generator: Loco https://localise.biz/\n"
@@ -1068,8 +1068,8 @@ msgstr "Lagerbestand & Bestellungen"
 #: includes/admin/class-mp-dashboard-widgets.php:283
 msgid "%s order"
 msgid_plural "%s orders"
-msgstr[0] "%s Bestellung"
-msgstr[1] "%s Bestellungen"
+msgstr[0] ""
+msgstr[1] ""
 
 #: includes/admin/class-mp-dashboard-widgets.php:280
 msgid "received"
@@ -1648,9 +1648,6 @@ msgid ""
 "%1$sPrice, Inventory & Variants%2$s %3$sSet price, manage inventory and "
 "create Product Variants (if appropriate for your product).%2$s"
 msgstr ""
-"%1$sPreis, Lagerbestand und Varianten%2$s %3$sPreis festlegen, Lagerbestand "
-"verwalten und Produktvarianten erstellen (falls für Ihr Produkt zutreffend)."
-"%2$s"
 
 #: includes/admin/class-mp-products-admin.php:1504
 msgid "SKU %1$s(Stock Keeping Unit)%2$s"
@@ -1713,7 +1710,7 @@ msgstr ""
 
 #: includes/admin/class-mp-products-admin.php:1795
 msgid "%3$sAdd variations for%2$s %1$sProduct%2$s"
-msgstr "%3$sVariationen hinzufügen für%2$s %1$sProdukt%2$s"
+msgstr ""
 
 #: includes/admin/class-mp-products-admin.php:1797
 msgid ""
@@ -1731,9 +1728,6 @@ msgid ""
 "list is the featured image for this product (you can reorder images on the "
 "list)%2$s"
 msgstr ""
-"%1$sProduktbilder%2$s %3$sFüge Bilder des Produkts hinzu. Das erste Bild in "
-"der Liste ist das vorgestellte Bild für dieses Produkt (Du kannst die Bilder "
-"in der Liste neu anordnen)%2$s"
 
 #: includes/admin/class-mp-products-admin.php:1922
 msgid "Product Details"
@@ -1974,7 +1968,7 @@ msgstr ""
 #: includes/admin/class-mp-setup-wizard.php:493
 #: includes/admin/store-settings/class-mp-store-settings-general.php:472
 msgid "%s Tax Rate"
-msgstr "%s Steuersatz"
+msgstr ""
 
 #: includes/admin/class-mp-setup-wizard.php:506
 #: includes/admin/store-settings/class-mp-store-settings-general.php:485
@@ -2916,7 +2910,7 @@ msgstr ""
 
 #: includes/admin/dash-notice/wpmudev-dash-notification.php:1131
 msgid "%s changelog"
-msgstr "%s Änderungsprotokoll"
+msgstr ""
 
 #: includes/admin/dash-notice/wpmudev-dash-notification.php:1161
 msgid "Current"
@@ -2945,7 +2939,7 @@ msgstr ""
 
 #: includes/admin/store-settings/class-mp-store-settings-capabilities.php:51
 msgid "%s Capabilities"
-msgstr "%s Berechtigungen"
+msgstr ""
 
 #: includes/admin/store-settings/class-mp-store-settings-general.php:224
 #: includes/common/payment-gateways/authorizenet-aim.php:272
@@ -4334,7 +4328,7 @@ msgstr ""
 #: includes/common/class-mp-product.php:1283
 #: includes/common/class-mp-product.php:1298
 msgid "%s each"
-msgstr "%s jeweils"
+msgstr ""
 
 #: includes/common/class-mp-product.php:1405
 #: includes/common/class-mp-product.php:1408
@@ -4764,7 +4758,7 @@ msgstr ""
 #: includes/common/shipping-modules/mp-usps.php:167
 #: includes/common/shipping-modules/mp-weight-rate.php:110
 msgid "%s Settings"
-msgstr "%s Einstellungen"
+msgstr ""
 
 #: includes/common/payment-gateways/2checkout.php:327
 msgid ""
@@ -4871,14 +4865,13 @@ msgstr ""
 #: includes/common/payment-gateways/_bitpay.php:175
 #: includes/common/payment-gateways/_bitpay.php:527
 msgid "%s - The payment request has been processed - %s"
-msgstr "%s - Die Zahlungsanforderung wurde bearbeitet - %s"
+msgstr ""
 
 #: includes/common/payment-gateways/_bitpay.php:177
 #: includes/common/payment-gateways/_bitpay.php:517
 #: includes/common/payment-gateways/_bitpay.php:522
 msgid "%s - The payment request is under process. Bitpay invoice status - %s"
 msgstr ""
-"%s - Die Zahlungsanforderung wird bearbeitet. Bitpay-Rechnungsstatus - %s"
 
 #: includes/common/payment-gateways/_bitpay.php:222
 msgid ""
@@ -4956,12 +4949,10 @@ msgid ""
 "%s - The payment not credited in merchants bitpay account, action required. "
 "Bitpay invoice status  - %s"
 msgstr ""
-"%s – Die Zahlung wurde dem Bitpay-Konto des Händlers nicht gutgeschrieben. "
-"Aktion erforderlich. Bitpay-Rechnungsstatus – %s"
 
 #: includes/common/payment-gateways/_bitpay.php:541
 msgid "%s - The payment request expired, - %s"
-msgstr "%s - Die Zahlungsaufforderung ist abgelaufen, - %s"
+msgstr ""
 
 #: includes/common/payment-gateways/_cubepoints.php:79
 #: includes/common/payment-gateways/_cubepoints.php:171
@@ -4970,7 +4961,7 @@ msgstr ""
 
 #: includes/common/payment-gateways/_cubepoints.php:124
 msgid "%s Store Purchase"
-msgstr "%s Store-Kauf"
+msgstr ""
 
 #: includes/common/payment-gateways/_cubepoints.php:133
 #: includes/common/payment-gateways/_cubepoints.php:197
@@ -5050,7 +5041,7 @@ msgstr ""
 #: includes/common/payment-gateways/paypal-express.php:320
 #: includes/common/payment-gateways/paypal-express.php:471
 msgid "%s Store Purchase - Order ID: %s"
-msgstr "%s Store-Kauf - Bestell-ID: %s"
+msgstr ""
 
 #: includes/common/payment-gateways/_ideal.php:247
 #: includes/common/payment-gateways/_payway.php:199
@@ -5900,7 +5891,7 @@ msgstr ""
 #: includes/common/payment-gateways/pin.php:238
 #: includes/common/payment-gateways/simplify.php:171
 msgid "%s Store Purchase - Order ID: %s, Email: %s"
-msgstr "%s Store-Kauf - Bestell-ID: %s, E-Mail: %s"
+msgstr ""
 
 #: includes/common/payment-gateways/paymill.php:270
 #: includes/common/payment-gateways/simplify.php:179
@@ -7410,7 +7401,7 @@ msgstr ""
 
 #: includes/common/payment-gateways/stripe.php:356
 msgid "%s Store Purchase - Order ID - %s, Email - %s"
-msgstr "%s Store-Kauf - Bestell-ID - %s, E-Mail - %s"
+msgstr ""
 
 #: includes/common/payment-gateways/stripe.php:385
 msgid "There was an error processing your card - \"%s\". Please try again."
@@ -8502,7 +8493,7 @@ msgstr ""
 
 #: includes/multisite/class-mp-admin-multisite.php:279
 msgid "%d products have been indexed in whole network"
-msgstr "%d Produkte wurden im gesamten Netzwerk indexiert"
+msgstr ""
 
 #: includes/multisite/class-mp-admin-multisite.php:280
 msgid "Index Products"
@@ -8518,7 +8509,7 @@ msgstr ""
 
 #: includes/multisite/class-mp-admin-multisite.php:336
 msgid "%d products get indexed"
-msgstr "%d Produkte werden indexiert"
+msgstr ""
 
 #: includes/multisite/class-mp-admin-multisite.php:350
 msgid "Global Gateway"

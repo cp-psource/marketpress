@@ -58,67 +58,67 @@ Encourage customers to share your products with their friends and family with Pi
 
 Enable or disable guest checkout and even sell to specific countries or anyone in the world.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/digital-downloads-1x.png)
+![image](./assets/icons/digital-downloads-1x.png)
 
 **Limit Digital Downloads**
 
 Choose how many times a customer can download a file they have purchased.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/one-page-checkout-1x.png)
+![image](./assets/icons/one-page-checkout-1x.png)
 
 **One-Page Checkout**
 
 Did you know the average customer is 69% likely to abandon their shopping cart? With our simple new one-page checkout process you won’t become another statistic.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/taxes-1x.png)
+![image](./assets/icons/taxes-1x.png)
 
 **Automatic Taxes**
 
 Simple tax settings make it easy to set rates, create exceptions, apply taxes to downloadable products, tax before or after the cost of shipping and tax based on location.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/ship-1x.png)
+![image](./assets/icons/ship-1x.png)
 
 **Ship Anywhere**
 
 Ship anywhere in the world with confidence. Use flat rate shipping or cater to specific distribution logistics using table or weight rates.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/hide-1x.png)
+![image](./assets/icons/hide-1x.png)
 
 **Hide Out of Stock Products**
 
 When a product isn’t available, automatically set a product to draft so it doesn’t display.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/product-display-1x.png)
+![image](./assets/icons/product-display-1x.png)
 
 **Products Display**
 
 Display your products as a list or grid, choose how many rows, show images (or don’t), and make the most of the built-in image lightbox.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/google-an-1x.png)
+![image](./assets/icons/google-an-1x.png)
 
 **Google Analytics**
 
 We’ve made sure your entire site or network are both Google Universal Analytics and Google Analytics eCommerce compatible.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/set-cur-1x.png)
+![image](./assets/icons/set-cur-1x.png)
 
 **Set Default Currency**
 
 Choose from 120 different currencies as your default currency. You can also allow customers to spend their points or credits with your store by default.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/related-product-1x.png)
+![image](./assets/icons/related-product-1x.png)
 
 **Show Related Products**
 
 Tempt customers to make more purchases by displaying related products. Choose how many to show, pick a list or grid, and select whether to relate products by categories or tags.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/shortcodes-1x.png)
+![image](./assets/icons/shortcodes-1x.png)
 
 **Shortcodes**
 
 A handy button in the post visual editor lets you quickly insert shortcodes into a product, page or post.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/inventory-1x.png)
+![image](./assets/icons/inventory-1x.png)
 
 **Inventory Warning**
 
@@ -126,7 +126,7 @@ When you’re running out of any of your products, MarketPress can let you know 
 
  
 
-![shipping-735x470](https://premium.wpmudev.org/wp-content/uploads/2010/06/shipping-735x470.jpg)
+![shipping-735x470](./assets/images/shipping-735x470.jpg)
 
  Get shipping right – tie directly into FedEx, UPS or USPS.
 
@@ -140,7 +140,7 @@ MarketPress offers an effortless and user-friendly solution for setting up an on
 
 Quick Setup gets your site ready to sell products and digital downloads in minutes. MarketPress walks you through setting up your store, step-by-step, so you don’t have to think about what’s going on behind the scenes (but if you do want to know what’s going on behind the scenes, you can still do that, too).
 
-![wizard2](https://premium.wpmudev.org/wp-content/uploads/2015/05/wizard2-583x373.jpg)
+![wizard2](./assets/images/wizard2-583x373.jpg)
 
  Get started selling fast with the Quick Setup guide.
 
@@ -152,11 +152,11 @@ Quick Setup gets your site ready to sell products and digital downloads in minut
 
  
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/mp-coupon-1x.png)
+![image](./assets/icons/mp-coupon-1x.png)
 
 _Coupons_ Attract new shoppers and increase sales with coupon based marketing campaigns.
 
-![image](https://premium.wpmudev.org/wp-content/uploads/2010/06/pdf-1x.png)
+![image](./assets/icons/pdf-1x.png)
 
 _PDF Invoicing_ Allow users to generate a good-looking invoice instead of – or in addition to – a standard invoice email.
 
