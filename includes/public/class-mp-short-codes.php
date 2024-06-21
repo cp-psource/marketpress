@@ -147,8 +147,8 @@ class MP_Short_Codes {
 		wp_enqueue_style( 'colorbox', mp_plugin_url( 'ui/css/colorbox.css' ), false, MP_VERSION );
 
 		// Scripts
-		wp_register_script( 'jquery-validate', mp_plugin_url( 'ui/js/jquery.validate.min.js' ), array( 'jquery' ), MP_VERSION, true );
-		wp_register_script( 'jquery-validate-methods', mp_plugin_url( 'ui/js/jquery.validate.methods.min.js' ), array( 'jquery-validate' ), MP_VERSION, true );
+		wp_register_script( 'jquery-validate', mp_plugin_url( 'ui/js/jquery.validate.js' ), array( 'jquery' ), MP_VERSION, true );
+		wp_register_script( 'jquery-validate-methods', mp_plugin_url( 'ui/js/jquery.validate.methods.js' ), array( 'jquery-validate' ), MP_VERSION, true );
 		wp_register_script( 'ajaxq', mp_plugin_url( 'ui/js/ajaxq.min.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_register_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_enqueue_script( 'mp-cart', mp_plugin_url( 'ui/js/mp-cart.js' ), array( 'ajaxq', 'colorbox', 'jquery-validate' ), MP_VERSION, true );
