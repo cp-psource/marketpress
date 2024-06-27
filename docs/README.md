@@ -4,6 +4,16 @@
 
 MarketPress offers the easiest way to sell anything online with tons of built-in core features and simple configuration. Whether you want to set up an individual storefront online or an entire eCommerce network for stores, MarketPress is the go-to solution for WordPress and Multisite SuperPowers. Guide customers through browsing your products to adding items to their cart, and then on to checkout and delivery. You can even provide updates on the status of customer orders. 
 
+<div style="display: flex; justify-content: space-around; background-color: #f3f3f3; padding: 10px; border-radius: 5px;">
+
+  <a href="#marketpress" style="text-decoration: none; color: #0366d6; font-weight: bold;">Home</a>
+  <a href="https://github.com/cp-psource/marketpress/releases" style="text-decoration: none; color: #0366d6; font-weight: bold;">Downloads</a>
+  <a href="https://github.com/cp-psource/marketpress/wiki" style="text-decoration: none; color: #0366d6; font-weight: bold;">Docs</a>
+  <a href="https://github.com/cp-psource/marketpress/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
+  <a href="https://github.com/cp-psource/marketpress/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
+  
+</div>
+
 ### Built With Your Feedback
 
 MarketPress 3.0 is our most ambitious plugin update to date. It brings together hundreds of hours of development time, along with member requests and feedback. MarketPress has never been easier, from customer acquisition to checkout, and it keeps getting better.
