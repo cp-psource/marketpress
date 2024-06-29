@@ -1,11 +1,11 @@
 <div style="display: flex; justify-content: space-around; background-color: #f3f3f3; padding: 10px; border-radius: 5px;">
-  <a href="https://cp-psource.github.io/ps-multisite-privacy/" style="text-decoration: none; color: #0366d6; font-weight: bold;">Home</a>
-  <a href="https://github.com/cp-psource/ps-multisite-privacy/releases" style="text-decoration: none; color: #0366d6; font-weight: bold;">Downloads</a>
-  <a href="https://github.com/cp-psource/ps-multisite-privacy/wiki" style="text-decoration: none; color: #0366d6; font-weight: bold;">Docs</a>
-  <a href="https://github.com/cp-psource/ps-multisite-privacy/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
-  <a href="https://github.com/cp-psource/ps-multisite-privacy/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
-  <a href="https://cp-psource.github.io/ps-multisite-privacy/psource.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">PSOURCE</a>
-  <a href="https://cp-psource.github.io/ps-multisite-privacy/psource-de.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">DEUTSCH</a> 
+  <a href="https://cp-psource.github.io/marketpress/" style="text-decoration: none; color: #0366d6; font-weight: bold;">Home</a>
+  <a href="https://github.com/cp-psource/marketpress/releases" style="text-decoration: none; color: #0366d6; font-weight: bold;">Downloads</a>
+  <a href="https://github.com/cp-psource/marketpress/wiki" style="text-decoration: none; color: #0366d6; font-weight: bold;">Docs</a>
+  <a href="https://github.com/cp-psource/marketpress/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
+  <a href="https://github.com/cp-psource/marketpress/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
+  <a href="https://cp-psource.github.io/marketpress/psource.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">PSOURCE</a>
+  <a href="https://cp-psource.github.io/marketpress/psource-de.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">DEUTSCH</a> 
 </div>
 
 ## PSOURCE is a collection of plugins and themes for ClassicPress that are free to use. There are no premium features, subscription costs or anything like that. Everything is completely free to use. The community is invited to contribute their favorites and develop them further together
@@ -36,13 +36,13 @@ Thank you for visiting PSOURCE. We hope that our plugins/themes are useful to yo
 | PS BeitragsAds | ![PS BeitragsAds](psource/ipa.png) | Define and place custom ads for post types and more, the easiest tool to advertise effectively. | [MORE...](https://cp-psource.github.io/ps-post-ads/) |
 
 <div style="display: flex; justify-content: space-around; background-color: #f3f3f3; padding: 10px; border-radius: 5px;">
-  <a href="https://cp-psource.github.io/ps-multisite-privacy/" style="text-decoration: none; color: #0366d6; font-weight: bold;">Home</a>
-  <a href="https://github.com/cp-psource/ps-multisite-privacy/releases" style="text-decoration: none; color: #0366d6; font-weight: bold;">Downloads</a>
-  <a href="https://github.com/cp-psource/ps-multisite-privacy/wiki" style="text-decoration: none; color: #0366d6; font-weight: bold;">Docs</a>
-  <a href="https://github.com/cp-psource/ps-multisite-privacy/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
-  <a href="https://github.com/cp-psource/ps-multisite-privacy/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
-  <a href="https://cp-psource.github.io/ps-multisite-privacy/psource.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">PSOURCE</a>
-  <a href="https://cp-psource.github.io/ps-multisite-privacy/psource-de.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">DEUTSCH</a> 
+  <a href="https://cp-psource.github.io/marketpress/" style="text-decoration: none; color: #0366d6; font-weight: bold;">Home</a>
+  <a href="https://github.com/cp-psource/marketpress/releases" style="text-decoration: none; color: #0366d6; font-weight: bold;">Downloads</a>
+  <a href="https://github.com/cp-psource/marketpress/wiki" style="text-decoration: none; color: #0366d6; font-weight: bold;">Docs</a>
+  <a href="https://github.com/cp-psource/marketpress/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
+  <a href="https://github.com/cp-psource/marketpress/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
+  <a href="https://cp-psource.github.io/marketpress/psource.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">PSOURCE</a>
+  <a href="https://cp-psource.github.io/marketpress/psource-de.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">DEUTSCH</a> 
 </div>
 
 <div>
