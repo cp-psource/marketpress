@@ -750,6 +750,15 @@ class Marketpress {
 			'has_settings' => false,
 		) );
 
+		// Statistics Addon.
+		mp_register_addon( array(
+			'label'        => __( 'MarketPress Statistics', 'mp' ),
+			'desc'         => __( 'Enable multiple downloads per product', 'mp' ),
+			'class'        => 'MP_Store_Statistics_Addon',
+			'path'         => mp_plugin_dir( 'includes/addons/marketpress-statistics/class-marketpress-statistics.php' ),
+			'has_settings' => false,
+		) );
+
 		/**
 		 * Fires after all internal addons have been registered
 		 *

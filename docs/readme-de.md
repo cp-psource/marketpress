@@ -7,7 +7,6 @@
   <a href="https://github.com/cp-psource/marketpress/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
   <a href="https://github.com/cp-psource/marketpress/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
   <a href="https://cp-psource.github.io/marketpress/psource.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">PSOURCE</a>
-  <a href="https://cp-psource.github.io/marketpress/readme-de.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">DEUTSCH</a> 
 </div>
 
 ## Sell everything from digital downloads to physical goods. MarketPress is the eCommerce plugin that does it all – no extensions required.
@@ -395,7 +394,6 @@ If you are using W3 Total Cache you'll want to add these to the "Rejected cookie
   <a href="https://github.com/cp-psource/marketpress/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
   <a href="https://github.com/cp-psource/marketpress/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
   <a href="https://cp-psource.github.io/marketpress/psource.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">PSOURCE</a>
-  <a href="https://cp-psource.github.io/marketpress/readme-de.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">DEUTSCH</a> 
 </div>
 
 <div>
