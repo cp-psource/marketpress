@@ -7,6 +7,9 @@
 
 class MP_Gateway_Paypal_Chained_Payments extends MP_Gateway_API {
 
+	public $returnURL;
+	public $cancelURL;
+
 	//build
 	var $build = 2;
 	//private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
