@@ -23,7 +23,7 @@ function mp_st_remove() {
 add_action('admin_menu', 'mp_st_admin_menu');
 
 function mp_st_admin_menu() {
-  add_dashboard_page( __('Verkaufsstatistik', 'mp_st'), __('Shopstatistik', 'mp_st'), 'administrator', 'mp_st', 'mp_st_page', 'dashicons-analytics' );
+  add_dashboard_page( __('Verkaufsstatistik', 'mp_st'), __('Shopstatistik', 'mp_st'), 'administrator', 'mp_st', 'mp_st_page' );
 }
 
 function mp_st_page() {
