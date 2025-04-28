@@ -193,7 +193,7 @@ class MP_PDF_Invoice_Addon {
 		$metabox = new PSOURCE_Metabox( array(
 			'id'          => 'mp-invoice-pdf-general-metabox',
 			'title'       => __( 'General Settings', 'mp' ),
-			'page_slugs'  => array( 'store-settings-addons' ),
+			'page_slugs'  => array( 'shop-einstellungen-addons' ),
 			'option_name' => 'mp_settings',
 		) );
 		$metabox->add_field( 'select', array(
@@ -224,7 +224,7 @@ class MP_PDF_Invoice_Addon {
 		$metabox   = new PSOURCE_Metabox( array(
 			'id'          => 'mp-invoice-pdf-template-metabox',
 			'title'       => __( 'Template Settings', 'mp' ),
-			'page_slugs'  => array( 'store-settings-addons' ),
+			'page_slugs'  => array( 'shop-einstellungen-addons' ),
 			'option_name' => 'mp_settings',
 		) );
 		$templates = $this->scan_templates();
