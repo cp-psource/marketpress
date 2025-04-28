@@ -14,41 +14,41 @@ require_once $root_dir . 'Item.php';
 require_once $root_dir . 'Order.php';
 
 class Mijireh_Exception extends Exception {
-
+	
 }
 
 class Mijireh_ClientError extends Mijireh_Exception {
-
+	
 }
 
 /* Status: 400-499 */
 
 class Mijireh_BadRequest extends Mijireh_ClientError {
-
+	
 }
 
 /* Status: 400 */
 
 class Mijireh_Unauthorized extends Mijireh_ClientError {
-
+	
 }
 
 /* Status: 401 */
 
 class Mijireh_NotFound extends Mijireh_ClientError {
-
+	
 }
 
 /* Status: 404 */
 
 class Mijireh_ServerError extends Mijireh_Exception {
-
+	
 }
 
 /* Status: 500-599 */
 
 class Mijireh_InternalError extends Mijireh_ServerError {
-
+	
 }
 
 /* Status: 500 */

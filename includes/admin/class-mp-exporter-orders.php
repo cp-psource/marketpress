@@ -1,5 +1,5 @@
 <?php
-
+	
 class MP_Exporter_Orders {
 	/**
 	 * Export orders
@@ -17,11 +17,11 @@ class MP_Exporter_Orders {
 		$query = "SELECT ID, post_title, post_date, post_status FROM {$wpdb->posts} WHERE post_type = 'mp_order'";
 		$order_status = mp_get_post_value( 'order_status' );
 		$order_date = mp_get_post_value( 'order_date' );
-
+		
 		if ( $order_status != 'all' ) {
 			$query .= $wpdb->prepare( ' AND post_status = %s', $order_status );
 		}
-
+		
 		//! TODO: finish order export
 
 		if ( isset($_POST['m']) && $_POST['m'] > 0 ) {
@@ -45,7 +45,7 @@ class MP_Exporter_Orders {
 
 		// Keep up to 12MB in memory, if becomes bigger write to temp file
 		$file = fopen('php://temp/maxmemory:'. (12*1024*1024), 'r+');
-		fputcsv( $file, array('order_id', 'status', 'received_date', 'paid_date', 'shipped_date', 'tax', 'shipping', 'total', 'coupon_discount', 'coupon_code', 'item_count', 'items', 'email', 'name', 'address1', 'address2', 'zipcode', 'city', 'state', 'country', 'phone', 'shipping_method', 'shipping_method_option', 'special_instructions', 'gateway', 'gateway_method', 'payment_currency', 'transaction_id' ) );
+		fputcsv( $file, array('order_id', 'status', 'received_date', 'paid_date', 'shipped_date', 'tax', 'shipping', 'total', 'coupon_discount', 'coupon_code', 'item_count', 'items', 'email', 'name', 'address1', 'address2', 'city', 'state', 'zipcode', 'country', 'phone', 'shipping_method', 'shipping_method_option', 'special_instructions', 'gateway', 'gateway_method', 'payment_currency', 'transaction_id' ) );
 
 		//loop through orders and add rows
 		foreach ($orders as $order) {
@@ -73,12 +73,12 @@ class MP_Exporter_Orders {
 					foreach ($variations as $variation => $data) {
 						if (!empty($fields['items']))
 							$fields['items'] .= "\r\n";
-
+							
 						if (!empty($data['SKU']))
 							$fields['items'] .= '[' . $data['SKU'] . '] ';
 
 						$price = mp()->coupon_value_product($fields['coupon_code'], $data['price'] * $data['quantity'], $product_id);
-
+						
 						$fields['items'] .= $data['name'] . ': ' . number_format_i18n($data['quantity']) . ' * ' . mp_number_format($price / $data['quantity'], 2) . ' ' . $order->mp_payment_info['currency'];
 					}
 				}
@@ -90,9 +90,9 @@ class MP_Exporter_Orders {
 			$fields['name'] = @$order->mp_shipping_info['name'];
 			$fields['address1'] = @$order->mp_shipping_info['address1'];
 			$fields['address2'] = @$order->mp_shipping_info['address2'];
-			$fields['zipcode'] = @$order->mp_shipping_info['zip'];
 			$fields['city'] = @$order->mp_shipping_info['city'];
 			$fields['state'] = @$order->mp_shipping_info['state'];
+			$fields['zipcode'] = @$order->mp_shipping_info['zip'];
 			$fields['country'] = @$order->mp_shipping_info['country'];
 			$fields['phone'] = @$order->mp_shipping_info['phone'];
 			$fields['shipping_method'] = @$order->mp_shipping_info['shipping_option'];
@@ -125,9 +125,9 @@ class MP_Exporter_Orders {
 		$output = "\xEF\xBB\xBF" . $output; // UTF-8 BOM
 		header('Content-Length: ' . strlen($output));
 		fclose($file);
-		die($output);
+		die($output);		
 	}
-
+	
 	/**
 	 * Display the export order form
 	 *
@@ -137,14 +137,14 @@ class MP_Exporter_Orders {
 	 */
 	public static function export_form() {
 		global $wpdb, $wp_locale;
-
+		
 		$months = $wpdb->get_results("
 			SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month
 			FROM $wpdb->posts
 			WHERE post_type = 'mp_order'
 			ORDER BY post_date DESC
 		");
-
+		
 		$statuses = get_post_stati( array( 'post_type' => 'mp_order' ), 'objects' );
 		?>
 <h2><?php _e( 'Export Orders', 'mp' ); ?></h2>

@@ -52,7 +52,7 @@ $this->defaults = array(
 );
 
 /*
-  MarketPress Data Structures
+  PSeCommerce Data Structures
  */
 $this->default_settings = array(
 	'base_country'				 => 'AT',
@@ -103,7 +103,7 @@ $this->default_settings = array(
 		'cart'			 => 'Warenkorb',
 		'orderstatus'	 => 'Bestellstatus',
 		'category'		 => 'Shopkategorie',
-		'tag'			 => 'Eigenschaft',
+		'tag'			 => 'Eigenschaft'
 	),
 	'product_button_type'		 => 'addcart',
 	'show_quantity'				 => 1,

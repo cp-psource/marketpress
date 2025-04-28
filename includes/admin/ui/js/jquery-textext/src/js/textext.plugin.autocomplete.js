@@ -451,19 +451,22 @@
 	 * @signature TextExtAutocomplete.onAnyKeyUp(e)
 	 *
 	 * @param e {Object} jQuery event.
+	 * @param keyCode {Number} Key code of the pressed key.
 	 *
 	 * @author agorbatchev
 	 * @date 2011/08/17
 	 * @id TextExtAutocomplete.onAnyKeyUp
 	 */
-	p.on('keyup', function(e, keyCode) {
-		var self          = this,
-			isFunctionKey = self.opts('keys.' + keyCode) != null
-			;
+	p.onAnyKeyUp = function(e, keyCode) {
+		var self = this;
 
-		if(self.val().length > 0 && !isFunctionKey)
+		// Access options using `this.opts()`
+		var isFunctionKey = this.opts('keys')[keyCode] != null;
+
+		if (self.val().length > 0 && !isFunctionKey) {
 			self.getSuggestions();
-	});
+		}
+	};
 
 	/**
 	 * Reacts to the `downKeyDown` event triggered by the TextExt core.
@@ -755,7 +758,8 @@
 	 * @date 2011/08/17
 	 * @id TextExtAutocomplete.onShowDropdown
 	 */
-	p.onShowDropdown = function(e, renderCallback){
+	p.onShowDropdown = function(e, renderCallback)
+	{
 		var self        = this,
 			current     = self.selectedSuggestionElement().data(CSS_SUGGESTION),
 			suggestions = self._suggestions
@@ -764,10 +768,12 @@
 		if(!suggestions)
 			return self.trigger(EVENT_GET_SUGGESTIONS);
 
-			if (typeof renderCallback === "function") {
-			renderCallback(self);
+		if (typeof renderCallback === 'function') {
+			renderCallback(self); // Aufruf der Funktion, falls sie eine Funktion ist
 		}
-		else{
+		
+		else
+		{
 			self.renderSuggestions(self._suggestions);
 			self.toggleNextSuggestion();
 		}
@@ -1101,6 +1107,6 @@
 	 */
 	p.withinWrapElement = function(element) 
 	{
-		return this.core().wrapElement().find(element).length > 0;
+		return this.core().wrapElement().find(element).size() > 0;
 	}
 })(jQuery);

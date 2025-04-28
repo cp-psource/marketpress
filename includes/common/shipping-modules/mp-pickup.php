@@ -64,7 +64,7 @@ class MP_Shipping_Pickup extends MP_Shipping_API {
 	}
 
 	/**
-	 * Filter the new order email
+	 * Filter the new order email 
 	 */
 	function add_instructions_to_order_email( $text, $order ) {
 		global $mp;
@@ -129,12 +129,12 @@ class MP_Shipping_Pickup extends MP_Shipping_API {
 	 */
 	public function init_settings_metabox() {
 		global $mp;
-
-		$metabox = new PSOURCE_Metabox( array(
+		
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'			 => $this->generate_metabox_id(),
 			'page_slugs'	 => array(
-				'shop-einstellungen-shipping',
-				'shop-einstellungen_page_shop-einstellungen-shipping',
+				'store-settings-shipping',
+				'store-settings_page_store-settings-shipping',
 				'store-setup-wizard'
 			),
 			'title'			 => sprintf( __( '%s Settings', 'mp' ), $this->public_name ),
@@ -153,7 +153,7 @@ class MP_Shipping_Pickup extends MP_Shipping_API {
 				),
 			),
 		) );
-
+		
 		$metabox->add_field( 'text', array(
 			'name'			 => $this->get_field_name( 'processing-fee' ),
 			'label'			 => array( 'text' => __( 'Pickup Fee', 'mp' ) . ' (' . mp_format_currency() . ')' ),
@@ -192,7 +192,7 @@ class MP_Shipping_Pickup extends MP_Shipping_API {
 	 * @param array $settings, access saved settings via $settings array.
 	 */
 	function shipping_metabox( $shipping_meta, $settings ) {
-
+		
 	}
 
 	/**
@@ -241,7 +241,7 @@ class MP_Shipping_Pickup extends MP_Shipping_API {
 	 * @param string $zip, postal code
 	 * @param string $country, ISO 3166-1 alpha-2 country code
 	 *
-	 * return array $shipping_options
+	 * return array $shipping_options 
 	 */
 	function shipping_options( $cart, $address1, $address2, $city, $state, $zip, $country ) {
 		$shipping_options = array( 'in-store' => $this->get_setting( "pickup-title", __( 'In Store', 'mp' ) ) );

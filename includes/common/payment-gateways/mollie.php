@@ -7,6 +7,8 @@
 
 class MP_Gateway_Mollie extends MP_Gateway_API {
 
+	public $API_Key;
+
 	//the current build version
 	var $build					 = 2;
 	//private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
@@ -26,7 +28,7 @@ class MP_Gateway_Mollie extends MP_Gateway_API {
 	//whether if this is the only enabled gateway it can skip the payment_form step
 	var $skip_form				 = true;
 	//credit card vars
-	var $API_Username, $API_Password, $SandboxFlag, $returnURL, $cancelURL, $API_Endpoint, $version, $currencyCode, $locale, $API_Key;
+	var $API_Username, $API_Password, $SandboxFlag, $returnURL, $cancelURL, $API_Endpoint, $version, $currencyCode, $locale;
 	//if the gateway uses the order confirmation step during checkout (e.g. PayPal)
 	var $use_confirmation_step	 = true;
 
@@ -65,9 +67,9 @@ class MP_Gateway_Mollie extends MP_Gateway_API {
 	 * @access public
 	 */
 	function init_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'			 => $this->generate_metabox_id(),
-			'page_slugs'	 => array( 'shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments' ),
+			'page_slugs'	 => array( 'store-settings-payments', 'store-settings_page_store-settings-payments' ),
 			'title'			 => sprintf( __( '%s Settings', 'mp' ), $this->admin_name ),
 			'option_name'	 => 'mp_settings',
 			'desc'			 => sprintf( __( '%sMollie%s provides a fully PCI Compliant and secure way to collect payments via iDeal, Credit Card, Bancontact / Mister Cash, SOFORT Banking, Overbooking, Bitcoin, PayPal, paysafecard and AcceptEmail.', 'mp' ), '<a href="https://www.mollie.com/">', '</a>' ),

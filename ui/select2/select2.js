@@ -320,7 +320,7 @@ the specific language governing permissions and limitations under the Apache Lic
     function syncCssClasses(dest, src, adapter) {
         var classes, replacements = [], adapted;
 
-        classes = $.trim(dest.attr("class"));
+        classes = dest.attr("class").trim();
 
         if (classes) {
             classes = '' + classes; // for IE which returns object
@@ -332,7 +332,7 @@ the specific language governing permissions and limitations under the Apache Lic
             });
         }
 
-        classes = $.trim(src.attr("class"));
+        classes = src.attr("class").trim();
 
         if (classes) {
             classes = '' + classes; // for IE which returns object
@@ -428,12 +428,12 @@ the specific language governing permissions and limitations under the Apache Lic
                 if (handler && typeof handler.abort === "function") { handler.abort(); }
 
                 if (options.params) {
-                    if ($.isFunction(options.params)) {
-                        $.extend(params, options.params.call(self));
+                    if (typeof options.params === 'function') {
+                        $.extend(params, options.params.call(self)); // Aufruf der Funktion, falls sie eine Funktion ist
                     } else {
                         $.extend(params, options.params);
                     }
-                }
+                }                
 
                 $.extend(params, {
                     url: url,
@@ -471,12 +471,12 @@ the specific language governing permissions and limitations under the Apache Lic
             tmp,
             text = function (item) { return ""+item.text; }; // function used to retrieve the text portion of a data item that is matched against the search
 
-         if ($.isArray(data)) {
+         if (Array.isArray(data)) {
             tmp = data;
             data = { results: tmp };
         }
 
-         if ($.isFunction(data) === false) {
+         if (typeof data !== 'function') {
             tmp = data;
             data = function() { return tmp; };
         }
@@ -529,7 +529,7 @@ the specific language governing permissions and limitations under the Apache Lic
         return function (query) {
             var t = query.term, filtered = {results: []};
             var result = isFunc ? data(query) : data;
-            if ($.isArray(result)) {
+            if (Array.isArray(result)) {
                 $(result).each(function () {
                     var isObject = this.text !== undefined,
                         text = isObject ? this.text : this;
@@ -551,7 +551,7 @@ the specific language governing permissions and limitations under the Apache Lic
      * @param formatter
      */
     function checkFormatter(formatter, formatterName) {
-        if ($.isFunction(formatter)) return true;
+        if (typeof formatter === 'function') return true;
         if (!formatter) return false;
         if (typeof(formatter) === 'string') return true;
         throw new Error(formatterName +" must be a string, function, or falsy value");
@@ -566,7 +566,7 @@ the specific language governing permissions and limitations under the Apache Lic
    * @returns {*}
    */
     function evaluate(val, context) {
-        if ($.isFunction(val)) {
+        if (typeof val === 'function') {
             var args = Array.prototype.slice.call(arguments, 2);
             return val.apply(context, args);
         }
@@ -803,7 +803,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.nextSearchTerm = undefined;
 
-            if ($.isFunction(this.opts.initSelection)) {
+            if (typeof this.opts.initSelection === 'function') {
                 // initialize selection based on the current value of the source element
                 this.initSelection();
 
@@ -985,7 +985,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 opts.id = function (e) { return e[idKey]; };
             }
 
-            if ($.isArray(opts.element.data("select2Tags"))) {
+            if (Array.isArray(opts.element.data("select2Tags"))) {
                 if ("tags" in opts) {
                     throw "tags specified as both an attribute 'data-select2-tags' and in options of Select2 " + opts.element.attr("id");
                 }
@@ -1705,7 +1705,7 @@ the specific language governing permissions and limitations under the Apache Lic
             var maxSelSize = this.getMaximumSelectionSize();
             if (maxSelSize >=1) {
                 data = this.data();
-                if ($.isArray(data) && data.length >= maxSelSize && checkFormatter(opts.formatSelectionTooBig, "formatSelectionTooBig")) {
+                if (Array.isArray(data) && data.length >= maxSelSize && checkFormatter(opts.formatSelectionTooBig, "formatSelectionTooBig")) {
                     render("<li class='select2-selection-limit'>" + evaluate(opts.formatSelectionTooBig, opts.element, maxSelSize) + "</li>");
                     return;
                 }
@@ -1862,7 +1862,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     //Determine the placeholder option based on the specified placeholderOption setting
                     return (this.opts.placeholderOption === "first" && firstOption) ||
                            (typeof this.opts.placeholderOption === "function" && this.opts.placeholderOption(this.select));
-                } else if ($.trim(firstOption.text()) === "" && firstOption.val() === "") {
+                } if (firstOption.text().trim() === "" && firstOption.val() === "") {
                     //No explicit placeholder option specified, use the first if it's blank
                     return firstOption;
                 }
@@ -1908,7 +1908,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     }
 
                     return null;
-                } else if ($.isFunction(this.opts.width)) {
+                } else if (typeof this.opts.width === 'function') {
                     return this.opts.width();
                 } else {
                     return this.opts.width;

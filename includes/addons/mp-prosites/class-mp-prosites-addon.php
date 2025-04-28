@@ -117,7 +117,7 @@ class MP_Prosites_Addon {
 		}
 
 		$opts['supporter'] = array(
-			'group_name' => __( 'Bloghosting Level', 'mp' ),
+			'group_name' => __( 'Pro Site Level', 'mp' ),
 			'options'    => $options_levels,
 		);
 
@@ -126,7 +126,7 @@ class MP_Prosites_Addon {
 
 	public function disable_active_deactive_ability( $status, $addon ) {
 		if ( $addon->class == 'MP_Prosites_Addon' ) {
-			$status = __( "Aktiviert", "mp" );
+			$status = __( "Enabled", "mp" );
 		}
 
 		return $status;

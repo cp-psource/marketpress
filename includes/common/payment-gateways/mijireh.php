@@ -7,6 +7,8 @@
 
 class MP_Gateway_Mijireh extends MP_Gateway_API {
 
+	public $access_key;
+
 	//the current build version
 	var $build					 = 2;
 	//private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
@@ -27,9 +29,6 @@ class MP_Gateway_Mijireh extends MP_Gateway_API {
 	var $skip_form				 = true;
 	//credit card vars
 	var $API_Username, $API_Password, $SandboxFlag, $returnURL, $cancelURL, $API_Endpoint, $version, $currencyCode, $locale;
-
-	// access key for Mijireh
-	var $access_key;
 	//if the gateway uses the order confirmation step during checkout (e.g. PayPal)
 	var $use_confirmation_step	 = true;
 	var $currencies				 = array();
@@ -284,9 +283,9 @@ class MP_Gateway_Mijireh extends MP_Gateway_API {
 	 * @access public
 	 */
 	function init_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'			 => $this->generate_metabox_id(),
-			'page_slugs'	 => array( 'shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments' ),
+			'page_slugs'	 => array( 'store-settings-payments', 'store-settings_page_store-settings-payments' ),
 			'title'			 => sprintf( __( '%s Settings', 'mp' ), $this->admin_name ),
 			'option_name'	 => 'mp_settings',
 			'desc'			 => __( 'Mijireh Checkout provides a fully PCI Compliant, secure way to collect and transmit credit card data to your payment gateway while keeping you in control of the design of your site.', 'mp' ),
@@ -303,7 +302,7 @@ class MP_Gateway_Mijireh extends MP_Gateway_API {
 			'desc'	 => __( 'You must login to the Mijireh.com dashboard to obtain the Access Key.', 'mp' ),
 		) );
 
-		if ( $creds instanceof PSOURCE_Field ) {
+		if ( $creds instanceof WPMUDEV_Field ) {
 			$creds->add_field( 'text', array(
 				'name'		 => 'access_key',
 				'label'		 => array( 'text' => __( 'Access Key', 'mp' ) ),
@@ -318,7 +317,7 @@ class MP_Gateway_Mijireh extends MP_Gateway_API {
 	 * INS and payment return
 	 */
 	function process_ipn_return() {
-
+		
 	}
 
 }

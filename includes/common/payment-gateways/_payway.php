@@ -249,9 +249,9 @@ class MP_Gateway_PayWay extends MP_Gateway_API {
    * @access public
    */
   public function init_settings_metabox() {
-  	$metabox = new PSOURCE_Metabox(array(
+  	$metabox = new WPMUDEV_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
+			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('Record payments manually, such as by Cash, Check, or EFT.', 'mp'),

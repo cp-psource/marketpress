@@ -2,11 +2,10 @@
 
 class MP_Shipping_FedEx extends MP_Shipping_API_Calculated {
 
-	public $settings;
-
-	public $intl_services;
-
 	public $services;
+	public $intl_services;
+	public $settings;
+	
 	//build of the plugin
 	public $build = 2;
 
@@ -158,9 +157,9 @@ class MP_Shipping_FedEx extends MP_Shipping_API_Calculated {
 				$checked = true; //default to checked
 				$_SESSION['mp_shipping_info']['residential'] = true;
 			}
-
+			
 			$this->residential = $checked;
-
+			
 			$content .= '<tr>
 			<td>' . __('Residential Delivery', 'mp') . '</td>
 			<td>
@@ -239,11 +238,11 @@ class MP_Shipping_FedEx extends MP_Shipping_API_Calculated {
 	 * @access public
 	 */
 	public function init_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'          => $this->generate_metabox_id(),
 			'page_slugs'  => array(
-				'shop-einstellungen-shipping',
-				'shop-einstellungen_page_shop-einstellungen-shipping',
+				'store-settings-shipping',
+				'store-settings_page_store-settings-shipping',
 				'store-setup-wizard'
 			),
 			'title'       => sprintf( __( '%s Settings', 'mp' ), $this->public_name ),
@@ -395,7 +394,7 @@ class MP_Shipping_FedEx extends MP_Shipping_API_Calculated {
 			'default_value' => $boxes,
 		) );
 
-		if ( $repeater instanceof PSOURCE_Field ) {
+		if ( $repeater instanceof WPMUDEV_Field ) {
 			$repeater->add_sub_field( 'text', array(
 				'name'       => 'name',
 				'label'      => array( 'text' => __( 'Name', 'mp' ) ),
@@ -552,7 +551,9 @@ class MP_Shipping_FedEx extends MP_Shipping_API_Calculated {
 		$services         = ( $international ) ? $this->intl_services : $this->services;
 
 		//Filter out all options that aren't enabled in settings
-		$shipping_options = array_filter( $shipping_options, create_function( '$val', 'return ($val == 1);' ) );
+		$shipping_options = array_filter($shipping_options, function($val) {
+			return ($val == 1);
+		});		
 
 		//Filter out all options that aren't in the $services array
 		foreach ( $services as $code => $service ) {
@@ -616,7 +617,7 @@ class MP_Shipping_FedEx extends MP_Shipping_API_Calculated {
 						<v13:MeterNumber>' . $this->get_setting( 'meter' ) . '</v13:MeterNumber>
 					</v13:ClientDetail>
 					<v13:TransactionDetail>
-						<v13:CustomerTransactionId>MarketPress Rates Request</v13:CustomerTransactionId>
+						<v13:CustomerTransactionId>Marketpress Rates Request</v13:CustomerTransactionId>
 					</v13:TransactionDetail>
 					<v13:Version>
 						<v13:ServiceId>crs</v13:ServiceId>

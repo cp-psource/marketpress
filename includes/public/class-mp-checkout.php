@@ -4,7 +4,7 @@ class MP_Checkout {
 
 	/**
 	 * Refers to a single instance of the class
-	 *12.3.20 alles fine DN
+	 *
 	 * @since 3.0
 	 * @access private
 	 * @var object
@@ -77,10 +77,10 @@ class MP_Checkout {
 		$cart				 = mp_cart();
 		$is_download_only	 = $cart->is_download_only();
 		$this->_sections	 = apply_filters( 'mp_checkout/sections_array', array(
-			'login-register'			 => __( 'Anmelden/Registrieren', 'mp' ),
-			'billing-shipping-address'	 => ( !mp()->download_only_cart( mp_cart() ) ) ? __( 'Rechnungs-/Lieferadresse', 'mp' ) : __( 'Rechnungsinformationen', 'mp' ),
-			'shipping'					 => __( 'Versandart', 'mp' ),
-			'order-review-payment'		 => __( 'Bestellung/Zahlung überprüfen', 'mp' ),
+			'login-register'			 => __( 'Login/Register', 'mp' ),
+			'billing-shipping-address'	 => ( !mp()->download_only_cart( mp_cart() ) ) ? __( 'Billing/Shipping Address', 'mp' ) : __( 'Billing Information', 'mp' ),
+			'shipping'					 => __( 'Shipping Method', 'mp' ),
+			'order-review-payment'		 => __( 'Review Order/Payment', 'mp' ),
 		) );
 
 		if ( !$this->_need_shipping_step() ) {
@@ -89,7 +89,6 @@ class MP_Checkout {
 
 		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ) );
 		add_filter( 'mp_cart/after_cart_html', array( &$this, 'payment_form' ), 10, 3 );
-		add_filter( 'mp_checkout/address_fields_array', array( &$this, 'contact_details_collection' ), 1, 2 );
 
 		// Update checkout data
 		add_action( 'wp_ajax_mp_update_checkout_data', array( &$this, 'ajax_update_checkout_data' ) );
@@ -144,6 +143,7 @@ class MP_Checkout {
 	 * @access protected
 	 */
 	protected function _update_shipping_section() {
+
 		$data = (array) mp_get_post_value( 'billing', array() );
 
 		// Force state to empty if not set by user to ensure that old state value will be deleted
@@ -164,20 +164,20 @@ class MP_Checkout {
 			mp_update_session_value( 'mp_shipping_info', mp_get_session_value( 'mp_billing_info' ) );
 		}
 
-	    //Save shipping info needs even if shipping info disabled for saving other fields (ex. 'special_instructions')
-	    $data = (array) mp_get_post_value( 'shipping', array() );
+                //Save shipping info needs even if shipping info disabled for saving other fields (ex. 'special_instructions')
+                $data = (array) mp_get_post_value( 'shipping', array() );
 
-	    if ( $data ) {
-	        // Force state to empty if not set by user to ensure that old state value will be deleted
-	        if( $enable_shipping_address && !isset( $data['state'] ) ) {
-                $data['state'] = '';
-	        }
+                if ( $data ) {
+                    // Force state to empty if not set by user to ensure that old state value will be deleted
+                    if( $enable_shipping_address && !isset( $data['state'] ) ) {
+                            $data['state'] = '';
+                    }
 
-	        foreach ( $data as $key => $value ) {
-                $value = trim( $value );
-                mp_update_session_value( "mp_shipping_info->{$key}", $value );
-	        }
-	    }
+                    foreach ( $data as $key => $value ) {
+                            $value = trim( $value );
+                            mp_update_session_value( "mp_shipping_info->{$key}", $value );
+                    }
+                }
 	}
 
 	/**
@@ -219,40 +219,15 @@ class MP_Checkout {
 	}
 
 	/**
-	 * Get address name fields
+	 * Display address fields
 	 *
-	 * @since 3.2.7
+	 * @since 3.0
 	 * @access public
 	 * @param string $type Either billing or shipping.
-	 * @return array
+	 * @param bool $value_only Optional, whether the fields should display their values only. Defaults to false.
+	 * @return string
 	 */
-	public function get_address_name_fields( $type ) {
-		$address_fields = $this->get_address_fields( $type );
-		$address_name_fields = array();
-		foreach ( $address_fields as $field ) {
-			if ( $field['type'] == 'complex' && !empty( $field['subfields'] ) && is_array( $field['subfields'] ) ) {
-				foreach ( $field['subfields'] as $sfield ) {
-					if ( !empty( $sfield['name'] ) ) {
-						$address_name_fields[] = $sfield['name'];
-					}
-				}
-			} elseif ( !empty( $field['name'] ) ) {
-				$address_name_fields[] = $field['name'];
-			}
-		}
-
-		return array_unique( $address_name_fields );
-	}
-
-	/**
-	 * Get address fields
-	 *
-	 * @since 3.2.7
-	 * @access public
-	 * @param string $type Either billing or shipping.
-	 * @return array
-	 */
-	public function get_address_fields( $type ) {
+	public function address_fields( $type, $value_only = false ) {
 		$country = mp_get_user_address_part( 'country', $type );
 
 		// Country list
@@ -281,7 +256,7 @@ class MP_Checkout {
 		$states				 = mp_get_states( $country );
 		$state_zip_fields[]	 = array(
 			'type'		 => 'select',
-			'label'		 => __( 'Bundesland/Bezirk', 'mp' ),
+			'label'		 => __( 'State/Province', 'mp' ),
 			'name'		 => $this->field_name( 'state', $type ),
 			'options'	 => $states,
 			'hidden'	 => ( empty( $states ) ),
@@ -296,7 +271,7 @@ class MP_Checkout {
 
 		$state_zip_fields[] = array(
 			'type'		 => 'text',
-			'label'		 => 'Postleitzahl',
+			'label'		 => mp_get_setting( 'zip_label' ),
 			'name'		 => $this->field_name( 'zip', $type ),
 			'value'		 => mp_get_user_address_part( 'zip', $type ),
 			'hidden'	 => array_key_exists( $country, mp()->countries_no_postcode ),
@@ -308,123 +283,183 @@ class MP_Checkout {
 			),
 		);
 
-		$address_fields = array(
-			array(
-				'type'		 => 'complex',
-				'label'		 => __( 'Name', 'mp' ),
-				'validation' => array(
-					'required' => true,
-				),
-				'subfields'	 => array(
-					array(
-						'type'	 => 'text',
-						'label'	 => __( 'Vorname', 'mp' ),
-						'name'	 => $this->field_name( 'first_name', $type ),
-						'value'	 => mp_get_user_address_part( 'first_name', $type ),
-						'atts'	 => array(
-							'class' => 'mp_form_input',
+		if ( mp()->download_only_cart( mp_cart() ) && mp_get_setting( 'details_collection' ) == "contact" ) {
+			$address_fields = array(
+				array(
+					'type'		 => 'complex',
+					'label'		 => __( 'Name', 'mp' ),
+					'validation' => array(
+						'required' => true,
+					),
+					'subfields'	 => array(
+						array(
+							'type'	 => 'text',
+							'label'	 => __( 'First', 'mp' ),
+							'name'	 => $this->field_name( 'first_name', $type ),
+							'value'	 => mp_get_user_address_part( 'first_name', $type ),
+							'atts'	 => array(
+								'class' => 'mp_form_input',
+							),
+						),
+						array(
+							'type'	 => 'text',
+							'label'	 => __( 'Last', 'mp' ),
+							'name'	 => $this->field_name( 'last_name', $type ),
+							'value'	 => mp_get_user_address_part( 'last_name', $type ),
+							'atts'	 => array(
+								'class' => 'mp_form_input',
+							),
 						),
 					),
-					array(
-						'type'	 => 'text',
-						'label'	 => __( 'Familienname', 'mp' ),
-						'name'	 => $this->field_name( 'last_name', $type ),
-						'value'	 => mp_get_user_address_part( 'last_name', $type ),
-						'atts'	 => array(
-							'class' => 'mp_form_input',
+				),
+				array(
+					'type'		 => 'text',
+					'label'		 => __( 'Email Address', 'mp' ),
+					'name'		 => $this->field_name( 'email', $type ),
+					'value'		 => mp_get_user_address_part( 'email', $type ),
+					'validation' => array(
+						'required'	 => true,
+						'email'		 => true,
+					),
+					'atts'		 => array(
+						'class' => 'mp_form_input',
+					),
+				),
+				array(
+					'type'	 => 'text',
+					'label'	 => __( 'Company', 'mp' ),
+					'name'	 => $this->field_name( 'company_name', $type ),
+					'value'	 => mp_get_user_address_part( 'company_name', $type ),
+					'atts'	 => array(
+						'class' => 'mp_form_input',
+					),
+				),
+				array(
+					'type'	 => 'text',
+					'label'	 => __( 'Phone', 'mp' ),
+					'name'	 => $this->field_name( 'phone', $type ),
+					'value'	 => mp_get_user_address_part( 'phone', $type ),
+					'atts'	 => array(
+						'class' => 'mp_form_input',
+					),
+				),
+			);
+		} else {
+			$address_fields = array(
+				array(
+					'type'		 => 'complex',
+					'label'		 => __( 'Name', 'mp' ),
+					'validation' => array(
+						'required' => true,
+					),
+					'subfields'	 => array(
+						array(
+							'type'	 => 'text',
+							'label'	 => __( 'First', 'mp' ),
+							'name'	 => $this->field_name( 'first_name', $type ),
+							'value'	 => mp_get_user_address_part( 'first_name', $type ),
+							'atts'	 => array(
+								'class' => 'mp_form_input',
+							),
+						),
+						array(
+							'type'	 => 'text',
+							'label'	 => __( 'Last', 'mp' ),
+							'name'	 => $this->field_name( 'last_name', $type ),
+							'value'	 => mp_get_user_address_part( 'last_name', $type ),
+							'atts'	 => array(
+								'class' => 'mp_form_input',
+							),
 						),
 					),
 				),
-			),
-			array(
-				'type'		 => 'text',
-				'label'		 => __( 'Email Addresse', 'mp' ),
-				'name'		 => $this->field_name( 'email', $type ),
-				'value'		 => mp_get_user_address_part( 'email', $type ),
-				'validation' => array(
-					'required'	 => true,
-					'email'		 => true,
+				array(
+					'type'		 => 'text',
+					'label'		 => __( 'Email Address', 'mp' ),
+					'name'		 => $this->field_name( 'email', $type ),
+					'value'		 => mp_get_user_address_part( 'email', $type ),
+					'validation' => array(
+						'required'	 => true,
+						'email'		 => true,
+					),
+					'atts'		 => array(
+						'class' => 'mp_form_input',
+					),
 				),
-				'atts'		 => array(
-					'class' => 'mp_form_input',
+				array(
+					'type'	 => 'text',
+					'label'	 => __( 'Company', 'mp' ),
+					'name'	 => $this->field_name( 'company_name', $type ),
+					'value'	 => mp_get_user_address_part( 'company_name', $type ),
+					'atts'	 => array(
+						'class' => 'mp_form_input',
+					),
 				),
-			),
-			array(
-				'type'	 => 'text',
-				'label'	 => __( 'Unternehmen (optional)', 'mp' ),
-				'name'	 => $this->field_name( 'company_name', $type ),
-				'value'	 => mp_get_user_address_part( 'company_name', $type ),
-				'atts'	 => array(
-					'class' => 'mp_form_input',
+				array(
+					'type'		 => 'text',
+					'label'		 => __( 'Address Line 1', 'mp' ),
+					'name'		 => $this->field_name( 'address1', $type ),
+					'value'		 => mp_get_user_address_part( 'address1', $type ),
+					'atts'		 => array(
+						'placeholder'	 => __( 'Street address, P.O. box, company name, c/o', 'mp' ),
+						'class'			 => 'mp_form_input',
+					),
+					'validation' => array(
+						'required' => true,
+					),
 				),
-			),
-			array(
-				'type'		 => 'text',
-				'label'		 => __( 'Straße/Hausnummer', 'mp' ),
-				'name'		 => $this->field_name( 'address1', $type ),
-				'value'		 => mp_get_user_address_part( 'address1', $type ),
-				'atts'		 => array(
-					'placeholder'	 => __( 'Musterstraße 69', 'mp' ),
-					'class'			 => 'mp_form_input',
+				array(
+					'type'	 => 'text',
+					'label'	 => __( 'Address Line 2', 'mp' ),
+					'name'	 => $this->field_name( 'address2', $type ),
+					'value'	 => mp_get_user_address_part( 'address2', $type ),
+					'atts'	 => array(
+						'placeholder'	 => __( 'Apartment, suite, unit, building, floor, etc', 'mp' ),
+						'class'			 => 'mp_form_input',
+					),
 				),
-				'validation' => array(
-					'required' => true,
+				array(
+					'type'		 => 'text',
+					'label'		 => __( 'Town/City', 'mp' ),
+					'name'		 => $this->field_name( 'city', $type ),
+					'value'		 => mp_get_user_address_part( 'city', $type ),
+					'validation' => array(
+						'required' => true,
+					),
+					'atts'		 => array(
+						'class' => 'mp_form_input',
+					),
 				),
-			),
-			array(
-				'type'	 => 'text',
-				'label'	 => __( 'Adresszusatz (optional)', 'mp' ),
-				'name'	 => $this->field_name( 'address2', $type ),
-				'value'	 => mp_get_user_address_part( 'address2', $type ),
-				'atts'	 => array(
-					'placeholder'	 => __( '2. Etage, Tür 1', 'mp' ),
-					'class'			 => 'mp_form_input',
+				array(
+					'type'		 => 'complex',
+					'subfields'	 => $state_zip_fields,
 				),
-			),
-			
-			array(
-				'type'		 => 'complex',
-				'subfields'	 => $state_zip_fields,
-			),
+				array(
+					'type'			 => 'select',
+					'label'			 => __( 'Country', 'mp' ),
+					'name'			 => $this->field_name( 'country', $type ),
+					'options'		 => array_merge( array( '' => __( 'Select One', 'mp' ) ), $countries ), //array_merge(array('' => __('Select One', 'mp')), $this->currencies),
+					'value'			 => $country,
+					'default_value'	 => '',
+					'atts'			 => array(
+						'class' => 'mp_select2_search',
+					),
+					'validation'	 => array(
+						'required' => true,
+					),
+				),
+				array(
+					'type'	 => 'text',
+					'label'	 => __( 'Phone', 'mp' ),
+					'name'	 => $this->field_name( 'phone', $type ),
+					'value'	 => mp_get_user_address_part( 'phone', $type ),
+					'atts'	 => array(
+						'class' => 'mp_form_input',
+					),
+				),
+			);
 
-			array(
-				'type'		 => 'text',
-				'label'		 => __( 'Stadt/Ort', 'mp' ),
-				'name'		 => $this->field_name( 'city', $type ),
-				'value'		 => mp_get_user_address_part( 'city', $type ),
-				'validation' => array(
-					'required' => true,
-				),
-				'atts'		 => array(
-					'class' => 'mp_form_input',
-				),
-			),
-
-			array(
-				'type'			 => 'select',
-				'label'			 => __( 'Land', 'mp' ),
-				'name'			 => $this->field_name( 'country', $type ),
-				'options'		 => array_merge( array( '' => __( 'Auswählen', 'mp' ) ), $countries ), //array_merge(array('' => __('Wähle eins', 'mp')), $this->currencies),
-				'value'			 => $country,
-				'default_value'	 => '',
-				'atts'			 => array(
-					'class' => 'mp_select2_search',
-				),
-				'validation'	 => array(
-					'required' => true,
-				),
-			),
-			array(
-				'type'	 => 'text',
-				'label'	 => __( 'Telefon (optional)', 'mp' ),
-				'name'	 => $this->field_name( 'phone', $type ),
-				'value'	 => mp_get_user_address_part( 'phone', $type ),
-				'atts'	 => array(
-					'class' => 'mp_form_input',
-				),
-			),
-		);
-
+		}
 		/**
 		 * Filter the address fields array
 		 *
@@ -432,20 +467,7 @@ class MP_Checkout {
 		 * @param array $address_fields The current address fields.
 		 * @param string $type Either billing or shipping.
 		 */
-		return (array) apply_filters( 'mp_checkout/address_fields_array', $address_fields, $type );
-	}
-
-	/**
-	 * Display address fields
-	 *
-	 * @since 3.0
-	 * @access public
-	 * @param string $type Either billing or shipping.
-	 * @param bool $value_only Optional, whether the fields should display their values only. Defaults to false.
-	 * @return string
-	 */
-	public function address_fields( $type, $value_only = false ) {
-		$address_fields = $this->get_address_fields( $type );
+		$address_fields = (array) apply_filters( 'mp_checkout/address_fields_array', $address_fields, $type );
 
 		$html = '';
 		foreach ( $address_fields as $field ) {
@@ -466,46 +488,6 @@ class MP_Checkout {
 		 * @param string Either billing or shipping.
 		 */
 		return apply_filters( 'mp_checkout/address_fields', $html, $type, $value_only );
-	}
-
-	/**
-	 * Filter for Details Collection set as Only contact details in Digital settings
-	 * Good example for customization address fields on checkout page
-	 *
-	 * @since 3.2.7
-	 * @access public
-	 * @param array $address_fields The current address fields
-	 * @param string $type Either billing or shipping.
-	 * @return array
-	 */
-	public function contact_details_collection( $address_fields, $type ) {
-		if ( mp()->download_only_cart( mp_cart() ) && mp_get_setting( 'details_collection' ) == "contact" ) {
-			$allowed = array(
-				'billing[first_name]',
-				'billing[last_name]',
-				'billing[email]',
-				'billing[company_name]',
-				'billing[phone]',
-			);
-			foreach ( $address_fields as $key => $field ) {
-				if ( $field['type'] == 'complex' ) {
-					foreach ( $field['subfields'] as $k => $sfield ) {
-						if ( ! in_array( $sfield['name'], $allowed ) ) {
-							unset( $address_fields[ $key ]['subfields'][ $k ] );
-							if ( empty( $address_fields[ $key ]['subfields'] ) ) {
-								unset( $address_fields[ $key ] );
-							}
-						}
-					}
-					continue;
-				}
-				if ( ! in_array( $field['name'], $allowed ) ) {
-					unset( $address_fields[ $key ] );
-				}
-			}
-		}
-
-		return $address_fields;
 	}
 
 	/**
@@ -588,7 +570,7 @@ class MP_Checkout {
 
 		wp_send_json_error( array(
 			'errors' => array(
-				'general' => __( 'Ein unbekannter Fehler ist aufgetreten. Bitte versuche es erneut.', 'mp' ),
+				'general' => __( 'An unknown error occurred. Please try again.', 'mp' ),
 			),
 		) );
 	}
@@ -662,13 +644,13 @@ class MP_Checkout {
 	public function ajax_update_checkout_data() {
 		$this->_update_shipping_section();
 
-		$error_messages = $this->_validate_checkout_data();
-		if ( $error_messages ) {
-			wp_send_json_error( array(
-				'messages' => $error_messages,
-				'count' => count( $error_messages ),
-			) );
-		}
+                $error_messages = $this->_validate_checkout_data();
+                if ( $error_messages ) {
+                    wp_send_json_error( array(
+                            'messages' => $error_messages,
+                            'count' => count( $error_messages ),
+                    ) );
+                }
 
 		$this->_update_order_review_payment_section();
 		$this->_ajax_register_account();
@@ -683,62 +665,24 @@ class MP_Checkout {
 	}
 
 
-	/**
-	 * Validate checkout data
-	 *
-	 * @return array Return associative array where key - name of input field, value - error message
-	 */
-	private function _validate_checkout_data() {
-		$messages = array();
+        /**
+         * Validate checkout data
+         *
+         * @return array Return associative array where key - name of input field, value - error message
+         */
+        private function _validate_checkout_data() {
+            $messages = array();
 
-		$types = array( 'billing' );
-		if ( mp_get_post_value( 'enable_shipping_address' ) ) {
-			$types[] = 'shipping';
-		}
-		foreach ( $types as $type ) {
-			$address_name_fields = $this->get_address_name_fields( $type );
-			$required_fields = array( 'first_name', 'last_name', 'email', 'address1', 'zip', 'city', 'country', 'policy' );
+            $what = 'shipping';
+            $zip      = mp_get_user_address_part( 'zip', $what );
+            $country  = mp_get_user_address_part( 'country', $what );
+            if ( !mp_is_valid_zip( $zip, $country ) ) {
+                $key = mp_get_session_value( 'enable_shipping_address' ) ?'shipping[zip]' : 'billing[zip]';
+                $messages[ $key ] = __( 'Invalid Zip Code', 'mp' );
+            }
 
-			/**
-			* Filter the required fields
-			*
-			* @since 3.2.7
-			* @param array $required_fields required fields.
-			* @param string $type Either billing or shipping.
-			*/
-			$required_fields = apply_filters( 'mp_checkout/required_fields', $required_fields, $type );
-			foreach ( $required_fields as $field ) {
-				$name = "{$type}[{$field}]";
-				$value = mp_get_user_address_part( $field, $type );
-				if ( in_array( $name, $address_name_fields ) ) {
-					switch ( $field ) {
-						case 'zip':
-							$country  = mp_get_user_address_part( 'country', $type );
-							if ( !mp_is_valid_zip( $value, $country ) ) {
-								$messages[ $name ] = __( 'Ungültige Postleitzahl', 'mp' );
-							}
-							break;
-
-						case 'email':
-							if ( empty( $value ) ) {
-								$messages[ $name ] = __( 'Dieses Feld muss ausgefüllt sein!', 'mp' );
-							} elseif ( !is_email( $value ) ) {
-								$messages[ $name ] = __( 'Ungültige E-Mailadresse', 'mp' );
-							}
-							break;
-
-						default:
-							if ( empty( $value ) ) {
-								$messages[ $name ] = __( 'Dieses Feld wird benötigt', 'mp' );
-							}
-							break;
-					}
-				}
-			}
-		}
-
-		return apply_filters( 'mp_checkout/validation_messages', $messages, $type );
-	}
+            return $messages;
+        }
 
 
 	/**
@@ -763,9 +707,9 @@ class MP_Checkout {
 
 		if ( !mp_cart()->has_items() ) {
 		if ( $disable_cart == '1' ) {
-				return __( '<div class="mp_cart_empty"><h3 class="mp_sub_title">Oops!</h3><p class="mp_cart_empty_message">Der Warenkorb ist deaktiviert.</p></div><!-- end mp_cart_empty -->', 'mp' );
+				return __( '<div class="mp_cart_empty"><h3 class="mp_sub_title">Oops!</h3><p class="mp_cart_empty_message">The cart is disabled.</p></div><!-- end mp_cart_empty -->', 'mp' );
 			} else {
-				return sprintf( __( '<div class="mp_cart_empty"><h3 class="mp_sub_title">Hoppla!</h3><p class="mp_cart_empty_message">Sieht so aus, als hättest Du Deinem Einkaufswagen noch nichts hinzugefügt.. <a href="%s">Gehen wir einkaufen!</a></p></div><!-- end mp_cart_empty -->', 'mp' ), mp_store_page_url( 'products', false ) );
+				return sprintf( __( '<div class="mp_cart_empty"><h3 class="mp_sub_title">Oops!</h3><p class="mp_cart_empty_message">Looks like you haven\'t added anything your cart. <a href="%s">Let\'s go shopping!</a></p></div><!-- end mp_cart_empty -->', 'mp' ), mp_store_page_url( 'products', false ) );
 			}
 
 		}
@@ -773,7 +717,7 @@ class MP_Checkout {
 		$html = '
 			<!-- MP Checkout -->
 			<section id="mp-checkout" class="mp_checkout">
-			<noscript>' . __( 'Zum Auschecken ist Javascript erforderlich. Bitte aktiviere Javascript in Deinem Browser und aktualisiere diese Seite.', 'mp' ) . '</noscript>
+			<noscript>' . __( 'Javascript is required in order to checkout. Please enable Javascript in your browser and then refresh this page.', 'mp' ) . '</noscript>
 			<form id="mp-checkout-form" class="mp_form' . (( get_query_var( 'mp_confirm_order_step' ) ) ? ' last-step' : '') . ' mp_form-checkout" method="post" style="display:none" novalidate>' .
 		wp_nonce_field( 'mp_process_checkout', 'mp_checkout_nonce', true, false );
 
@@ -867,13 +811,13 @@ class MP_Checkout {
 		wp_enqueue_script( 'mp-checkout', mp_plugin_url( 'ui/js/mp-checkout.js' ), array( 'jquery-payment', 'jquery-validate-methods' ), MP_VERSION, true );
 
 		wp_localize_script( 'mp-checkout', 'mp_checkout_i18n', array(
-			'cc_num'		 => __( 'Bitte gib eine gültige Kreditkartennummer ein', 'mp' ),
-			'cc_exp'		 => __( 'Bitte gib ein gültiges Kartenablaufdatum ein', 'mp' ),
-			'cc_cvc'		 => __( 'Bitte gib einen gültigen Kartensicherheitscode ein', 'mp' ),
-			'cc_fullname'	 => __( 'Bitte gib einen gültigen Vor- und Nachnamen ein', 'mp' ),
-			'errors'		 => __( '<h4 class="mp_sub_title">Hoppla, wir haben %s entdeckt.</h4><p>Felder mit Fehlern werden unten in <span>rot</span> hervorgehoben. Wenn Sie ein Feld eingeben, wird der tatsächlich aufgetretene Fehler angezeigt.</p>', 'mp' ),
-			'error_plural'	 => __( 'Fehler', 'mp' ),
-			'error_singular' => __( 'Fehler', 'mp' ),
+			'cc_num'		 => __( 'Please enter a valid credit card number', 'mp' ),
+			'cc_exp'		 => __( 'Please enter a valid card expiration', 'mp' ),
+			'cc_cvc'		 => __( ' Please enter a valid card security code', 'mp' ),
+			'cc_fullname'	 => __( 'Please enter a valid first and last name', 'mp' ),
+			'errors'		 => __( '<h4 class="mp_sub_title">Oops! We found %d %s in the form below.</h4><p>Fields that have errors are highlighted in <span>red</span> below. Entering into a field will reveal the actual error that occurred.</p>', 'mp' ),
+			'error_plural'	 => __( 'errors', 'mp' ),
+			'error_singular' => __( 'error', 'mp' ),
 		) );
 	}
 
@@ -1045,13 +989,13 @@ class MP_Checkout {
 					break;
 				}
 
-				$text		 = __( '&laquo; Vorheriger Schritt', 'mp' );
+				$text		 = __( '&laquo; Previous Step', 'mp' );
 				$classes[]	 = 'mp_button-secondary';
 				$link = '<a class="' . implode( ' ', $classes ) . '" href="' . $hash . '">' . $text . '</a>';
 				break;
 
 			case 'next' :
-				$text		 = __( 'Fortfahren &raquo;', 'mp' );
+				$text		 = __( 'Next Step &raquo;', 'mp' );
 				$classes[]	 = 'mp_button-medium';
 				$link = '<button class="' . implode( ' ', $classes ) . '" type="submit">' . $text . '</button>';
 				break;
@@ -1123,7 +1067,7 @@ class MP_Checkout {
 
 		if ( $errors = $this->get_errors( $context ) ) {
 			$error_string .= '
-				<h4 class="mp_sub_title">' . __( 'Hoppla! Bei der Verarbeitung Deiner Zahlung ist ein Fehler aufgetreten.', 'mp' ) . '</h4>
+				<h4 class="mp_sub_title">' . __( 'Oops! An error occurred while processing your payment.', 'mp' ) . '</h4>
 				<ul>';
 
 			foreach ( $errors as $error ) {
@@ -1160,7 +1104,7 @@ class MP_Checkout {
 		 * @since 3.0
 		 * @param string
 		 */
-		$heading = '<h3 class="mp_sub_title">' . apply_filters( 'mp_checkout/payment_form/heading_text', __( 'Zahlung', 'mp' ) ) . '</h3>';
+		$heading = '<h3 class="mp_sub_title">' . apply_filters( 'mp_checkout/payment_form/heading_text', __( 'Payment', 'mp' ) ) . '</h3>';
 
 		$html .= '
 			<div id="mp-checkout-payment-form">' .
@@ -1184,7 +1128,7 @@ class MP_Checkout {
 			$form = apply_filters( 'mp_checkout_payment_form', '' );
 
 			if ( empty( $form ) ) {
-				$html .= wpautop( __( 'Es sind keine Gateways verfügbar, um diese Zahlung zu verarbeiten.', 'mp' ) );
+				$html .= wpautop( __( 'There are no available gateways to process this payment.', 'mp' ) );
 			} else {
 				$html .= '<div id="mp-payment-options-list">' . mp_list_payment_options( false ) . '</div><!-- end mp-payment-options-list -->';
 			}
@@ -1233,7 +1177,7 @@ class MP_Checkout {
 		if ( mp_get_setting( 'force_login' ) == false ) {
 			$html .= '
 				<div class="mp_checkout_field mp_checkout_checkbox">
-					<label class="mp_form_label"><input type="checkbox" class="mp_form_checkbox" name="enable_registration_form" value="1" autocomplete="off"> <span>' . __( 'Als Kunde registrieren?', 'mp' ) . '</span></label>
+					<label class="mp_form_label"><input type="checkbox" class="mp_form_checkbox" name="enable_registration_form" value="1" autocomplete="off"> <span>' . __( 'Register as customer?', 'mp' ) . '</span></label>
 				</div><!-- end mp_checkout_field/mp_checkout_checkbox -->
 			';
 		}
@@ -1241,20 +1185,20 @@ class MP_Checkout {
 		if ( mp_get_setting( 'force_login' ) == false ) {
 			$html .= '
 				<div id="mp-checkout-column-registration" style="display:none" class="mp_checkout_column_section">
-					<h3 class="mp_sub_title">' . __( 'Account erstellen', 'mp' ) . '</h3>';
+					<h3 class="mp_sub_title">' . __( 'Register account', 'mp' ) . '</h3>';
 		} else {
 			$html .= '
 				<div id="mp-checkout-column-registration-needed" class="mp_checkout_column_section">
-					<h3 class="mp_sub_title">' . __( 'Account registrieren', 'mp' ) . '</h3>';
+					<h3 class="mp_sub_title">' . __( 'Register account', 'mp' ) . '</h3>';
 		}
 
 		$html .= '<div class="mp_checkout_field mp_checkout_column">
-				<label class="mp_form_label">' . __( 'Benutzername', 'mp' ) . ' ' . $required_labels . '</label>
-				<input type="text" name="account_username" id="mp_account_username" ' . $required_fields . ' data-rule-remote="' . esc_url( admin_url( 'admin-ajax.php?action=mp_check_if_username_exists' ) ) . '" data-msg-remote="' . __( 'Ein Konto mit diesem Benutzernamen ist bereits vorhanden', 'mp' ) . '"></input>
+				<label class="mp_form_label">' . __( 'Username', 'mp' ) . ' ' . $required_labels . '</label>
+				<input type="text" name="account_username" id="mp_account_username" ' . $required_fields . ' data-rule-remote="' . esc_url( admin_url( 'admin-ajax.php?action=mp_check_if_username_exists' ) ) . '" data-msg-remote="' . __( 'An account with this username already exists', 'mp' ) . '"></input>
 			  </div><!-- end mp_checkout_field -->';
 
 		$html .= '<div class="mp_checkout_field mp_checkout_column">
-				<label class="mp_form_label">' . __( 'Passwort', 'mp' ) . ' ' . $required_labels . '</label>
+				<label class="mp_form_label">' . __( 'Password', 'mp' ) . ' ' . $required_labels . '</label>
 				<input type="password" name="account_password" ' . $required_fields . '></input>
 			  </div><!-- end mp_checkout_field -->';
 		$html .= wp_nonce_field( 'mp_create_account', 'mp_create_account_nonce' ) . '
@@ -1277,21 +1221,8 @@ class MP_Checkout {
 
 		$html = '
 				<div id="mp-checkout-column-billing-info" class="mp_checkout_column' . (( $enable_shipping_address ) ? '' : ' fullwidth') . '">
-					<h3 class="mp_sub_title">' . __( 'Kunden Stammdaten', 'mp' ) . '</h3>' .
+					<h3 class="mp_sub_title">' . __( 'Billing', 'mp' ) . '</h3>' .
 		$this->address_fields( 'billing' ) . '';
-
-		$html .= '
-			<div class="mp_checkout_field mp_checkout_checkbox mp_privacy_policy">
-				<label class="mp_form_label">
-					<input type="checkbox" class="mp_form_checkbox" data-rule-required="true" name="billing[policy]" value="1" autocomplete="off">
-					<span class="mp_field_required">*</span>
-					<span>' . __( "<strong>DSGVO</strong> Ich bestätige die weiterverarbeitung meiner persönlichen Daten zur Auftragsverarbeitung gemäß unserer Datenschutzrichtlinie.", "mp" ) . '&nbsp;'. get_the_privacy_policy_link() . '</span>
-				</label>
-				<label for="billing[policy]" class="error">' . __( "Dieses Feld wird benötigt.", "mp" ) . '</label>
-			</div>
-			
-		';
-		
 
 		$cart				 = mp_cart();
 		$is_download_only	 = $cart->is_download_only();
@@ -1299,15 +1230,18 @@ class MP_Checkout {
 		if ( !mp()->download_only_cart( mp_cart() ) ) {
 			$html .= '
 					<div class="mp_checkout_field mp_checkout_checkbox">
-						<label class="mp_form_label"><input type="checkbox" class="mp_form_checkbox" name="enable_shipping_address" value="1" autocomplete="off" ' . checked( true, $enable_shipping_address, false ) . '> <span>' . __( 'Lieferadresse anders als Rechnungsstellung?', 'mp' ) . '</span></label>
+						<label class="mp_form_label"><input type="checkbox" class="mp_form_checkbox" name="enable_shipping_address" value="1" autocomplete="off" ' . checked( true, $enable_shipping_address, false ) . '> <span>' . __( 'Shipping address different than billing?', 'mp' ) . '</span></label>
 					</div><!-- end mp_checkout_field/mp_checkout_checkbox -->
 				';
 
 			$html .= '
 				</div><!-- end mp-checkout-column-billing-info -->
 					<div id="mp-checkout-column-shipping-info" class="mp_checkout_column fullwidth"' . (( $enable_shipping_address ) ? '' : ' style="display:none"') . '>
-						<h3 class="mp_sub_title">' . __( 'Versand', 'mp' ) . '</h3>' .
+						<h3 class="mp_sub_title">' . __( 'Shipping', 'mp' ) . '</h3>' .
 			$this->address_fields( 'shipping' ) . '';
+
+
+
 		}
 
 		$html .= '
@@ -1316,7 +1250,7 @@ class MP_Checkout {
 		// If has special instructions
 		if ( mp_get_setting( 'special_instructions' ) == '1' ) {
 			$html .= '<div id="mp-checkout-column-special-instructions" class="mp_checkout_column fullwidth"><div class="mp_checkout_field">
-					<label class="mp_form_label">' . __( 'Spezielle Anweisungen', 'mp' ) . '</label>
+					<label class="mp_form_label">' . __( 'Special Instructions', 'mp' ) . '</label>
 				    <textarea name="shipping[special_instructions]">' . mp_get_user_address_part( 'special_instructions', 'shipping' ) . '</textarea>
 				  </div><!-- end mp_checkout_field --></div><!-- end mp-checkout-column-special-instructions -->';
 		}
@@ -1378,31 +1312,31 @@ class MP_Checkout {
 		if ( !is_user_logged_in() && !MP_HIDE_LOGIN_OPTION ) {
 			$html = wp_nonce_field( 'mp-login-nonce', 'mp_login_nonce', true, false ) . '
 				<div class="mp_checkout_column">
-					<h4 class="mp_sub_title">' . __( 'Hast Du einen Account?', 'mp' ) . '</h4>
-					<p>' . __( 'Melde Dich an, um den Kaufvorgang zu beschleunigen.', 'mp' ) . '</p>
+					<h4 class="mp_sub_title">' . __( 'Have an account?', 'mp' ) . '</h4>
+					<p>' . __( 'Sign in to speed up the checkout process.', 'mp' ) . '</p>
 					<div class="mp_checkout_field">
-						<label class="mp_form_label" for="mp-checkout-email">' . __( 'E-Mail Addresse/Benutzername', 'mp' ) . '</label>
+						<label class="mp_form_label" for="mp-checkout-email">' . __( 'E-Mail Address/Username', 'mp' ) . '</label>
 						<input type="text" name="mp_login_email" class="mp_form_input">
 					</div><!-- end mp_checkout_field -->
 					<div class="mp_checkout_field">
-						<label class="mp_form_label" for="mp-checkout-password">' . __( 'Passwort', 'mp' ) . '</label>
+						<label class="mp_form_label" for="mp-checkout-password">' . __( 'Password', 'mp' ) . '</label>
 						<input type="password" name="mp_login_password" class="mp_form_input">
 					</div><!-- end mp_checkout_field -->
-					<button id="mp-button-checkout-login" type="button" class="mp_button mp_button-medium mp_button-checkout-login">' . __( 'Anmelden', 'mp' ) . '</button>
-                                        <p><a href="' . wp_lostpassword_url( get_permalink() ) . '" title="Passwort vergessen">Passwort vergessen</a>
+					<button id="mp-button-checkout-login" type="button" class="mp_button mp_button-medium mp_button-checkout-login">' . __( 'Login', 'mp' ) . '</button>
+                                        <p><a href="' . wp_lostpassword_url( get_permalink() ) . '" title="Lost Password">Lost Password</a>
 				</div><!-- end mp_checkout_column -->
 				';
 			if ( mp_get_setting( 'force_login' ) == false && ! is_user_logged_in() ) {
 				$html .= '<div class="mp_checkout_column">
-					<h4 class="mp_sub_title">' . __( 'Dein erster Enkauf hier?', 'mp' ) . '</h4>
-					<p>' . __( 'Fahre mit dem Auschecken fort und am Ende hast Du die Möglichkeit, ein Konto zu erstellen.', 'mp' ) . '</p>
-					<p><button type="button" class="mp_button mp_button-medium mp_button-checkout-next-step mp_continue_as_guest">' . __( 'Weiter als Gast', 'mp' ) . '</button></p>
+					<h4 class="mp_sub_title">' . __( 'First-time customer?', 'mp' ) . '</h4>
+					<p>' . __( 'Proceed to checkout and you\'ll have an opportunity to create an account at the end.', 'mp' ) . '</p>
+					<p><button type="button" class="mp_button mp_button-medium mp_button-checkout-next-step mp_continue_as_guest">' . __( 'Continue as Guest', 'mp' ) . '</button></p>
 				</div><!-- end mp_checkout_column -->';
 			} else {
 				$html .= '<div class="mp_checkout_column">
-					<h4 class="mp_sub_title">' . __( 'Dein erster Einkauf?', 'mp' ) . '</h4>
-					<p>' . __( 'Fahre mit dem Auschecken fort und erstelle am Ende ein Konto.', 'mp' ) . '</p>
-					<p><button type="button" class="mp_button mp_button-medium mp_button-checkout-next-step mp_continue_as_guest">' . __( 'Weiter', 'mp' ) . '</button></p>
+					<h4 class="mp_sub_title">' . __( 'First-time customer?', 'mp' ) . '</h4>
+					<p>' . __( 'Proceed to checkout and create an account at the end.', 'mp' ) . '</p>
+					<p><button type="button" class="mp_button mp_button-medium mp_button-checkout-next-step mp_continue_as_guest">' . __( 'Continue', 'mp' ) . '</button></p>
 				</div><!-- end mp_checkout_column -->';
 			}
 		}
@@ -1429,20 +1363,20 @@ class MP_Checkout {
 
 		$html = '
 			<div class="mp_checkout_column">
-				<h3 class="mp_sub_title">' . __( 'Rechnungsadresse', 'mp' ) . '</h3>' .
+				<h3 class="mp_sub_title">' . __( 'Billing Address', 'mp' ) . '</h3>' .
 		$this->address_fields( 'billing', true ) . '
 			</div><!-- end mp_checkout_column -->';
 
 		if ( !mp()->download_only_cart( mp_cart() ) ) {
 			$html .= '
 				<div class="mp_checkout_column">
-					<h3 class="mp_sub_title">' . __( 'Lieferanschrift', 'mp' ) . '</h3>' .
+					<h3 class="mp_sub_title">' . __( 'Shipping Address', 'mp' ) . '</h3>' .
 			$this->address_fields( 'shipping', true ) . '
 				</div><!-- end mp_checkout_column -->';
 		}
 
 		$html .= '
-			<h3 class="mp_sub_title">' . __( 'Warenkorb', 'mp' ) . '</h3>' .
+			<h3 class="mp_sub_title">' . __( 'Cart', 'mp' ) . '</h3>' .
 		mp_cart()->display( array(
 			'editable' => false
 		) );

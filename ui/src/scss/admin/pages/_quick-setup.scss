@@ -1,7 +1,7 @@
-//== Schnelleinrichtung
+//== Quick Setup
 //
 
-// Schnelleinrichtung Tabs
+// Quick Setup Tabs
 .mp_quick_setup_tabs {
 	@include j-cf();
 	//border-top: 1px solid $color--dark-gray;
@@ -143,25 +143,25 @@
 
 	// Inherit from admin.css
 	&.postbox {
-		&.psource-postbox {
+		&.wpmudev-postbox {
 			.handlediv,
 			h3.hndle {
 				display: none;
 			}
 			
 			.inside {
-				.psource-field {
+				.wpmudev-field {
 					padding: 0;
 					
 					&.shaded {
 						background: transparent;
 					}
 				}
-				.psource-subfield-group-wrap {
+				.wpmudev-subfield-group-wrap {
 					background: transparent;
 					box-shadow: none;
 				}
-				.psource-subfield-delete-group {
+				.wpmudev-subfield-delete-group {
 					position: relative;
 				}
 			}
@@ -175,7 +175,7 @@
 		&_content {
 			
 			// Fields
-			.psource-field {
+			.wpmudev-field {
 				margin-top: $space;
 				
 				&:first-child {
@@ -190,7 +190,7 @@
 			}
 			
 			p.mp_tab_content_label,
-			.psource-field-label {
+			.wpmudev-field-label {
 				color: $color--dark;
 				font-family: 'Open Sans', Arial, sans-serif;
 				@include fontSize($font__size--l);
@@ -198,8 +198,8 @@
 				line-height: em(20px, $font__size);
 				margin-bottom: $space--s;
 			}
-			.psource-field-desc,
-			.psource-metabox-desc {
+			.wpmudev-field-desc,
+			.wpmudev-metabox-desc {
 				color: $color;
 				font-family: 'Open Sans', Arial, sans-serif;
 				@include fontSize($font__size);
@@ -217,7 +217,7 @@
 }
 
 // Inherit from admin.css
-.shop-einstellungen_page_store-setup-wizard {
+.store-settings_page_store-setup-wizard {
     p.submit {
 	    display: none;
     }
@@ -284,7 +284,7 @@
 	.inside {
 		
 		// Fields
-		.psource-field-label {
+		.wpmudev-field-label {
 			color: $color;
 			@include fontSize($font__size);
 			font-weight: 400;	
@@ -301,10 +301,10 @@
 	.inside {
 		
 		// Fields
-		.psource-fields {
+		.wpmudev-fields {
 			
-			.psource-field {
-				&.psource-field-has-conditional {
+			.wpmudev-field {
+				&.wpmudev-field-has-conditional {
 					background-color: #f9f9f9;
 					border-radius: 5px;
 					padding: $space--m;
@@ -315,13 +315,13 @@
 		
 	}
 
-	.psource-metabox-has-conditional {
+	.wpmudev-metabox-has-conditional {
 		background-color: #f9f9f9;
 		border-radius: 5px;
 		margin-top: $space--m;
 		padding: $space--m;
 		
-		.psource-subfields {
+		.wpmudev-subfields {
 			border-color: $color--light-gray;
 			box-shadow: none;
 		}
@@ -334,7 +334,7 @@
 	
 	.mp_tab_content_details-payment-gateway {
 		
-		.postbox.psource-postbox {
+		.postbox.wpmudev-postbox {
 			margin-top: $space;
 			margin-bottom: 0;
 			
@@ -352,32 +352,4 @@
 		}
 	}
 	
-}
-
-// Fix for textext tag plugin
-.variation-row .text-core {
-    &, .text-wrap {
-        height: auto !important;
-        min-height: 64px !important;
-        position: relative;
-    }
-
-    .text-wrap {
-        border: 1px solid #9daccc;
-        box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
-
-        .variation_values {
-            position: relative !important;
-            min-height: auto !important;
-            width: auto !important;
-            border: none;
-            box-shadow: none;
-            padding: 4px 3px !important;
-        }
-
-        .text-tags {
-            position: relative;
-            padding: 3px;
-        }
-    }
 }

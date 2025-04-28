@@ -3,7 +3,7 @@
 class MP_Addons {
 	/**
 	 * Refers to the registered addons
-	 *12.3.20 Alles Fein DN
+	 *
 	 * @since 3.0
 	 * @access protected
 	 * @var array
@@ -27,7 +27,7 @@ class MP_Addons {
 	 * @var object
 	 */
 	private static $_instance = null;
-
+	
 	/**
 	 * Determine if an addon has settings
 	 *
@@ -53,7 +53,7 @@ class MP_Addons {
 			if ( false !== ($key = array_search( $addon, $this->_addons_enabled )) ) {
 				unset( $this->_addons_enabled[ $key ] );
 				$addon_obj = $this->get_addon( $addon );
-
+				
 				/**
 				 * Fires after an addon is disabled
 				 *
@@ -62,7 +62,7 @@ class MP_Addons {
 				do_action( 'mp_addons/disable' . $addon_obj->class );
 			}
 		}
-
+		
 		mp_update_setting( 'addons', $this->_addons_enabled );
 	}
 
@@ -77,11 +77,11 @@ class MP_Addons {
 		foreach ( (array) $addons as $addon ) {
 			$this->_addons_enabled[] = $addon;
 			$addon_obj = $this->get_addon( $addon );
-
+			
 			if( file_exists( $addon_obj->path ) )
                         {
                                 require_once $addon_obj->path;
-
+                                
                                 /**
                                   * Fires after an addon is enabled
                                   *
@@ -94,7 +94,7 @@ class MP_Addons {
                                 mp_update_setting( 'addons', $this->_addons_enabled );
                         }
 		}
-
+		
 	}
 
 	/**
@@ -108,7 +108,7 @@ class MP_Addons {
 	public function get_addon( $class ) {
 		return mp_arr_get_value( $class, $this->_addons );
 	}
-
+		
 	/**
 	 * Get all registered add-ons
 	 *
@@ -143,7 +143,7 @@ class MP_Addons {
 	public function is_addon_enabled( $class ) {
 		return ( in_array( $class, $this->_addons_enabled ) );
 	}
-
+	
 	/**
 	 * Register an add-on
 	 *
@@ -167,7 +167,7 @@ class MP_Addons {
 			'path' => '',
 			'has_settings' => false,
 		), $args );
-
+		
 		$this->_addons[ $args['class'] ] = (object) $args;
 	}
 
@@ -186,7 +186,7 @@ class MP_Addons {
 			}
 		}
 	}
-
+			
 	/**
 	 * Constructor function
 	 *

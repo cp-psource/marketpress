@@ -9,7 +9,7 @@ class MP_Product_Attributes {
 	 * @var object
 	 */
 	private static $_instance = null;
-
+	
 	/**
 	 * Refers to the current product attributes
 	 *
@@ -18,7 +18,7 @@ class MP_Product_Attributes {
 	 * @var array
 	 */
 	protected $_atts = null;
-
+	
 	/**
 	 * Refers to the base slug for all product attributes
 	 *
@@ -27,7 +27,7 @@ class MP_Product_Attributes {
 	 * @var string
 	 */
 	const SLUGBASE = 'product_attr_';
-
+	
 	/**
 	 * Gets the single instance of the class
 	 *
@@ -48,7 +48,7 @@ class MP_Product_Attributes {
 	 * @since 3.0
 	 * @access private
 	 */
-
+	
 	private function __construct() {
 	}
 
@@ -62,22 +62,22 @@ class MP_Product_Attributes {
 	 */
 	public function delete( $id = false ) {
 		global $wpdb;
-
+		
 		if ( empty($id) ) {
-			// Require at least one ID to prevent accidental deleting of all attributes
+			// Require at least one ID to prevent accidental deleting of all attributes 
 			return false;
 		}
-
+		
 		if ( is_array($id) ) {
 			$wpdb->query('DELETE FROM . ' . $this->get_table_name() . ' WHERE attribute_id IN (' . implode(',', $id) . ')');
 		} else {
 			$wpdb->delete($this->get_table_name(), array('attribute_id' => $ids));
 		}
-
+		
 		// Force update of cache
 		$this->_atts = null;
 	}
-
+	
 
 	/**
 	 * Gets all product attributes
@@ -89,11 +89,11 @@ class MP_Product_Attributes {
 	 */
 	public function get( $where = '' ) {
 		global $wpdb;
-
+		
 		if ( ! is_null($this->_atts) ) {
 			return $this->_atts;
 		}
-
+		
 		if ( ! empty($where) ) {
 			$where = " WHERE $where";
 		}
@@ -101,7 +101,7 @@ class MP_Product_Attributes {
 		$this->_atts = $wpdb->get_results('SELECT * FROM ' . $this->get_table_name() . $where);
 		return $this->_atts;
 	}
-
+	
 	/**
 	 * Get an attribute ID from it's slug
 	 *
@@ -113,7 +113,7 @@ class MP_Product_Attributes {
 	public function get_id_from_slug( $slug ) {
 		return (int) str_replace(self::SLUGBASE, '', $slug);
 	}
-
+	
 	/**
 	 * Get product categories associated with a given attribute
 	 *
@@ -125,11 +125,11 @@ class MP_Product_Attributes {
 	 */
 	public function get_associated_categories( $att_id ) {
 		global $wpdb;
-
+		
 		$table_name = $wpdb->prefix . 'mp_product_attributes_terms';
 		$cache_key = 'associated_categories_' . $att_id;
 		$results = wp_cache_get( $cache_key, 'mp_product_attributes' );
-
+		
 		if ( false === $results ) {
 			$results = $wpdb->get_results( $wpdb->prepare( "
 				SELECT term_id
@@ -138,10 +138,10 @@ class MP_Product_Attributes {
 			) );
 			wp_cache_set( $cache_key, $results, 'mp_product_attributes' );
 		}
-
+		
 		return wp_list_pluck( $results, 'term_id' );
 	}
-
+	
 	/**
 	 * Get a single product attribute
 	 *
@@ -157,10 +157,10 @@ class MP_Product_Attributes {
 				return $att;
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * Generates a product attribute's slug from it's ID.
 	 *
@@ -172,7 +172,7 @@ class MP_Product_Attributes {
 	public function generate_slug( $id ) {
 		return self::SLUGBASE . $id;
 	}
-
+	
 	/**
 	 * Gets the product attribute table name
 	 *
@@ -185,7 +185,7 @@ class MP_Product_Attributes {
 		global $wpdb;
 		return $wpdb->prefix . 'mp_product_attributes';
 	}
-
+	
 	/**
 	 * Registers the product attribute taxonomies
 	 *
@@ -195,7 +195,7 @@ class MP_Product_Attributes {
 	public function register() {
 		$atts = $this->get();
 		$product_atts = MP_Product_Attributes::get_instance();
-
+		
 		foreach ( $atts as $att ) {
 			register_taxonomy($product_atts->generate_slug($att->attribute_id), MP_Product::get_post_type(), array(
 				'show_ui' => false,
@@ -204,7 +204,7 @@ class MP_Product_Attributes {
 			));
 		}
 	}
-
+	
 	/**
 	 * Sort attributes per settings
 	 *
@@ -215,7 +215,7 @@ class MP_Product_Attributes {
 	 */
 	public function sort( $attributes, $grouping = true ) {
 		$groups = array();
-
+		
 		// Fix wrong taxonomy bug
 		if ( is_wp_error( $attributes ) ){
 			return array();
@@ -224,42 +224,46 @@ class MP_Product_Attributes {
 		foreach ( $attributes as $attribute ) {
 			$groups[$attribute->taxonomy][] = $attribute;
 		}
-
+		
 		// Sort terms
-		foreach ( $groups as $tax_slug => &$group ) {
+		foreach ($groups as $tax_slug => &$group) {
 			$tax_id = $this->get_id_from_slug($tax_slug);
 			$tax = $this->get_one($tax_id);
 
-			switch ( $tax->attribute_terms_sort_by ) {
-				case 'ID' :
-					if ( $tax->attribute_terms_sort_order == 'ASC' ) {
-						//usort($group, create_function('$a, $b', 'return ( $a->term_id == $b->term_id ) ? 0 : ( $a->term_id < $b->term_id ) ? -1 : 1;'));
-						usort($group, function($a, $b) {return ( $a->term_id == $b->term_id ) ? 0 : (( $a->term_id < $b->term_id ) ? -1 : 1);});
+			switch ($tax->attribute_terms_sort_by) {
+				case 'ID':
+					if ($tax->attribute_terms_sort_order == 'ASC') {
+						usort($group, function($a, $b) {
+							return ($a->term_id == $b->term_id) ? 0 : (($a->term_id < $b->term_id) ? -1 : 1);
+						});
 					} else {
-						//usort($group, create_function('$a, $b', 'return ( $a->term_id == $b->term_id ) ? 0 : ( $a->term_id < $b->term_id ) ? 1 : -1;'));
-						usort($group, function($a, $b) {return ( $a->term_id == $b->term_id ) ? 0 : (( $a->term_id < $b->term_id ) ? 1 : -1);});
+						usort($group, function($a, $b) {
+							return ($a->term_id == $b->term_id) ? 0 : (($a->term_id < $b->term_id) ? 1 : -1);
+						});
 					}
-				break;
+					break;
 
-				case 'ALPHA' :
-					if ( $tax->attribute_terms_sort_order == 'ASC' ) {
-						//usort($group, create_function('$a, $b', 'return ( $a->name == $b->name ) ? 0 : ( $a->name < $b->name ) ? -1 : 1;'));
-						usort($group, function($a, $b) {return ( $a->name == $b->name ) ? 0 : (( $a->name < $b->name ) ? -1 : 1);});
+				case 'ALPHA':
+					if ($tax->attribute_terms_sort_order == 'ASC') {
+						usort($group, function($a, $b) {
+							return ($a->name == $b->name) ? 0 : (($a->name < $b->name) ? -1 : 1);
+						});
 					} else {
-						//usort($group, create_function('$a, $b', 'return ( $a->name == $b->name ) ? 0 : ( $a->name < $b->name ) ? 1 : -1;'));
-						usort($group, function($a, $b) {return ( $a->name == $b->name ) ? 0 : (( $a->name < $b->name ) ? 1 : -1);});
+						usort($group, function($a, $b) {
+							return ($a->name == $b->name) ? 0 : (($a->name < $b->name) ? 1 : -1);
+						});
 					}
-				break;
+					break;
 
-				case 'CUSTOM' :
+				case 'CUSTOM':
 					$this->sort_terms_by_custom_order($group);
-				break;
+					break;
 			}
 		}
-
+		
 		return ( $grouping ) ? $groups : array_shift($groups);
 	}
-
+	
 	/**
 	 * Sort terms by custom order
 	 *
@@ -268,8 +272,9 @@ class MP_Product_Attributes {
 	 * @param array $terms
 	 */
 	public function sort_terms_by_custom_order( &$terms ) {
-		//usort($terms, create_function('$a, $b', 'return ( $a->term_order == $b->term_order ) ? 0 : ( $a->term_order < $b->term_order ) ? -1 : 1;'));
-		usort($terms, function($a, $b) {return ( $a->term_order == $b->term_order ) ? 0 : (( $a->term_order < $b->term_order ) ? -1 : 1);});
+		usort($terms, function($a, $b) {
+			return ($a->term_order == $b->term_order) ? 0 : (($a->term_order < $b->term_order) ? -1 : 1);
+		});		
 	}
 }
 

@@ -218,8 +218,7 @@ var mp_checkout;
             $checkout.find( '.mp_checkout_section_heading-link' ).on( 'click', function( e ) {
                 var $this = $( this );
                 var $section = $this.closest( '.mp_checkout_section' );
-                //var $current = $('.mp_form-checkout').find('.current');
-				var $current = $section.nextAll( '.current' );
+                var $current = $('.mp_form-checkout').find('.current');
 
                 if ( $current.length > 0 ) {
                     // section is before the current step - ok to proceed
@@ -261,7 +260,7 @@ var mp_checkout;
 
                     if ( $form.valid() ) {
                         var checkout_as_guest = false;
-                        if ($form.find('#is_checkout_as_guest').length > 0) {
+                        if ($form.find('#is_checkout_as_guest').size() > 0) {
                             checkout_as_guest = true;
                         }
 
@@ -318,14 +317,11 @@ var mp_checkout;
                                     } ).mptooltip( 'open' );
                                 }
                             } );
+                        } else if ( $form.find('.mp_checkout_section-login-register').hasClass('current') ) {
+                            // continue as guest to billing/shipping address
+                            marketpress.loadingOverlay( 'hide' );
+                            mp_checkout.nextStep();
                         } else {
-							// continue as guest to billing/shipping address
-							if ( $form.find('.mp_checkout_section-login-register').hasClass('current') ) {
-                                marketpress.loadingOverlay( 'hide' );
-                                mp_checkout.nextStep();
-                                return;
-							}
-
                             // continue to review/order payment
                             var url = mp_i18n.ajaxurl + '?action=mp_update_checkout_data';
                             marketpress.loadingOverlay( 'show' );
@@ -524,7 +520,7 @@ var mp_checkout;
             var $enableRegistration = $( 'input[name="enable_registration_form"]' );
 
             // Enable account registration fields
-            $enableRegistration.on("change",  mp_checkout.toggleRegistrationFields );
+            $enableRegistration.change( mp_checkout.toggleRegistrationFields );
         },
         /**
          * Initialize events related to shipping address fields
@@ -535,7 +531,7 @@ var mp_checkout;
             var $enableShippingAddress = $( 'input[name="enable_shipping_address"]' );
 
             // Enable billing address fields
-            $enableShippingAddress.on("change",  mp_checkout.toggleShippingAddressFields );
+            $enableShippingAddress.change( mp_checkout.toggleShippingAddressFields );
 
             // Copy billing field to shipping field (if shipping address isn't enabled)
             $( '[name^="billing["]' ).on( 'change keyup', function() {
@@ -580,18 +576,18 @@ var mp_checkout;
                 } );
                 var form = $(this).closest('form');
                 form.find('#is_checkout_as_guest').remove();
-                $( this ).closest( 'form' ).trigger("submit");
+                $( this ).closest( 'form' ).submit();
             } );
             //else, we have to remove the rules
             $( document ).on( 'click', '.mp_continue_as_guest', function( e ) {
                 $( 'input[name="mp_login_email"]' ).rules( 'remove' );
                 $( 'input[name="mp_login_password"]' ).rules( 'remove' );
                 var form = $(this).closest('form');
-                if (form.find('#is_checkout_as_guest').length == 0) {
+                if (form.find('#is_checkout_as_guest').size() == 0) {
                     form.append($('<input id="is_checkout_as_guest"/>'));
                 }
                 //$( '.mp_checkout_section_errors' ).hide();
-                $( this ).closest( 'form' ).trigger("submit");
+                $( this ).closest( 'form' ).submit();
             } )
             //our form is multiple next/pre button, so we unbind the enter trigger
             $( '#mp-checkout-form' ).on( 'keyup keypress', function( e ) {

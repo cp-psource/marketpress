@@ -7,6 +7,8 @@
 
 class MP_Gateway_Paymill extends MP_Gateway_API {
 
+	public $public_key;
+
 //build
 	var $build					 = 2;
 //private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
@@ -26,7 +28,7 @@ class MP_Gateway_Paymill extends MP_Gateway_API {
 //whether if this is the only enabled gateway it can skip the payment_form step
 	var $skip_form				 = false;
 //api vars
-	var $publishable_key, $private_key, $currency, $public_key;
+	var $publishable_key, $private_key, $currency;
 
 	/**
 	 * The gateway's currencies
@@ -143,9 +145,9 @@ class MP_Gateway_Paymill extends MP_Gateway_API {
 	 */
 
 	public function init_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'			 => $this->generate_metabox_id(),
-			'page_slugs'	 => array( 'shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments' ),
+			'page_slugs'	 => array( 'store-settings-payments', 'store-settings_page_store-settings-payments' ),
 			'title'			 => sprintf( __( '%s Settings', 'mp' ), $this->admin_name ),
 			'option_name'	 => 'mp_settings',
 			'desc'			 => __( "Accept Visa, Mastercard, Maestro UK, Discover and Solo cards directly on your site. You don't need a merchant account or gateway. Credit cards go directly to Paymill's secure environment, and never hit your servers so you can avoid most PCI requirements.", 'mp' ),
@@ -169,7 +171,7 @@ class MP_Gateway_Paymill extends MP_Gateway_API {
 			'desc'	 => __( 'You must login to Paymill to <a target="_blank" href="https://app.paymill.com/en-gb/auth/login">get your API credentials</a>. You can enter your test keys, then live ones when ready.', 'mp' ),
 		) );
 
-		if ( $creds instanceof PSOURCE_Field ) {
+		if ( $creds instanceof WPMUDEV_Field ) {
 			$creds->add_field( 'text', array(
 				'name'		 => 'private_key',
 				'label'		 => array( 'text' => __( 'Private Key', 'mp' ) ),
@@ -295,7 +297,7 @@ class MP_Gateway_Paymill extends MP_Gateway_API {
 	 * INS and payment return
 	 */
 	function process_ipn_return() {
-
+		
 	}
 
 	function print_checkout_scripts() {

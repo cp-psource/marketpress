@@ -4,7 +4,7 @@ class MP_Short_Codes {
 
 	/**
 	 * Refers to a single instance of the class
-	 *12.3.20 alles fein DN
+	 *
 	 * @since 3.0
 	 * @access private
 	 * @var object
@@ -100,7 +100,7 @@ class MP_Short_Codes {
 		// JS.
 		wp_register_script( 'hover-intent', mp_plugin_url( 'ui/js/hoverintent.min.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_register_script( 'mp-select2', mp_plugin_url( 'ui/select2/select2.js' ), array( 'jquery' ), MP_VERSION, true );
-		wp_register_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox.js' ), array( 'jquery' ), MP_VERSION, true );
+		wp_register_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox-min.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_enqueue_script( 'mp-frontend', mp_plugin_url( 'ui/js/frontend.js' ), array( 'jquery-ui-tooltip', 'colorbox', 'hover-intent', 'mp-select2', 'jquery-validate' ), MP_VERSION, true );
 
 		$grid_with_js = apply_filters('mp-do_grid_with_js', true);
@@ -123,41 +123,41 @@ class MP_Short_Codes {
 			'productsURL'  => mp_store_page_url( 'products', false ),
 			'productCats'  => $cats,
 			'validation'   => array(
-				'required'    => __( 'Dieses Feld wird benötigt.', 'mp' ),
-				'remote'      => __( 'Korrigiere dieses Feld.', 'mp' ),
-				'email'       => __( 'Gib bitte eine gültige EMail Adresse an.', 'mp' ),
-				'url'         => __( 'Ungültige URL.', 'mp' ),
-				'date'        => __( 'Ungültiges Datum.', 'mp' ),
-				'dateISO'     => __( 'Bitte gültiges Datum eingeben (ISO).', 'mp' ),
-				'number'      => __( 'Bitte gib eine gültige Nummer ein.', 'mp' ),
-				'digits'      => __( 'Nur Zahlen erlaubt.', 'mp' ),
-				'creditcard'  => __( 'Ungültige Kreditkarten Nummer.', 'mp' ),
-				'equalTo'     => __( 'Den gleichen Wert erneut eingeben.', 'mp' ),
-				'accept'      => __( 'Wert mit einer gültigen Erweiterung eingeben.', 'mp' ),
-				'maxlength'   => __( 'Maximal {0} Zeichen.', 'mp' ),
-				'minlength'   => __( 'Mindestens {0} Zeichen.', 'mp' ),
-				'rangelength' => __( 'Zwischen {0} und {1} Zeichen eingeben.', 'mp' ),
-				'range'       => __( 'Eingabe von {0} bis {1} Zeichen.', 'mp' ),
-				'max'         => __( 'Wert kleiner oder gleich {0} eingeben.', 'mp' ),
-				'min'         => __( 'Wert größer oder gleich {0} eingeben.', 'mp' ),
+				'required'    => __( 'This field is required.', 'mp' ),
+				'remote'      => __( 'Please fix this field.', 'mp' ),
+				'email'       => __( 'Please enter a valid email address.', 'mp' ),
+				'url'         => __( 'Please enter a valid URL.', 'mp' ),
+				'date'        => __( 'Please enter a valid date.', 'mp' ),
+				'dateISO'     => __( 'Please enter a valid date (ISO).', 'mp' ),
+				'number'      => __( 'Please enter a valid number.', 'mp' ),
+				'digits'      => __( 'Please enter only digits.', 'mp' ),
+				'creditcard'  => __( 'Please enter a valid credit card number.', 'mp' ),
+				'equalTo'     => __( 'Please enter the same value again.', 'mp' ),
+				'accept'      => __( 'Please enter a value with a valid extension.', 'mp' ),
+				'maxlength'   => __( 'Please enter no more than {0} characters.', 'mp' ),
+				'minlength'   => __( 'Please enter at least {0} characters.', 'mp' ),
+				'rangelength' => __( 'Please enter a value between {0} and {1} characters long.', 'mp' ),
+				'range'       => __( 'Please enter a value between {0} and {1}.', 'mp' ),
+				'max'         => __( 'Please enter a value less than or equal to {0}.', 'mp' ),
+				'min'         => __( 'Please enter a value greater than or equal to {0}.', 'mp' ),
 			),
 		) );
 
 		// Styles
-		wp_enqueue_style( 'colorbox', mp_plugin_url( 'ui/css/colorbox.css' ), false, /*MP_VERSION*/ );
+		wp_enqueue_style( 'colorbox', mp_plugin_url( 'ui/css/colorbox.css' ), false, MP_VERSION );
 
 		// Scripts
 		wp_register_script( 'jquery-validate', mp_plugin_url( 'ui/js/jquery.validate.min.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_register_script( 'jquery-validate-methods', mp_plugin_url( 'ui/js/jquery.validate.methods.min.js' ), array( 'jquery-validate' ), MP_VERSION, true );
 		wp_register_script( 'ajaxq', mp_plugin_url( 'ui/js/ajaxq.min.js' ), array( 'jquery' ), MP_VERSION, true );
-		wp_register_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox.js' ), array( 'jquery' ), MP_VERSION, true );
+		wp_register_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox-min.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_enqueue_script( 'mp-cart', mp_plugin_url( 'ui/js/mp-cart.js' ), array( 'ajaxq', 'colorbox', 'jquery-validate' ), MP_VERSION, true );
 
 		// Localize scripts
 		wp_localize_script( 'mp-cart', 'mp_cart_i18n', array(
 			'ajaxurl'                  => mp_get_ajax_url(),
-			'ajax_loader'              => '<span class="mp_ajax_loader"><img src="' . mp_plugin_url( 'ui/images/ajax-loader.gif' ) . '" alt=""> ' . __( 'Hinzufügen...', 'mp' ) . '</span>',
-			'cart_updated_error_limit' => __( 'Warenkorbaktualisierungshinweis: Dieses Produkt hat ein Limit pro Bestellung oder das Lagerlimit (SKU) wurde erreicht.', 'mp' ),
+			'ajax_loader'              => '<span class="mp_ajax_loader"><img src="' . mp_plugin_url( 'ui/images/ajax-loader.gif' ) . '" alt=""> ' . __( 'Adding...', 'mp' ) . '</span>',
+			'cart_updated_error_limit' => __( 'Cart update notice: this item has a limit per order or you have reached the stock limit.', 'mp' ),
 			'is_cart_page'             => mp_is_shop_page( 'cart' ),
 		) );
 	}
@@ -216,7 +216,7 @@ class MP_Short_Codes {
 		$atts = shortcode_atts( array(
 			'echo' => false
 		), $atts );
-
+		
 		return mp_order_status( $atts );
 	}
 
@@ -231,7 +231,7 @@ class MP_Short_Codes {
 		$atts = shortcode_atts( array(
 			'echo' => false
 		), $atts );
-
+		
 		return mp_checkout()->display( $atts );
 	}
 
@@ -246,7 +246,7 @@ class MP_Short_Codes {
 		$atts = shortcode_atts( array(
 			'echo' => false
 		), $atts );
-
+		
 		return MP_Cart::get_instance()->display( $atts );
 	}
 
@@ -406,7 +406,7 @@ class MP_Short_Codes {
 	/**
 	 * Displays related products for the passed product id
 	 *
-	 * @param int $product_id.
+	 * @param int $product_id. 
 	 * @param string $relate_by Optional, whether to limit related to the same category, tags or both.
 	 * @param bool $echo. Optional, whether to echo or return the results
 	 * @param int $limit. Optional The number of products we want to retrieve.
@@ -427,7 +427,7 @@ class MP_Short_Codes {
 			$product			 = new MP_Product( $product_id );
 			$related_products	 = '<div id="mp-related-products" class="mp-multiple-products"><div class="mp_product_tab_content_products mp_products mp_products-related mp_products-list">' . $product->related_products( $args ) . '</div></div>';
 		} else {
-			$related_products = __( 'Produkt ID muss definiert sein', 'mp' );
+			$related_products = __( 'product_id must be defined', 'mp' );
 		}
 		return $related_products;
 	}
@@ -457,7 +457,7 @@ class MP_Short_Codes {
 
 	/*
 	 * Displays a single product according to preference
-	 *
+	 * 
 	 * @param int $product_id the ID of the product to display
 	 * @param bool $title Whether to display the title
 	 * @param bool/string $content Whether and what type of content to display. Options are false, 'full', or 'excerpt'. Default 'full'
@@ -596,7 +596,7 @@ class MP_Short_Codes {
 
 		return mp_product_sku( false, $product_id, $seperator );
 	}
-
+	
 	/*
 	 * Displays the product stock quantity
 	 *
@@ -610,11 +610,11 @@ class MP_Short_Codes {
 		$atts	 = $this->_parse_atts( $atts );
 
 		extract( $atts );
-
+		
 		$product = new MP_Product( $product_id );
-
+		
 		$variations = $product->get_variations();
-
+		
 		if ( $product->has_variations() ) {
 			$stock = 0;
 			foreach ( $variations as $variation ) {
@@ -628,12 +628,12 @@ class MP_Short_Codes {
 		} else {
 			$stock = $product->get_meta( 'inventory', '&mdash;' );
 		}
-
+		
 		if( $stock == '&mdash;' ) {
-			return __( 'Unlimitierter Lagerstand', 'mp' );
+			return __( 'Unlimited stock', 'mp' );
 		}
-
-		return sprintf( __( 'Noch %s im Inventar...', 'mp' ), $stock );
+		
+		return sprintf( __( 'Only %s left in stock...', 'mp' ), $stock );
 	}
 
 	/**

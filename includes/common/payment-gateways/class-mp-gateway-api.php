@@ -103,7 +103,7 @@ if ( !class_exists( 'MP_Gateway_API' ) ) :
 				if (is_multisite() && mp_get_network_setting( 'global_cart' ) && $code == $gateways ) {
 					self::$_active_gateways[ $code ] = new $class;
 				} else {
-					if ( is_admin() && ( 'shop-einstellungen-payments' == mp_get_get_value( 'page' ) || 'store-setup-wizard' == mp_get_get_value( 'page' ) ) ) {
+					if ( is_admin() && ( 'store-settings-payments' == mp_get_get_value( 'page' ) || 'store-setup-wizard' == mp_get_get_value( 'page' ) ) ) {
 						// load all gateways when in admin or quicksetup
 						self::$_active_gateways[ $code ] = new $class;
 					} elseif ( mp_arr_get_value( "allowed->{$code}", $gateways ) ) {
@@ -112,7 +112,7 @@ if ( !class_exists( 'MP_Gateway_API' ) ) :
 				}
 			}
 
-			if ( 'shop-einstellungen-payments' !== mp_get_get_value( 'page' ) ) {
+			if ( 'store-settings-payments' !== mp_get_get_value( 'page' ) ) {
 				self::$_active_gateways['free_orders'] = new MP_Gateway_FREE_Orders();
 			}
 		}
@@ -207,7 +207,7 @@ if ( !class_exists( 'MP_Gateway_API' ) ) :
 				( function( $ ) {
 					$( document ).on( 'mp_checkout_process_<?php echo $this->plugin_name; ?>', function( e, $form ) {
 						marketpress.loadingOverlay( 'show' );
-						$form.get( 0 ).trigger("submit");
+						$form.get( 0 ).submit();
 
 					} );
 				}( jQuery ) );
@@ -300,8 +300,7 @@ if ( !class_exists( 'MP_Gateway_API' ) ) :
 		 * @access protected
 		 */
 		protected function _generate_ipn_url() {
-			$ipn_url = admin_url( 'admin-ajax.php?action=mp_process_ipn_return_' . $this->plugin_name );
-			$this->ipn_url = apply_filters( 'mp_gateway_api/ipn_url', $ipn_url, $this->plugin_name );
+			$this->ipn_url = admin_url( 'admin-ajax.php?action=mp_process_ipn_return_' . $this->plugin_name );
 		}
 
 		/**

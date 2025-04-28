@@ -37,7 +37,7 @@
 
 			if ( $table.length == 0 ) {
 				$form.find('.form-table').hide();
-				$.colorbox.trigger("resize");
+				$.colorbox.resize();
 				return; // bail
 			}
 

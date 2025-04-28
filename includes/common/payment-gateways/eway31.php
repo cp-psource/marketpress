@@ -5,19 +5,9 @@ Author: Mariusz Maniu (Incsub)
 */
 
 class MP_Gateway_eWay31 extends MP_Gateway_API {
-	/**
-	 * @var string
-	 */
+
 	public $returnURL;
-
-	/**
-	 * @var string
-	 */
 	public $UserAPIKey;
-
-	/**
-	 * @var string
-	 */
 	public $UserPassword;
 	/**
 	 * Build of the gateway plugin
@@ -99,7 +89,7 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 	 * @var string
 	 */
 	var $skip_form = false;
-
+	
 	/**
 	 * The gateway's currencies
 	 *
@@ -118,7 +108,7 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 		'SGD' => 'SGD - Singapore Dollar',
 		'USD' => 'USD - U.S. Dollar'
 	);
-
+	
 	/**
 	 * The gateway's error code mappings
 	 *
@@ -264,7 +254,7 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 		'D4493' => 'Cannot Complete, Violation Of The Law',
 		'D4494' => 'Duplicate Transaction',
 		'D4496' => 'System Error',
-	);
+	);		
 
 
 	/****** Below are the public methods you may overwrite via a plugin ******/
@@ -279,12 +269,12 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 		//set names here to be able to translate
 		$this->admin_name = __('eWay Rapid 3.1 Payments (beta)', 'mp');
 		$this->public_name = __('Credit Card', 'mp');
-
+		
 		$this->method_img_url = mp_plugin_url('images/credit_card.png');
 		$this->method_button_img_url = mp_plugin_url('images/cc-button.png');
-
+		
 		$this->returnURL = mp_checkout_step_url('confirmation');
-
+		
 		//sets eway api settings
 		if ( $this->get_setting('mode') == 'rapid30live' ) {
 			$this->UserAPIKey =  $this->get_setting('api_credentials->live->api_key');
@@ -309,7 +299,7 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 	function payment_form( $cart, $shipping_info ) {
 		return $this->_cc_default_form();
 	}
-
+	
 	/**
 	 * Use this to do the final payment. Create the order then process the payment. If
 	 * you know the payment is successful right away go ahead and change the order status
@@ -321,21 +311,21 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 	 */
 	function process_payment( $cart, $billing_info, $shipping_info ) {
 		$timestamp = time();
-
+		
 		$order = new MP_Order();
 		$order_id = $order->get_id();
 		$total = $cart->total( false );
 		$product_count = 0;
 		$amount = number_format( round( $total, 2 ), 2, '.', '');
-
+			
 		require_once mp_plugin_dir( 'includes/common/payment-gateways/eway/RapidAPI.php' );
 
 		$eway_service = new RapidAPI( $this->UserAPIKey, $this->UserPassword, array( 'sandbox' => ( $this->get_setting( 'mode' ) == 'rapid30sandbox' ) ) );
-
+	
 		// Create AccessCode Request Object
 		$request = new CreateDirectPaymentRequest();
 		$request->Customer->Reference = 'MarketPress';
-
+		
 		// Card Info
 		$exp = explode( '/', mp_get_post_value( 'mp_cc_exp', '' ) );
     $request->Customer->CardDetails->Name = mp_arr_get_value( 'first_name', $billing_info ) . ' ' . mp_arr_get_value( 'last_name', $billing_info );
@@ -348,49 +338,49 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 		$request->Customer->FirstName = mp_arr_get_value( 'first_name', $billing_info );
 		$request->Customer->LastName = mp_arr_get_value( 'last_name', $billing_info );
 		$request->Customer->Street1 = mp_arr_get_value( 'address1', $billing_info );
-
+		
 		if ( $address2 = mp_arr_get_value( 'address2', $billing_info ) ) {
 			$request->Customer->Street2 = mp_arr_get_value('address2', $billing_info);
 		}
-
-		$request->Customer->Phone = mp_arr_get_value( 'phone', $billing_info );
+		
+		$request->Customer->Phone = mp_arr_get_value( 'phone', $billing_info );	
 		$request->Customer->City = mp_arr_get_value( 'city', $billing_info );
 		$request->Customer->State = mp_arr_get_value( 'state', $billing_info );
 		$request->Customer->PostalCode = mp_arr_get_value( 'zip', $billing_info );
-		$request->Customer->Country = mp_arr_get_value( 'country', $billing_info );
+		$request->Customer->Country = mp_arr_get_value( 'country', $billing_info );		
 		$request->Customer->Email = mp_arr_get_value( 'email', $shipping_info );
 		$request->Customer->Mobile = '';
 
-		if ( ! $cart->is_download_only() && mp_get_setting( 'shipping->method' ) != 'none' && mp_get_post_value( 'enable_shipping_address' ) ) {
+		if ( ! $cart->is_download_only() && mp_get_setting( 'shipping->method' ) != 'none' && mp_get_post_value( 'enable_shipping_address' ) ) {	
 			$request->ShippingAddress->FirstName = mp_arr_get_value( 'first_name', $billing_info );
 			$request->ShippingAddress->LastName = mp_arr_get_value( 'last_name', $billing_info );
 			$request->ShippingAddress->Street1 = mp_arr_get_value( 'address1', $billing_info );
-
+			
 			if ( $address2 = mp_arr_get_value( 'address2', $billing_info ) ) {
 				$request->ShippingAddress->Street2 = mp_arr_get_value('address2', $billing_info);
 			}
-
-			$request->ShippingAddress->Phone = mp_arr_get_value( 'phone', $billing_info );
+			
+			$request->ShippingAddress->Phone = mp_arr_get_value( 'phone', $billing_info );	
 			$request->ShippingAddress->City = mp_arr_get_value( 'city', $billing_info );
 			$request->ShippingAddress->State = mp_arr_get_value( 'state', $billing_info );
 			$request->ShippingAddress->PostalCode = mp_arr_get_value( 'zip', $billing_info );
-			$request->ShippingAddress->Country = mp_arr_get_value( 'country', $billing_info );
+			$request->ShippingAddress->Country = mp_arr_get_value( 'country', $billing_info );		
 			$request->ShippingAddress->Email = mp_arr_get_value( 'email', $shipping_info );
 			$request->ShippingAddress->ShippingMethod = 'Unknown';
 		}
-
-
+		
+	
 		$request->Payment->TotalAmount = ($total * 100);
 		$request->Payment->InvoiceNumber = $order_id;
 		$request->Payment->InvoiceDescription = '';
 		$request->Payment->InvoiceReference = '';
 		$request->Payment->CurrencyCode = $this->get_setting( 'Currency' );
-
+	
 		$request->Method = 'ProcessPayment';
-
+	
 		//Call RapidAPI
 		$result = $eway_service->DirectPayment( $request );
-
+	
 		if ( isset( $result->Errors ) ) {
 			//Get Error Messages from Error Code. Error Code Mappings are in the Config.ini file
 			$ErrorArray = explode(',', trim( $result->Errors ) );
@@ -403,7 +393,7 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 				}
 			}
 		}
-
+	
 		if ( $isError ) {
 			mp_checkout()->add_error( $lblError, 'order-review-payment' );
 		} else {
@@ -415,18 +405,18 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 			$payment_info['total'] = $amount;
 			$payment_info['currency'] = $this->get_setting( 'Currency' );
 			$payment_info['transaction_id'] = $result->TransactionID;
-
+	  
 			$order->save( array(
 				'cart' => $cart,
 				'payment_info' => $payment_info,
 				'paid' => true,
 			) );
-
+			
 			wp_redirect( $order->tracking_url( false ) );
 			exit;
 		}
 	}
-
+	
   /**
    * Updates the gateway settings
    *
@@ -437,27 +427,27 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
    */
   public function update( $settings ) {
   	$settings = get_option('mp_settings');
-
+  	
   	if ( $api_key = $this->get_setting('UserAPIKeyLive') ) {
 	  	mp_push_to_array($settings, 'api_credentials->live->api_key', $api_key);
 	  	unset($settings['gateways']['eway30']['UserAPIKeyLive']);
   	}
-
+  	
   	if ( $api_pass = $this->get_setting('UserPasswordLive') ) {
 	  	mp_push_to_array($settings, 'api_credentials->live->api_pass', $api_key);
 	  	unset($settings['gateways']['eway30']['UserPasswordLive']);
   	}
-
+  	
   	if ( $api_key = $this->get_setting('UserAPIKeySandbox') ) {
 	  	mp_push_to_array($settings, 'api_credentials->sandbox->api_key', $api_key);
 	  	unset($settings['gateways']['eway30']['UserAPIKeySandbox']);
   	}
-
+  	
   	if ( $api_pass = $this->get_setting('UserPasswordSandbox') ) {
 	  	mp_push_to_array($settings, 'api_credentials->sandbox->api_pass', $api_key);
 	  	unset($settings['gateways']['eway30']['UserPasswordSandbox']);
   	}
-
+  	
   	return $settings;
   }
 
@@ -468,9 +458,9 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
    * @access public
    */
   public function init_settings_metabox() {
-  	$metabox = new PSOURCE_Metabox(array(
+  	$metabox = new WPMUDEV_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
+			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('eWay Rapid 3.0 Payments lets merchants recieve credit card payments through eWay without need for users to leave the shop. Note this gateway requires a valid SSL certificate configured for this site.', 'mp'),
@@ -506,8 +496,8 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 				'action' => 'show',
 			),
 		));
-
-		if ( $api_creds instanceof PSOURCE_Field ) {
+		
+		if ( $api_creds instanceof WPMUDEV_Field ) {
 			$api_creds->add_field('text', array(
 				'name' => 'api_key',
 				'label' => array('text' => __('API Key', 'mp')),
@@ -523,7 +513,7 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 				),
 			));
 		}
-
+		
 		$api_creds = $metabox->add_field('complex', array(
 			'name' => $this->get_field_name('api_credentials->sandbox'),
 			'label' => array('text' => __('Sandbox API Credentials', 'mp')),
@@ -533,8 +523,8 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 				'action' => 'show',
 			),
 		));
-
-		if ( $api_creds instanceof PSOURCE_Field ) {
+		
+		if ( $api_creds instanceof WPMUDEV_Field ) {
 			$api_creds->add_field('text', array(
 				'name' => 'api_key',
 				'label' => array('text' => __('API Key', 'mp')),

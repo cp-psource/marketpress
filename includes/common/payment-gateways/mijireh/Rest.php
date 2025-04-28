@@ -13,7 +13,7 @@ class Mijireh_Rest {
 
 	public $curl_opts		 = array(
 		CURLOPT_RETURNTRANSFER	 => true, // return result instead of echoing
-		CURLOPT_SSL_VERIFYPEER	 => true, // stop cURL from verifying the peer's certificate
+		CURLOPT_SSL_VERIFYPEER	 => false, // stop cURL from verifying the peer's certificate
 		CURLOPT_MAXREDIRS		 => 10  // but don't redirect more than 10 times
 	);
 	public $base_url;
@@ -225,69 +225,69 @@ class Mijireh_Rest {
 }
 
 class Mijireh_Rest_Exception extends Exception {
-
+	
 }
 
 class Mijireh_Rest_UnknownResponse extends Mijireh_Rest_Exception {
-
+	
 }
 
 /* 401-499 */
 
 class Mijireh_Rest_ClientError extends Mijireh_Rest_Exception {
-
+	
 }
 
 /* 400 */
 
 class Mijireh_Rest_BadRequest extends Mijireh_Rest_ClientError {
-
+	
 }
 
 /* 401 */
 
 class Mijireh_Rest_Unauthorized extends Mijireh_Rest_ClientError {
-
+	
 }
 
 /* 403 */
 
 class Mijireh_Rest_Forbidden extends Mijireh_Rest_ClientError {
-
+	
 }
 
 /* 404 */
 
 class Mijireh_Rest_NotFound extends Mijireh_Rest_ClientError {
-
+	
 }
 
 /* 405 */
 
 class Mijireh_Rest_MethodNotAllowed extends Mijireh_Rest_ClientError {
-
+	
 }
 
 /* 409 */
 
 class Mijireh_Rest_Conflict extends Mijireh_Rest_ClientError {
-
+	
 }
 
 /* 410 */
 
 class Mijireh_Rest_Gone extends Mijireh_Rest_ClientError {
-
+	
 }
 
 /* 422 */
 
 class Mijireh_Rest_InvalidRecord extends Mijireh_Rest_ClientError {
-
+	
 }
 
 /* 500-599 */
 
 class Mijireh_Rest_ServerError extends Mijireh_Rest_Exception {
-
+	
 }

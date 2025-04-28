@@ -286,7 +286,7 @@ class MP_Setup_Wizard {
 		}
 		?>
 		<div class="error">
-			<p><?php printf( __( 'MarketPress Einrichtung ist noch nicht abgeschlossen! <a class="button button-primary" href="%s">Setup Assistent starten</a>', 'mp' ), admin_url( 'admin.php?page=store-setup-wizard' ) ); ?></p>
+			<p><?php printf( __( 'MarketPress setup is not complete! <a class="button button-primary" href="%s">Run setup wizard</a>', 'mp' ), admin_url( 'admin.php?page=store-setup-wizard' ) ); ?></p>
 		</div>
 		<?php
 	}
@@ -298,10 +298,10 @@ class MP_Setup_Wizard {
 	 * @access public
 	 */
 	public function init_metaboxes() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'                 => 'mp-quick-setup-wizard',
 			'page_slugs'         => array( 'store-setup-wizard' ),
-			'title'              => __( 'Schnelleinrichtung', 'mp' ),
+			'title'              => __( 'Quick Setup', 'mp' ),
 			'option_name'        => 'mp_settings',
 			'show_submit_button' => false,
 		) );
@@ -309,7 +309,7 @@ class MP_Setup_Wizard {
 		$metabox->add_field( 'quick_setup', array(
 			'name'    => 'quick_setup',
 			'label'   => '',
-			'message' => __( 'Schnelleinrichtung', 'mp' ),
+			'message' => __( 'Quick Setup', 'mp' ),
 			'class'   => 'mp_quick_setup',
 		) );
 
@@ -318,10 +318,10 @@ class MP_Setup_Wizard {
 		if ( isset( $quick_setup_step ) ) {
 
 			/* Store Location */
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'                 => 'mp-quick-setup-wizard-location',
 				'page_slugs'         => array( 'store-setup-wizard' ),
-				'title'              => __( 'Standort', 'mp' ),
+				'title'              => __( 'Location', 'mp' ),
 				'option_name'        => 'mp_settings',
 				'show_submit_button' => false,
 				'ajax_save'          => true
@@ -329,10 +329,10 @@ class MP_Setup_Wizard {
 
 			$metabox->add_field( 'advanced_select', array(
 				'name'        => 'base_country',
-				'placeholder' => __( 'Land wählen', 'mp' ),
+				'placeholder' => __( 'Select a Country', 'mp' ),
 				'multiple'    => false,
-				'label'       => array( 'text' => __( 'Standortland', 'mp' ) ),
-				'options'     => array( '' => __( 'Wähle ein Land', 'mp' ) ) + mp_countries(),
+				'label'       => array( 'text' => __( 'Base Country', 'mp' ) ),
+				'options'     => array( '' => __( 'Select A Country', 'mp' ) ) + mp_countries(),
 				'width'       => 'element',
 				'validation'  => array(
 					'required' => true,
@@ -349,9 +349,9 @@ class MP_Setup_Wizard {
 			}
 			$metabox->add_field( 'advanced_select', array(
 				'name'        => 'base_province',
-				'placeholder' => __( 'Wähle Dein Bundesland', 'mp' ),
+				'placeholder' => __( 'Select a State/Province/Region', 'mp' ),
 				'multiple'    => false,
-				'label'       => array( 'text' => __( 'Standort Bundesland', 'mp' ) ),
+				'label'       => array( 'text' => __( 'Base State/Province/Region', 'mp' ) ),
 				'options'     => $states,
 				'width'       => 'element',
 				'conditional' => array(
@@ -364,23 +364,12 @@ class MP_Setup_Wizard {
 				),
 			) );
 
-			$metabox->add_field( 'text', array(
-				'name'		 => 'base_adress',
-				'label'		 => array( 'text' => __( 'Straße, Hausnummer', 'mp' ) ),
-				'custom'	 => array(
-					'style' => 'width:300px',
-				),
-				'validation' => array(
-					'required' => true,
-				),
-			) );
-	
 			$countries_without_postcode = array_keys( mp()->countries_no_postcode );
 			$metabox->add_field( 'text', array(
-				'name'			 => 'base_zip',
-				'label'			 => array( 'text' => __( 'Postleitzahl', 'mp' ) ),
-				'style'			 => 'width:250px;',
-				'custom'		 => array(
+				'name'        => 'base_zip',
+				'label'       => array( 'text' => __( 'Base Zip/Postal Code', 'mp' ) ),
+				'style'       => 'max-width: 150px;',
+				'custom'      => array(
 					'minlength' => 3,
 				),
 				'conditional'	 => array(
@@ -388,18 +377,7 @@ class MP_Setup_Wizard {
 					'value'	 => $countries_without_postcode,
 					'action' => 'hide',
 				),
-				'validation'	 => array(
-					'required' => true,
-				),
-			) );
-
-			$metabox->add_field( 'text', array(
-				'name'		 => 'base_city',
-				'label'		 => array( 'text' => __( 'Stadt/Ort', 'mp' ) ),
-				'custom'	 => array(
-					'style' => 'width:300px',
-				),
-				'validation' => array(
+				'validation'  => array(
 					'required' => true,
 				),
 			) );
@@ -415,11 +393,12 @@ class MP_Setup_Wizard {
 				),
 			) );
 
+
 			/* Sale to countries */
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'          => 'mp-quick-setup-wizard-countries',
 				'page_slugs'  => array( 'store-setup-wizard' ),
-				'title'       => __( 'Länder', 'mp' ),
+				'title'       => __( 'Countries', 'mp' ),
 				'option_name' => 'mp_settings',
 				'order'       => 1,
 			) );
@@ -427,32 +406,34 @@ class MP_Setup_Wizard {
 			// Target Countries
 			$metabox->add_field( 'advanced_select', array(
 				'name'                   => 'shipping[allowed_countries]',
-				'label'                  => array( 'text' => __( 'Zielländer', 'mp' ) ),
-				'desc'                   => __( 'In diese Länder wirst Du verkaufen.', 'mp' ),
-				'options'                => mp_popular_country_list() + array( 'all_countries' => __( 'Alle Länder', 'mp' ) ) + mp_country_list(),
+				'label'                  => array( 'text' => __( 'Target Countries', 'mp' ) ),
+				'desc'                   => __( 'These are the countries that you will ship to.', 'mp' ),
+				'options'                => mp_popular_country_list() + array( 'all_countries' => __( 'All Countries', 'mp' ) ) + mp_country_list(),
 				//all_countries|disabled
-				//'default_value'          => array( 'all_countries' => __( 'Alle Länder', 'mp' ) ),
-				'placeholder'            => __( 'Wähle Zielländer', 'mp' ),
-				/*
+				'default_value'          => array( 'all_countries' => __( 'All Countries', 'mp' ) ),
+				'placeholder'            => __( 'Choose Countries', 'mp' ),
 				'format_dropdown_header' => '
 				<ul class="select2-all-none">
-					<li class="select2-none">' . __( 'Keine', 'mp' ) . '</li>
-					<li class="select2-all">' . __( 'Alle', 'mp' ) . '</li>
+					<li class="select2-none">' . __( 'None', 'mp' ) . '</li>
+					<li class="select2-all">' . __( 'All', 'mp' ) . '</li>
 					<li class="select2-eu" data-countries="' . implode( ',', mp()->eu_countries ) . '">' . __( 'EU', 'mp' ) . '</li>
 				</ul>',
-				*/
+				'validation'             => array(
+					'required' => true,
+				),
 			) );
 
+
 			/* Currency options */
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'          => 'mp-quick-setup-wizard-currency',
 				'page_slugs'  => array( 'store-setup-wizard' ),
-				'title'       => __( 'Währungseinstellungen', 'mp' ),
+				'title'       => __( 'Currency Settings', 'mp' ),
 				'option_name' => 'mp_settings',
 			) );
 
 			$currencies = mp()->currencies;
-			$options    = array( '' => __( 'Wähle Deine Währung', 'mp' ) );
+			$options    = array( '' => __( 'Select a Currency', 'mp' ) );
 
 			foreach ( $currencies as $key => $value ) {
 				$options[ $key ] = esc_attr( $value[0] ) . ' - ' . mp_format_currency( $key );
@@ -460,44 +441,43 @@ class MP_Setup_Wizard {
 
 			$metabox->add_field( 'advanced_select', array(
 				'name'        => 'currency',
-				'placeholder' => __( 'Währung wählen', 'mp' ),
+				'placeholder' => __( 'Select a Currency', 'mp' ),
 				'multiple'    => false,
-				'label'       => array( 'text' => __( 'Shopwährung', 'mp' ) ),
+				'label'       => array( 'text' => __( 'Store Currency', 'mp' ) ),
 				'options'     => $options,
 				'width'       => 'element',
 			) );
-
 			$metabox->add_field( 'radio_group', array(
 				'name'          => 'curr_symbol_position',
-				'label'         => array( 'text' => __( 'Position des Währungssymbols', 'mp' ) ),
-				'default_value' => '3',
+				'label'         => array( 'text' => __( 'Currency Symbol Position', 'mp' ) ),
+				'default_value' => '1',
 				'orientation'   => 'horizontal',
 				'options'       => array(
-					'1' => '<span class="mp-currency-symbol">' . mp_format_currency( mp_get_setting( 'currency', 'EUR' ) ) . '</span>100',
-					'2' => '<span class="mp-currency-symbol">' . mp_format_currency( mp_get_setting( 'currency', 'EUR' ) ) . '</span> 100',
-					'3' => '100<span class="mp-currency-symbol">' . mp_format_currency( mp_get_setting( 'currency', 'EUR' ) ) . '</span>',
-					'4' => '100 <span class="mp-currency-symbol">' . mp_format_currency( mp_get_setting( 'currency', 'EUR' ) ) . '</span>',
+					'1' => '<span class="mp-currency-symbol">' . mp_format_currency( mp_get_setting( 'currency', 'USD' ) ) . '</span>100',
+					'2' => '<span class="mp-currency-symbol">' . mp_format_currency( mp_get_setting( 'currency', 'USD' ) ) . '</span> 100',
+					'3' => '100<span class="mp-currency-symbol">' . mp_format_currency( mp_get_setting( 'currency', 'USD' ) ) . '</span>',
+					'4' => '100 <span class="mp-currency-symbol">' . mp_format_currency( mp_get_setting( 'currency', 'USD' ) ) . '</span>',
 				),
 			) );
 
 
 			/* Tax options */
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'          => 'mp-quick-setup-wizard-tax',
 				'page_slugs'  => array( 'store-setup-wizard' ),
-				'title'       => __( 'Steuer Einstellungen', 'mp' ),
+				'title'       => __( 'Tax Settings', 'mp' ),
 				'option_name' => 'mp_settings',
 			) );
 
 			$metabox->add_field( 'text', array(
 				'name'        => 'tax[rate]',
-				'label'       => array( 'text' => __( 'Standard Steuerrate', 'mp' ) ),
+				'label'       => array( 'text' => __( 'Default Tax Rate', 'mp' ) ),
 				'after_field' => '%',
 				'style'       => 'max-width:75px',
 				'validation'  => array(
 					'number' => true,
 				),
-				'placeholder' => '20',
+				'placeholder' => '10',
 				'conditional' => array(
 					'name'   => 'base_country',
 					'value'  => 'CA',
@@ -510,7 +490,7 @@ class MP_Setup_Wizard {
 				$metabox->add_field( 'text', array(
 					'name'        => 'tax[canada_rate][' . $key . ']',
 					'desc'        => '<a target="_blank" href="http://en.wikipedia.org/wiki/Sales_taxes_in_Canada">' . __( 'Current Rates', 'mp' ) . '</a>',
-					'label'       => array( 'text' => sprintf( __( '%s Steuersatz', 'mp' ), $label ) ),
+					'label'       => array( 'text' => sprintf( __( '%s Tax Rate', 'mp' ), $label ) ),
 					'custom'      => array( 'style' => 'width:75px' ),
 					'after_field' => '%',
 					'conditional' => array(
@@ -523,54 +503,54 @@ class MP_Setup_Wizard {
 
 			$metabox->add_field( 'text', array(
 				'name'        => 'tax[label]',
-				'label'       => array( 'text' => __( 'Steuerbezeichnung', 'mp' ) ),
+				'label'       => array( 'text' => __( 'Tax Label', 'mp' ) ),
 				'style'       => 'max-width: 300px',
-				'placeholder' => __( 'Z.B. Steuer, VAT, GST, etc', 'mp' )
+				'placeholder' => __( 'I.e. Taxes, VAT, GST, etc', 'mp' )
 			) );
 			$metabox->add_field( 'checkbox', array(
 				'name'    => 'tax[tax_shipping]',
-				'label'   => array( 'text' => __( 'Steuern auf Versandkosten berechnen?', 'mp' ) ),
-				'message' => __( 'Ja', 'mp' ),
+				'label'   => array( 'text' => __( 'Apply Tax To Shipping Fees?', 'mp' ) ),
+				'message' => __( 'Yes', 'mp' ),
 				'class'   => 'mp-quick-field-inline-block'
 			) );
 			$metabox->add_field( 'checkbox', array(
 				'name'    => 'tax[tax_inclusive]',
-				'label'   => array( 'text' => __( 'Preise inkl. Steuern angeben?', 'mp' ) ),
-				'message' => __( 'Ja', 'mp' ),
+				'label'   => array( 'text' => __( 'Enter Prices Inclusive of Tax?', 'mp' ) ),
+				'message' => __( 'Yes', 'mp' ),
 				'class'   => 'mp-quick-field-inline-block'
 			) );
 			$metabox->add_field( 'checkbox', array(
 				'name'    => 'tax[include_tax]',
-				'label'   => array( 'text' => __( 'Zeige Preis inkl. Steuer?', 'mp' ) ),
-				'message' => __( 'Ja', 'mp' ),
+				'label'   => array( 'text' => __( 'Show Price + Tax?', 'mp' ) ),
+				'message' => __( 'Yes', 'mp' ),
 				'class'   => 'mp-quick-field-inline-block'
 			) );
 			$metabox->add_field( 'checkbox', array(
 				'name'    => 'tax[tax_digital]',
-				'label'   => array( 'text' => __( 'Steuern auf herunterladbare Produkte berechnen?', 'mp' ) ),
-				'message' => __( 'Ja', 'mp' ),
+				'label'   => array( 'text' => __( 'Apply Tax to Downloadable Products?', 'mp' ) ),
+				'message' => __( 'Yes', 'mp' ),
 				'class'   => 'mp-quick-field-inline-block'
 			) );
 
 			// Measurement System
 
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'          => 'mp-quick-setup-wizard-measurement-system',
 				'page_slugs'  => array( 'store-setup-wizard' ),
-				'title'       => __( 'Masseinheiten', 'mp' ),
+				'title'       => __( 'Measurement System', 'mp' ),
 				'option_name' => 'mp_settings',
 			) );
 
 			$metabox->add_field( 'radio_group', array(
 				'name'          => 'shipping[system]',
 				'options'       => array(
-					'english' => __( 'Pfund', 'mp' ),
-					'metric'  => __( 'Kilogramm', 'mp' ),
+					'english' => __( 'Pounds', 'mp' ),
+					'metric'  => __( 'Kilograms', 'mp' ),
 				),
-				'default_value' => 'metric',
+				'default_value' => 'english',
 			) );
 
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'                 => 'mp-quick-setup-is-wizard-shipping',
 				'page_slugs'         => array( 'store-setup-wizard' ),
 				'title'              => '',
@@ -582,25 +562,25 @@ class MP_Setup_Wizard {
 			$metabox->add_field( 'radio_group', array(
 				'name'          => 'mp_charge_shipping',
 				'options'       => array(
-					'1' => __( 'Ja', 'mp' ),
-					'0' => __( 'Nein', 'mp' ),
+					'1' => __( 'Yes', 'mp' ),
+					'0' => __( 'No', 'mp' ),
 				),
 				'label'         => array(
-					'text' => __( 'Ich möchte den Versand in Rechnung stellen', 'mp' ),
+					'text' => __( 'I want to charge shipping', 'mp' ),
 				),
 				'default_value' => '0',
 			) );
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'                 => 'mp-quick-setup-wizard-shipping',
 				'page_slugs'         => array( 'store-setup-wizard' ),
-				'title'              => __( 'Masseinheiten', 'mp' ),
+				'title'              => __( 'Measurement System', 'mp' ),
 				'option_name'        => 'mp_settings',
 				'class'              => '',
 				'show_submit_button' => false
 			) );
 
 // Shipping Methods
-			$options        = array( 'none' => __( 'Kein Versand', 'mp' ) );
+			$options        = array( 'none' => __( 'No Shipping', 'mp' ) );
 			$plugins        = MP_Shipping_API::get_plugins();
 			$has_calculated = false;
 
@@ -614,12 +594,12 @@ class MP_Setup_Wizard {
 			}
 
 			if ( $has_calculated ) {
-				$options['calculated'] = __( 'Berechnete Optionen', 'mp' );
+				$options['calculated'] = __( 'Calculated Options', 'mp' );
 			}
 
 			$metabox->add_field( 'radio_group', array(
 				'name'          => 'shipping[method]',
-				'label'         => array( 'text' => __( 'Versandart', 'mp' ) ),
+				'label'         => array( 'text' => __( 'Shipping Method', 'mp' ) ),
 				'options'       => $options,
 				'default_value' => 'none',
 			) );
@@ -634,8 +614,8 @@ class MP_Setup_Wizard {
 
 			$metabox->add_field( 'checkbox_group', array(
 				'name'               => 'shipping[calc_methods]',
-				'label'              => array( 'text' => __( 'Wähle Versandoptionen', 'mp' ) ),
-				'desc'               => __( 'Wähle aus, welche berechneten Versandmethoden der Kunde auswählen kann.', 'mp' ),
+				'label'              => array( 'text' => __( 'Select Shipping Options', 'mp' ) ),
+				'desc'               => __( 'Select which calculated shipping methods the customer will be able to choose from.', 'mp' ),
 				'options'            => $options,
 				'use_options_values' => true,
 				'conditional'        => array(
@@ -646,10 +626,10 @@ class MP_Setup_Wizard {
 			) );
 
 			//payment gateway
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'                 => 'mp-quick-setup-wizard-payment',
 				'page_slugs'         => array( 'store-setup-wizard' ),
-				'title'              => __( 'Zahlungs Gateways', 'mp' ),
+				'title'              => __( 'Payment Gateways', 'mp' ),
 				'option_name'        => 'mp_settings',
 				'class'              => '',
 				'show_submit_button' => false,
@@ -661,19 +641,19 @@ class MP_Setup_Wizard {
 				$manual_payments = $gateways['manual_payments'];
 				$options         = array(
 					'manual_payments' => $manual_payments[1],
-					'other'           => __( "Andere Gateways", "mp" )
+					'other'           => __( "Other Gateways", "mp" )
 				);
 			} else {
 				//fallback to default
 				$options = array(
-					'manual_payments' => __( "Manuelle Zahlung", "mp" ),
-					'other'           => __( "Andere Gateways", "mp" )
+					'manual_payments' => __( "Manual Payment", "mp" ),
+					'other'           => __( "Other Gateways", "mp" )
 				);
 			}
 
 			$metabox->add_field( 'radio_group', array(
 				'name'          => 'wizard_payment',
-				'label'         => array( 'text' => __( 'Richte Dein Zahlungsgateway ein', 'mp' ) ),
+				'label'         => array( 'text' => __( 'Setup your payment gateway', 'mp' ) ),
 				'options'       => $options,
 				'default_value' => 'manual_payments',
 			) );
@@ -693,20 +673,20 @@ class MP_Setup_Wizard {
 		add_action( 'init', array( &$this, 'init_metaboxes' ) );
 		add_action( 'wp_ajax_mp_preset_currency_base_country', array( &$this, 'determine_currency' ) );
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'store-setup-wizard' ) {
-			add_filter( 'psource_metabox/init_args', array( &$this, 'update_settings_for_shipping_rule' ) );
+			add_filter( 'wpmudev_metabox/init_args', array( &$this, 'update_settings_for_shipping_rule' ) );
 			/**
 			 * Payment widzard having 2 radios default gateway & other, we don't store this value inside db,
 			 * use this hook for return the right
 			 */
-			add_filter( 'psource_field/get_value/mp_charge_shipping', array(
+			add_filter( 'wpmudev_field/get_value/mp_charge_shipping', array(
 				&$this,
 				'determine_is_charge_shipping'
 			), 10, 4 );
-			add_filter( 'psource_field/get_value/wizard_payment', array(
+			add_filter( 'wpmudev_field/get_value/wizard_payment', array(
 				&$this,
 				'determine_is_use_paymentgateway'
 			), 10, 4 );
-			add_filter( 'psource_metabox/after_settings_metabox_saved', array( &$this, 'maybe_save_manual_payment' ) );
+			add_filter( 'wpmudev_metabox/after_settings_metabox_saved', array( &$this, 'maybe_save_manual_payment' ) );
 		}
 	}
 

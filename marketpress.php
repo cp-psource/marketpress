@@ -1,18 +1,18 @@
 <?php
-/**
- * Plugin Name: MarketPress
- * Plugin URI:  https://cp-psource.github.io/marketpress/
- * Description: Das einfachste und dennoch mächtigste ClassicPress-E-Commerce-Plugin
- * Version:     3.5.8
- * Requires at least: 4.9
- * Author:      PSOURCE
- * Author URI:  https://github.com/cp-psource
- * Text Domain: mp
- * Domain Path: /languages
- */
+/*
+Plugin Name: MarketPress
+Plugin URI:  https://cp-psource.github.io/marketpress/
+Description: The complete WordPress ecommerce plugin - works perfectly with BuddyPress and Multisite too to create a social marketplace, where you can take a percentage! Activate the plugin, adjust your settings then add some products to your store.
+Version:     3.2.8
+Author:      PSOURCE
+Author URI:  https://github.com/cp-psource
+Text Domain: mp
+
+@package Marketpress
+*/
 
 /*
-Copyright 20019-2024 PSOURCE (https://github.com/cp-psource)
+Copyright 2016-2024 PSOURCE (https://github.com/cp-psource)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License (Version 2 - GPLv2) as
@@ -27,9 +27,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
 
-Plugin Authors: DerN3rd (PSOURCE)
+Plugin Authors: Marko Miljus (Incsub), Aaron Edwards (Incsub), Hoang Ngo (Incsub), Jonathan Cowher (Incsub), Ricardo Freitas (Incsub), Cvetan Cvetanov (Incsub), Julien Zerbib (Incsub), Sabri Bouchaala (Incsub), Emmanuel Laborin (Incsub)
 */
 
+/**
+ * @@@@@@@@@@@@@@@@@ PS UPDATER 1.3 @@@@@@@@@@@
+ **/
 require 'psource/psource-plugin-update/plugin-update-checker.php';
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
  
@@ -40,16 +43,17 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
 );
  
 //Set the branch that contains the stable release.
-$myUpdateChecker->setBranch('master');
-
-
-define( 'MP_VERSION', '3.5.8' );
-
+$myUpdateChecker->setBranch('main');
 
 /**
- * Main class MarketPress.
+ * @@@@@@@@@@@@@@@@@ ENDE PS UPDATER 1.3 @@@@@@@@@@@
+ **/
+define( 'MP_VERSION', '3.2.8' );
+
+/**
+ * Main class Marketpress.
  */
-class MarketPress {
+class Marketpress {
 
 	public $currencies;
 	public $eu_countries;
@@ -59,6 +63,8 @@ class MarketPress {
 	public $popular_countries;
 	public $default_settings;
 	public $defaults;
+	public $CA_provinces;
+
 
 	/**
 	 * Refers to the post types that MarketPress uses
@@ -122,7 +128,7 @@ class MarketPress {
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new MarketPress();
+			self::$_instance = new Marketpress();
 		}
 
 		return self::$_instance;
@@ -156,7 +162,6 @@ class MarketPress {
 		return $this->_plugin_url . ltrim( $path, '/' );
 	}
 
-
 	/**
 	 * Register custom post types, taxonomies and stati
 	 *
@@ -171,21 +176,21 @@ class MarketPress {
 		register_taxonomy( 'product_category', MP_Product::get_post_type(), apply_filters( 'mp_register_product_category', array(
 			'hierarchical'      => true,
 			'labels'            => array(
-				'name'                       => _x( 'Shopkategorien', 'product_category', 'mp' ),
-				'singular_name'              => _x( 'Shopkategorie', 'product_category', 'mp' ),
-				'all_items'                  => __( 'Alle Shopkategorien', 'mp' ),
-				'edit_item'                  => __( 'Shopkategorie bearbeiten', 'mp' ),
-				'view_item'                  => __( 'Shopkategorie anzeigen', 'mp' ),
-				'update_item'                => __( 'Shopkategorie aktualisieren', 'mp' ),
-				'add_new_item'               => __( 'Neue Shopkategorie hinzufügen', 'mp' ),
-				'new_item_name'              => __( 'Name der neuen Shopkategorie', 'mp' ),
-				'parent_item'                => __( 'Übergeordnete Shopkategorie', 'mp' ),
-				'parent_item_colon'          => __( 'Übergeordnete Shopkategorie:', 'mp' ),
-				'search_items'               => __( 'Shopkategorien suchen', 'mp' ),
-				'separate_items_with_commas' => __( 'Shopkategorien durch Kommas trennen', 'mp' ),
-				'add_or_remove_items'        => __( 'Shopkategorien hinzufügen oder entfernen', 'mp' ),
-				'choose_from_most_used'      => __( 'Auswahl häufig verwendeter Shopkategorien', 'mp' ),
-				'not_found'                  => __( 'Keine Shopkategorien gefunden :(', 'mp' ),
+				'name'                       => _x( 'Product Categories', 'product_category', 'mp' ),
+				'singular_name'              => _x( 'Product Category', 'product_category', 'mp' ),
+				'all_items'                  => __( 'All Product Categories', 'mp' ),
+				'edit_item'                  => __( 'Edit Product Category', 'mp' ),
+				'view_item'                  => __( 'View Product Category', 'mp' ),
+				'update_item'                => __( 'Update Product Category', 'mp' ),
+				'add_new_item'               => __( 'Add New Product Category', 'mp' ),
+				'new_item_name'              => __( 'New Product Category Name', 'mp' ),
+				'parent_item'                => __( 'Parent Product Category', 'mp' ),
+				'parent_item_colon'          => __( 'Parent Product Category:', 'mp' ),
+				'search_items'               => __( 'Search Product Categories', 'mp' ),
+				'separate_items_with_commas' => __( 'Separate product categories with commas', 'mp' ),
+				'add_or_remove_items'        => __( 'Add or remove product categories', 'mp' ),
+				'choose_from_most_used'      => __( 'Choose from the most used product categories', 'mp' ),
+				'not_found'                  => __( 'No product categories found', 'mp' ),
 			),
 			'capabilities'      => array(
 				'manage_terms' => 'manage_product_categories',
@@ -205,21 +210,21 @@ class MarketPress {
 		register_taxonomy( 'product_tag', MP_Product::get_post_type(), apply_filters( 'mp_register_product_tag', array(
 			'hierarchical'      => false,
 			'labels'            => array(
-				'name'                       => _x( 'Produkt-Tags', 'product_tag', 'mp' ),
-				'singular_name'              => _x( 'Produkt-Tag', 'product_tag', 'mp' ),
-				'all_items'                  => __( 'Alle Produkt-Tags', 'mp' ),
-				'edit_item'                  => __( 'Produkt-Tag bearbeiten', 'mp' ),
-				'view_item'                  => __( 'Produkt-Tag anzeigen', 'mp' ),
-				'update_item'                => __( 'Produkt-Tag aktualisieren', 'mp' ),
-				'add_new_item'               => __( 'Neuen Produkt-Tag hinzufügen', 'mp' ),
-				'new_item_name'              => __( 'Neuer Produkt-Tag-Name', 'mp' ),
-				'parent_item'                => __( 'Übergeordnetes Produkt-Tag', 'mp' ),
-				'parent_item_colon'          => __( 'Übergeordnetes Produkt-Tag:', 'mp' ),
-				'search_items'               => __( 'Produkt-Tags suchen', 'mp' ),
-				'separate_items_with_commas' => __( 'Produktetiketten durch Kommas trennen', 'mp' ),
-				'add_or_remove_items'        => __( 'Produkt-Tags hinzufügen oder entfernen', 'mp' ),
-				'choose_from_most_used'      => __( 'Auswahl häufig verwendeter Produkt-Tags', 'mp' ),
-				'not_found'                  => __( 'Keine Produkt-Tags gefunden', 'mp' ),
+				'name'                       => _x( 'Product Tags', 'product_tag', 'mp' ),
+				'singular_name'              => _x( 'Product Tag', 'product_tag', 'mp' ),
+				'all_items'                  => __( 'All Product Tags', 'mp' ),
+				'edit_item'                  => __( 'Edit Product Tag', 'mp' ),
+				'view_item'                  => __( 'View Product Tag', 'mp' ),
+				'update_item'                => __( 'Update Product Tag', 'mp' ),
+				'add_new_item'               => __( 'Add New Product Tag', 'mp' ),
+				'new_item_name'              => __( 'New Product Tag Name', 'mp' ),
+				'parent_item'                => __( 'Parent Product Tag', 'mp' ),
+				'parent_item_colon'          => __( 'Parent Product Tag:', 'mp' ),
+				'search_items'               => __( 'Search Product Tags', 'mp' ),
+				'separate_items_with_commas' => __( 'Separate product tags with commas', 'mp' ),
+				'add_or_remove_items'        => __( 'Add or remove product tags', 'mp' ),
+				'choose_from_most_used'      => __( 'Choose from the most used product tags', 'mp' ),
+				'not_found'                  => __( 'No product tags found', 'mp' ),
 			),
 			'capabilities'      => array(
 				'manage_terms' => 'manage_product_tags',
@@ -238,28 +243,28 @@ class MarketPress {
 		// Register product post type.
 		register_post_type( MP_Product::get_post_type(), apply_filters( 'mp_register_post_type', array(
 			'labels'             => array(
-				'name'               => __( 'Produkte', 'mp' ),
-				'singular_name'      => __( 'Produkt', 'mp' ),
-				'menu_name'          => __( 'Shop', 'mp' ),
-				'all_items'          => __( 'Produkte', 'mp' ),
-				'add_new'            => __( 'Neues Produkt hinzufügen', 'mp' ),
-				'add_new_item'       => __( 'Neues Produkt hinzufügen', 'mp' ),
-				'edit_item'          => __( 'Produkt bearbeiten', 'mp' ),
-				'edit'               => __( 'Bearbeiten', 'mp' ),
-				'new_item'           => __( 'Neues Produkt', 'mp' ),
-				'view_item'          => __( 'Produkt ansehen', 'mp' ),
-				'search_items'       => __( 'Produkt suchen', 'mp' ),
-				'not_found'          => __( 'Kein Produkt gefunden', 'mp' ),
-				'not_found_in_trash' => __( 'Keine Produkte im Papierkorb gefunden', 'mp' ),
-				'view'               => __( 'Produkt betrachten', 'mp' ),
+				'name'               => __( 'Products', 'mp' ),
+				'singular_name'      => __( 'Product', 'mp' ),
+				'menu_name'          => __( 'Store', 'mp' ),
+				'all_items'          => __( 'Products', 'mp' ),
+				'add_new'            => __( 'Add New Product', 'mp' ),
+				'add_new_item'       => __( 'Add New Product', 'mp' ),
+				'edit_item'          => __( 'Edit Product', 'mp' ),
+				'edit'               => __( 'Edit', 'mp' ),
+				'new_item'           => __( 'New Product', 'mp' ),
+				'view_item'          => __( 'View Product', 'mp' ),
+				'search_items'       => __( 'Search Products', 'mp' ),
+				'not_found'          => __( 'No Products Found', 'mp' ),
+				'not_found_in_trash' => __( 'No Products found in Trash', 'mp' ),
+				'view'               => __( 'View Product', 'mp' ),
 			),
-			'description'        => __( 'Produkte für Deinen MarketPress-Shop.', 'mp' ),
+			'description'        => __( 'Products for your e-commerce store.', 'mp' ),
 			'public'             => true,
 			'show_ui'            => true,
 			'publicly_queryable' => true,
 			'capability_type'    => array( 'product', 'products' ),
-			'menu_icon'          => 'dashicons-cart',
-			'hierarchical'       => true,
+			'menu_icon'          => ( version_compare( $wp_version, '3.8', '>=' ) ) ? 'dashicons-cart' : mp_plugin_url( 'ui/images/marketpress-icon.png' ),
+			'hierarchical'       => false,
 			'map_meta_cap'       => true,
 			'rewrite'            => array(
 				'slug'       => rtrim( mp_store_page_uri( 'products', false ), '/' ),
@@ -283,19 +288,19 @@ class MarketPress {
 		// Register mp_order post type.
 		register_post_type( 'mp_order', apply_filters( 'mp_register_post_type_mp_order', array(
 			'labels'          => array(
-				'name'               => __( 'Bestellungen', 'mp' ),
-				'singular_name'      => __( 'Bestellung', 'mp' ),
-				'add_new'            => _x( 'Neue Bestellung hinzufügen', 'mp_order', 'mp' ),
-				'add_new_item'       => __( 'Neue Bestellung hinzufügen', 'mp' ),
-				'edit_item'          => __( 'Bestellung bearbeiten', 'mp' ),
-				'new_item'           => __( 'Neue Bestellung', 'mp' ),
-				'view_item'          => __( 'Bestellung ansehen', 'mp' ),
-				'search_items'       => __( 'Bestellungen durchsuchen', 'mp' ),
-				'not_found'          => __( 'Keine Bestellung(en) gefunden', 'mp' ),
-				'not_found_in_trash' => __( 'Keine Bestellung(en) im Papierkorb gefunden', 'mp' ),
-				'parent_item_colon'  => __( 'Übergeordnete Bestellung', 'mp' ),
+				'name'               => __( 'Orders', 'mp' ),
+				'singular_name'      => __( 'Order', 'mp' ),
+				'add_new'            => _x( 'Add New', 'mp_order', 'mp' ),
+				'add_new_item'       => __( 'Add New Order', 'mp' ),
+				'edit_item'          => __( 'Edit Order', 'mp' ),
+				'new_item'           => __( 'New Order', 'mp' ),
+				'view_item'          => __( 'View Order', 'mp' ),
+				'search_items'       => __( 'Search Orders', 'mp' ),
+				'not_found'          => __( 'No orders found', 'mp' ),
+				'not_found_in_trash' => __( 'No orders found in trash', 'mp' ),
+				'parent_item_colon'  => __( 'Parent Order', 'mp' ),
 			),
-			'description'     => __( 'Bestellungen aus Deinem E-Commerce-Shop.', 'mp' ),
+			'description'     => __( 'Orders from your e-commerce store.', 'mp' ),
 			'public'          => false,
 			'show_ui'         => true,
 			'show_in_menu'    => false,
@@ -326,30 +331,30 @@ class MarketPress {
 
 		// Register custom post statuses for our orders.
 		register_post_status( 'order_received', array(
-			'label'       => __( 'Bestellung eingegangen', 'mp' ),
+			'label'       => __( 'Received', 'mp' ),
 			/* translators: %s: orders received */
-			'label_count' => _n_noop( 'Eingegangen <span class="count">(%s)</span>', 'Eingegangen <span class="count">(%s)</span>', 'mp' ),
+			'label_count' => _n_noop( 'Received <span class="count">(%s)</span>', 'Received <span class="count">(%s)</span>', 'mp' ),
 			'post_type'   => 'mp_order',
 			'public'      => false,
 		) );
 		register_post_status( 'order_paid', array(
-			'label'       => __( 'Bezahlt', 'mp' ),
+			'label'       => __( 'Paid', 'mp' ),
 			/* translators: %s: paid orders */
-			'label_count' => _n_noop( 'Bezahlt <span class="count">(%s)</span>', 'Bezahlt <span class="count">(%s)</span>', 'mp' ),
+			'label_count' => _n_noop( 'Paid <span class="count">(%s)</span>', 'Paid <span class="count">(%s)</span>', 'mp' ),
 			'post_type'   => 'mp_order',
 			'public'      => false,
 		) );
 		register_post_status( 'order_shipped', array(
-			'label'       => __( 'Versand', 'mp' ),
+			'label'       => __( 'Shipped', 'mp' ),
 			/* translators: %s: shipped orders */
-			'label_count' => _n_noop( 'Versendet <span class="count">(%s)</span>', 'Versendet <span class="count">(%s)</span>', 'mp' ),
+			'label_count' => _n_noop( 'Shipped <span class="count">(%s)</span>', 'Shipped <span class="count">(%s)</span>', 'mp' ),
 			'post_type'   => 'mp_order',
 			'public'      => false,
 		) );
 		register_post_status( 'order_closed', array(
-			'label'       => __( 'Bestellung abgeschlossen', 'mp' ),
+			'label'       => __( 'Closed', 'mp' ),
 			/* translators: %s: orders closed */
-			'label_count' => _n_noop( 'Abgeschlossen <span class="count">(%s)</span>', 'Geschlossen <span class="count">(%s)</span>', 'mp' ),
+			'label_count' => _n_noop( 'Closed <span class="count">(%s)</span>', 'Closed <span class="count">(%s)</span>', 'mp' ),
 			'post_type'   => 'mp_order',
 			'public'      => false,
 		) );
@@ -365,14 +370,11 @@ class MarketPress {
 	 * @access public
 	 */
 	public function load_plugins() {
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/shipping-modules/class-mp-shipping-api.php' );
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/shipping-modules/class-mp-shipping-api-calculated.php' );
 		mp_include_dir( $this->plugin_dir( 'includes/common/shipping-modules' ) );
 		MP_Shipping_API::load_active_plugins();
 
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/payment-gateways/class-mp-gateway-api.php' );
 		mp_include_dir( $this->plugin_dir( 'includes/common/payment-gateways' ) );
 
@@ -380,8 +382,6 @@ class MarketPress {
 
 		MP_Gateway_API::load_active_gateways();
 	}
-
-
 
 	/**
 	 * Constructor function
@@ -394,14 +394,10 @@ class MarketPress {
 		$this->_init_vars();
 
 		// Include constants.
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/constants.php' );
 
-		// Add GDPR compliance.
-		add_action( 'admin_init', array( $this, 'add_gdpr_compliance' ), 0 );
-
 		// Includes.
-		add_action( 'init', array( &$this, 'includes' ), 0 );
+		add_action( 'init', array( &$this, 'includes' ), -1 );
 
 		// Load gateway/shipping plugins.
 		add_action( 'init', array( &$this, 'load_plugins' ), 2 );
@@ -413,7 +409,7 @@ class MarketPress {
 		add_action( 'init', array( &$this, 'register_custom_types' ), 1 );
 
 		// Maybe flush rewrites.
-		add_action( 'admin_init', array( &$this, 'maybe_flush_rewrites' ), 99 );
+		add_action( 'init', array( &$this, 'maybe_flush_rewrites' ), 99 );
 
 		// Fix insecure images.
 		add_filter( 'wp_get_attachment_url', array( &$this, 'fix_insecure_images' ), 10, 2 );
@@ -447,27 +443,17 @@ class MarketPress {
 	}
 
 	/**
-	 * Add GDPR compliance.
-	 */
-	public function add_gdpr_compliance() {
-		/* @noinspection PhpIncludeInspection */
-		require_once $this->plugin_dir( 'includes/common/class-mp-gdpr.php' );
-
-		MP_GDPR::get_instance();
-	}
-
-	/**
 	 * Add menus.
 	 */
 	function add_menu_items() {
-		add_submenu_page( 'edit.php?post_type=' . MP_Product::get_post_type(), __( 'Produkt erstellen', 'mp' ), __( 'Produkt erstellen', 'mp' ), apply_filters( 'mp_add_new_product_capability', 'manage_options' ), 'post-new.php?post_type=' . MP_Product::get_post_type() );
+		add_submenu_page( 'edit.php?post_type=' . MP_Product::get_post_type(), __( 'Add a Product', 'mp' ), __( 'Add a Product', 'mp' ), apply_filters( 'mp_add_new_product_capability', 'manage_options' ), 'post-new.php?post_type=' . MP_Product::get_post_type() );
 	}
 
 	/**
 	 * Localization.
 	 */
 	function localization() {
-		// Load up the localization file if we're using ClassicPress in a different language.
+		// Load up the localization file if we're using WordPress in a different language.
 		// Place it in this plugin's "languages" folder and name it "mp-[value in wp-config].mo".
 		$mu_plugins = wp_get_mu_plugins();
 		$lang_dir   = dirname( plugin_basename( $this->_plugin_file ) ) . '/languages/';
@@ -494,11 +480,7 @@ class MarketPress {
 			 * @return string
 			 */
 			function mp_get_plugin_slug() {
-				if ( file_exists( dirname( __FILE__ ) . '/psource/psource-plugin-update/plugin-update-checker.php' ) ) {
-					return 'marketpress/marketpress.php';
-				} else {
-					return 'classicpress-ecommerce/marketpress.php';
-				}
+				return 'marketpress/marketpress.php';
 			}
 		}
 
@@ -606,7 +588,7 @@ class MarketPress {
 	}
 
 	/**
-	 * Called from ClassicPress when the admin page init process is invoked.
+	 * Called from WordPress when the admin page init process is invoked.
 	 *
 	 * @since 3.0
 	 */
@@ -630,8 +612,8 @@ class MarketPress {
 	 * @return array $links links including Settings link
 	 */
 	function mp_plugin_settings_link( $links ) {
-		$settings_link = '<a href="' . esc_url( admin_url( 'admin.php?page=shop-einstellungen' ) ) . '">'
-			. __( 'Shopeinstellungen', 'mp' ) . '</a>';
+		$settings_link = '<a href="' . esc_url( admin_url( 'admin.php?page=store-settings' ) ) . '">'
+			. __( 'Settings', 'mp' ) . '</a>';
 		array_unshift( $links, $settings_link );
 
 		return $links;
@@ -692,7 +674,7 @@ class MarketPress {
 	function pages_created_notice() {
 		?>
 		<div id="message" class="updated mp-install-notice">
-			<p><?php esc_html_e( 'Die benötigten Seiten für Deinen Shop wurden erfolgreich erstellt!', 'mp' ); ?></p>
+			<p><?php esc_html_e( 'Your pages were created successfully.', 'mp' ); ?></p>
 		</div>
 		<?php
 	}
@@ -706,12 +688,12 @@ class MarketPress {
 			?>
 			<div id="message" class="updated mp-install-notice">
 				<?php /* translators: %s: plugin title */ ?>
-				<p><?php printf( __( '<strong>Einrichtungsassistent: %s</strong> &#8211; installiert vollkommen automatisch die Seiten welche Dein Shop benötigt um zu funktionieren.', 'mp' ), $this->plugin_title ); ?></p>
+				<p><?php printf( __( '<strong>Welcome to %s</strong> &#8211; Install pages required by the plugin automatically.', 'mp' ), $this->plugin_title ); ?></p>
 
 				<p class="submit"><a
-						href="<?php echo esc_url( add_query_arg( 'install_mp_pages', 'true', admin_url( 'admin.php?page=shop-einstellungen-presentation' ) ) ); ?>"
+						href="<?php echo esc_url( add_query_arg( 'install_mp_pages', 'true', admin_url( 'admin.php?page=store-settings-presentation' ) ) ); ?>"
 						<?php /* translators: %s: plugin title */ ?>
-						class="button-primary"><?php printf( __( 'Installiere %s Seiten', 'mp' ), $this->plugin_title ); ?></a>
+						class="button-primary"><?php printf( __( 'Install %s Pages', 'mp' ), $this->plugin_title ); ?></a>
 				</p>
 			</div>
 			<?php
@@ -726,8 +708,8 @@ class MarketPress {
 	 */
 	public function register_addons() {
 		mp_register_addon( array(
-			'label'        => __( 'Gutscheine', 'mp' ),
-			'desc'         => __( 'Gutscheincodes anbieten und annehmen', 'mp' ),
+			'label'        => __( 'Coupons', 'mp' ),
+			'desc'         => __( 'Offer and accept coupon codes', 'mp' ),
 			'class'        => 'MP_Coupons_Addon',
 			'path'         => mp_plugin_dir( 'includes/addons/mp-coupons/class-mp-coupons-addon.php' ),
 			'has_settings' => true,
@@ -735,8 +717,8 @@ class MarketPress {
 
 		if ( class_exists( 'ProSites' ) ) {
 			mp_register_addon( array(
-				'label' => __( 'PS Bloghosting', 'mp' ),
-				'desc'  => __( 'Gewähre Zugriff auf Themen und Gateways, abhängig vom PS Bloghosting-Level des Benutzers', 'mp' ),
+				'label' => __( 'Pro Sites', 'mp' ),
+				'desc'  => __( 'Grant access to themes and gateways depending on the user\'s Pro Site level', 'mp' ),
 				'class' => 'MP_Prosites_Addon',
 				'path'  => mp_plugin_dir( 'includes/addons/mp-prosites/class-mp-prosites-addon.php' ),
 			) );
@@ -753,8 +735,8 @@ class MarketPress {
 		}
 
 		mp_register_addon( array(
-			'label'        => __( 'PDF Rechnung/Lieferschein', 'mp' ),
-			'desc'         => 'Erstelle Rechnungen/Lieferscheine als PDF für Dich und Deine Kunden',
+			'label'        => __( 'Invoice PDF', 'mp' ),
+			'desc'         => '',
 			'class'        => 'MP_PDF_Invoice_Addon',
 			'path'         => mp_plugin_dir( 'includes/addons/mp-pdf-invoice/class-mp-pdf-invoice-addon.php' ),
 			'has_settings' => true,
@@ -762,28 +744,10 @@ class MarketPress {
 
 		// Multi File Addon.
 		mp_register_addon( array(
-			'label'        => __( 'Mehrfache Downloads', 'mp' ),
-			'desc'         => __( 'Aktiviere mehrere Downloads pro Produkt', 'mp' ),
+			'label'        => __( 'Multiple Downloads', 'mp' ),
+			'desc'         => __( 'Enable multiple downloads per product', 'mp' ),
 			'class'        => 'MP_Multi_File_Download_Addon',
 			'path'         => mp_plugin_dir( 'includes/addons/mp-multi-file-download/class-mp-multi-file-download-addon.php' ),
-			'has_settings' => false,
-		) );
-
-		// Allow Produkt Comments.
-		mp_register_addon( array(
-			'label'        => __( 'Erlaube Produktkommentare', 'mp' ),
-			'desc'         => __( 'Erlaube das kommentieren von Produkten', 'mp' ),
-			'class'        => 'MP_MARKETPRESS_COMMENTS_Addon',
-			'path'         => mp_plugin_dir( 'includes/addons/marketpress-comments/class-marketpress-comments.php' ),
-			'has_settings' => false,
-		) );
-
-		// Frontend Produkteditor
-        mp_register_addon( array(
-			'label'        => __( 'Shop Statistiken (ALFAVERSION)', 'mp' ),
-			'desc'         => __( 'Aktiviere diese Erweiterung um eine Dashboard-Seite mit Shop-Statistiken zu erstellen', 'mp' ),
-			'class'        => 'MP_MARKETPRESS_STATS_Addon',
-			'path'         => mp_plugin_dir( 'includes/addons/marketpress-statistics/marketpress-stats.php' ),
 			'has_settings' => false,
 		) );
 
@@ -817,7 +781,7 @@ class MarketPress {
 		  This is necessary, otherwise product cats and tags will return 404 errors
 		  due to how rewrite rules are generated for pages.
 
-		  @see http://classicpress.stackexchange.com/questions/4127/custom-taxonomy-and-pages-rewrite-slug-conflict-gives-404
+		  @see http://wordpress.stackexchange.com/questions/4127/custom-taxonomy-and-pages-rewrite-slug-conflict-gives-404
 		 */
 		if ( $post_id = mp_get_setting( 'pages->products' ) ) {
 			$page_structure = $wp_rewrite->get_page_permastruct();
@@ -907,11 +871,11 @@ class MarketPress {
 	 * @action init
 	 */
 	public function maybe_flush_rewrites() {
-		$flush_rewrites = get_option( 'mp_flush_rewrites', 1 );
+		$flush_rewrites = get_option( 'mp_flush_rewrites_30', 1 );
 
-		if ( 1 === $flush_rewrites || '1' === $flush_rewrites ) {
+		if ( 1 === $flush_rewrites ) {
 			flush_rewrite_rules();
-			update_option( 'mp_flush_rewrites', 0 );
+			update_option( 'mp_flush_rewrites_30', 0 );
 		}
 	}
 
@@ -962,66 +926,41 @@ class MarketPress {
 	 * @access public
 	 */
 	public function includes() {
-		/* @noinspection PhpIncludeInspection */
-		require_once $this->plugin_dir( 'includes/common/class-mp-gdpr.php' );
-		/* @noinspection PhpIncludeInspection */
-		require_once $this->plugin_dir( 'includes/psource-metaboxes/psource-metabox.php' );
-		/* @noinspection PhpIncludeInspection */
+		require_once $this->plugin_dir( 'includes/wpmudev-metaboxes/wpmudev-metabox.php' );
 		require_once $this->plugin_dir( 'includes/common/class-mp-mailer.php' );
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/helpers.php' );
-
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/class-mp-product-attributes.php' );
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/addons/class-mp-addons.php' );
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/class-mp-order.php' );
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/class-mp-product.php' );
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/class-mp-installer.php' );
-
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/class-mp-cart.php' );
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/template-functions.php' );
-		/* @noinspection PhpIncludeInspection */
 		require_once $this->plugin_dir( 'includes/common/class-mp-backward-compatibility.php' );
-		/* @noinspection PhpIncludeInspection */
-		require_once $this->plugin_dir( 'includes/common/class-mp-taxes.php' );
+		//require_once $this->plugin_dir( 'includes/common/class-mp-taxes.php' );
 
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
 
 		if ( is_multisite() && is_plugin_active_for_network( mp_get_plugin_slug() ) ) {
-			/* @noinspection PhpIncludeInspection */
 			require_once $this->plugin_dir( 'includes/multisite/class-mp-multisite.php' );
-			/* @noinspection PhpIncludeInspection */
 			require_once $this->plugin_dir( 'includes/multisite/template-functions.php' );
 			if ( is_admin() ) {
-				/* @noinspection PhpIncludeInspection */
 				require_once $this->plugin_dir( 'includes/multisite/class-mp-admin-multisite.php' );
 			}
 		}
 
 		if ( is_admin() ) {
-			/* @noinspection PhpIncludeInspection */
 			require_once $this->plugin_dir( 'includes/admin/class-mp-admin.php' );
-			/* @noinspection PhpIncludeInspection */
 			require_once $this->plugin_dir( 'includes/admin/class-mp-pages-admin.php' );
 
 			if ( mp_doing_ajax() ) {
-				/* @noinspection PhpIncludeInspection */
 				require_once $this->plugin_dir( 'includes/admin/class-mp-ajax.php' );
-				/* @noinspection PhpIncludeInspection */
 				require_once $this->plugin_dir( 'includes/public/class-mp-public.php' );
 			}
-			/* @noinspection PhpIncludeInspection */
 			require_once $this->plugin_dir( 'includes/admin/class-mp-dashboard-widgets.php' );
 		} else {
-			/* @noinspection PhpIncludeInspection */
 			require_once $this->plugin_dir( 'includes/public/class-mp-public.php' );
 		}
 	}
@@ -1191,13 +1130,17 @@ class MarketPress {
 
 }
 
-
-$GLOBALS['mp'] = MarketPress::get_instance();
+$GLOBALS['mp'] = Marketpress::get_instance();
 
 register_activation_hook( __FILE__, 'mp_plugin_activate' );
 register_uninstall_hook( __FILE__, 'mp_plugin_uninstall' );
+add_action( 'admin_init', 'mp_plugin_redirect', 1 );
 
 function mp_plugin_activate() {
+	if ( get_option( 'mp_plugin_do_activation_redirect', '1' ) == '1' ) {
+		update_option( 'mp_plugin_do_activation_redirect', '1' );
+	}
+
 	if ( get_option( 'mp_needs_quick_setup' ) == false ) {
 		add_option( 'mp_needs_quick_setup', 1 );
 	}
@@ -1205,8 +1148,7 @@ function mp_plugin_activate() {
 	update_option( 'mp_flush_rewrites', 1 );
 }
 
-//Auskommentiert, falls du alle Plugin-Daten beim Löschen mitentfernen möchtest Kommentare entfernen
-/*function mp_plugin_uninstall() {
+function mp_plugin_uninstall() {
 	global $wpdb;
 
 	$table_attr = $wpdb->prefix . 'mp_product_attributes';
@@ -1222,6 +1164,20 @@ function mp_plugin_activate() {
 	delete_site_option( 'mp_flush_rewrites_30' );
 	delete_site_option( 'mp_needs_pages' );
 	delete_site_option( 'mp_needs_quick_setup' );
+	delete_site_option( 'mp_plugin_do_activation_redirect' );
 	delete_site_option( 'mp_settings' );
 	delete_site_option( 'mp_version' );
-}*/
+}
+
+function mp_plugin_redirect() {
+	$need_redirection = get_option( 'mp_plugin_do_activation_redirect', '0' );
+
+	if ( $need_redirection == '1' ) {
+		update_option( 'mp_plugin_do_activation_redirect', '0' );
+
+		if ( get_option( 'mp_needs_quick_setup', 1 ) == 1 && current_user_can( 'manage_options' ) ) {
+			wp_redirect( admin_url( add_query_arg( array( 'page' => 'store-setup-wizard' ), 'admin.php' ) ) );
+			exit;
+		}
+	}
+}

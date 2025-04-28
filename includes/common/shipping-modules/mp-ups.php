@@ -51,13 +51,13 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 			'Next Day Air Saver'     => new UPS_Service('13', __('Next Day Air Saver', 'mp'),     __('(1 Day)', 'mp')),
 			'Next Day Air Early AM'  => new UPS_Service('14', __('Next Day Air Early AM', 'mp'),  __('(1 Days)', 'mp')),
 			'2nd Day Air AM'         => new UPS_Service('59', __('2nd Day Air AM', 'mp'),         __('(2 Days)', 'mp')),
-			'Worldwide Express'      => new UPS_Service('07', __('Worldwide Express', 'mp'),      __('(1-3 Days)', 'mp')),
+			'Worldwide Express' 		 => new UPS_Service('07', __('Worldwide Express', 'mp'),      __('(1-3 Days)', 'mp')),
 			'Worldwide Expedited'    => new UPS_Service('08', __('Worldwide Expedited', 'mp'),    __('(2-5 Days)', 'mp') ),
 			'Standard'               => new UPS_Service('11', __('Standard', 'mp'),               __('(Scheduled)', 'mp') ),
 			'Worldwide Express Plus' => new UPS_Service('54', __('Worldwide Express Plus', 'mp'), __('(1-3 Days)', 'mp') ),
 			'Saver'                  => new UPS_Service('65', __('Saver', 'mp'),                  __('(1-5 Days)', 'mp') ),
 		);
-
+		
 		//		//International Services
 		//		$this->intl_services = array(
 		//		'Worldwide Express' 		 => new UPS_Service('07', __('Worldwide Express', 'mp') ),
@@ -71,7 +71,7 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 	function default_boxes(){
 		// Initialize the default boxes if nothing there
 		$boxes = $this->get_setting('boxes->name', array());
-
+		
 		if ( count($boxes) < 2 ) {
 			return array(
 				array(
@@ -101,7 +101,7 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 				),
 			);
 		}
-
+		
 		return array();
 	}
 
@@ -112,11 +112,11 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
    * @access public
    */
   public function init_settings_metabox() {
-		$metabox = new PSOURCE_Metabox(array(
+		$metabox = new WPMUDEV_Metabox(array(
 			'id' => $this->generate_metabox_id(),
 			'page_slugs' => array(
-				'shop-einstellungen-shipping',
-				'shop-einstellungen_page_shop-einstellungen-shipping',
+				'store-settings-shipping',
+				'store-settings_page_store-settings-shipping',
 				'store-setup-wizard'
 			),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->public_name),
@@ -145,7 +145,7 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 			'validation' => array(
 				'required' => true,
 			),
-		));
+		)); 
 		$metabox->add_field('text', array(
 			'name' => $this->get_field_name('user_id'),
 			'label' => array('text' => __('User ID', 'mp')),
@@ -165,12 +165,12 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 			'label' => array('text' => __('Shipper Number', 'mp')),
 			'desc' => __('Required if using negotiated rates', 'mp'),
 		));
-
+		
 		$services = array();
 		foreach ( $this->services as $name => $service ) {
-			$services[$name] = $service->name;
+			$services[$name] = $service->name;	
 		}
-
+		
 		$metabox->add_field('checkbox_group', array(
 			'name' => $this->get_field_name('services'),
 			'label' => array('text' => __('Offered Services', 'mp')),
@@ -187,7 +187,7 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 			'label' => array('text' => __('Handling Charge Per Box Shipped', 'mp')),
 			'default_value' => '0.00',
 		));
-
+		
 		$boxes = $metabox->add_field('repeater', array(
 			'name' => $this->get_field_name('boxes'),
 			'label' => array('text' => __('Standard Boxes and Weight Limits', 'mp')),
@@ -195,8 +195,8 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 			'desc' => __('Enter your standard box sizes as LengthxWidthxHeight (e.g. 12x8x6) For each box defined enter the maximum weight it can contain. <strong>Note: the shipping prices this plugin calculates are estimates. If they are consistently too low or too high, please check that the list of boxes above and the product weights are accurate and complete.</strong>', 'mp'),
 			'add_row_label' => __('Add Box', 'mp'),
 		));
-
-		if ( $boxes instanceof PSOURCE_Field ) {
+		
+		if ( $boxes instanceof WPMUDEV_Field ) {
 			$boxes->add_sub_field('text', array(
 				'name' => 'name',
 				'label' => array('text' => __('Name', 'mp')),
@@ -243,7 +243,7 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 			// CRC is ok - just return the shipping options already stored in session
 			return $this->_format_shipping_options( $shipping_options );
 		}
-
+		
 		$shipping_options = array();
 
 		$this->address1 = $address1;
@@ -253,7 +253,7 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 		$this->destination_zip = $zip;
 		$this->country = $country;
 		$this->weight = $cart->shipping_weight();
-
+		
 		if( $this->weight == 0 ) {
 			// Nothing to ship
 			return $this->_free_shipping();
@@ -286,9 +286,9 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 			// Can't use zip+4
 			$this->destination_zip = substr($this->destination_zip, 0, 5);
 		}
-
+		
 		$shipping_options = $this->rate_request();
-
+		
 		return $shipping_options;
 
 	}
@@ -297,14 +297,16 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 	* rate_request - Makes the actual call to UPS
 	*/
 	function rate_request() {
-		$shipping_options = array_filter( $this->get_setting( 'services', array() ), create_function( '$val', 'return ($val == 1);' ) );
+		$shipping_options = array_filter($this->get_setting('services', array()), function($val) {
+			return ($val == 1);
+		});		
 
 		//Assume equal size packages. Find the best matching box size
 		$boxes = (array) $this->get_setting( 'boxes' );
 		$box = $largest_box = false;
 		$index = 1;
 		$box_count = count( $boxes );
-
+		
 		if ( $box_count == 0 ) {
 			return false;
 		}
@@ -314,15 +316,15 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 			if ( $thebox['weight'] > $this->weight || ($index == $box_count && $box === false) ) {
 				$largest_box = $thebox;
 			}
-
+			
 			if ( floatval( $this->weight ) <= floatval( $thebox['weight'] ) || ( $index == $box_count && $box === false ) ) {
 				$box = $thebox;
 				break;
 			}
-
+			
 			$index ++;
 		}
-
+		
 		if ( $box['weight'] >= $this->weight ) {
 			$this->pkg_count = 1;
 			$this->pkg_weight = $this->weight;
@@ -455,17 +457,17 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 
 		if (! is_array($shipping_options) ) $shipping_options = array();
 		$mp_shipping_options = $shipping_options;
-
+		
 		foreach ( $shipping_options as $service => $option ) {
 			$nodes = $xpath->query('//ratedshipment[service/code="' . $this->services[ $service ]->code . '"]/totalcharges/monetaryvalue');
 			$node = $nodes->item(0);
-
+			
 			if ( is_null( $node ) ) {
 				// This service isn't availble to the buyer's address
 				unset( $mp_shipping_options[ $service ] );
 				continue;
 			}
-
+			
 			$rate = floatval( $node->nodeValue ) * $this->pkg_count;
 
 			if ( $rate == 0) {  //Not available for this combination
@@ -481,7 +483,7 @@ class MP_Shipping_UPS extends MP_Shipping_API_Calculated {
 
 		//Update the session. Save the currently calculated CRCs
 		$this->_crc_update( $mp_shipping_options );
-
+		
 		unset($xpath);
 		unset($dom);
 

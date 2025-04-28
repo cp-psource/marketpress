@@ -4,8 +4,8 @@
 class MarketPress_Tag_Cloud_Widget extends WP_Widget {
 
 	function __construct() {
-		$widget_ops = array( 'classname' => 'widget_tag_cloud mp_widget mp_widget_tag_cloud', 'description' => __( "Die am häufigsten verwendeten Produkt-Tags im Cloud-Format aus Deinem MarketPress-Shop.", 'mp' ) );
-		parent::__construct( 'mp_tag_cloud_widget', __( '(MarketPress) Tagwolke', 'mp' ), $widget_ops );
+		$widget_ops = array( 'classname' => 'widget_tag_cloud mp_widget mp_widget_tag_cloud', 'description' => __( "Your most used product tags in cloud format from your MarketPress store.", 'mp' ) );
+		parent::__construct( 'mp_tag_cloud_widget', __( 'Product Tag Cloud', 'mp' ), $widget_ops );
 	}
 
 	function widget( $args, $instance ) {
@@ -43,10 +43,10 @@ class MarketPress_Tag_Cloud_Widget extends WP_Widget {
 	}
 
 	function form( $instance ) {
-		$instance			 = wp_parse_args( (array) $instance, array( 'title' => __( 'Produkt Tags', 'mp' ), 'only_store_pages' => 0 ) );
+		$instance			 = wp_parse_args( (array) $instance, array( 'title' => __( 'Product Tags', 'mp' ), 'only_store_pages' => 0 ) );
 		$only_store_pages	 = isset( $instance[ 'only_store_pages' ] ) ? (bool) $instance[ 'only_store_pages' ] : false;
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Widgettitel:', 'mp' ) ?></label>
+		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'mp' ) ?></label>
 			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php
 			if ( isset( $instance[ 'title' ] ) ) {
 				echo esc_attr( $instance[ 'title' ] );
@@ -54,15 +54,15 @@ class MarketPress_Tag_Cloud_Widget extends WP_Widget {
 			?>" /></p>
 
 		<p><input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'only_store_pages' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'only_store_pages' ) ); ?>"<?php checked( $only_store_pages ); ?> />
-			<label for="<?php echo esc_attr( $this->get_field_id( 'only_store_pages' ) ); ?>"><?php _e( 'Nur auf Shop-Seiten anzeigen', 'mp' ); ?></label></p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'only_store_pages' ) ); ?>"><?php _e( 'Only show on store pages', 'mp' ); ?></label></p>
 		<?php
 	}
 
 }
 
-function MarketPress_Tag_Cloud_init_Widget ()
-{
-	return register_widget('MarketPress_Tag_Cloud_Widget');
+function register_marketpress_tag_cloud_widget() {
+    register_widget('MarketPress_Tag_Cloud_Widget');
 }
-add_action ('widgets_init', 'MarketPress_Tag_Cloud_init_Widget');
+add_action('widgets_init', 'register_marketpress_tag_cloud_widget');
+
 ?>

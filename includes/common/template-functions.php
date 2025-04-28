@@ -145,7 +145,7 @@ if ( ! function_exists( 'mp_product_price' ) ) :
 
 		$product = new MP_Product( $post_id );
 
-		$label = ( $label === true ) ? __( 'Preis: ', 'mp' ) : $label; //should be empty from 3.0
+		$label = ( $label === true ) ? __( 'Price: ', 'mp' ) : $label; //should be empty from 3.0
 
 		$price_html .= $product->display_price( false );
 
@@ -170,13 +170,13 @@ if ( ! function_exists( 'mp_store_navigation' ) ) :
 	function mp_store_navigation( $echo = true ) {
 		//navigation
 		if ( ! mp_get_setting( 'disable_cart' ) ) {
-			$nav = '<ul class="mp_store_navigation"><li class="page_item"><a href="' . mp_products_link( false, true ) . '" title="' . __( 'Produkte', 'mp' ) . '">' . __( 'Produkte', 'mp' ) . '</a></li>';
-			$nav .= '<li class="page_item"><a href="' . mp_cart_link( false, true ) . '" title="' . __( 'Warenkorb', 'mp' ) . '">' . __( 'Warenkorb', 'mp' ) . '</a></li>';
-			$nav .= '<li class="page_item"><a href="' . mp_orderstatus_link( false, true ) . '" title="' . __( 'Bestellstatus', 'mp' ) . '">' . __( 'Bestellstatus', 'mp' ) . '</a></li>
+			$nav = '<ul class="mp_store_navigation"><li class="page_item"><a href="' . mp_products_link( false, true ) . '" title="' . __( 'Products', 'mp' ) . '">' . __( 'Products', 'mp' ) . '</a></li>';
+			$nav .= '<li class="page_item"><a href="' . mp_cart_link( false, true ) . '" title="' . __( 'Shopping Cart', 'mp' ) . '">' . __( 'Shopping Cart', 'mp' ) . '</a></li>';
+			$nav .= '<li class="page_item"><a href="' . mp_orderstatus_link( false, true ) . '" title="' . __( 'Order Status', 'mp' ) . '">' . __( 'Order Status', 'mp' ) . '</a></li>
 </ul>';
 		} else {
 			$nav = '<ul class="mp_store_navigation">
-<li class="page_item"><a href="' . mp_products_link( false, true ) . '" title="' . __( 'Produkte', 'mp' ) . '">' . __( 'Produkte', 'mp' ) . '</a></li>
+<li class="page_item"><a href="' . mp_products_link( false, true ) . '" title="' . __( 'Products', 'mp' ) . '">' . __( 'Products', 'mp' ) . '</a></li>
 </ul>';
 		}
 
@@ -204,7 +204,7 @@ if ( ! function_exists( 'mp_orderstatus_link' ) ) :
 	function mp_orderstatus_link( $echo = true, $url = false, $link_text = '', $order_id = '' ) {
 		$link = get_permalink( mp_get_setting( 'pages->order_status' ) );
 		if ( ! $url ) {
-			$text = ( $link_text ) ? $link_text : __( 'Bestellstatus überprüfen', 'mp' );
+			$text = ( $link_text ) ? $link_text : __( 'Check Order Status', 'mp' );
 			$link = '<a href="' . $link . '" class="mp_orderstatus_link">' . $text . '</a>';
 		}
 
@@ -232,7 +232,7 @@ if ( ! function_exists( 'mp_products_link' ) ) :
 		$link = get_permalink( mp_get_setting( 'pages->products' ) );
 
 		if ( ! $url ) {
-			$text = ( $link_text ) ? $link_text : __( 'Produkt ansehen', 'mp' );
+			$text = ( $link_text ) ? $link_text : __( 'View Products', 'mp' );
 			$link = '<a href="' . $link . '" class="mp_products_link">' . $text . '</a>';
 		}
 
@@ -260,7 +260,7 @@ if ( ! function_exists( 'mp_store_link' ) ) :
 		$link = get_permalink( mp_get_setting( 'pages->store' ) );
 
 		if ( ! $url ) {
-			$text = ( $link_text ) ? $link_text : __( 'Shop besuchen', 'mp' );
+			$text = ( $link_text ) ? $link_text : __( 'Visit Store', 'mp' );
 			$link = '<a href="' . $link . '" class="mp_store_link">' . $text . '</a>';
 		}
 
@@ -525,7 +525,7 @@ if ( ! function_exists( '_mp_order_status_overview' ) ) :
 		if ( count( $history ) > 0 ) {
 			$history = array_slice( $history, $offset, $per_page );
 			$html .= '
-				<h2 class="mp_title">' . __( 'Bestellungen', 'mp' ) . '</h2>' .
+				<h2 class="mp_title">' . __( 'Order History', 'mp' ) . '</h2>' .
 			         '<div class="mp_order_details">';
 			foreach ( $history as $timestamp => $order ) {
 				$order = new MP_Order( $order['id'] );
@@ -625,55 +625,56 @@ if ( ! function_exists( '_mp_products_html' ) ) :
 				}
 			}
 
-			//$class = array_filter( $class, create_function( '$s', 'return ( ! empty( $s ) );' ) );
-			$class = array_filter( $class, function($s) {return ( ! empty( $s ) );} );
+			$class = array_filter($class, function($s) {
+				return ! empty($s);
+			});
 
 			$image_alignment = mp_get_setting( 'image_alignment_list' );
 
 			$align_class = ( $view == 'list' ) ? ' mp_product-image-' . ( ! empty( $image_alignment ) ? $image_alignment : 'alignleft' ) : '';
 
 			$html .= '
-				<div class="mp_product_item' . ( ( 'grid' == $view ) ? ' mp_product_item-col-' . $per_row : '' ) . '">
-					<div itemscope itemtype="http://schema.org/Product" class="mp_product' . ( ( strlen( $img ) > 0 ) ? ' mp_product-has-image' . $align_class : '' ) . ' ' . implode( ' ',$class ) . '">
-
+				<div class="mp_product_item' . ('grid' == $view ? ' mp_product_item-col-' . $per_row : '') . '">
+					<div itemscope itemtype="http://schema.org/Product" class="mp_product' . (strlen($img) > 0 ? ' mp_product-has-image' . $align_class : '') . ' ' . (is_array($class) ? implode(' ', $class) : '') . '">
+					
 						<div class="mp_product_images">
 							' . $img . '
 						</div><!-- end mp_product_images -->
-
+						
 						<div class="mp_product_details">
-
+			
 							<div class="mp_product_meta">
 								<h3 class="mp_product_name entry-title" itemprop="name">
-	 								<a href="' . $product->url( false ) . '">' . $product->title( false ) . '</a>
-	 							</h3>
-								' . $product->display_price( false ) . '
- 								' . $mp_product_list_content . '
-
- 								<div class="mp_social_shares">
+									<a href="' . $product->url(false) . '">' . $product->title(false) . '</a>
+								</h3>
+								' . $product->display_price(false) . '
+								' . $mp_product_list_content . '
+								
+								<div class="mp_social_shares">
 									' . $pinit . '
 									' . $fb . '
 									' . $twitter . '
 								</div><!-- end mp_social_shares -->
-
+								
 							</div><!-- end mp_product_meta -->
 
 							<div class="mp_product_callout">
-								' . $product->buy_button( false, 'list', array(), true ) . '
-								' . apply_filters( 'mp_product_list_meta', '', $product->ID ) . '
+								' . $product->buy_button(false, 'list', array(), true) . '
+								' . apply_filters('mp_product_list_meta', '', $product->ID) . '
 							</div><!-- end mp_product_callout -->
-
- 						</div><!-- end mp_product_details -->
-
+							
+						</div><!-- end mp_product_details -->
+				
 						<div style="display:none">
-							<span class="entry-title">' . $product->title( false ) . '</span> was last modified:
-							<time class="updated">' . get_the_time( 'Y-m-d\TG:i' ) . '</time> by
-							<span class="author vcard"><span class="fn">' . get_the_author_meta( 'display_name' ) . '</span></span>
+							<span class="entry-title">' . $product->title(false) . '</span> was last modified:
+							<time class="updated">' . get_the_time('Y-m-d\TG:i') . '</time> by
+							<span class="author vcard"><span class="fn">' . get_the_author_meta('display_name') . '</span></span>
 						</div>
-
+						
 					</div><!-- end mp_product -->
 				</div><!-- end mp_product_item -->';
 
-			if ( $column == 1 && $view == 'grid' ) {
+			if ($column == 1 && $view == 'grid') {
 				$html .= '</div><!-- end mp_products_items -->';
 			}
 		endwhile;
@@ -809,7 +810,7 @@ if ( ! function_exists( 'mp_cart_link' ) ) :
 		}
 
 		if ( ! $url ) {
-			$text = ( $link_text ) ? $link_text : __( 'Warenkorb', 'mp' );
+			$text = ( $link_text ) ? $link_text : __( 'Shopping Cart', 'mp' );
 			$link = '<a href="' . $link . '" class="mp_cart_link">' . $text . '</a>';
 		}
 
@@ -870,21 +871,21 @@ if ( ! function_exists( 'mp_create_store_page' ) ) :
 		switch ( $type ) {
 			case 'store' :
 				$args = array(
-					'post_title'   => __( 'Shop', 'mp' ),
-					'post_content' => __( "Willkommen im Onlineshop! Im Shopportal findest Du alle wichtigen Inhalte:\n\n[mp_store_navigation]\n\nAm beliebtesten im Shop:\n\n[mp_popular_products]\n\nDurchsuche nach Kategorien:\n\n[mp_list_categories]\n\nLass Dich von den vorhandenen Produkttags inspirieren:\n\n[mp_tag_cloud]\n\n", 'mp' ),
+					'post_title'   => __( 'Store', 'mp' ),
+					'post_content' => __( "Welcome to our online store! Feel free to browse around:\n\n[mp_store_navigation]\n\nCheck out our most popular products:\n\n[mp_popular_products]\n\nBrowse by category:\n\n[mp_list_categories]\n\nBrowse by tag:\n\n[mp_tag_cloud]", 'mp' ),
 				);
 				break;
 
 			case 'network_store_page' :
 				$args = array(
-					'post_title'     => __( 'Netzwerk Marktplatz', 'mp' ),
-					'post_content'   => __( "Willkommen auf unserem Marktplatz!\n\nSchaue Dir unser Produktnetzwerk an:\n\n[mp_list_global_products]\n\nNach Kategorie durchsuchen:\n\n[mp_global_categories_list]\n\nNach Tag durchsuchen:\n\n[mp_global_tag_cloud]", 'mp' ),
+					'post_title'     => __( 'Global Store', 'mp' ),
+					'post_content'   => __( "Welcome to our market place!\n\nCheck out our network of products:\n\n[mp_list_global_products]\n\nBrowse by category:\n\n[mp_global_categories_list]\n\nBrowse by tag:\n\n[mp_global_tag_cloud]", 'mp' ),
 					'comment_status' => 'closed'
 				);
 				break;
 			case 'network_categories' :
 				$args = array(
-					'post_title'     => __( 'Netzwerkartikel Kategorien', 'mp' ),
+					'post_title'     => __( 'Category', 'mp' ),
 					'post_content'   => __( "[mp_global_categories_list]", 'mp' ),
 					'comment_status' => 'closed',
 					'post_parent'    => mp_get_network_setting( 'pages->network_store_page', 0 ),
@@ -892,7 +893,7 @@ if ( ! function_exists( 'mp_create_store_page' ) ) :
 				break;
 			case 'network_tags' :
 				$args = array(
-					'post_title'     => __( 'Shopnetzwerk Tags', 'mp' ),
+					'post_title'     => __( 'Tag', 'mp' ),
 					'post_content'   => __( "[mp_global_tag_cloud]", 'mp' ),
 					'comment_status' => 'closed',
 					'post_parent'    => mp_get_network_setting( 'pages->network_store_page', 0 ),
@@ -900,7 +901,7 @@ if ( ! function_exists( 'mp_create_store_page' ) ) :
 				break;
 			case 'products' :
 				$args = array(
-					'post_title'   => __( 'Produkte', 'mp' ),
+					'post_title'   => __( 'Products', 'mp' ),
 					'post_content' => '[mp_list_products]',
 					'post_parent'  => mp_get_setting( 'pages->store', 0 ),
 				);
@@ -908,7 +909,7 @@ if ( ! function_exists( 'mp_create_store_page' ) ) :
 
 			case 'cart' :
 				$args = array(
-					'post_title'   => __( 'Warenkorb', 'mp' ),
+					'post_title'   => __( 'Cart', 'mp' ),
 					'post_content' => '[mp_cart]',
 					'post_parent'  => mp_get_setting( 'pages->store', 0 ),
 				);
@@ -916,7 +917,7 @@ if ( ! function_exists( 'mp_create_store_page' ) ) :
 
 			case 'checkout' :
 				$args = array(
-					'post_title'   => __( 'Kasse', 'mp' ),
+					'post_title'   => __( 'Checkout', 'mp' ),
 					'post_content' => '[mp_checkout]',
 					'post_parent'  => mp_get_setting( 'pages->store', 0 )
 				);
@@ -924,19 +925,11 @@ if ( ! function_exists( 'mp_create_store_page' ) ) :
 
 			case 'order_status' :
 				$args = array(
-					'post_title'   => __( 'Bestellstatus', 'mp' ),
-					'post_content' => "[mp_order_lookup_form]<h2>" . __( 'Order Search', 'mp' ) . "</h2><p>" . __( 'Wenn Du eine Bestellnummer hast, kannst Du diese über das unten stehende Formular nachschlagen.', 'mp' ) . "</p>[/mp_order_lookup_form][mp_order_status]",
+					'post_title'   => __( 'Order Status', 'mp' ),
+					'post_content' => "[mp_order_lookup_form]<h2>" . __( 'Order Search', 'mp' ) . "</h2><p>" . __( 'If you have your order ID you can look it up using the form below.', 'mp' ) . "</p>[/mp_order_lookup_form][mp_order_status]",
 					'post_parent'  => mp_get_setting( 'pages->store', 0 )
 				);
 				break;
-				
-			/*case 'mp_agb' :
-				$args = array(
-					'post_title'   => __( 'Allgemeine Geschäftsbedingungen', 'mp' ),
-					'post_content' => 'Allgemeine Geschäftsbedingungen </br> [agb].',
-					'post_parent'  => mp_get_setting( 'pages->store', 0 ),
-				);
-				break;*/
 		}
 
 		$post_id = wp_insert_post( array_merge( $defaults, $args ) );
@@ -994,24 +987,24 @@ if ( ! function_exists( 'mp_format_currency' ) ) :
 		$currencies = mp()->currencies;
 
 		if ( empty( $currency ) ) {
-			$currency = ( is_multisite() && mp_cart()->is_global ) ? mp_get_network_setting( 'global_currency', 'EUR' ) : mp_get_setting( 'currency', 'EUR' );
+			$currency = ( is_multisite() && mp_cart()->is_global ) ? mp_get_network_setting( 'global_currency', 'USD' ) : mp_get_setting( 'currency', 'USD' );
 		}
-
+		
 		$curr_symbol_position = mp_get_setting( 'curr_symbol_position' );
 
 		// If multisite use global currency symbol
 		if( is_multisite() && mp_cart()->is_global ) {
 			$global_currency = mp_get_network_setting( 'global_curr_symbol_position' );
-
+			
 			// Check if we have global currency symbol
 			if( ! empty( $global_currency ) ) {
 				$curr_symbol_position = $global_currency;
 			}
 		}
 
-		// get the currency symbol
+// get the currency symbol
 		if ( $symbol = mp_arr_get_value( "$currency->1", $currencies ) ) {
-			// if many symbols are found, rebuild the full symbol
+// if many symbols are found, rebuild the full symbol
 			$symbols = array_map( 'trim', explode( ', ', $symbol ) );
 			if ( is_array( $symbols ) ) {
 				$symbol = '';
@@ -1033,27 +1026,26 @@ if ( ! function_exists( 'mp_format_currency' ) ) :
 		 */
 		$symbol = apply_filters( 'mp_format_currency_symbol', $symbol, $currency );
 
-		//check decimal option
+//check decimal option
 		if ( (int) ( $amount ) == (float) $amount ) {
 			$decimal_place = 0;
 		} else {
 			$decimal_place = 2;
 		}
 
-		//handle negative numbers
+//handle negative numbers
 		$negative_symbol = '';
 
 		if ( $amount < 0 ) {
 			$negative_symbol = '-';
-			$amount = floatval($amount);
 			$amount          = abs( $amount );
 		}
 
 		if ( $amount === false ) {
-			// just return symbol
+// just return symbol
 			$formatted = $symbol;
 		} else {
-			// just in case so number_format_i18n doesn't throw an error if $amount is string instead of double
+// just in case so number_format_i18n doesn't throw an error if $amount is string instead of double
 			$amount                        = (float) $amount;
 			$price_holder_arguments_string = '';
 
@@ -1156,12 +1148,12 @@ if ( ! function_exists( 'mp_get_current_user_zipcode' ) ) :
 		$zipcode = false;
 
 		if ( is_array( $address ) ) {
-			// Try to get from usermeta
+// Try to get from usermeta
 			$zipcode = mp_arr_get_value( 'zip', $address );
 		}
 
 		if ( false === $zipcode ) {
-			// Try to get from cookie
+// Try to get from cookie
 			$zipcode = mp_get_cookie_value( 'zip' );
 		}
 
@@ -1185,12 +1177,12 @@ if ( ! function_exists( 'mp_get_current_user_city' ) ) :
 		$city    = false;
 
 		if ( is_array( $address ) ) {
-			// Try to get from usermeta
+// Try to get from usermeta
 			$city = mp_arr_get_value( 'city', $address );
 		}
 
 		if ( false === $city ) {
-			// Try to get from cookie
+// Try to get from cookie
 			$city = mp_get_cookie_value( 'city' );
 		}
 
@@ -1226,7 +1218,7 @@ if ( ! function_exists( 'mp_get_user_address' ) ) :
 			return false;
 		}
 
-		if ( !empty( $data ) ) {
+		/* if ( !empty( $data ) ) {
 		  foreach ( $data as $k => $v ) {
 		  switch ( $k ) {
 		  case 'shipping_option' :
@@ -1236,7 +1228,7 @@ if ( ! function_exists( 'mp_get_user_address' ) ) :
 		  break;
 		  }
 		  }
-		  } 
+		  } */
 
 		return $data;
 	}
@@ -1408,13 +1400,13 @@ if ( ! function_exists( 'mp_list_plugin_shipping_options' ) ) :
 
 		$address1 = mp_get_user_address_part( 'address1', $what );
 		$address2 = mp_get_user_address_part( 'address2', $what );
-		$zip      = mp_get_user_address_part( 'zip', $what );
 		$city     = mp_get_user_address_part( 'city', $what );
 		$state    = mp_get_user_address_part( 'state', $what );
+		$zip      = mp_get_user_address_part( 'zip', $what );
 		$country  = mp_get_user_address_part( 'country', $what );
 
 		$cart    = mp_cart();
-		$options = $plugin->shipping_options( $cart, $address1, $address2, $zip, $city, $state, $country );
+		$options = $plugin->shipping_options( $cart, $address1, $address2, $city, $state, $zip, $country );
 
 		$html = '';
 		foreach ( (array) $options as $method => $label ) {
@@ -1430,7 +1422,7 @@ if ( ! function_exists( 'mp_list_plugin_shipping_options' ) ) :
 						value="' . $plugin->plugin_name . '->' . $method . '"
 						autocomplete="off"
 						data-rule-required="true"
-						data-msg-required="' . __( 'Wähle eine Versandart', 'mp' ) . '"' .
+						data-msg-required="' . __( 'Please choose a shipping method', 'mp' ) . '"' .
 			         $checked . ' />
 					<span></span>' . $label . '
 				</label>';
@@ -1717,7 +1709,7 @@ if ( ! function_exists( 'mp_tax_rate' ) ) :
 	 * @param bool $echo Optional, whether to echo or return. Defaults to return.
 	 */
 	function mp_tax_rate( $echo = false ) {
-		//get address
+//get address
 		$state    = mp_get_user_address_part( 'state', 'shipping' );
 		$country  = mp_get_user_address_part( 'country', 'shipping' );
 		$tax_rate = 0;
@@ -1729,18 +1721,19 @@ if ( ! function_exists( 'mp_tax_rate' ) ) :
 		if ( empty( $state ) ) {
 			$state = mp_get_setting( 'base_province' );
 		}
-
+        
+        /*
 		switch ( $country ) {//mp_get_setting( 'base_country' )
 			case 'US':
-				// USA taxes are only for orders delivered inside the state
+// USA taxes are only for orders delivered inside the state
 				if ( $country == 'US' && $state == mp_get_setting( 'base_province' ) ) {
 					$tax_rate = (float) mp_get_setting( 'tax->rate' );
 				}
 				break;
 
 			case 'CA':
-				//Canada tax is for all orders in country, based on province shipped to. We're assuming the rate is a combination of GST/PST/etc.
-				if ( $country == 'CA' && array_key_exists( $state, mp()->provinces['CA'] ) ) {
+//Canada tax is for all orders in country, based on province shipped to. We're assuming the rate is a combination of GST/PST/etc.
+				if ( $country == 'CA' && array_key_exists( $state, mp()->CA_provinces ) ) {
 					if ( $_tax_rate = mp_get_setting( "tax->canada_rate->$state" ) ) {
 						$tax_rate = (float) $_tax_rate;
 					}
@@ -1748,28 +1741,29 @@ if ( ! function_exists( 'mp_tax_rate' ) ) :
 				break;
 
 			case 'AU':
-				//Australia taxes orders in country
+//Australia taxes orders in country
 				if ( $country == 'AU' ) {
 					$tax_rate = (float) mp_get_setting( 'tax->rate' );
 				}
 				break;
 
 			default:
-				//EU countries charge VAT within the EU
+//EU countries charge VAT within the EU
 				if ( in_array( mp_get_setting( 'base_country' ), mp()->eu_countries ) ) {
 					if ( in_array( $country, mp()->eu_countries ) ) {
 						$tax_rate = (float) mp_get_setting( 'tax->rate' );
 					}
 				} else {
-					//all other countries use the tax outside preference
-					//if ( mp_get_setting( 'tax->tax_outside' ) || (!mp_get_setting( 'tax->tax_outside' ) && $country == mp_get_setting( 'base_country' )) ) {
+//all other countries use the tax outside preference
+//if ( mp_get_setting( 'tax->tax_outside' ) || (!mp_get_setting( 'tax->tax_outside' ) && $country == mp_get_setting( 'base_country' )) ) {
 					$tax_rate = (float) mp_get_setting( 'tax->rate' );
-					//}
+//}
 				}
 				break;
 		}
-
-        //$tax_rate = (float) mp_get_setting( 'tax->rate' );
+        */
+        
+        $tax_rate = (float) mp_get_setting( 'tax->rate' );
 
 		if ( empty( $tax_rate ) ) {
 			$tax_rate = 0;
@@ -2077,7 +2071,7 @@ if ( ! function_exists( 'mp_list_products' ) ) :
 		if ( $last = $custom_query->post_count ) {
 			$content .= $layout_type == 'grid' ? _mp_products_html_grid( $custom_query ) : _mp_products_html_list( $custom_query );
 		} else {
-			$content .= '<div id="mp-products-empty">' . apply_filters( 'mp_product_list_none', __( 'Keine Produkte', 'mp' ) ) . '</div><!-- end mp-no-products -->';
+			$content .= '<div id="mp-products-empty">' . apply_filters( 'mp_product_list_none', __( 'No Products', 'mp' ) ) . '</div><!-- end mp-no-products -->';
 		}
 
 		$content .= '</section><!-- end mp-products -->';
@@ -2130,10 +2124,10 @@ if ( ! function_exists( 'mp_order_lookup_form' ) ) :
 		}
 
 		$guest_email = '';
-
+		
 		//Add guest email field
 		if( ! is_user_logged_in() ){
-			$guest_email = '<br/><input type="text" class="mp_form_input" id="mp-guest_email-input" name="guest_email" placeholder="' . __( 'Gast Email', 'mp' ) . '">';
+			$guest_email = '<br/><input type="text" class="mp_form_input" id="mp-guest_email-input" name="guest_email" placeholder="' . __( 'Guest Email', 'mp' ) . '">';
 		}
 
 		$form = '
@@ -2141,11 +2135,11 @@ if ( ! function_exists( 'mp_order_lookup_form' ) ) :
 				<div class="mp_form_content">' . $content . '</div>
 				<div class="mp_form_group">
 					<div class="mp_form_group_input">
-						<input type="text" class="mp_form_input" id="mp-order-id-input" name="order_id" placeholder="' . __( 'Auftragsnummer', 'mp' ) . '">
+						<input type="text" class="mp_form_input" id="mp-order-id-input" name="order_id" placeholder="' . __( 'Order ID', 'mp' ) . '">
 						' . $guest_email . '
 					</div>
 					<div class="mp_form_group_btn">
-				  		<button class="mp_button" type="submit">' . __( 'Nachsehen', 'mp' ) . '</button>
+				  		<button class="mp_button" type="submit">' . __( 'Look Up', 'mp' ) . '</button>
 				  	</div>
 			    </div>
 			</form><!-- end mp-order-lookup-form -->';
@@ -2203,13 +2197,13 @@ if ( ! function_exists( 'mp_order_status' ) ) :
 				if ( $order->exists() ) {
 					//only owner and store admins can see
 					if ( $order->post_author != get_current_user_id() && !current_user_can( apply_filters( 'mp_store_settings_cap', 'read_store_order' ) ) ) {
-						$html .= __( 'Hoppla! Wir konnten keine Bestellungen finden, die dieser Bestellnummer entsprechen. Bitte überprüfe die Bestellnummer und versuche es erneut.', 'mp' );
+						$html .= __( 'Oops! We couldn\'t locate any orders matching that order number. Please verify the order number and try again.', 'mp' );
 						$html .= _mp_order_status_overview();
 					} else {
 						$html .= $order->details( false );
 					}
 				} else {
-					$html .= __( 'Hoppla! Wir konnten keine Bestellungen finden, die dieser Bestellnummer entsprechen. Bitte überprüfe die Bestellnummer und versuche es erneut.', 'mp' );
+					$html .= __( 'Oops! We couldn\'t locate any orders matching that order number. Please verify the order number and try again.', 'mp' );
 					$html .= _mp_order_status_overview();
 				}
 			}
@@ -2221,10 +2215,10 @@ if ( ! function_exists( 'mp_order_status' ) ) :
 					if ( $order->exists() && ( md5( $order->get_meta( 'mp_billing_info->email', '' ) ) == $guest_email || md5( $order->get_meta( 'mp_shipping_info->email', '' ) ) == $guest_email ) ) {
 						$html .= $order->details( false );
 					} else {
-						$html .= __( 'Hoppla! Wir konnten keine Bestellungen finden, die dieser Bestellnummer entsprechen. Bitte überprüfe die Bestellnummer und versuche es erneut.', 'mp' );
+						$html .= __( 'Oops! We couldn\'t locate any orders matching that order number. Please verify the order number and try again.', 'mp' );
 					}
 				} else {
-					$html .= __( 'Hoppla! Wir konnten keine Bestellungen finden, die dieser Bestellnummer entsprechen. Bitte überprüfe die Bestellnummer und versuche es erneut.', 'mp' );
+					$html .= __( 'Oops! We couldn\'t locate any orders matching that order number. Please verify the order number and try again.', 'mp' );
 				}
 			}
 		}
@@ -2291,7 +2285,7 @@ if ( ! function_exists( 'mp_featured_products' ) ) :
 		// force featured to true to filter only featured in mp_list_products()
 		$args['echo'] 	  = false;
 		$args['nopaging'] = false;
-		$args['featured'] = true;
+		$args['featured'] = true;		
 		$content = mp_list_products($args);
 
 		/**
@@ -2354,7 +2348,7 @@ if ( ! function_exists( 'mp_popular_products' ) ) :
 			wp_reset_postdata();
 		} else {
 			$content .= '
-				<li>' . __( 'Keine Produkte', 'mp' ) . '</li>';
+				<li>' . __( 'No Products', 'mp' ) . '</li>';
 		}
 
 		$content .= '
@@ -2383,7 +2377,7 @@ endif;
 if ( ! function_exists( 'mp_product' ) ) {
 	/*
 	 * Displays a single product according to preference
-	 *
+	 * 
 	 * @param bool $echo Optional, whether to echo or return
 	 * @param int $product_id the ID of the product to display. Optional if in the loop.
 	 * @param bool $title Whether to display the title
@@ -2439,13 +2433,13 @@ if ( ! function_exists( 'mp_product' ) ) {
 					break;
 				}
 			}
-//testweise aktiv
-			if ( ! $has_image ) {
-			 	$values = get_post_meta( $product->ID, 'mp_product_images', true );
-				if ( $values ) {
-			 		$has_image = true;
-				}
-			 }//hier auskommentieren
+
+			// if ( ! $has_image ) {
+			// 	$values = get_post_meta( $product->ID, 'mp_product_images', true );
+			// 	if ( $values ) {
+			// 		$has_image = true;
+			// 	}
+			// }
 		}
 
 		$image_alignment = mp_get_setting( 'image_alignment_single' );
@@ -2478,7 +2472,7 @@ if ( ! function_exists( 'mp_product' ) ) {
 											});
 										}";
 		}
-
+        
         $lightbox_code = apply_filters( 'mp_single_product_image_lightbox', $lightbox_code );
 
 		$post = get_post();
@@ -2520,9 +2514,7 @@ if ( ! function_exists( 'mp_product' ) ) {
 								$img_url        = mp_resize_image( $value, $original_image[0], $size );
 							}
 
-							if ( is_array($img_url) && !empty($img_url) ) {
-								$return .= '<li data-thumb="' . $img_url[0] . '" data-src="' . $original_image[0] . '"><img src="' . $img_url[0] . '"></li>';
-							}
+							$return .= '<li data-thumb="' . $img_url[0] . '" data-src ="' . $original_image[0] . '"><img src="' . $img_url[0] . '"></li>';
 						}
 					} else {
 						if ( ! empty( $values[0] ) ) {
@@ -2534,9 +2526,7 @@ if ( ! function_exists( 'mp_product' ) ) {
 								$img_url        = mp_resize_image( $values[0], $original_image[0], $size );
 							}
 
-							if ( is_array($img_url) && !empty($img_url) ) {
-								$return .= '<li data-thumb="' . $img_url[0] . '" data-src="' . $original_image[0] . '"><img src="' . $img_url[0] . '"></li>';
-							}
+							$return .= '<li data-thumb="' . $img_url[0] . '" data-src ="' . $original_image[0] . '"><img src="' . $img_url[0] . '"></li>';
 						}
 					}
 
@@ -2586,7 +2576,7 @@ if ( ! function_exists( 'mp_product' ) ) {
 			}
 
 			if ( mp_get_setting( 'show_single_categories' ) == 1 ) {
-				$return .= mp_category_list( $product_id, '<div class="mp_product_categories">' . __( 'Kategorisiert in ', 'mp' ), ', ', '</div>' );
+				$return .= mp_category_list( $product_id, '<div class="mp_product_categories">' . __( 'Categorized in ', 'mp' ), ', ', '</div>' );
 			}
 
 			$return .= '</div><!-- end mp_product_meta-->';
@@ -2597,9 +2587,8 @@ if ( ! function_exists( 'mp_product' ) ) {
 			// Button
 			$selected_atts = array();
 
-			if ( $variation && isset( $variation_id ) && false !== get_post_meta( $variation_id, 'default_variation' ) ) {
+			if ( $variation ) {
 				$atts = $variation->get_attributes();
-
 				foreach ( $atts as $slug => $att ) {
 					$selected_atts[ $slug ] = key( $att['terms'] );
 				}
@@ -2608,7 +2597,7 @@ if ( ! function_exists( 'mp_product' ) ) {
 			$return .= $product->buy_button( false, 'single', $selected_atts );
 
 			if ( mp_get_setting( 'show_single_tags' ) == 1 ) {
-				$return .= mp_tag_list( $product_id, '<div class="mp_product_tags">' . __( 'Markiert als ', 'mp' ), ', ', '</div>' );
+				$return .= mp_tag_list( $product_id, '<div class="mp_product_tags">' . __( 'Tagged in ', 'mp' ), ', ', '</div>' );
 			}
 
 			$return .= '</div><!-- end mp_product_callout-->';
@@ -2701,8 +2690,8 @@ if ( ! function_exists( 'mp_product' ) ) {
 		}
 
 		$return .= '
-
-</div><!-- end mp_product/mp_single_product -->
+			
+</div><!-- end mp_product/mp_single_product -->	
 </section><!-- end mp-single-product -->';
 
 		/**
@@ -2779,53 +2768,65 @@ endif;
 
 if ( ! function_exists( 'mp_products_nav' ) ) :
 
-	/**
-	 * Get the current product list/grid navigation
-	 *
-	 * @param bool $echo Optional, whether to echo. Defaults to true
-	 * @param WP_Query object $custom_query
-	 */
-	function mp_products_nav( $custom_query, $echo = true ) {
-        $html = '';
+/**
+ * Get the current product list/grid navigation
+ *
+ * @param WP_Query $custom_query The custom query object.
+ * @param bool $echo Optional, whether to echo. Defaults to true.
+ */
+function mp_products_nav( $custom_query, $echo = true ) {
+    $html = '';
 
-        // Check if $custom_query is a valid instance of WP_Query
-        if ( $custom_query instanceof WP_Query && $custom_query->max_num_pages > 1 ) {
-            $big = 999999999;
+    if ( $custom_query->max_num_pages > 1 ) {
+        $big = 999999999;
 
-            $html = '<nav class="mp_listings_nav">';
+        $html = '
+            <nav class="mp_listings_nav">';
 
-            $html .= paginate_links( array(
-                'base'         => '?paged=%#%',
-                'format'       => '',
-                'total'        => $custom_query->max_num_pages,
-                'current'      => max( 1, $custom_query->get( 'paged' ) ),
-                'show_all'     => false,
-                'prev_next'    => true,
-                'prev_text'    => __( 'Zurück', 'mp' ),
-                'next_text'    => __( 'Weiter', 'mp' ),
-                'add_args'     => true,
-                'add_fragment' => '',
-            ) );
+        /* $html .= paginate_links( array(
+          'base'        => '%_%',
+          'format'      => '?paged=%#%',
+          'total'       => $custom_query->max_num_pages,
+          'current'     => max( 1, $custom_query->get( 'paged' ) ),
+          'prev_text'   => __( 'Prev', 'mp' ),
+          'next_text'   => __( 'Next', 'mp' ),
+          ) ); */
 
-            $html .= '</nav>';
-        }
+        // echo 'current_page:'.$custom_query->get( 'paged' );
 
-		/**
-		 * Filter the products nav html
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $html
-		 * @param WP_Query $custom_query
-		 */
-		$html = apply_filters( 'mp_products_nav', $html, $custom_query );
+        $html .= paginate_links( array(
+            'base'         => '?paged=%#%', //'%_%',
+            'format'       => '', //?paged=%#%
+            'total'        => $custom_query->max_num_pages,
+            'current'      => max( 1, $custom_query->get( 'paged' ) ),
+            'show_all'     => false,
+            'prev_next'    => true,
+            'prev_text'    => __( 'Prev', 'mp' ),
+            'next_text'    => __( 'Next', 'mp' ),
+            'add_args'     => true,
+            'add_fragment' => '',
+        ) );
 
-		if ( $echo ) {
-			echo $html;
-		} else {
-			return $html;
-		}
-	}
+        $html .= '
+            </nav>';
+    }
+
+    /**
+     * Filter the products nav html
+     *
+     * @since 3.0
+     *
+     * @param string $html
+     * @param WP_Query $custom_query
+     */
+    $html = apply_filters( 'mp_products_nav', $html, $custom_query );
+
+    if ( $echo ) {
+        echo $html;
+    } else {
+        return $html;
+    }
+}
 
 endif;
 
@@ -2857,7 +2858,7 @@ if ( ! function_exists( 'mp_products_filter' ) ) :
 			'class'            => 'mp_select2',
 			'id'               => 'mp-product-category',
 			'taxonomy'         => 'product_category',
-			'show_option_none' => __( 'Zeige alle', 'mp' ),
+			'show_option_none' => __( 'Show All', 'mp' ),
 			'show_count'       => 1,
 			'orderby'          => 'name',
 			'selected'         => $default,
@@ -2880,15 +2881,15 @@ if ( ! function_exists( 'mp_products_filter' ) ) :
 		}
 
 		$options = array(
-			array( '0', '', __( 'Standard', 'mp' ) ),
-			array( 'date', 'desc', __( 'Erscheinungsdatum (Neueste bis Älteste)', 'mp' ) ),
-			array( 'date', 'asc', __( 'Veröffentlichungsdatum (Älteste bis Neueste)', 'mp' ) ),
+			array( '0', '', __( 'Default', 'mp' ) ),
+			array( 'date', 'desc', __( 'Release Date (Latest to Oldest)', 'mp' ) ),
+			array( 'date', 'asc', __( 'Release Date (Oldest to Latest)', 'mp' ) ),
 			array( 'title', 'asc', __( 'Name (A-Z)', 'mp' ) ),
 			array( 'title', 'desc', __( 'Name (Z-A)', 'mp' ) ),
-			array( 'price', 'asc', __( 'Preis (Niedrig bis Hoch)', 'mp' ) ),
-			array( 'price', 'desc', __( 'Preis (Hoch bis Niedrig)', 'mp' ) ),
-			array( 'sales', 'desc', __( 'Popularität (am beliebtesten - am wenigsten beliebt)', 'mp' ) ),
-			array( 'sales', 'asc', __( 'Popularität (am wenigsten beliebt - am beliebtesten)', 'mp' ) )
+			array( 'price', 'asc', __( 'Price (Low to High)', 'mp' ) ),
+			array( 'price', 'desc', __( 'Price (High to Low)', 'mp' ) ),
+			array( 'sales', 'desc', __( 'Popularity (Most Popular - Least Popular)', 'mp' ) ),
+			array( 'sales', 'asc', __( 'Popularity (Least Popular - Most Popular)', 'mp' ) )
 		);
 
 		$options_html = '';
@@ -2903,24 +2904,24 @@ if ( ! function_exists( 'mp_products_filter' ) ) :
 		<!-- Products Filter -->
 		<section class="mp_products_filter">
 			<form id="mp-products-filter-form" name="mp_products_filter_form" class="mp_form mp_form-products-filter" method="get">
-
+			
 				<div class="mp_form_fields">
-					<div class="mp_form_field mp_products_filter_field mp_products_filter_category" data-placeholder="' . __( 'Produktkategorie', 'mp' ) . '">
-						<label for="mp_product_category" class="mp_form_label">' . __( 'Kategorie', 'mp' ) . '</label>
+					<div class="mp_form_field mp_products_filter_field mp_products_filter_category" data-placeholder="' . __( 'Product Category', 'mp' ) . '">
+						<label for="mp_product_category" class="mp_form_label">' . __( 'Category', 'mp' ) . '</label>
 						' . $terms . '
 					</div><!-- mp_listing_products_category -->
 
 					<div class="mp_form_field mp_products_filter_field mp_products_filter_orderby">
-						<label for="mp_sort_orderby" class="mp_form_label">' . __( 'Sortieren nach', 'mp' ) . '</label>
+						<label for="mp_sort_orderby" class="mp_form_label">' . __( 'Order By', 'mp' ) . '</label>
 						<select id="mp_sort_orderby" class="mp_select2" name="order">
 							' . $options_html . '
 						</select>
 					</div><!-- mp_products_filter_orderby -->
 				</div>
-
+				
 				' . ( ( is_null( $per_page ) ) ? '' : '<input type="hidden" name="per_page" value="' . $per_page . '">' ) . '
 				<input type="hidden" name="page" value="' . max( get_query_var( 'paged' ), 1 ) . '">
-
+			
 			</form><!-- mp_products_filter_form -->
 		</section><!-- end mp_products_filter -->
 		';
@@ -3191,10 +3192,10 @@ endif;
 
 if ( ! function_exists( 'mp_get_plugin_slug' ) ) {
 	function mp_get_plugin_slug() {
-		if ( file_exists( dirname( __FILE__ ) . '/includes/admin/dash-notice/psource-dash-notification.php' ) ) {
+		if ( file_exists( dirname( __FILE__ ) . '/includes/admin/dash-notice/wpmudev-dash-notification.php' ) ) {
 			return 'marketpress/marketpress.php';
 		} else {
-			return 'marketpress/marketpress.php';
+			return 'wordpress-ecommerce/marketpress.php';
 		}
 	}
 }
@@ -3328,26 +3329,6 @@ if ( ! function_exists( 'mp_get_ajax_url' ) ) {
 			//this case the frontend is non ssl, meanwhile backend is ssl, and that will make the cookies
 			//wrong, need to fix it
 			$ajax_url = admin_url( $path, 'http' );
-		}
-
-		if( defined( 'DOMAINMAP_BASEFILE' ) ) {
-			global $wpdb;
-			$blog_id = get_current_blog_id();
-
-			switch_to_blog( $blog_id );
-			$domain = $wpdb->get_var( $wpdb->prepare(
-				"SELECT domain from {$wpdb->prefix}domain_mapping WHERE blog_id = %d",
-				absint( $blog_id )
-			));
-			restore_current_blog();
-
-			if ( ! empty( $domain ) ) {
-				$schema = is_ssl() ? 'https://' : 'http://';
-				if( is_ssl() && force_ssl_admin() ) {
-					$schema = 'https://';
-				}
-				$ajax_url = $schema . $domain . '/wp-admin/' . $path;
-			}
 		}
 
 		return $ajax_url;

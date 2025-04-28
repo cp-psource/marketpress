@@ -1,5 +1,5 @@
 <?php
-
+	
 class MP_Gateway_Worker_AuthorizeNet_AIM {
 	var $login;
 	var $transkey;
@@ -20,7 +20,7 @@ class MP_Gateway_Worker_AuthorizeNet_AIM {
 		if ( $this->instances > 0 ) {
 			return false;
 		}
-
+		
 		$this->url = $url;
 
 		$this->params['x_delim_data'] = ($delim_data == 'yes') ? 'TRUE' : 'FALSE';
@@ -41,22 +41,22 @@ class MP_Gateway_Worker_AuthorizeNet_AIM {
 	function transaction( $cardnum ) {
 		$this->params['x_card_num'] = preg_replace( '/[^0-9]/', '', $cardnum );
 	}
-
+	
 	function cleanString( $str, $length ) {
 		//replace encoded characters with their non-encoded versions
 		$search = array('&#8230;', '&#8216;', '&#8217;', '&#8220;', '&#8221;', '&#8226;', '&#8211;', '&#8212;');
 		$replace = array('...', "'", "'", '"', '"', '•', '-', '-');
 		$str = str_replace($search, $replace, $str);
-
+		
 		//remove all other entities
 		$str = preg_replace("/&.{0,}?;/", '', $str);
-
+		
 		//shorten length
 		$str = substr($str, 0, $length);
-
+		
 		return $str;
 	}
-
+	
 	function addLineItem( $id, $name, $description, $quantity, $price, $taxable = 0 ) {
 		$id = $this->cleanString($id, 31);
 		$name = $this->cleanString($name, 31);
@@ -66,7 +66,7 @@ class MP_Gateway_Worker_AuthorizeNet_AIM {
 
 	function process() {
 		$this->_prepareParameters();
-
+		
 		/**
 		 * Set the number of retries
 		 *
@@ -74,17 +74,17 @@ class MP_Gateway_Worker_AuthorizeNet_AIM {
 		 * @param int $retries The current number of retries.
 		 */
 		$retries = apply_filters( 'mp_gateway/authorizenet_aim/api_retries', 1 );
-
+		
 		$count = 0;
 		while ( $count < $retries ) {
-			$args['user-agent'] = 'MarketPress/' . MP_VERSION . ': http://premium.psource.org/project/e-commerce | Authorize.net AIM Plugin/' . MP_VERSION;
+			$args['user-agent'] = 'MarketPress/' . MP_VERSION . ': http://premium.wpmudev.org/project/e-commerce | Authorize.net AIM Plugin/' . MP_VERSION;
 			$args['body'] = $this->fields;
 			$args['sslverify'] = false;
 			$args['timeout'] = mp_get_api_timeout( $this->plugin_name );
 
 			//use built in WP http class to work with most server setups
 			$response = wp_remote_post( $this->url, $args );
-
+			
 			if ( ! is_wp_error( $response ) ) {
 				$this->response = $response['body'];
 			} else {
@@ -103,14 +103,14 @@ class MP_Gateway_Worker_AuthorizeNet_AIM {
 					$this->method = $this->getMethod();
 					$count = $retries;
 				break;
-
+				
 				case 'Declined' :
 					$this->approved = false;
 					$this->declined = true;
 					$this->error = false;
 					$count = $retries;
 				break;
-
+				
 				case 'HeldForReview' :
 					$this->approved = true;
 					$this->declined = false;
@@ -119,7 +119,7 @@ class MP_Gateway_Worker_AuthorizeNet_AIM {
 					$count = $retries;
 				break;
 			}
-
+			
 			$count ++;
 		}
 	}
@@ -149,7 +149,7 @@ class MP_Gateway_Worker_AuthorizeNet_AIM {
 		if ( isset( $this->results[51] ) ) {
 			return str_replace( $this->params['x_encap_char'], '', $this->results[51] );
 		}
-
+		
 		return "";
 	}
 
@@ -173,10 +173,10 @@ class MP_Gateway_Worker_AuthorizeNet_AIM {
 	function isError() {
 		return $this->error;
 	}
-
+	
 	function isHeldForReview() {
 		return $this->held_for_review;
-	}
+	}				
 
 	function getResponseText() {
 		return $this->results[3];

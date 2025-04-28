@@ -3,13 +3,8 @@
  *
  * @since 3.0
  */
-//Incomplete string escaping or encoding
-/*String.prototype.escapeSelector = function() {
-    return this.replace( /(:|\.|\[|\])/g, "\\$1" );
-};*/
 String.prototype.escapeSelector = function() {
-    // Verwenden Sie die String.replace-Methode mit einer Regex, um die Zeichen zu escapen.
-    return this.replace(/([:.\[\]\\\\])/g, '\\\\$1');
+    return this.replace( /(:|\.|\[|\])/g, "\\$1" );
 };
 
 var mp_cart = { };
@@ -261,7 +256,7 @@ var mp_cart = { };
             if ( resp.success ) {
 
                 if (resp.data.image) {
-                    if ($container.find('.mp_product_image_link').length == 0) {
+                    if ($container.find('.mp_product_image_link').size() == 0) {
                         $('.mp_single_product_images').html(
                             $('<a/>').attr({
                                 'class': 'mp_product_image_link mp_lightbox cboxElement',
@@ -292,7 +287,7 @@ var mp_cart = { };
                 $container.find( '.mp_product_tab_content_text' ).html( resp.data.description );
                 //}
                 //update content for lightbox
-                if ( $( '.mp_product_options_excerpt' ).length > 0 ) {
+                if ( $( '.mp_product_options_excerpt' ).size() > 0 ) {
                     $( '.mp_product_options_excerpt' ).html( resp.data.excerpt );
                 }
 
@@ -338,7 +333,7 @@ var mp_cart = { };
                     "dropdownAutoWidth": 1
                 } );
 
-                $.colorbox.trigger("resize");
+                $.colorbox.resize();
             }
         } );
     };
@@ -655,16 +650,21 @@ var mp_cart = { };
      * @since 3.0
      */
     mp_cart.initCartAnimation = function() {
-        var $cart = $('#mp-floating-cart');
-    
-        $cart.on('mouseenter click', function() {
-            $cart.addClass('in-transition');
-            setTimeout(function() {
-                $cart.addClass('visible');
-            }, 300);
-        }).on('mouseleave', function() {
-            $cart.removeClass('visible in-transition');
-        });
+        var $cart = $( '#mp-floating-cart' );
+
+        $cart.hover( function() {
+            $cart.addClass( 'in-transition' );
+            setTimeout( function() {
+                $cart.addClass( 'visible' );
+            }, 300 );
+        }, function() {
+            $cart.removeClass( 'visible in-transition' );
+        } ).on('click', function() {
+            $cart.addClass( 'in-transition' );
+            setTimeout( function() {
+                $cart.addClass( 'visible' );
+            }, 300 );
+        } );
     };
 }( jQuery ) );
 
@@ -675,7 +675,7 @@ jQuery( document ).on( 'cbox_cleanup', function() {
 } );
 
 jQuery( document ).on( 'cbox_complete', function() {
-    jQuery.colorbox.trigger("resize");
+    jQuery.colorbox.resize();
     mp_cart.initCboxListeners();
 } );
 

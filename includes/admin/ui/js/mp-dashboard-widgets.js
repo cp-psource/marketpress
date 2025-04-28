@@ -12,7 +12,7 @@ jQuery( document ).ready( function( $ ) {
                 range.collapse( true );
                 range.moveEnd( 'character', end );
                 range.moveStart( 'character', start );
-                range.trigger("select");
+                range.select();
             }
         } );
     };
@@ -20,11 +20,11 @@ jQuery( document ).ready( function( $ ) {
     $.fn.inlineEdit = function( replaceWith, connectWith ) {
         var inline_icon_edit = '<span class="inline-edit-icon"><i class="fa fa-pencil fa-lg"></i></span>';
 
-        $(this).on('mouseenter', function() {
-            $(this).append(inline_icon_edit);
-        }).on('mouseleave', function() {
-            $(this).find('.inline-edit-icon').remove();
-        });
+        $( this ).hover( function( ) {
+            $( this ).append( inline_icon_edit );
+        }, function( ) {
+            $( this ).find( '.inline-edit-icon' ).remove( );
+        } );
 
         $( this ).on( 'click', function( ) {
 
@@ -48,10 +48,10 @@ jQuery( document ).ready( function( $ ) {
 
             $( replaceWith ).selectRange( len, len );
 
-            replaceWith.on("blur",  function( ) {
+            replaceWith.blur( function( ) {
 
                 if ( $( this ).val( ) != "" ) {
-                    connectWith.val( $( this ).val() ).trigger("change");
+                    connectWith.val( $( this ).val() ).change( );
                     if ( data_type == 'number' ) {
                         var numeric_value = $( this ).val();
                         numeric_value = numeric_value.replace( ",", "" );
@@ -80,14 +80,14 @@ jQuery( document ).ready( function( $ ) {
         $( this ).inlineEdit( $( '<input name="temp" class="mp_inline_temp_value" type="text" value="" />' ), $( 'input.editable_value' ) );//' + $.trim( $( this ).html( ) ) + '
     } );
 
-    $( ".mp_inline_temp_value" ).on( 'keyup', function( e ) {
+    $( ".mp_inline_temp_value" ).live( 'keyup', function( e ) {
         if ( e.keyCode == 13 ) {
-            $( this ).trigger("blur");
+            $( this ).blur( );
         }
         e.preventDefault( );
     } );
 
-    $( '#mp-product-price-inventory-variants-metabox' ).on( 'keydown', function( event ) {//window
+    $( '#mp-product-price-inventory-variants-metabox' ).keydown( function( event ) {//window
         if ( event.keyCode == 13 ) {
             event.preventDefault();
             return false;
@@ -115,7 +115,7 @@ jQuery( document ).ready( function( $ ) {
                     ).done( function( data, status ) {
 
                     $( '.mp-dashboard-widget-low-stock-wrap-overlay' ).hide();
-                    var response = JSON.parse( data );
+                    var response = $.parseJSON( data );
 
                     if ( response.status_message !== '' ) {
                         $( '.mp-dashboard-widget-low-stock-wrap' ).html( response.output );
@@ -201,12 +201,12 @@ jQuery( document ).ready( function( $ ) {
             if ( $( '#original_publish' ).val( ) == 'Publish' ) {
                 $( '#save-post' ).removeAttr( 'dasabled' );
                 //alert('published click!');
-                $( '#save-post' ).trigger("click");
+                $( '#save-post' ).click( );
             }
 
             if ( $( '#original_publish' ).val( ) == 'Update' ) {
                 $( '#publish' ).removeAttr( 'dasabled' );
-                $( '#publish' ).trigger("click");
+                $( '#publish' ).click( );
             }
         }
 
@@ -215,13 +215,13 @@ jQuery( document ).ready( function( $ ) {
     } )
 
     /* Close thickbox window on link / cancel click */
-    $( '.mp_popup_controls a.cancel' ).on( 'click', function( e ) {
+    $( '.mp_popup_controls a.cancel' ).live( 'click', function( e ) {
         parent.jQuery.colorbox.close();
         return false;
         e.preventDefault();
     } );
 
-    $( "a.open_ajax" ).on( 'click', function( e ) {
+    $( "a.open_ajax" ).live( 'click', function( e ) {
         $.colorbox( {
             href: mp_product_admin_i18n.ajaxurl + '?action=mp_variation_popup&variation_id=' + ( $( this ).attr( 'data-popup-id' ) ),
             opacity: .7,
@@ -244,14 +244,14 @@ jQuery( document ).ready( function( $ ) {
         // return false;
     } );
 
-    $( '#variant_add' ).on( 'click', function( e ) {
+    $( '#variant_add' ).live( 'click', function( e ) {
         var url = mp_product_admin_i18n.ajaxurl + '?action=ajax_add_new_variant';
 
         $.post( url, {
             action: 'ajax_add_new_variant',
             parent_post_id: $( '#post_ID' ).val(),
         } ).done( function( data, status ) {
-            var response = JSON.parse( data );
+            var response = jQuery.parseJSON( data );
 
             if ( response ) {
                 if ( response.type == true ) {
@@ -279,7 +279,7 @@ jQuery( document ).ready( function( $ ) {
         e.preventDefault();
     } );
 
-    $( 'body' ).on( 'mp-variation-popup-loaded', function() {
+    $( 'body' ).live( 'mp-variation-popup-loaded', function() {
 
         $( '#variation_popup a.remove_popup_image' ).on( 'click', function( e ) {
 
@@ -388,7 +388,7 @@ jQuery( document ).ready( function( $ ) {
             $( '.variation_content_type_plain' ).show();
         }
 
-        $( "input[name='variation_content_type']" ).on( 'change', function() {
+        $( "input[name='variation_content_type']" ).live( 'change', function() {
             var variation_content_type = $( "input[name='variation_content_type']:checked" ).val();
             if ( variation_content_type == 'html' ) {
                 $( '.variation_description_button' ).show();
@@ -401,7 +401,7 @@ jQuery( document ).ready( function( $ ) {
 
     } );
 
-    $( '.has_controller' ).on( 'change', function() {
+    $( '.has_controller' ).live( 'change', function() {
         var parent_holder = $( this ).closest( '.fieldset_check' );
         var controller = $( this );
         if ( controller.is( ':checked' ) ) {
@@ -412,7 +412,7 @@ jQuery( document ).ready( function( $ ) {
     } );
 
 
-    $( '#variation_popup input, #variation_popup textarea, #variation_popup select' ).on( 'change', function( e ) {
+    $( '#variation_popup input, #variation_popup textarea, #variation_popup select' ).live( 'change', function( e ) {
         // Setup form validation on the #register-form element
 
         $( "#variation_popup" ).validate( {
@@ -439,7 +439,7 @@ jQuery( document ).ready( function( $ ) {
 
     } );
 
-    $( '#save-variation-popup-data, .variation_description_button' ).on( 'click', function( e ) {
+    $( '#save-variation-popup-data, .variation_description_button' ).live( 'click', function( e ) {
         var form = $( 'form#variation_popup' );
 
         $( '.mp_ajax_response' ).attr( 'class', 'mp_ajax_response' );
@@ -450,7 +450,7 @@ jQuery( document ).ready( function( $ ) {
             //action: 'save_inline_post_data',
             mp_product_admin_i18n.ajaxurl, form.serialize()
             ).done( function( data, status ) {
-            var response = JSON.parse( data );
+            var response = $.parseJSON( data );
 
             if ( response.status_message !== '' ) {
                 $( '.mp_ajax_response' ).html( response.status_message );
@@ -477,7 +477,7 @@ jQuery( document ).ready( function( $ ) {
     } );
 
 
-    $( '#mp_dashboard_widget_inventory_threshhold' ).on( 'change', function( e ) {
+    $( '#mp_dashboard_widget_inventory_threshhold' ).live( 'change', function( e ) {
 
         $( '.mp-dashboard-widget-low-stock-wrap-overlay' ).show();
 
@@ -490,7 +490,7 @@ jQuery( document ).ready( function( $ ) {
             mp_product_admin_i18n.ajaxurl, form.serialize( )
             ).done( function( data, status ) {
             $( '.mp-dashboard-widget-low-stock-wrap-overlay' ).hide();
-            var response = JSON.parse( data );
+            var response = $.parseJSON( data );
 
             if ( response.status_message !== '' ) {
                 $( '.mp_ajax_response' ).html( response.status_message );

@@ -24,10 +24,10 @@ class MP_Shipping_Table_Rate extends MP_Shipping_API {
 	 */
 	function on_creation() {
 		//declare here for translation
-		$this->public_name = __('Nach Warenwert', 'mp');
+		$this->public_name = __('Table Rate', 'mp');
 
-		add_filter( 'psource_field/get_value/shipping[table_rate][rates]', array( &$this, 'get_rates_value' ), 10, 4 );
-		add_filter( 'psource_field/sanitize_for_db', array( &$this, 'sanitize_rates' ), 10, 3);
+		add_filter( 'wpmudev_field/get_value/shipping[table_rate][rates]', array( &$this, 'get_rates_value' ), 10, 4 );
+		add_filter( 'wpmudev_field/sanitize_for_db', array( &$this, 'sanitize_rates' ), 10, 3);
 	}
 
   /**
@@ -84,15 +84,15 @@ class MP_Shipping_Table_Rate extends MP_Shipping_API {
    * @access public
    */
   public function init_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id' => $this->generate_metabox_id(),
 			'page_slugs' => array(
-				'shop-einstellungen-shipping',
-				'shop-einstellungen_page_shop-einstellungen-shipping',
+				'store-settings-shipping',
+				'store-settings_page_store-settings-shipping',
 				'store-setup-wizard'
 			),
-			'title' => sprintf( __( '%s Einstellungen', 'mp' ), $this->public_name ),
-			'desc' => __( 'Gib für jede Option einen Versandpreis ein, da diese Kunden sonst möglicherweise kostenlosen Versand erhalten. Mache Dir keine Sorgen um das Sortieren, da dies beim Speichern automatisch erfolgt.', 'mp' ),
+			'title' => sprintf( __( '%s Settings', 'mp' ), $this->public_name ),
+			'desc' => __( 'Be sure to enter a shipping price for every option or those customers may get free shipping. Don\'t worry about sorting as this will be done automatically upon saving.', 'mp' ),
 			'option_name' => 'mp_settings',
 			'conditional' => array(
 				'action' => 'show',
@@ -105,11 +105,11 @@ class MP_Shipping_Table_Rate extends MP_Shipping_API {
 			'sortable' => false,
 		) );
 
-		if ( $layers instanceof PSOURCE_Field ) {
+		if ( $layers instanceof WPMUDEV_Field ) {
 			$layers->add_sub_field( 'text', array(
 				'name' => 'mincost',
-				'label' => array( 'text' => __( 'Mindestwarenwert', 'mp' ) ),
-				'desc' => __( 'Wenn die Warenkorbsumme größer oder gleich diesem Wert ist, werden die Preise aus dieser Zeile für die Versandkostenberechnung verwendet.', 'mp' ),
+				'label' => array( 'text' => __( 'Cart Total', 'mp' ) ),
+				'desc' => __( 'If cart total is greater than or equal to this value then the rates from that row will be used during checkout.', 'mp' ),
 				'validation' => array(
 					'required' => true,
 					'number' => true,
@@ -148,7 +148,7 @@ class MP_Shipping_Table_Rate extends MP_Shipping_API {
 			} else {
 				$layers->add_sub_field( 'text', array(
 					'name' => 'in_country',
-					'label' => array( 'text' => __( 'Basisland', 'mp' ) ),
+					'label' => array( 'text' => __( 'In Country', 'mp' ) ),
 					'validation' => array(
 						'required' => true,
 						'number' => true,
@@ -171,7 +171,7 @@ class MP_Shipping_Table_Rate extends MP_Shipping_API {
 				if ( in_array( mp_get_setting( 'base_country' ), mp()->eu_countries ) ) {
 					$layers->add_sub_field( 'text', array(
 						'name' => 'eu',
-						'label' => array( 'text' => __( 'Europäische Union', 'mp' ) ),
+						'label' => array( 'text' => __( 'European Union', 'mp' ) ),
 						'validation' => array(
 							'required' => true,
 							'number' => true,
@@ -220,7 +220,7 @@ class MP_Shipping_Table_Rate extends MP_Shipping_API {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @action psource_field/sanitize_for_db
+	 * @action wpmudev_field/sanitize_for_db
 	 */
 	public function sanitize_rates( $value, $post_id, $field ) {
 		if ( false === strpos( $field->args['name'], 'shipping[table_rate][rates]' ) ) {
@@ -315,4 +315,4 @@ class MP_Shipping_Table_Rate extends MP_Shipping_API {
 }
 
 //register plugin - uncomment to register
-MP_Shipping_API::register_plugin( 'MP_Shipping_Table_Rate', 'table_rate', __('Versandkosten nach Warenwert', 'mp') );
+MP_Shipping_API::register_plugin( 'MP_Shipping_Table_Rate', 'table_rate', __('Table Rate', 'mp') );

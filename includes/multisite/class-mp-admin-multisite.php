@@ -50,21 +50,21 @@ class MP_Admin_Multisite {
 			add_action( 'init', array( &$this, 'init_metaboxes' ) );
 			add_action( 'network_admin_menu', array( &$this, 'add_menu_items' ) );
 			add_action( 'admin_enqueue_scripts', array( &$this, 'enqueue_styles_scripts' ) );
-			add_action( 'psource_field/print_scripts/network_store_page', array(
+			add_action( 'wpmudev_field/print_scripts/network_store_page', array(
 				&$this,
 				'print_network_store_page_scripts'
 			) );
-			add_filter( 'psource_field/after_field', array( &$this, 'display_create_page_button' ), 10, 2 );
-			add_action( 'psource_field/print_scripts', array( &$this, 'create_store_page_js' ) );
+			add_filter( 'wpmudev_field/after_field', array( &$this, 'display_create_page_button' ), 10, 2 );
+			add_action( 'wpmudev_field/print_scripts', array( &$this, 'create_store_page_js' ) );
 		}
 		add_action( 'wp_ajax_mp_index_products', array( &$this, 'index_products' ) );
 		if ( mp_get_network_setting( 'global_cart' ) ) {
-			add_filter( 'psource_field/get_value/gateways[allowed][' . mp_get_network_setting( 'global_gateway', '' ) . ']', array(
+			add_filter( 'wpmudev_field/get_value/gateways[allowed][' . mp_get_network_setting( 'global_gateway', '' ) . ']', array(
 				&$this,
 				'force_check_global_gateway'
 			), 10, 4 );
 
-			add_filter('psource_field/before_get_value', array(&$this, 'global_currency_options'), 10, 4);
+			add_filter('wpmudev_field/before_get_value', array(&$this, 'global_currency_options'), 10, 4);
 		}
 		//On blog status change update blog_public status
 		add_action( 'activate_blog', array( $this, 'set_blog_public_global_products' ) );
@@ -84,7 +84,7 @@ class MP_Admin_Multisite {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @filter psource_field/get_value/gateways[allowed][ {global_gateway} ]
+	 * @filter wpmudev_field/get_value/gateways[allowed][ {global_gateway} ]
 	 */
 	public function force_check_global_gateway( $value, $post_id, $raw, $field ) {
 		return 1;
@@ -98,7 +98,7 @@ class MP_Admin_Multisite {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @action psource_field/print_scripts/network_store_page
+	 * @action wpmudev_field/print_scripts/network_store_page
 	 */
 	public function print_network_store_page_scripts( $field ) {
 		?>
@@ -166,7 +166,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_general_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-general',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Shopnetzwerk Einstellungen', 'mp' ),
@@ -192,7 +192,7 @@ class MP_Admin_Multisite {
 	public function init_global_currency_metabox(){
 		if( mp_get_network_setting( 'global_cart' ) ){
 
-			$metabox = new PSOURCE_Metabox( array(
+			$metabox = new WPMUDEV_Metabox( array(
 				'id'               => 'mp-global-store-currency',
 				'page_slugs'       => array( 'network-shop-einstellungen' ),
 				'title'            => __( 'Netzwerkwährung', 'mp' ),
@@ -279,7 +279,7 @@ class MP_Admin_Multisite {
 		$html = sprintf( __( "%d Produkte wurden im Netzwerk indexiert", "mp" ), $count ) . '<br/><br/>';
 		$html .= '<button type="button" class="button mp_index_products">' . __( "Produkte indexieren", "mp" ) . '</button>';
 		$html .= '<p class="index-status" style="display: none;">' . __( "Index läuft, bitte warten...", "mp" ) . '</p>';
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-post-indexer',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Produkt Indexierung', 'mp' ),
@@ -344,7 +344,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_global_gateway_settings_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-global-gateway',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Netzwerk Zahlungsgateway', 'mp' ),
@@ -384,7 +384,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_gateway_permissions_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-gateway-permissions',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Gateway-Berechtigungen', 'mp' ),
@@ -432,12 +432,12 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_theme_permissions_metabox() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-theme-permissions',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Theme Berechtigungen', 'mp' ),
 			'site_option_name' => 'mp_network_settings',
-			'desc'             => __( 'Festlegen von Theme-Zugriffsberechtigungen für Netzwerkspeicher. Speichere für ein benutzerdefiniertes CSS-Thema Deine CSS-Datei mit dem Header <strong> MarketPress Theme: NAME </strong> im Ordner <strong> /marketpress/ui/themes/ </strong>, damit es in dieser Liste angezeigt wird.', 'mp' ),
+			'desc'             => __( 'Festlegen von Theme-Zugriffsberechtigungen für Netzwerkspeicher. Speichere für ein benutzerdefiniertes CSS-Thema Deine CSS-Datei mit dem Header <strong> PSeCommerce Theme: NAME </strong> im Ordner <strong> /psecommerce/ui/themes/ </strong>, damit es in dieser Liste angezeigt wird.', 'mp' ),
 			'order'            => 15,
 		) );
 
@@ -498,11 +498,11 @@ class MP_Admin_Multisite {
 				<form id="mp-main-form" method="post" action="<?php echo add_query_arg( array() ); ?>">
 					<?php
 					/**
-					 * Render PSOURCE Metabox settings
+					 * Render WPMUDEV Metabox settings
 					 *
 					 * @since 3.0
 					 */
-					do_action( 'psource_metabox/render_settings_metaboxes' );
+					do_action( 'wpmudev_metabox/render_settings_metaboxes' );
 					?>
 				</form>
 			</div>
@@ -517,7 +517,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function init_network_pages() {
-		$metabox = new PSOURCE_Metabox( array(
+		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-settings-network-pages-slugs',
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Netzwerkmarktplatz Seiten', 'mp' ),
@@ -559,7 +559,7 @@ class MP_Admin_Multisite {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * filter psource_field/after_field
+	 * filter wpmudev_field/after_field
 	 */
 	public function display_create_page_button( $html, $field ) {
 		switch ( $field->args['original_name'] ) {
@@ -595,7 +595,7 @@ class MP_Admin_Multisite {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @action psource_field/print_scripts
+	 * @action wpmudev_field/print_scripts
 	 */
 	public function create_store_page_js( $field ) {
 		if ( $field->args['original_name'] !== 'pages[network_store_page]' ) {
