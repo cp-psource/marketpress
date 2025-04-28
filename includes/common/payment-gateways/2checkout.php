@@ -27,7 +27,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 	var $API_Username, $API_Password, $SandboxFlag, $returnURL, $cancelURL, $API_Endpoint, $version, $currencyCode, $locale;
 	//if the gateway uses the order confirmation step during checkout (e.g. PayPal)
 	var $use_confirmation_step = false;
-	
+
 	/**
 	 * Refers to the gateways currencies
 	 *
@@ -79,10 +79,10 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 		$this->API_Username = $this->get_setting('api_credentials->sid');
 		$this->API_Password = $this->get_setting('api_credentials->secret_word');
 		$this->SandboxFlag = $this->get_setting('mode');
-		
+
 		add_filter( 'mp_checkout/address_fields_array', array( &$this, 'address_fields_array' ), 10, 2 );
 	}
-	
+
 	/**
 	 * Filter the address fields array
 	 *
@@ -101,10 +101,10 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 				}
 			}
 		 }
-		 
+
 		 return $fields;
 	}
-	
+
 	/**
 	 * Updates the gateway settings
 	 *
@@ -119,7 +119,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 			mp_push_to_array($settings, 'gateways->2checkout->api_credentials->secret_word', $secret_word);
 			unset($settings['gateways']['2checkout']['sid'], $settings['gateways']['2checkout']['secret_word']);
 		 }
-		 
+
 		 return $settings;
 	}
 
@@ -133,7 +133,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 		/* if (isset($_GET['2checkout_cancel'])) {
 				echo '<div class="mp_checkout_error">' . __('Your 2Checkout transaction has been canceled.', 'mp') . '</div>';
 		} */
-		return __( 'You will be redirected to the 2Checkout site to finalize your payment.', 'mp' ); 
+		return __( 'You will be redirected to the 2Checkout site to finalize your payment.', 'mp' );
 	}
 
 	/**
@@ -150,7 +150,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 		$params = array();
 		$order = new MP_Order();
 		$return_url = mp_store_page_url( 'checkout-confirm', false );
-		
+
 		if ( 'sandbox' == $this->SandboxFlag ) {
 			$url = "https://sandbox.2checkout.com/checkout/purchase";
 		} else {
@@ -163,51 +163,51 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 		$params['purchase_step'] = 'payment-method';
 		$params['currency_code'] = $this->currencyCode;
 		$params['mode'] = '2CO';
-		
+
 		// set shipping address
 		foreach ( $shipping_info as $k => $v ) {
 			switch ( $k ) {
 				case 'address1' :
 					$params['ship_street_address'] = $v;
 				break;
-				
+
 				case 'address2' :
 					$params['ship_street_address2'] = $v;
 				break;
-				
+
 				case 'first_name' :
 					$params['ship_name'] = $v;
 				break;
-				
+
 				case 'last_name' :
 					$params['ship_name'] .= ' ' . $v;
 				break;
-				
+
 				default :
 					$params[ 'ship_' . $k ] = $v;
 				break;
 			}
 		}
-		
+
 		// set billing info
 		foreach ( $billing_info as $k => $v ) {
 			switch ( $k ) {
 				case 'address1' :
 					$params['street_address'] = $v;
 				break;
-				
+
 				case 'address2' :
 					$params['street_address2'] = $v;
 				break;
-				
+
 				case 'first_name' :
 					$params['card_holder_name'] = $v;
 				break;
-				
+
 				case 'last_name' :
 					$params['card_holder_name'] .= ' ' . $v;
 				break;
-				
+
 				default :
 					$params[ $k ] = $v;
 				break;
@@ -217,12 +217,12 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 		$total = 0;
 		$counter = 1;
 		$items = $cart->get_items_as_objects();
-		
+
 		foreach ( $items as $item ) {
 			$price = $item->get_price( 'lowest' );
-			
+
 			$total += ($price * $item->qty);
-			
+
 			$prefix = 'li_' . $counter;
 			$params["{$prefix}_product_id"] = $item->get_meta( 'sku', $item->ID );
 			$params["{$prefix}_name"] = $item->title( false );
@@ -230,13 +230,13 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 			$params["{$prefix}_description"] = $item->url( false );
 			$params["{$prefix}_price"] = $price;
 			$params["{$prefix}_type"] = 'product';
-			
+
 			if ( $item->get_meta( 'download', $item->ID ) ) {
 				$params["{$prefix}_tangible"] = 'N';
 			} else {
 				$params["{$prefix}_tangible"] = 'Y';
 			}
-			
+
 			$counter ++;
 		}
 
@@ -247,7 +247,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 			$params["{$prefix}_name"] = 'Shipping';
 			$params["{$prefix}_type"] = 'shipping';
 			$params["{$prefix}_price"] = $shipping_price;
-			
+
 			$counter += 1;
 			$total += $shipping_price;
 		}
@@ -260,15 +260,15 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 			$params["{$prefix}_name"] = 'Taxes';
 			$params["{$prefix}_type"] = 'tax';
 			$params["{$prefix}_price"] = $tax_price;
-			
+
 			$counter += 1;
 			$total += $tax_price;
 		}
 
 		$params['total'] = $total;
-		
+
 		$url .= '?' . http_build_query( $params );
-		
+
 		wp_redirect( $url );
 
 		die;
@@ -286,7 +286,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 
 		if ( mp_get_request_value( 'key' ) == $hash && $mp_order_num ) {
 			$status = __('The order has been received', 'mp');
-	
+
 			$payment_info = array(
 				'gateway_public_name' => $this->public_name,
 				'gateway_private_name' => $this->admin_name,
@@ -298,17 +298,17 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 				'transaction_id' => $order_num,
 				'method' => __( 'Credit Card', 'mp' ),
 			);
-			 
+
 			$order = new MP_Order( $mp_order_num );
 			$order->save( array(
 				'cart' => mp_cart(),
 				'payment_info' => $payment_info,
 				'paid' => true,
 			) );
-			 
+
 			wp_redirect( $order->tracking_url( false ) );
 		}
-		
+
 		die;
 	}
 
@@ -319,9 +319,9 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 	 * @access public
 	 */
 	function init_settings_metabox() {
-		 $metabox = new WPMUDEV_Metabox(array(
+		 $metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => sprintf( __( '<ol><li>Set the "Return Method" within <a target="_blank" href="https://sandbox.2checkout.com/sandbox/acct/detail_company_info">Site Management</a> to <strong>Header Redirect</strong> and set the "Return URL" to <strong>%s</strong></li><li>Set your <a target="https://www.2checkout.com/sandbox/notifications/">notifications url</a> to <strong>%s</strong></li></ol>', 'mp' ), $this->return_url, $this->ipn_url ),
@@ -345,8 +345,8 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 			'label' => array('text' => __('API Credentials', 'mp')),
 			'desc' => __('You must login to the 2Checkout vendor dashboard to obtain the seller ID and secret word. <a target="_blank" href="http://help.2checkout.com/articles/FAQ/Where-do-I-set-up-the-Secret-Word/">Instructions &raquo;</a>', 'mp'),
 		));
-		
-		if ( $creds instanceof WPMUDEV_Field ) {
+
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field('text', array(
 				'name' => 'sid',
 				'label' => array('text' => __('Seller ID', 'mp')),
@@ -362,7 +362,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 				),
 			));
 		}
-		
+
 		$metabox->add_field('advanced_select', array(
 			'name' => 'gateways[' . $this->plugin_name . '][currency]',
 			'label' => array('text' => __('Currency', 'mp')),
@@ -374,7 +374,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 			),
 		));
 	}
-	
+
 	/**
 	 * INS and payment return
 	 */
@@ -383,7 +383,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 			 // bail
 			 return;
 		 }
-		 
+
 		$sale_id = mp_get_request_value( 'sale_id' );
 		$tco_invoice_id = mp_get_request_value( 'invoice_id' );
 		$tco_vendor_order_id = mp_get_request_value( 'vendor_order_id' );
@@ -426,7 +426,7 @@ class MP_Gateway_2Checkout extends MP_Gateway_API {
 			header( 'Content-type: text/plain; charset=UTF-8' );
 			die( 'Thank you very much for letting us know' );
 		}
-		
+
 		exit;
 	}
 }

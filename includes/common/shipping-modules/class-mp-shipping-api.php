@@ -95,25 +95,22 @@ if ( !class_exists( 'MP_Shipping_API' ) ) {
 
 				return;
 			}
-			$shipping_method = mp_get_setting('shipping->method');
-			if ($shipping_method == 'calculated') {
-				// Lade nur die berechneten Versandmethoden
-				foreach (self::$_plugins as $code => $plugin) {
-					if ($plugin[2]) {
-						$calc_method_setting = mp_get_setting("shipping->calc_methods->{$code}");
-						if ($calc_method_setting && class_exists($plugin[0]) && !$plugin[3]) {
-							self::$_active_plugins[$code] = new $plugin[0];
+			if ( mp_get_setting( 'shipping->method' ) == 'calculated' ) {
+				//load just the calculated ones
+				foreach ( self::$_plugins as $code => $plugin ) {
+					if ( $plugin[ 2 ] ) {
+						if ( mp_get_setting( "shipping->calc_methods->{$code}" ) && class_exists( $plugin[ 0 ] ) && !$plugin[ 3 ] ) {
+							self::$_active_plugins[ $code ] = new $plugin[ 0 ];
 						}
 					}
 				}
 			} else {
-				// Lade nur die ausgewählte Versandmethode
-				$plugin = mp_arr_get_value($shipping_method, self::$_plugins);
-				if ($plugin) {
-					$class = $plugin[0];
-					if (class_exists($class)) {
-						self::$_active_plugins[$shipping_method] = new $class;
-					}
+				//load only selected shipping method
+				$plugin	 = mp_arr_get_value( mp_get_setting( 'shipping->method' ), self::$_plugins );
+				/* Fix php7.4 */
+				$class	 = $plugin[ 0 ] ?? 'default value';
+				if ( class_exists( $class ) ) {
+					self::$_active_plugins[ mp_get_setting( 'shipping->method' ) ] = new $class;
 				}
 			}
 
@@ -180,7 +177,7 @@ if ( !class_exists( 'MP_Shipping_API' ) ) {
 		 *
 		 * return float $price
 		 */
-		function calculate_shipping( $price, $total, $cart, $address1, $address2, $city, $state, $zip, $country,
+		function calculate_shipping( $price, $total, $cart, $address1, $address2, $zip, $city, $state, $country,
 							   $selected_option ) {
 			//it is required to override this method
 			wp_die( __( "You must override the calculate_shipping() method in your {$this->public_name} shipping plugin!", 'mp' ) );
@@ -200,7 +197,7 @@ if ( !class_exists( 'MP_Shipping_API' ) ) {
 		 *
 		 * return array $shipping_options
 		 */
-		function shipping_options( $cart, $address1, $address2, $city, $state, $zip, $country ) {
+		function shipping_options( $cart, $address1, $address2, $zip, $city, $state, $country ) {
 			$shipping_options = array();
 			return $shipping_options;
 		}
@@ -215,7 +212,7 @@ if ( !class_exists( 'MP_Shipping_API' ) ) {
 			echo '<p>';
 			if ( $mp->get_setting( 'shipping->system' ) == 'metric' ) {
 				?>
-				<label><?php _e( 'Weight (Kilograms)', 'mp' ); ?>:<br />
+				<label><?php _e( 'Gewicht (Kilogramm)', 'mp' ); ?>:<br />
 					<input type="text" size="6" id="mp_shipping_weight" name="mp_shipping_weight" value="<?php echo isset( $shipping_meta[ 'weight' ] ) ? $shipping_meta[ 'weight' ] : '0'; ?>" />
 				</label>
 				<?php
@@ -228,8 +225,8 @@ if ( !class_exists( 'MP_Shipping_API' ) ) {
 				}
 				?>
 				<?php _e( 'Product Weight:', 'mp' ); ?><br />
-				<label><input type="text" size="2" name="mp_shipping_weight_pounds" value="<?php echo $pounds; ?>" /> <?php _e( 'Pounds', 'mp' ); ?></label><br />
-				<label><input type="text" size="2" name="mp_shipping_weight_oz" value="<?php echo $oz; ?>" /> <?php _e( 'Ounces', 'mp' ); ?></label>
+				<label><input type="text" size="2" name="mp_shipping_weight_pounds" value="<?php echo $pounds; ?>" /> <?php _e( 'Pfund', 'mp' ); ?></label><br />
+				<label><input type="text" size="2" name="mp_shipping_weight_oz" value="<?php echo $oz; ?>" /> <?php _e( 'Unzen', 'mp' ); ?></label>
 				<?php
 			}
 			echo '</p>';
@@ -257,10 +254,10 @@ if ( !class_exists( 'MP_Shipping_API' ) ) {
 		 * @return array
 		 */
 		protected function _free_shipping() {
-			mp_update_session_value( 'mp_shipping_info->shipping_sub_option', __( 'Free Shipping', 'mp' ) );
+			mp_update_session_value( 'mp_shipping_info->shipping_sub_option', __( 'Versandkostenfrei', 'mp' ) );
 			mp_update_session_value( 'mp_shipping_info->shipping_cost', 0 );
 			return array(
-				__( 'Free Shipping', 'mp' ) => __( 'Free Shipping - 0.00', 'mp' ),
+				__( 'Versandkostenfrei', 'mp' ) => __( 'Versandkostenfrei - 0.00', 'mp' ),
 			);
 		}
 
@@ -404,10 +401,10 @@ class MP_Shipping_Handler {
 	function extra_shipping_box( $content ) {
 		if ( self::$active_plugins && mp_get_setting( 'shipping->method' ) == 'calculated' ) {
 			$content .= '<thead><tr>';
-			$content .= '<th colspan="2">' . __( 'Choose a Shipping Method:', 'mp' ) . '</th>';
+			$content .= '<th colspan="2">' . __( 'Wähle eine Versandart:', 'mp' ) . '</th>';
 			$content .= '</tr></thead>';
 			$content .= '<tr>';
-			$content .= '<td align="right">' . __( 'Shipping Method:', 'mp' ) . '</td><td id="mp-shipping-select-td">';
+			$content .= '<td align="right">' . __( 'Versandart:', 'mp' ) . '</td><td id="mp-shipping-select-td">';
 			$content .= '<input type="hidden" name="action" value="mp-shipping-options" />';
 			$content .= '<select name="shipping_option" id="mp-shipping-select">';
 			$shipping_option = isset( $_SESSION[ 'mp_shipping_info' ][ 'shipping_option' ] ) ? $_SESSION[ 'mp_shipping_info' ][ 'shipping_option' ] : '';
@@ -429,7 +426,7 @@ class MP_Shipping_Handler {
 				$label .= ' - ' . $_SESSION[ 'mp_shipping_info' ][ 'shipping_sub_option' ];
 
 			$content .= '<tr>';
-			$content .= '<td align="right">' . __( 'Shipping Method:', 'mp' ) . '</td>';
+			$content .= '<td align="right">' . __( 'Versandart:', 'mp' ) . '</td>';
 			$content .= '<td>' . esc_attr( $label ) . '</td>';
 			$content .= '</tr>';
 		}
@@ -452,15 +449,16 @@ class MP_Shipping_Handler {
 		$meta		 = get_user_meta( get_current_user_id(), 'mp_shipping_info', true );
 		$address1	 = isset( $_POST[ 'address1' ] ) ? trim( stripslashes( $_POST[ 'address1' ] ) ) : (isset( $_SESSION[ 'mp_shipping_info' ][ 'address1' ] ) ? $_SESSION[ 'mp_shipping_info' ][ 'address1' ] : $meta[ 'address1' ]);
 		$address2	 = isset( $_POST[ 'address2' ] ) ? trim( stripslashes( $_POST[ 'address2' ] ) ) : (isset( $_SESSION[ 'mp_shipping_info' ][ 'address2' ] ) ? $_SESSION[ 'mp_shipping_info' ][ 'address2' ] : $meta[ 'address2' ]);
+		$zip		 = isset( $_POST[ 'zip' ] ) ? trim( stripslashes( $_POST[ 'zip' ] ) ) : (isset( $_SESSION[ 'mp_shipping_info' ][ 'zip' ] ) ? $_SESSION[ 'mp_shipping_info' ][ 'zip' ] : $meta[ 'zip' ]);
 		$city		 = isset( $_POST[ 'city' ] ) ? trim( stripslashes( $_POST[ 'city' ] ) ) : (isset( $_SESSION[ 'mp_shipping_info' ][ 'city' ] ) ? $_SESSION[ 'mp_shipping_info' ][ 'city' ] : $meta[ 'city' ]);
 		$state		 = isset( $_POST[ 'state' ] ) ? trim( stripslashes( $_POST[ 'state' ] ) ) : (isset( $_SESSION[ 'mp_shipping_info' ][ 'state' ] ) ? $_SESSION[ 'mp_shipping_info' ][ 'state' ] : $meta[ 'state' ]);
-		$zip		 = isset( $_POST[ 'zip' ] ) ? trim( stripslashes( $_POST[ 'zip' ] ) ) : (isset( $_SESSION[ 'mp_shipping_info' ][ 'zip' ] ) ? $_SESSION[ 'mp_shipping_info' ][ 'zip' ] : $meta[ 'zip' ]);
+		
 		$country	 = isset( $_POST[ 'country' ] ) ? trim( $_POST[ 'country' ] ) : (isset( $_SESSION[ 'mp_shipping_info' ][ 'country' ] ) ? $_SESSION[ 'mp_shipping_info' ][ 'country' ] : $meta[ 'country' ]);
 
 		//Pick up any service specific fields
 		do_action( 'mp_shipping_process' );
 
-		$options = apply_filters( "mp_shipping_options_$selected", $mp->get_cart_contents(), $address1, $address2, $city, $state, $zip, $country );
+		$options = apply_filters( "mp_shipping_options_$selected", $mp->get_cart_contents(), $address1, $address2, $zip, $city, $state,  $country );
 
 		$content = '';
 		if ( count( $options ) && !array_key_exists( 'error', $options ) ) {  //If one of the keys is 'error' then it contains an error message from calculated rates.
@@ -508,7 +506,7 @@ class MP_Shipping_Handler {
 		global $mp;
 		?>
 		<p>
-			<label><?php _e( 'Extra Shipping Cost', 'mp' ); ?>:<br />
+			<label><?php _e( 'Extra Versandkosten', 'mp' ); ?>:<br />
 		<?php echo mp_format_currency(); ?><input type="text" size="6" id="mp_extra_shipping_cost" name="mp_extra_shipping_cost" value="<?php echo!empty( $shipping_meta[ 'extra_cost' ] ) ? $mp->display_currency( $shipping_meta[ 'extra_cost' ] ) : '0.00'; ?>" />
 			</label>
 		</p>

@@ -58,10 +58,7 @@ if ( is_multisite() ) {
 
 	}
 
-	function register_marketpress_global_tag_cloud_widget() {
-		register_widget('MarketPress_Global_Tag_Cloud_Widget');
-	}
-	add_action('widgets_init', 'register_marketpress_global_tag_cloud_widget');
-	
+	//add_action( 'widgets_init', create_function( '', 'return register_widget("MarketPress_Global_Tag_Cloud_Widget");' ) );
+	add_action( 'widgets_init', 'MarketPress_Global_Tag_Cloud_Widget' ); function MarketPress_Global_Tag_Cloud_Widget() {return register_widget('MarketPress_Global_Tag_Cloud_Widget');}
 }
 ?>

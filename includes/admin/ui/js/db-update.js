@@ -40,7 +40,7 @@
 					$page.val(parseInt($page.val()) + 1);
 					
 					if ( ! resp.data.is_done ) {
-						$form.submit();
+						$form.trigger("submit");
 					}
 				} else {
 					alert(mp_db_update.error_text);

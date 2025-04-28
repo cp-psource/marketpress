@@ -37,7 +37,7 @@
 
 			if ( $table.length == 0 ) {
 				$form.find('.form-table').hide();
-				$.colorbox.resize();
+				$.colorbox.trigger("resize");
 				return; // bail
 			}
 
@@ -57,9 +57,9 @@
 			$form.find('.form-table').filter(':visible').find(':input').filter('[name]').each(function(){
 				var $this = $(this);
 
-				if (($this.val().trim().length == 0 || ($this.attr('data-default') !== undefined && $this.attr('data-default') == $this.val().trim())) && !($this.is(':radio') || $this.is(':checkbox'))) {
+				if ( ($.trim($this.val()).length == 0 || ($this.attr('data-default') !== undefined && $this.attr('data-default') == $.trim($this.val()))) && !($this.is(':radio') || $this.is(':checkbox')) ) {
 					return; // Don't include empty fields or fields that are default values
-				}				
+				}
 
 				if ( $this.is(':radio') || $this.is(':checkbox') ) {
 					if ( $this.is(':checked') ) {

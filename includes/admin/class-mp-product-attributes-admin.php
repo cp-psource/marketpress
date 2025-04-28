@@ -45,7 +45,7 @@ class MP_Product_Attributes_Admin {
 			$list_table->prepare_items();
 			?>
 			<div class="icon32"><img src="<?php echo mp_plugin_url( 'ui/images/settings.png' ); ?>" /></div>
-			<h2 class="mp-settings-title"><?php _e( 'Product Attributes', 'mp' ); ?> <a class="add-new-h2" href="<?php echo add_query_arg( array( 'action' => 'mp_add_product_attribute' ) ); ?>"><?php _e( 'Add Attribute', 'mp' ); ?></a></h2>
+			<h2 class="mp-settings-title"><?php _e( 'Eigenschaften', 'mp' ); ?> <a class="add-new-h2" href="<?php echo add_query_arg( array( 'action' => 'mp_add_product_attribute' ) ); ?>"><?php _e( 'Eigenschaft hinzufügen', 'mp' ); ?></a></h2>
 			<div class="clear"></div>
 			<div class="mp-settings">
 				<form method="get">
@@ -64,28 +64,28 @@ class MP_Product_Attributes_Admin {
 	 * @access public
 	 */
 	public static function add_product_attribute_metaboxes() {
-		$metabox	 = new WPMUDEV_Metabox( array(
-			'id'		 => 'mp-store-settings-product-attributes-add',
-			'title'		 => __( 'Add Product Attribute', 'mp' ),
-			'page_slugs' => array( 'store-settings-productattributes' ),
+		$metabox	 = new PSOURCE_Metabox( array(
+			'id'		 => 'mp-shop-einstellungen-product-attributes-add',
+			'title'		 => __( 'Eigenschaft hinzufügen', 'mp' ),
+			'page_slugs' => array( 'shop-einstellungen-productattributes' ),
 		) );
 		$metabox->add_field( 'text', array(
 			'name'		 => 'product_attribute_name',
-			'label'		 => array( 'text' => __( 'Attribute Name', 'mp' ) ),
-			'desc'		 => __( 'The name of the attribute (e.g. color, size, etc)', 'mp' ),
+			'label'		 => array( 'text' => __( 'Eigenschaftsname', 'mp' ) ),
+			'desc'		 => __( 'Der Name der Eigenschaft (z.B. Farbe, Größe, etc)', 'mp' ),
 			'validation' => array(
 				'required' => true,
 			),
 		) );
 		$metabox->add_field( 'radio_group', array(
 			'name'			 => 'product_attribute_terms_sort_by',
-			'label'			 => array( 'text' => __( 'Sort By', 'mp' ) ),
+			'label'			 => array( 'text' => __( 'Sortiert nach', 'mp' ) ),
 			'default_value'	 => 'ID',
-			'desc'			 => __( 'Select how the options will be sorted.', 'mp' ),
+			'desc'			 => __( 'Wähle wie die Optionen sortiert werden sollen.', 'mp' ),
 			'options'		 => array(
 				'ID'	 => __( 'ID', 'mp' ),
-				'ALPHA'	 => __( 'Alphabetical', 'mp' ),
-				'CUSTOM' => __( 'Custom', 'mp' ),
+				'ALPHA'	 => __( 'Alphabetisch', 'mp' ),
+				'CUSTOM' => __( 'Benutzerdefiniert', 'mp' ),
 			),
 		) );
 		mp()->register_custom_types();
@@ -93,20 +93,21 @@ class MP_Product_Attributes_Admin {
 			'hide_empty' => false,
 			'fields'	 => 'id=>name'
 		) );
-		/* $metabox->add_field('advanced_select', array(
+		//testweise aktiviert 13.3.20
+		$metabox->add_field('advanced_select', array(
 		  'name' => 'product_attribute_categories',
-		  'label' => array('text' => __('Product Categories', 'mp')),
-		  'placeholder' => __( 'Select Product Categories', 'mp' ),
-		  'desc' => __( 'Select the product category/categories that this attribute should be available to. If you don\'t select any categories then this attribute will apply to all product categories.', 'mp' ),
+		  'label' => array('text' => __('Produktkategorien', 'mp')),
+		  'placeholder' => __( 'Wähle Produktkategorien', 'mp' ),
+		  'desc' => __( 'Wähle die Produktkategorie(n) aus, für die dieses Attribut verfügbar sein soll. Wenn Du keine Kategorien auswählst, gilt dieses Attribut für alle Produktkategorien.', 'mp' ),
 		  'options' => $cats,
-		  )); */
+		  )); //hier ausdokumentieren
 		$metabox->add_field( 'radio_group', array(
 			'name'			 => 'product_attribute_terms_sort_order',
-			'label'			 => array( 'text' => __( 'Sort Order', 'mp' ) ),
+			'label'			 => array( 'text' => __( 'Sortierreihenfolge', 'mp' ) ),
 			'default_value'	 => 'ASC',
 			'options'		 => array(
-				'ASC'	 => __( 'Ascending', 'mp' ),
-				'DESC'	 => __( 'Descending', 'mp' ),
+				'ASC'	 => __( 'Aufsteigend', 'mp' ),
+				'DESC'	 => __( 'Absteigend', 'mp' ),
 			),
 			'conditional'	 => array(
 				'name'	 => 'product_attribute_terms_sort_by',
@@ -118,12 +119,12 @@ class MP_Product_Attributes_Admin {
 		$repeater	 = $metabox->add_field( 'repeater', array(
 			'name'			 => 'product_attribute_terms',
 			'layout'		 => 'table',
-			'add_row_label'	 => __( 'Add Option', 'mp' ),
-			'label'			 => array( 'text' => __( 'Attribute Options', 'mp' ) ),
-			'desc'			 => __( 'Use the numbers on the left to sort. To delete - click the "X" to the right of each row.', 'mp' ),
+			'add_row_label'	 => __( 'Option hinzufügen', 'mp' ),
+			'label'			 => array( 'text' => __( 'Eigenschaftsoptionen', 'mp' ) ),
+			'desc'			 => __( 'Verwende die Zahlen auf der linken Seite zum Sortieren. Zum Löschen - klicken Sie auf das "X" rechts neben jeder Zeile.', 'mp' ),
 		) );
 
-		if ( $repeater instanceof WPMUDEV_Field ) {
+		if ( $repeater instanceof PSOURCE_Field ) {
 			$repeater->add_sub_field( 'text', array(
 				'name'		 => 'name',
 				'label'		 => array( 'text' => __( 'Name', 'mp' ) ),
@@ -136,12 +137,12 @@ class MP_Product_Attributes_Admin {
 			$repeater->add_sub_field( 'text', array(
 				'name'						 => 'slug',
 				'label'						 => array( 'text' => __( 'Slug', 'mp' ) ),
-				'desc'						 => __( 'If a slug is not entered, it will be generated automatically. Max 32 characters.', 'mp' ),
+				'desc'						 => __( 'Wenn kein Slug eingegeben wird, wird er automatisch generiert. Maximal 32 Zeichen.', 'mp' ),
 				'custom'					 => array( 'maxlength' => 32 ),
 				'validation'				 => array(
 					'custom' => '[a-z\-]',
 				),
-				'custom_validation_message'	 => __( 'Only lowercase letters and dashes (-) are allowed.', 'mp' ),
+				'custom_validation_message'	 => __( 'Es sind nur Kleinbuchstaben und Bindestriche (-) zulässig.', 'mp' ),
 			) );
 		}
 	}
@@ -159,7 +160,7 @@ class MP_Product_Attributes_Admin {
 		$product_attributes = MP_Product_Attributes_Admin::get_product_attributes();
 		?>
 		<select name="<?php echo $name; ?>" <?php if ( !empty( $id ) ) { ?>id="<?php echo $id; ?>"<?php } ?> class="<?php echo $class; ?>">
-			<option value="-1"><?php _e( '- Create New Variation -', 'mp' ); ?></option>
+			<option value="-1"><?php _e( '- Neue Variante erstellen -', 'mp' ); ?></option>
 			<?php foreach ( $product_attributes as $product_attribute ) {
 				$tags = '';
 				if( $attribute_terms = MP_Product_Attributes_Admin::get_product_attribute_terms( $product_attribute->attribute_id ) ){
@@ -204,7 +205,7 @@ class MP_Product_Attributes_Admin {
 	public static function get_product_attribute_terms( $attribute_id ) {
 
 		if( !isset( $attribute_id ) || empty( $attribute_id ) || !is_numeric( $attribute_id ) ){
-			return false; 
+			return false;
 		}
 
 		global $wpdb;
@@ -230,14 +231,14 @@ class MP_Product_Attributes_Admin {
 		}
 
 		return $value;
-	}	
+	}
 
 	/**
 	 * Gets the product attribute terms
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @filter wpmudev_field_value
+	 * @filter psource_field_value
 	 * @return string
 	 */
 	public static function get_product_attribute_value( $value, $post_id, $raw, $field ) {
@@ -306,7 +307,7 @@ class MP_Product_Attributes_Admin {
 	 * Saves the product attribute
 	 *
 	 * @since 3.0
-	 * @action wpmudev_metabox_before_save_fields
+	 * @action psource_metabox_before_save_fields
 	 * @uses $wpdb
 	 */
 	public static function save_product_attribute( $metabox ) {
@@ -464,7 +465,7 @@ class MP_Product_Attributes_Admin {
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @param WPMUDEV_Field $field
+	 * @param PSOURCE_Field $field
 	 */
 	function product_attribute_scripts( $field ) {
 		if ( $field->args[ 'name' ] != 'product_attribute_terms' ) {
@@ -473,9 +474,9 @@ class MP_Product_Attributes_Admin {
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function( $ ) {
-				$( '.wpmudev-subfields' ).on( 'blur', 'input[name^="product_attribute_terms"][name*="[name]"]', function() {
+				$( '.psource-subfields' ).on( 'blur', 'input[name^="product_attribute_terms"][name*="[name]"]', function() {
 					var $this = $( this ),
-						$slugField = $this.closest( '.wpmudev-subfield' ).next( '.wpmudev-subfield' ).find( 'input' );
+						$slugField = $this.closest( '.psource-subfield' ).next( '.psource-subfield' ).find( 'input' );
 
 					if ( $.trim( $slugField.val() ).length > 0 ) {
 						// Only continue if slug field is empty
@@ -498,7 +499,7 @@ class MP_Product_Attributes_Admin {
 	 * @access private
 	 */
 	private function __construct() {
-		add_action( 'wpmudev_field/print_scripts', array( &$this, 'product_attribute_scripts' ) );
+		add_action( 'psource_field/print_scripts', array( &$this, 'product_attribute_scripts' ) );
 	}
 
 }

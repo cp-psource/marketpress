@@ -1,16 +1,16 @@
-<?php
+<?php 
 if( !defined('MP_EMAIL_USE_BILLIG_NAME')) define('MP_EMAIL_USE_BILLIG_NAME', false);
 
 if ( ! function_exists( 'mp' ) ) :
 
 	/**
-	 * Returns the Marketpress instance
+	 * Returns the MarketPress instance
 	 *
 	 * @since 3.0
 	 * @return object
 	 */
 	function mp() {
-		return Marketpress::get_instance();
+		return MarketPress::get_instance();
 	}
 
 endif;
@@ -90,11 +90,11 @@ if ( ! function_exists( 'mp_filter_email' ) ) :
 		if ( count( $items ) > 0 ) {
 			$order_info = '<table width="100%">
 							<tr>
-							<th align="left">' . __( 'Item', 'mp' ) . '</th>
+							<th align="left">' . __( 'Produkt', 'mp' ) . '</th>
 							<th align="left">' . __( 'Sku', 'mp' ) . '</th>
-							<th align="right">' . __( 'Qty', 'mp' ) . '</th>
-							<th align="right">' . __( 'Price', 'mp' ) . '</th>
-							<th align="right">' . __( 'Total', 'mp' ) . '</th>
+							<th align="right">' . __( 'Menge', 'mp' ) . '</th>
+							<th align="right">' . __( 'Preis', 'mp' ) . '</th>
+							<th align="right">' . __( 'Summe', 'mp' ) . '</th>
 							</tr>';
 
 			foreach ( $items as $item ) {
@@ -103,16 +103,16 @@ if ( ! function_exists( 'mp_filter_email' ) ) :
 				//show download link if set
 				$download_link = false;
 				if ( $order->post_status != 'order_received' && ( $download_url = $item->download_url( $order->get_id(), false ) ) ) {
-					
+
 					//Handle multiple files
 					if( is_array( $download_url ) ){
 						//If we have more than one product file, we loop and add each to a new line
 						foreach ( $download_url as $key => $value ){
 							$download_link .= '<a target="_blank" href="' . $value . '">' . sprintf( __( 'Download %1$s', 'mp' ),( $key+1 ) ) . '</a><br/>';
 						}
-						
+
 					} else {
-						$download_link = '<a href="' . $download_url . '">' . __( 'Download', 'mp' ) . '</a>';
+						$download_link = '<a href="' . $download_url . '">' . __( 'Herunterladen', 'mp' ) . '</a>';
 					}
 				}
 
@@ -131,7 +131,7 @@ if ( ! function_exists( 'mp_filter_email' ) ) :
 
 		// Coupon lines
 		if ( $coupons = $order->get_meta( 'mp_discount_info' ) ) {
-			$order_info .= "<strong>" . __( 'Coupons:', 'mp' ) . "</strong>";
+			$order_info .= "<strong>" . __( 'Gutscheine:', 'mp' ) . "</strong>";
 
 			foreach ( $coupons as $code => $discount ) {
 				$order_info .= $code . "\t" . mp_format_currency( $currency, $discount ) . "<br />\n";
@@ -141,18 +141,18 @@ if ( ! function_exists( 'mp_filter_email' ) ) :
 		// Shipping line
 		if ( $shipping_total = $order->get_meta( 'mp_shipping_total' ) ) {
 			if( ! mp_cart()->is_download_only()  ) {
-				$order_info .= '<strong>' . __( 'Shipping:', 'mp' ) . '</strong> ' . ( ( 0 == $shipping_total ) ? __( 'FREE', 'mp' ) : mp_format_currency( $currency, $shipping_total ) ) . "<br />\n";
+				$order_info .= '<strong>' . __( 'Versandkosten:', 'mp' ) . '</strong> ' . ( ( 0 == $shipping_total ) ? __( 'FREI', 'mp' ) : mp_format_currency( $currency, $shipping_total ) ) . "<br />\n";
 			}
 		}
 
 		// Tax line
 		if ( $tax_total = $order->get_meta( 'mp_tax_total' ) ) {
-			$order_info .= '<strong>' . esc_html( mp_get_setting( 'tax->label', __( 'Taxes', 'mp' ) ) ) . ':</strong> ' . mp_format_currency( $currency, $tax_total ) . "<br />\n";
+			$order_info .= '<strong>' . esc_html( mp_get_setting( 'tax->label', __( 'Steuern', 'mp' ) ) ) . ':</strong> ' . mp_format_currency( $currency, $tax_total ) . "<br />\n";
 		}
 
 		// Total line
 		if ( $order_total = $order->get_meta( 'mp_order_total' ) ) {
-			$order_info .= '<strong>' . __( 'Order Total:', 'mp' ) . '</strong> ' . mp_format_currency( $currency, $order_total ) . "<br />\n";
+			$order_info .= '<strong>' . __( 'Gesamtbetrag:', 'mp' ) . '</strong> ' . mp_format_currency( $currency, $order_total ) . "<br />\n";
 		}
 
 		// Cart
@@ -160,22 +160,23 @@ if ( ! function_exists( 'mp_filter_email' ) ) :
 
 		// Shipping/Billing Info
 		$types                 = array(
-			'billing'  => __( 'Billing Address', 'mp' ),
-			'shipping' => __( 'Shipping Address', 'mp' )
+			'billing'  => __( 'Rechnungsadresse', 'mp' ),
+			'shipping' => __( 'Lieferadresse', 'mp' )
 		);
 		$shipping_billing_info = '<table width="100%"><tr>';
 		if ( $cart->is_download_only() || mp_get_setting( 'shipping->method' ) == 'none' ) {
-			$shipping_billing_info .= '<td align="left"><h3>' . __( 'Shipping', 'mp' ) . '</h3>' . __( 'No shipping required for this order.', 'mp' ) . '</td>';
-			$type = array( 'billing' => __( 'Billing', 'mp' ) );
+			$shipping_billing_info .= '<td align="left"><h3>' . __( 'Versand', 'mp' ) . '</h3>' . __( 'Für diese Bestellung ist kein Versand erforderlich.', 'mp' ) . '</td>';
+			$type = array( 'billing' => __( 'Rechnung', 'mp' ) );
 		}
 		$all_countries = mp_countries();
 		foreach ( $types as $type => $label ) {
 			$states = mp_get_states( $order->get_meta( "mp_{$type}_info->country" ) );
-			$city = $order->get_meta( "mp_{$type}_info->city" );
 			$zip = $order->get_meta( "mp_{$type}_info->zip" );
+			$city = $order->get_meta( "mp_{$type}_info->city" );
+			
 
 			if( $type != "shipping" || !$cart->is_download_only() ) {
-				
+
 				$shipping_billing_info .= '<td><strong>' . $label . '</strong><br /><br />' . "\n";
 				$shipping_billing_info .= $order->get_name( $type ) . "<br />\n";
 				$shipping_billing_info .= $order->get_meta( "mp_{$type}_info->company_name" ) . "<br />\n";
@@ -185,17 +186,18 @@ if ( ! function_exists( 'mp_filter_email' ) ) :
 					$shipping_billing_info .= $order->get_meta( "mp_{$type}_info->address2" ) . "<br />\n";
 				}
 
-				if( ( ( $state = $order->get_meta( "mp_{$type}_info->state", '' ) ) && is_array( $states ) && isset( $states[$state] ) ) ){
-					$state = $states[$state];
-				}
-
-				if( ( ( $country = $order->get_meta( "mp_{$type}_info->country", '' ) ) && is_array( $all_countries ) && isset( $all_countries[$country] ) ) ){
-					$country = $all_countries[$country];
-				}				
 				
 				if( ! empty( $city ) && ! empty( $state ) &&  ! empty( $zip ) && ! empty( $country ) ) {
 					$shipping_billing_info .= $order->get_meta( "mp_{$type}_info->city" ) . ', ' . $state . ' ' . $order->get_meta( "mp_{$type}_info->zip" ) . ' ' . $country . "<br /><br />\n";
 				}
+
+				if( ( ( $country = $order->get_meta( "mp_{$type}_info->country", '' ) ) && is_array( $all_countries ) && isset( $all_countries[$country] ) ) ){
+					$country = $all_countries[$country];
+				}
+				if( ( ( $state = $order->get_meta( "mp_{$type}_info->state", '' ) ) && is_array( $states ) && isset( $states[$state] ) ) ){
+					$state = $states[$state];
+				}
+
 				
 				$shipping_billing_info .= $order->get_meta( "mp_{$type}_info->email" ) . "<br />\n";
 
@@ -208,10 +210,10 @@ if ( ! function_exists( 'mp_filter_email' ) ) :
 		}
 
 		$shipping_billing_info .= '</tr></table><br /><br />';
-		
+
 		$custom_carriers = mp_get_setting( 'shipping->custom_method', array() );
 		$method = $order->get_meta( 'mp_shipping_info->method' );
-		
+
 		if( isset( $custom_carriers[ $method ] ) && !empty( $custom_carriers[ $method ] ) ) {
 			$carrier = $custom_carriers[ $method ];
 		} else {
@@ -292,9 +294,8 @@ if ( ! function_exists( 'mp_filter_email' ) ) :
 
 		// Escape for sprintf() if required
 		if ( $escape ) {
-			$search_replace = array_map(function($a) {
-				return str_replace("%", "%%", $a);
-			}, $search_replace);			
+			//$search_replace = array_map( create_function( '$a', 'return str_replace("%","%%",$a);' ), $search_replace );
+			$search_replace = array_map( function($a) {return str_replace("%","%%",$a);}, $search_replace );
 		}
 
 		// Replace codes
@@ -439,7 +440,7 @@ if ( ! function_exists( 'mp_countries' ) ) :
 		 *
 		 * @param array $countries The default countries.
 		 */
-		return apply_filters( 'mp_countries', $countries );		
+		return apply_filters( 'mp_countries', $countries );
 	}
 
 endif;
@@ -542,8 +543,7 @@ if ( ! function_exists( 'mp_get_theme_list' ) ) :
 	 */
 	function mp_get_theme_list() {
 		$theme_list = array();
-		$theme_dirs = array( mp_plugin_dir( 'ui/themes' ), WP_CONTENT_DIR . '/marketpress-styles/' );
-
+		$theme_dirs = array( mp_plugin_dir( 'ui/themes' ),  WP_CONTENT_DIR . '/marketpress-styles/' );
 		foreach ( $theme_dirs as $theme_dir ) {
 			$themes = mp_get_dir_files( $theme_dir, 'css' );
 
@@ -603,11 +603,6 @@ if ( ! function_exists( 'mp_is_valid_zip' ) ) :
 		}
 
 		if ( empty( $zip ) ) {
-            
-            //Doesn't matter if empty for download only carts
-			if( mp_cart()->is_download_only() ){
-				return true;
-			}
 			//no post code provided
 			return false;
 		}
@@ -647,9 +642,8 @@ if ( ! function_exists( 'mp_get_dir_files' ) ) :
 
 		$dir   = trailingslashit( $dir );
 		$files = glob( $dir . '*' . $ext );
-		$files = array_filter($files, function($filepath) {
-			return is_readable($filepath);
-		});
+		//$files = array_filter( $files, create_function( '$filepath', 'return is_readable($filepath);' ) );
+		$files = array_filter( $files, function($filepath) {return is_readable($filepath);});
 
 		return ( empty( $files ) ) ? false : $files;
 	}
@@ -782,7 +776,7 @@ if ( ! function_exists( 'mp_public' ) ) :
 	 * @return object
 	 */
 	function mp_public() {
-		if ( ! class_exists( 'MP_Pubic' ) ) {
+		if ( ! class_exists( 'MP_Public' ) ) {
 			require_once mp_plugin_dir( 'includes/public/class-mp-public.php' );
 		}
 
@@ -912,7 +906,7 @@ if ( ! function_exists( 'mp_arr_get_value' ) ) :
 	 * @return mixed
 	 */
 	function mp_arr_get_value( $key, $array, $default = false ) {
-		$keys  = explode( '->', $key );
+		$keys  = explode( '->', (string) $key );
 		$keys  = array_map( 'trim', $keys );
 		$value = mp_arr_search( $array, $key );
 
@@ -1001,32 +995,30 @@ endif;
 
 if ( ! function_exists( 'mp_get_session_value' ) ) :
 
-/**
- * Safely retrieves a value from the $_SESSION array
- *
- * NOTE: this function is designed to only be used on cart and checkout pages.
- * Use them anywhere else and they will not work as the session is only started
- * on these pages!
- *
- * @since 3.0
- * @uses mp_arr_get_value()
- *
- * @param string $key (e.g. key1->key2->key3)
- * @param mixed $default The default value to return if $key is not found within $array
- *
- * @return mixed
- */
-function mp_get_session_value( $key, $default = false ) {
-    // Ensure the session is started
-    mp_public()->start_session();
-
-    // Check if $_SESSION is set and is an array
-    if (!isset($_SESSION) || !is_array($_SESSION)) {
-        return $default;
-    }
-
-    return mp_arr_get_value( $key, $_SESSION, $default );
-}
+	/**
+	 * Safely retreives a value from the $_SESSION array
+	 *
+	 * NOTE: this function is designed to only be used on cart and checkout pages.
+	 * Use them any where else and they will not work as the session is only started
+	 * on these pages!
+	 *
+	 * @since 3.0
+	 * @uses mp_arr_get_value()
+	 *
+	 * @param string $key (e.g. key1->key2->key3)
+	 * @param mixed $default The default value to return if $key is not found within $array
+	 *
+	 * @return mixed
+	 */
+	function mp_get_session_value( $key, $default = false ) {
+		mp_public()->session_start();
+        //Löst den Hinweis Undefined variable: _SESSION
+		//Löst den Hinweis Undefined variable: _SESSION
+		//$key = isset($key) ? $key : '';
+		//$default = isset($default) ? $default: '';
+		$_SESSION = isset($_SESSION) ? $_SESSION: '';
+		return mp_arr_get_value( $key, $_SESSION, $default );
+	}
 
 endif;
 
@@ -1101,7 +1093,7 @@ if ( ! function_exists( 'mp_arr_search' ) ) :
 	 * @return mixed
 	 */
 	function mp_arr_search( $array, $path ) {
-		$keys = explode( '->', $path );
+		$keys = explode( '->', (string) $path );
 		$keys = array_map( 'trim', $keys );
 
 		for ( $i = $array; ( $key = array_shift( $keys ) ) !== null; $i = $i[ $key ] ) {
@@ -1166,7 +1158,7 @@ if ( ! function_exists( 'mp_update_session_value' ) ) :
 	 * @param mixed $value The value to use
 	 */
 	function mp_update_session_value( $key, $value ) {
-		mp_public()->start_session();
+		mp_public()->session_start();
 		mp_push_to_array( $_SESSION, $key, $value );
 	}
 
@@ -1391,7 +1383,7 @@ if ( ! function_exists( 'mp_get_store_caps' ) ) :
 				if( $cap == "read" ) {
 					continue;
 				}
-				
+
 				$store_caps[ $cap ] = $cap;
 			}
 		}
@@ -1482,7 +1474,7 @@ if ( ! function_exists( 'mp_get_the_thumbnail' ) ) {
 
 if (! function_exists( 'mp_array_column' ) ) {
     function mp_array_column( array $input, $columnKey, $indexKey = null ) {
-    	
+
     	if( function_exists( 'array_column' ) ){
     		return array_column( $input, $columnKey, $indexKey );
     	}

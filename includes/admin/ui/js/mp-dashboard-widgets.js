@@ -12,7 +12,7 @@ jQuery( document ).ready( function( $ ) {
                 range.collapse( true );
                 range.moveEnd( 'character', end );
                 range.moveStart( 'character', start );
-                range.select();
+                range.trigger("select");
             }
         } );
     };
@@ -20,11 +20,11 @@ jQuery( document ).ready( function( $ ) {
     $.fn.inlineEdit = function( replaceWith, connectWith ) {
         var inline_icon_edit = '<span class="inline-edit-icon"><i class="fa fa-pencil fa-lg"></i></span>';
 
-        $( this ).hover( function( ) {
-            $( this ).append( inline_icon_edit );
-        }, function( ) {
-            $( this ).find( '.inline-edit-icon' ).remove( );
-        } );
+        $(this).on('mouseenter', function() {
+            $(this).append(inline_icon_edit);
+        }).on('mouseleave', function() {
+            $(this).find('.inline-edit-icon').remove();
+        });
 
         $( this ).on( 'click', function( ) {
 
@@ -48,10 +48,10 @@ jQuery( document ).ready( function( $ ) {
 
             $( replaceWith ).selectRange( len, len );
 
-            replaceWith.blur( function( ) {
+            replaceWith.on("blur",  function( ) {
 
                 if ( $( this ).val( ) != "" ) {
-                    connectWith.val( $( this ).val() ).change( );
+                    connectWith.val( $( this ).val() ).trigger("change");
                     if ( data_type == 'number' ) {
                         var numeric_value = $( this ).val();
                         numeric_value = numeric_value.replace( ",", "" );
@@ -82,12 +82,12 @@ jQuery( document ).ready( function( $ ) {
 
     $( ".mp_inline_temp_value" ).on( 'keyup', function( e ) {
         if ( e.keyCode == 13 ) {
-            $( this ).blur( );
+            $( this ).trigger("blur");
         }
         e.preventDefault( );
     } );
 
-    $('#mp-product-price-inventory-variants-metabox').on('keydown', function(event) {//window
+    $( '#mp-product-price-inventory-variants-metabox' ).on( 'keydown', function( event ) {//window
         if ( event.keyCode == 13 ) {
             event.preventDefault();
             return false;
@@ -115,7 +115,7 @@ jQuery( document ).ready( function( $ ) {
                     ).done( function( data, status ) {
 
                     $( '.mp-dashboard-widget-low-stock-wrap-overlay' ).hide();
-                    var response = $.parseJSON( data );
+                    var response = JSON.parse( data );
 
                     if ( response.status_message !== '' ) {
                         $( '.mp-dashboard-widget-low-stock-wrap' ).html( response.output );
@@ -201,12 +201,12 @@ jQuery( document ).ready( function( $ ) {
             if ( $( '#original_publish' ).val( ) == 'Publish' ) {
                 $( '#save-post' ).removeAttr( 'dasabled' );
                 //alert('published click!');
-                $( '#save-post' ).click( );
+                $( '#save-post' ).trigger("click");
             }
 
             if ( $( '#original_publish' ).val( ) == 'Update' ) {
                 $( '#publish' ).removeAttr( 'dasabled' );
-                $( '#publish' ).click( );
+                $( '#publish' ).trigger("click");
             }
         }
 
@@ -251,7 +251,7 @@ jQuery( document ).ready( function( $ ) {
             action: 'ajax_add_new_variant',
             parent_post_id: $( '#post_ID' ).val(),
         } ).done( function( data, status ) {
-            var response = jQuery.parseJSON( data );
+            var response = JSON.parse( data );
 
             if ( response ) {
                 if ( response.type == true ) {
@@ -450,7 +450,7 @@ jQuery( document ).ready( function( $ ) {
             //action: 'save_inline_post_data',
             mp_product_admin_i18n.ajaxurl, form.serialize()
             ).done( function( data, status ) {
-            var response = $.parseJSON( data );
+            var response = JSON.parse( data );
 
             if ( response.status_message !== '' ) {
                 $( '.mp_ajax_response' ).html( response.status_message );
@@ -490,7 +490,7 @@ jQuery( document ).ready( function( $ ) {
             mp_product_admin_i18n.ajaxurl, form.serialize( )
             ).done( function( data, status ) {
             $( '.mp-dashboard-widget-low-stock-wrap-overlay' ).hide();
-            var response = $.parseJSON( data );
+            var response = JSON.parse( data );
 
             if ( response.status_message !== '' ) {
                 $( '.mp_ajax_response' ).html( response.status_message );

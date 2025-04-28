@@ -1,7 +1,7 @@
 <?php
 /*
 MarketPress Flat-Rate Shipping Plugin
-Author: Aaron Edwards (Incsub)
+Author: DerN3rd (WMS N@W)
 */
 class MP_Shipping_Flat_Rate extends MP_Shipping_API {
 
@@ -22,18 +22,18 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
    */
   function on_creation() {
     //set name here to be able to translate
-    $this->public_name = __( 'Flat Rate', 'mp' );
-    
+    $this->public_name = __( 'Fixe Versandkosten', 'mp' );
+
     //format values
-    add_filter( 'wpmudev_field/sanitize_for_db', array( &$this, 'format_input' ), 10, 3 );
+    add_filter( 'psource_field/sanitize_for_db', array( &$this, 'format_input' ), 10, 3 );
 	}
-	
+
 	/**
 	 * Format input as decimal
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @filter wpmudev_field/sanitize_for_db
+	 * @filter psource_field/sanitize_for_db
 	 * @return string
 	 */
 	public function format_input( $value, $post_id, $field ) {
@@ -42,7 +42,7 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
 				$val = mp_display_currency( $val, 2 );
 			}
 		}
-		
+
 		return $value;
 	}
 
@@ -53,15 +53,15 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
    * @access public
    */
   public function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id' => $this->generate_metabox_id(),
 			'page_slugs' => array(
-				'store-settings-shipping',
-				'store-settings_page_store-settings-shipping',
+				'shop-einstellungen-shipping',
+				'shop-einstellungen_page_shop-einstellungen-shipping',
 				'store-setup-wizard'
 			),
-			'title' => sprintf( __( '%s Settings', 'mp' ), $this->public_name ),
-			'desc' => __( 'Be sure to enter a shipping price for every option or those customers may get free shipping.', 'mp' ),
+			'title' => sprintf( __( '%s Einstellungen', 'mp' ), $this->public_name ),
+			'desc' => __( 'Gib für jede Option einen Versandpreis ein, da diese Kunden sonst möglicherweise kostenlosen Versand erhalten', 'mp' ),
 			'option_name' => 'mp_settings',
 			'conditional' => array(
 				'action' => 'show',
@@ -72,11 +72,11 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
 		$complex = $metabox->add_field( 'complex', array(
 			'name' => 'shipping[flat_rate]',
 		) );
-		
-		if ( ! $complex instanceof WPMUDEV_Field ) {
+
+		if ( ! $complex instanceof PSOURCE_Field ) {
 			return;
 		}
-			
+
 		if ( 'US' == mp_get_setting( 'base_country') ) {
 			$complex->add_field( 'text', array(
 				'name' => 'lower_48',
@@ -108,7 +108,7 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
 		} else {
 			$complex->add_field( 'text', array(
 				'name' => 'in_country',
-				'label' => array( 'text' => __( 'In Country', 'mp' ) ),
+				'label' => array( 'text' => __( 'Basisland', 'mp' ) ),
 				'validation' => array(
 					'required' => true,
 					'number' => true,
@@ -116,8 +116,8 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
 				),
 			) );
 		}
-		
-		if ( 'CA' == mp_get_setting( 'base_country') ) { 
+
+		if ( 'CA' == mp_get_setting( 'base_country') ) {
 			$complex->add_field( 'text', array(
 				'name' => 'usa',
 				'label' => array( 'text' => __( 'United States', 'mp' ) ),
@@ -128,11 +128,11 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
 				),
 			) );
 		}
-		
-		if ( in_array( mp_get_setting( 'base_country', '' ), mp()->eu_countries ) ) { 
+
+		if ( in_array( mp_get_setting( 'base_country', '' ), mp()->eu_countries ) ) {
 			$complex->add_field( 'text', array(
 				'name' => 'eu',
-				'label' => array( 'text' => __( 'European Union', 'mp' ) ),
+				'label' => array( 'text' => __( 'Europäische Union', 'mp' ) ),
 				'validation' => array(
 					'required' => true,
 					'number' => true,
@@ -140,7 +140,7 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
 				),
 			) );
 		}
-		
+
 		$complex->add_field( 'text', array(
 			'name' => 'international',
 			'label' => array( 'text' => __( 'International', 'mp' ) ),
@@ -214,10 +214,10 @@ class MP_Shipping_Flat_Rate extends MP_Shipping_API {
 				}
 			break;
 		}
-		
+
     return (float) $price;
   }
 }
 
 //register plugin
-MP_Shipping_API::register_plugin( 'MP_Shipping_Flat_Rate', 'flat_rate', __('Flat Rate', 'mp') );
+MP_Shipping_API::register_plugin( 'MP_Shipping_Flat_Rate', 'flat_rate', __('Fixe Versandkosten  (Können per Produkt angepasst werden)', 'mp') );

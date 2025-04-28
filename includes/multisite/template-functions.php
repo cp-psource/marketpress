@@ -255,9 +255,7 @@ if ( ! function_exists( 'mp_global_list_products' ) ) {
 				case 'date':
 					$orderby = 'post_modified';
 					break;
-				case 'rand':
-					$orderby = 'RAND()'; // Hier den korrekten Ausdruck für die zufällige Sortierung verwenden
-					break;
+
 			}
 			$order = " ORDER BY " . $orderby;
 		}

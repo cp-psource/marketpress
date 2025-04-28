@@ -1,9 +1,7 @@
 <?php
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
-/**
- * @author: Hoang Ngo
- */
 class MP_PDF_Invoice {
 
 	const PDF_INVOICE = 'invoice', PDF_SLIP = 'slip';
@@ -16,7 +14,7 @@ class MP_PDF_Invoice {
 	 */
 	public function __construct() {
 		if ( ! class_exists( 'DOMPDF' ) ) {
-			require_once dirname( __FILE__ ) . '/vendors/dompdf/dompdf_config.inc.php';
+			require_once dirname( __FILE__ ) . '/vendors/dompdf/autoload.inc.php';
 		}
 		$this->settings = mp_get_setting( 'pdf_invoice' );
 	}
@@ -203,23 +201,23 @@ class MP_PDF_Invoice {
 				}								
 			}
 			//times for the subtotal
-			$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', __( "Subtotal", "mp" ), $cart->product_total( true ) );
+			$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', __( "Zwischensumme", "mp" ), $cart->product_total( true ) );
 
 			$order_details = apply_filters( 'mp_pdf_invoice/order_details/after_subtotal', $order_details, $order, $cart, $type );
 
 			if ( $total_discount_value !== 0 ) {
-				$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', __( "Discount", "mp" ), mp_format_currency( '', $total_discount_value ) );
+				$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', __( "Rabatt", "mp" ), mp_format_currency( '', $total_discount_value ) );
 			}
 
 			$order_details = apply_filters( 'mp_pdf_invoice/order_details/after_discount', $order_details, $order, $cart, $type );
 
 			if ( $cart->shipping_total() > 0 ) {
-				$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', __( "Shipping", "mp" ), $cart->shipping_total( true ) );
+				$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', __( "Versand", "mp" ), $cart->shipping_total( true ) );
 			}
 
 			$order_details = apply_filters( 'mp_pdf_invoice/order_details/after_shipping_total', $order_details, $order, $cart, $type );
 
-			$tax_label = mp_get_setting( 'tax->label', __( 'Tax', 'mp' ) );
+			$tax_label = mp_get_setting( 'tax->label', __( 'Steuer', 'mp' ) );
 
 			if ( $cart->tax_total() ) {
 				$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', $tax_label, $cart->tax_total( true ) );
@@ -229,11 +227,11 @@ class MP_PDF_Invoice {
 
 			//get gateway
 			$gateway         = $order->get_meta( 'mp_payment_info->gateway_public_name' );
-			$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', __( "Total", "mp" ), $cart->total( true ) );
+			$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg">%s</td><td>%s</td></tr>', '', __( "Gesamt", "mp" ), $cart->total( true ) );
 
 			$order_details = apply_filters( 'mp_pdf_invoice/order_details/after_total', $order_details, $order, $cart, $type );
 
-			$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg"></td><td class="no-bg"></td></tr>', sprintf( __( "Payment Method: %s", "mp" ), $gateway ) );
+			$order_details[] = sprintf( '<tr><td class="no-bg">%s</td><td class="no-bg"></td><td class="no-bg"></td></tr>', sprintf( __( "Zahlungsart: %s", "mp" ), $gateway ) );
 
 			$order_details = apply_filters( 'mp_pdf_invoice/order_details/after_payment_method', $order_details, $order, $cart, $type );
 

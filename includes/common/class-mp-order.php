@@ -282,69 +282,76 @@ class MP_Order {
 			$notification_kind = 'new_order_downloads';
 		}
 
-		$subject = mp_filter_email( $this, stripslashes( mp_get_setting( 'email->'.$notification_kind.'->subject' ) ) );
-		$msg     = mp_filter_email( $this, nl2br( stripslashes( mp_get_setting( 'email->'.$notification_kind.'->text' ) ) ) );
+		$send_email = mp_get_setting( 'email->'.$notification_kind.'->send_email', 1 );
+		if ( $send_email ) {
+			$subject = mp_filter_email( $this, stripslashes( mp_get_setting( 'email->'.$notification_kind.'->subject' ) ) );
+			$msg     = mp_filter_email( $this, nl2br( stripslashes( mp_get_setting( 'email->'.$notification_kind.'->text' ) ) ) );
 
-		if ( has_filter( 'mp_order_notification_subject' ) ) {
-			//trigger_error( 'The <strong>mp_order_notification_subject</strong> hook has been replaced with <strong>mp_order/notification_subject</strong> as of MP 3.0', E_USER_ERROR );
-			error_log( 'The <strong>mp_order_notification_subject</strong> hook has been replaced with <strong>mp_order/notification_subject</strong> as of MP 3.0' );
+			if ( has_filter( 'mp_order_notification_subject' ) ) {
+				//trigger_error( 'The <strong>mp_order_notification_subject</strong> hook has been replaced with <strong>mp_order/notification_subject</strong> as of MP 3.0', E_USER_ERROR );
+				error_log( 'The <strong>mp_order_notification_subject</strong> hook has been replaced with <strong>mp_order/notification_subject</strong> as of MP 3.0' );
 
-			return false;
+				return false;
+			}
+
+			if ( has_filter( 'mp_order_notification_body' ) ) {
+				//trigger_error( 'The <strong>mp_order_notification_body</strong> hook has been replaced with <strong>mp_order/notification_body</strong> as of MP 3.0', E_USER_ERROR );
+				error_log( 'The <strong>mp_order_notification_body</strong> hook has been replaced with <strong>mp_order/notification_body</strong> as of MP 3.0' );
+
+				return false;
+			}
+
+			if ( has_filter( 'mp_order_notification_' . mp_get_post_value( 'payment_method', '' ) ) ) {
+				//trigger_error( 'The <strong>mp_order_notification_' . mp_get_post_value( 'payment_method', '' ) . '</strong> hook has been replaced with <strong>mp_order/notification_body/' . mp_get_post_value( 'payment_method', '' ) . '</strong> as of MP 3.0', E_USER_ERROR );
+				error_log( 'The <strong>mp_order_notification_' . mp_get_post_value( 'payment_method', '' ) . '</strong> hook has been replaced with <strong>mp_order/notification_body/' . mp_get_post_value( 'payment_method', '' ) . '</strong> as of MP 3.0' );
+
+				return false;
+			}
+
+			/**
+			 * Filter the notification subject
+			 *
+			 * @since 3.0
+			 *
+			 * @param string $subject The current subject.
+			 * @param MP_Order $this The current order object.
+			 */
+			$subject = apply_filters( 'mp_order/notification_subject', $subject, $this );
+
+			/**
+			 * Filter the notification message
+			 *
+			 * @since 3.0
+			 *
+			 * @param string $msg The current message.
+			 * @param MP_Order $this The current order object.
+			 */
+			$msg         = apply_filters( 'mp_order/notification_body', $msg, $this );
+			$msg         = apply_filters( 'mp_order/notification_body/' . mp_get_post_value( 'payment_method', '' ), $msg, $this );
+			$msg         = nl2br( $msg );
+			$attachments = apply_filters( 'mp_order/sendmail_attachments', array(), $this, 'new_order_client' );
+			$this->_send_email_to_buyers( $subject, $msg, $attachments );
 		}
 
-		if ( has_filter( 'mp_order_notification_body' ) ) {
-			//trigger_error( 'The <strong>mp_order_notification_body</strong> hook has been replaced with <strong>mp_order/notification_body</strong> as of MP 3.0', E_USER_ERROR );
-			error_log( 'The <strong>mp_order_notification_body</strong> hook has been replaced with <strong>mp_order/notification_body</strong> as of MP 3.0' );
+		$send_email = mp_get_setting( 'email->admin_order->send_email', 1 );
+		if ( $send_email ) {
+			$subject = mp_filter_email( $this, stripslashes( mp_get_setting( 'email->admin_order->subject', __( 'Benachrichtigung über neue Bestellung: ORDERID', 'mp' ) ) ) );
+			$msg     = mp_filter_email( $this, nl2br( stripslashes( mp_get_setting( 'email->admin_order->text', __( "Eben ist Bestellung (ORDERID) eingegangen. Richte bitte Deine Aufmerksamkeit auf Deinen Shop:\n\n ORDERINFOSKU\n\n SHIPPINGINFO\n\n PAYMENTINFO\n\n", 'mp' ) ) ) ) );
 
-			return false;
+			$subject = apply_filters( 'mp_order_notification_admin_subject', $subject, $this );
+
+			/**
+			 * Filter the admin order notification message
+			 *
+			 * @since 3.0
+			 *
+			 * @param string $msg
+			 * @param MP_Order $order
+			 */
+			$msg         = apply_filters( 'mp_order_notification_admin_msg', $msg, $this );
+			$attachments = apply_filters( 'mp_order/sendmail_attachments', array(), $this, 'new_order_admin' );
+			mp_send_email( mp_get_store_email(), $subject, $msg, $attachments );
 		}
-
-		if ( has_filter( 'mp_order_notification_' . mp_get_post_value( 'payment_method', '' ) ) ) {
-			//trigger_error( 'The <strong>mp_order_notification_' . mp_get_post_value( 'payment_method', '' ) . '</strong> hook has been replaced with <strong>mp_order/notification_body/' . mp_get_post_value( 'payment_method', '' ) . '</strong> as of MP 3.0', E_USER_ERROR );
-			error_log( 'The <strong>mp_order_notification_' . mp_get_post_value( 'payment_method', '' ) . '</strong> hook has been replaced with <strong>mp_order/notification_body/' . mp_get_post_value( 'payment_method', '' ) . '</strong> as of MP 3.0' );
-
-			return false;
-		}
-
-		/**
-		 * Filter the notification subject
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $subject The current subject.
-		 * @param MP_Order $this The current order object.
-		 */
-		$subject = apply_filters( 'mp_order/notification_subject', $subject, $this );
-
-		/**
-		 * Filter the notification message
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $msg The current message.
-		 * @param MP_Order $this The current order object.
-		 */
-		$msg         = apply_filters( 'mp_order/notification_body', $msg, $this );
-		$msg         = apply_filters( 'mp_order/notification_body/' . mp_get_post_value( 'payment_method', '' ), $msg, $this );
-		$attachments = apply_filters( 'mp_order/sendmail_attachments', array(), $this, 'new_order_client' );
-		$this->_send_email_to_buyers( $subject, $msg, $attachments );
-
-		$subject = mp_filter_email( $this, stripslashes( mp_get_setting( 'email->admin_order->subject', __( 'New Order Notification: ORDERID', 'mp' ) ) ) );
-		$msg     = mp_filter_email( $this, nl2br( stripslashes( mp_get_setting( 'email->admin_order->text', __( "A new order (ORDERID) was created in your store:\n\n ORDERINFOSKU\n\n SHIPPINGINFO\n\n PAYMENTINFO\n\n", 'mp' ) ) ) ) );
-
-		$subject = apply_filters( 'mp_order_notification_admin_subject', $subject, $this );
-
-		/**
-		 * Filter the admin order notification message
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $msg
-		 * @param MP_Order $order
-		 */
-		$msg         = apply_filters( 'mp_order_notification_admin_msg', $msg, $this );
-		$attachments = apply_filters( 'mp_order/sendmail_attachments', array(), $this, 'new_order_admin' );
-		mp_send_email( mp_get_store_email(), $subject, $msg, $attachments );
 	}
 
 	/**
@@ -373,54 +380,57 @@ class MP_Order {
 			$notification_kind = 'order_shipped_downloads';
 		}
 
-		$subject = stripslashes( mp_get_setting( 'email->'.$notification_kind.'->subject' ) );
-		$msg     = nl2br( stripslashes( mp_get_setting( 'email->'.$notification_kind.'->text' ) ) );
+		$send_email = mp_get_setting( 'email->'.$notification_kind.'->send_email', 1 );
+		if ( $send_email ) {
+			$subject = stripslashes( mp_get_setting( 'email->'.$notification_kind.'->subject' ) );
+			$msg     = nl2br( stripslashes( mp_get_setting( 'email->'.$notification_kind.'->text' ) ) );
 
-		if ( has_filter( 'mp_shipped_order_notification_subject' ) ) {
-			trigger_error( 'The <strong>mp_shipped_order_notification_subject</strong> hook has been replaced with <strong>mp_order/shipment_notification_subject</strong> as of MP 3.0', E_USER_ERROR );
+			if ( has_filter( 'mp_shipped_order_notification_subject' ) ) {
+				trigger_error( 'The <strong>mp_shipped_order_notification_subject</strong> hook has been replaced with <strong>mp_order/shipment_notification_subject</strong> as of MP 3.0', E_USER_ERROR );
+			}
+
+			if ( has_filter( 'mp_shipped_order_notification_body' ) ) {
+				trigger_error( 'The <strong>mp_shipped_order_notification_body</strong> hook has been replaced with <strong>mp_order/shipment_notification_body</strong> as of MP 3.0', E_USER_ERROR );
+			}
+
+			if ( has_filter( 'mp_shipped_order_notification' ) ) {
+				trigger_error( 'The <strong>mp_shipped_order_notification</strong> hook has been replaced with <strong>mp_order/shipment_notification</strong> as of MP 3.0', E_USER_ERROR );
+			}
+
+			/**
+			 * Filter the shipment notification subject
+			 *
+			 * @since 3.0
+			 *
+			 * @param string $subject The email subject.
+			 * @param MP_Order $this The current order object.
+			 */
+			$subject = apply_filters( 'mp_order/shipment_notification_subject', $subject, $this );
+			$subject = mp_filter_email( $this, $subject );
+
+			/**
+			 * Filter the shipment notification body before string replacements happen
+			 *
+			 * @since 3.0
+			 *
+			 * @param string $msg The email message.
+			 * @param MP_Order $this The current order object.
+			 */
+			$msg = apply_filters( 'mp_order/shipment_notification_body', $msg, $this );
+			$msg = mp_filter_email( $this, $msg );
+
+			/**
+			 * Filter the shipment notification body after string replacements happen
+			 *
+			 * @since 3.0
+			 *
+			 * @param string $msg The email message.
+			 * @param MP_Order $this The current order object.
+			 */
+			$msg         = apply_filters( 'mp_order/shipment_notification', $msg, $this );
+			$attachments = apply_filters( 'mp_order/sendmail_attachments', array(), $this, 'order_shipped_client' );
+			$this->_send_email_to_buyers( $subject, $msg, $attachments );
 		}
-
-		if ( has_filter( 'mp_shipped_order_notification_body' ) ) {
-			trigger_error( 'The <strong>mp_shipped_order_notification_body</strong> hook has been replaced with <strong>mp_order/shipment_notification_body</strong> as of MP 3.0', E_USER_ERROR );
-		}
-
-		if ( has_filter( 'mp_shipped_order_notification' ) ) {
-			trigger_error( 'The <strong>mp_shipped_order_notification</strong> hook has been replaced with <strong>mp_order/shipment_notification</strong> as of MP 3.0', E_USER_ERROR );
-		}
-
-		/**
-		 * Filter the shipment notification subject
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $subject The email subject.
-		 * @param MP_Order $this The current order object.
-		 */
-		$subject = apply_filters( 'mp_order/shipment_notification_subject', $subject, $this );
-		$subject = mp_filter_email( $this, $subject );
-
-		/**
-		 * Filter the shipment notification body before string replacements happen
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $msg The email message.
-		 * @param MP_Order $this The current order object.
-		 */
-		$msg = apply_filters( 'mp_order/shipment_notification_body', $msg, $this );
-		$msg = mp_filter_email( $this, $msg );
-
-		/**
-		 * Filter the shipment notification body after string replacements happen
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $msg The email message.
-		 * @param MP_Order $this The current order object.
-		 */
-		$msg         = apply_filters( 'mp_order/shipment_notification', $msg, $this );
-		$attachments = apply_filters( 'mp_order/sendmail_attachments', array(), $this, 'order_shipped_client' );
-		$this->_send_email_to_buyers( $subject, $msg, $attachments );
 	}
 
 	/**
@@ -583,7 +593,7 @@ class MP_Order {
 
 								//Handle multiple files
 								$download_url = $product->download_url( get_query_var( 'mp_order_id' ), false );
-								
+
 								if ( is_array( $download_url ) ){
 									//If we have more than one product file, we loop and add each to a new line
 									foreach ( $download_url as $key => $value ){
@@ -706,9 +716,9 @@ class MP_Order {
 					( ( $company_name = $this->get_meta( "mp_{$type}_info->company_name", '' ) ) ? $company_name . '<br />' : '' ) .
 			        $this->get_meta( "mp_{$type}_info->address1", '' ) . '<br />' .
 			        ( ( $address2 = $this->get_meta( "mp_{$type}_info->address2", '' ) ) ? $address2 . '<br />' : '' ) .
-			        ( ( $city = $this->get_meta( "mp_{$type}_info->city", '' ) ) ? $city : '' ) .
+					( ( $zip = $this->get_meta( "mp_{$type}_info->zip", '' ) ) ? $zip . '' : '' ) .
+			        ( ( $city = $this->get_meta( "mp_{$type}_info->city", '' ) ) ? $city : '</ br>' ) .
 			        ( ( ( $state = $this->get_meta( "mp_{$type}_info->state", '' ) ) && is_array( $states ) && isset( $states[$state] ) ) ? ', ' . $states[$state] . ' ' : ', ' ) .
-			        ( ( $zip = $this->get_meta( "mp_{$type}_info->zip", '' ) ) ? $zip . '<br />' : '' ) .
 					( ( ( $country = $this->get_meta( "mp_{$type}_info->country", '' ) ) && is_array( $all_countries ) && isset( $all_countries[$country] ) ) ? $all_countries[$country] . '<br />' : '' ) .
 			        ( ( $phone = $this->get_meta( "mp_{$type}_info->phone", '' ) ) ? $phone . '<br />' : '' ) .
 			        ( ( $email = $this->get_meta( "mp_{$type}_info->email", '' ) ) ? '<a href="mailto:' . antispambot( $email ) . '">' . antispambot( $email ) . '</a><br />' : '' );
@@ -749,36 +759,40 @@ class MP_Order {
 			$html .= '
 				<table class="form-table">
 					<tr>
-						<th scope="row">' . __( 'First Name', 'mp' ) . '</th>
+						<th scope="row">' . __( 'Vorname', 'mp' ) . '</th>
 						<td><input type="text" name="' . $prefix . '[first_name]" value="' . $this->get_meta( "mp_{$type}_info->first_name", '' ) . '" /></td>
 					</tr>
 					<tr>
-						<th scope="row">' . __( 'Last Name', 'mp' ) . '</th>
+						<th scope="row">' . __( 'Familienname', 'mp' ) . '</th>
 						<td><input type="text" name="' . $prefix . '[last_name]" value="' . $this->get_meta( "mp_{$type}_info->last_name", '' ) . '" /></td>
 					</tr>
 					<tr>
-						<th scope="row">' . __( 'Company', 'mp' ) . '</th>
+						<th scope="row">' . __( 'Unternehmen', 'mp' ) . '</th>
 						<td><input type="text" name="' . $prefix . '[company_name]" value="' . $this->get_meta( "mp_{$type}_info->company_name", '' ) . '" /></td>
 					</tr>';
 			if( $product_type != 'digital' ) {
 				$html .= '
 					<tr>
-						<th scope="row">' . __( 'Address 1', 'mp' ) . '</th>
+						<th scope="row">' . __( 'Addresse', 'mp' ) . '</th>
 						<td><input type="text" name="' . $prefix . '[address1]" value="' . $this->get_meta( "mp_{$type}_info->address1", '' ) . '" /></td>
 					</tr>
 					<tr>
-						<th scope="row">' . __( 'Address 2', 'mp' ) . '</th>
+						<th scope="row">' . __( 'Addresszusatz', 'mp' ) . '</th>
 						<td><input type="text" name="' . $prefix . '[address2]" value="' . $this->get_meta( "mp_{$type}_info->address2", '' ) . '" /></td>
 					</tr>
 					<tr>
-						<th scope="row">' . __( 'City', 'mp' ) . '</th>
+							<th scope="row">' . __( 'Postleitzahl', 'mp' ) . '</th>
+							<td><input type="text" name="' . $prefix . '[zip]" value="' . $this->get_meta( "mp_{$type}_info->zip", '' ) . '"></td>
+						</tr>
+					<tr>
+						<th scope="row">' . __( 'Stadt/Ort', 'mp' ) . '</th>
 						<td><input type="text" name="' . $prefix . '[city]" value="' . $this->get_meta( "mp_{$type}_info->city", '' ) . '" /></td>
 					</tr>';
 
 				if ( is_array( $states ) ) {
 					$html .= '
 						<tr>
-							<th scope="row">' . __( 'State', 'mp' ) . '</th>
+							<th scope="row">' . __( 'Bundesland', 'mp' ) . '</th>
 							<td>
 								<select class="mp-select2" name="' . $prefix . '[state]" style="width:100%">' . $state_options . '</select>
 								<img src="' . admin_url( 'images/wpspin_light.gif' ) . '" alt="" style="display:none">
@@ -788,11 +802,7 @@ class MP_Order {
 
 				$html .= '
 						<tr>
-							<th scope="row">' . mp_get_setting( 'zip_label' ) . '</th>
-							<td><input type="text" name="' . $prefix . '[zip]" value="' . $this->get_meta( "mp_{$type}_info->zip", '' ) . '"></td>
-						</tr>
-						<tr>
-							<th scope="row">' . __( 'Country', 'mp' ) . '</th>
+							<th scope="row">' . __( 'Land', 'mp' ) . '</th>
 							<td><select class="mp-select2" name="' . $prefix . '[country]" style="width:100%">' . $country_options . '</select></td>
 						</tr>';
 
@@ -800,7 +810,7 @@ class MP_Order {
 
 			$html .= '
 					<tr>
-						<th scope="row">' . __( 'Phone', 'mp' ) . '</th>
+						<th scope="row">' . __( 'Telefon', 'mp' ) . '</th>
 						<td><input type="text" name="' . $prefix . '[phone]" value="' . $this->get_meta( "mp_{$type}_info->phone", '' ) . '"></td>
 					</tr>
 					<tr>
@@ -809,7 +819,7 @@ class MP_Order {
 					</tr>';
 			if ( $this->get_meta( 'mp_' . $type . '_info->special_instructions' ) ) {
 				$html .= '<tr>
-						<th scope="row">' . __( 'Special Instructions', 'mp' ) . '</th>
+						<th scope="row">' . __( 'Spezielle Anweisungen', 'mp' ) . '</th>
 						<td><textarea name="' . $prefix . '[special_instructions]">' . $this->get_meta( "mp_{$type}_info->special_instructions", '' ) . '</textarea></td>
 					</tr>';
 			}
@@ -845,21 +855,21 @@ class MP_Order {
 		if ( $this->get_cart()->is_download_only() && mp_get_setting( 'details_collection' ) == "contact" ) {
 			$html .= '
 				<div class="mp_content_col mp_content_col-one-half">
-					<h4 class="mp_sub_title">' . __( 'Contact Details', 'mp' ) . '</h4>' .
+					<h4 class="mp_sub_title">' . __( 'Kontaktdetails', 'mp' ) . '</h4>' .
 					$this->get_address( 'billing', $editable, 'digital' ) .
 					'</div>';
 		} else {
 			$html .= '
 				<div class="mp_content_col mp_content_col-one-half">
-					<h4 class="mp_sub_title">' . __( 'Billing Address', 'mp' ) . '</h4>' .
+					<h4 class="mp_sub_title">' . __( 'Rechnungsadresse', 'mp' ) . '</h4>' .
 					$this->get_address( 'billing', $editable ) .
-					( ( $editable ) ? '<p><a class="button" id="mp-order-copy-billing-address" href="javascript:;">' . __( 'Copy billing address to shipping address', 'mp' ) . '</a>' : '' ) . '
+					( ( $editable ) ? '<p><a class="button" id="mp-order-copy-billing-address" href="javascript:;">' . __( 'Kopiere die Rechnungsadresse in die Lieferadresse', 'mp' ) . '</a>' : '' ) . '
 					</div>';
 		}
 		if ( ! $this->get_cart()->is_download_only() ) {
 			$html .= '
 				<div class="mp_content_col mp_content_col-one-half">
-					<h4 class="mp_sub_title">' . __( 'Shipping Address', 'mp' ) . '</h4>' .
+					<h4 class="mp_sub_title">' . __( 'Lieferadresse', 'mp' ) . '</h4>' .
 			         $this->get_address( 'shipping', $editable ) . '';
 
 			$html .= '
@@ -956,7 +966,7 @@ class MP_Order {
 	 */
 	public function header( $echo = true ) {
 		$html = '
-			<h3 class="mp_order_head">' . __( 'Order #', 'mp' ) . ' ' . ( ( get_query_var( 'mp_order_id' ) ) ? $this->get_id() : '<a href="' . $this->tracking_url( false ) . '">' . $this->get_id() . '</a>' ) . '</h3>
+			<h3 class="mp_order_head">' . __( 'Bestellung #', 'mp' ) . ' ' . ( ( get_query_var( 'mp_order_id' ) ) ? $this->get_id() : '<a href="' . $this->tracking_url( false ) . '">' . $this->get_id() . '</a>' ) . '</h3>
 			<div class="mp_order_detail" id="mp-order-detail-' . $this->ID . '">';
 
 		// Currency
@@ -982,14 +992,14 @@ class MP_Order {
 		$received = ( $time = $this->get_meta( 'mp_received_time' ) ) ? mp_format_date( $time, true ) : false;
 
 		// Status
-		$status       = __( 'Received', 'mp' );
+		$status       = __( 'Eingegangen', 'mp' );
 		$status_extra = '';
 		switch ( $this->_post->post_status ) {
 			case 'order_shipped' :
 				if( $is_download_only ) {
-					$status = __( 'Finished', 'mp' );
+					$status = __( 'Erledigt', 'mp' );
 				} else {
-					$status = __( 'Shipped', 'mp' );
+					$status = __( 'Versendet', 'mp' );
 				}
 
 				if ( $tracking_num = $this->get_meta( 'mp_shipping_info->tracking_num' ) ) {
@@ -999,27 +1009,27 @@ class MP_Order {
 
 			case 'order_paid' :
 				if( $is_download_only ) {
-					$status = __( 'Finished', 'mp' );
+					$status = __( 'Erledigt', 'mp' );
 				} else {
-					$status = __( 'In Process', 'mp' );
+					$status = __( 'In Bearbeitung', 'mp' );
 				}
 				break;
 
 			case 'order_closed' :
-				$status = __( 'Closed', 'mp' );
+				$status = __( 'Abgeschlossen', 'mp' );
 				break;
 		}
 
 		$tooltip_content = '
 			<div class="mp_tooltip_content_item">
-				<div class="mp_tooltip_content_item_label">' . __( 'Taxes:', 'mp' ) . '</div><!-- end mp_tooltip_content_item_label -->
+				<div class="mp_tooltip_content_item_label">' . __( 'Steuer:', 'mp' ) . '</div><!-- end mp_tooltip_content_item_label -->
 				<div class="mp_tooltip_content_item_value">' . $tax_total . '</div><!-- end mp_tooltip_content_item_value -->
 			</div><!-- end mp_tooltip_content_item -->';
 
 		if( ! $this->get_cart()->is_download_only() ) {
 			$tooltip_content .= '
 				<div class="mp_tooltip_content_item">
-					<div class="mp_tooltip_content_item_label">' . __( 'Shipping:', 'mp' ) . '</div><!-- end mp_tooltip_content_item_label -->
+					<div class="mp_tooltip_content_item_label">' . __( 'Versand:', 'mp' ) . '</div><!-- end mp_tooltip_content_item_label -->
 					<div class="mp_tooltip_content_item_value">' . $shipping_total . '</div><!-- end mp_tooltip_content_item_value -->
 				</div><!-- end mp_tooltip_content_item -->
 			';
@@ -1036,10 +1046,10 @@ class MP_Order {
 		$tooltip_content = apply_filters( 'mp_order/tooltip_content_total', $tooltip_content, $this );
 
 		$html .= '
-			<div class="mp_order_detail_item"><h5>' . __( 'Order Received', 'mp' ) . '</h5> <span>' . $received . '</span></div><!-- end mp_order_detail_item -->
-			<div class="mp_order_detail_item"><h5>' . __( 'Current Status', 'mp' ) . '</h5> <span>' . $status . '</span></div><!-- end mp_order_detail_item -->
+			<div class="mp_order_detail_item"><h5>' . __( 'Bestellung eingegangen', 'mp' ) . '</h5> <span>' . $received . '</span></div><!-- end mp_order_detail_item -->
+			<div class="mp_order_detail_item"><h5>' . __( 'Aktueller Bestellstatus', 'mp' ) . '</h5> <span>' . $status . '</span></div><!-- end mp_order_detail_item -->
 			<div class="mp_order_detail_item">
-				<h5>' . __( 'Total', 'mp' ) . '</h5>
+				<h5>' . __( 'Gesamt', 'mp' ) . '</h5>
 				<a href="javascript:;" class="mp_tooltip">' . mp_format_currency( $currency, $this->get_meta( 'mp_order_total', '' ) ) . '</a>
 				<div class="mp_tooltip_content">
 					' . $tooltip_content . '
@@ -1191,7 +1201,7 @@ class MP_Order {
 				update_user_meta( $user_id, 'mp_shipping_info', $shipping_info );
 			} else {
 				/**
-				 * First time save, WordPress will trigger an error as when it query the old meta
+				 * First time save, ClassicPress will trigger an error as when it query the old meta
 				 * the count('') == 1, so it trying to located the 0 index, which can cause order uncomplete
 				 * force to silent
 				 */
@@ -1441,9 +1451,9 @@ class MP_Order {
 		// At this point, if method is custom and $url was empty and no filters has been added then $url should be equal at $tracking_number
 
 		if( $url == $tracking_number ) {
-			$link = '<span>' . sprintf(__( 'Shipped: tracking code: %s', 'mp' ), $tracking_number ) . '</a>';
+			$link = '<span>' . sprintf(__( 'Versendet: Versandtracking: %s', 'mp' ), $tracking_number ) . '</a>';
 		} else {
-			$link = '<a target="_blank" href="' . $url . '">' . __( 'Shipped: Track Shipment', 'mp' ) . '</a>';
+			$link = '<a target="_blank" href="' . $url . '">' . __( 'Versendet: Verfolge Deine Bestellung', 'mp' ) . '</a>';
 		}
 
 		if ( $echo ) {

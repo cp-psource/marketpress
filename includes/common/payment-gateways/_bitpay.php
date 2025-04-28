@@ -214,9 +214,9 @@ class MP_Gateway_Bitpay extends MP_Gateway_API {
    * @access public
    */
   function init_settings_metabox() {
-	  $metabox = new WPMUDEV_Metabox(array(
+	  $metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('You can now accept a payment from any country on Earth, with no risk of fraud. To use Bitpay, you need to signup on <a href="https://bitpay.com/start" title="Bitpay signup">Bitpay</a>. \n After completing the signup process, you can get api keys at <a href="https://bitpay.com/api-keys" title="API keys">Bitpay API key</a>. You can read more about Bitpay at <a href="https://bitpay.com/downloads/bitpayApi.pdf" title="Bitpay documentation">Bitpay API</a>. \n <strong>Bitpay requires SSL(https) for payment notifications to work.</strong>', 'mp'),

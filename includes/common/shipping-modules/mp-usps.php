@@ -2,7 +2,7 @@
 
 /*
 MarketPress USPS Calculated Shipping Plugin
-Author: Arnold Bailey (Incsub)
+Author: DerN3rd (WMS N@W)
 */
 
 class MP_Shipping_USPS extends MP_Shipping_API_Calculated {
@@ -157,11 +157,11 @@ class MP_Shipping_USPS extends MP_Shipping_API_Calculated {
 	 * @access public
 	 */
 	public function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id'          => $this->generate_metabox_id(),
 			'page_slugs'  => array(
-				'store-settings-shipping',
-				'store-settings_page_store-settings-shipping',
+				'shop-einstellungen-shipping',
+				'shop-einstellungen_page_shop-einstellungen-shipping',
 				'store-setup-wizard'
 			),
 			'title'       => sprintf( __( '%s Settings', 'mp' ), $this->public_name ),
@@ -237,7 +237,7 @@ class MP_Shipping_USPS extends MP_Shipping_API_Calculated {
 			'add_row_label' => __( 'Add Box', 'mp' ),
 		) );
 
-		if ( $boxes instanceof WPMUDEV_Field ) {
+		if ( $boxes instanceof PSOURCE_Field ) {
 			$boxes->add_sub_field( 'text', array(
 				'name'  => 'name',
 				'label' => array( 'text' => __( 'Name', 'mp' ) ),
@@ -570,9 +570,7 @@ class MP_Shipping_USPS extends MP_Shipping_API_Calculated {
 	 * return array $shipping_options
 	 */
 	function ratev4_request() {
-		$shipping_options = array_filter($this->get_setting('services', array()), function($enabled) {
-			return ($enabled);
-		});		
+		$shipping_options = array_filter( $this->get_setting( 'services', array() ), create_function( '$enabled', 'return ( $enabled );' ) );
 
 		if ( count( $shipping_options ) == 0 ) {
 			//no services enabled - bail
@@ -670,13 +668,13 @@ class MP_Shipping_USPS extends MP_Shipping_API_Calculated {
 			}
 
 			$nodes = $xpath->query( '//postage[@classid="' . $this->services[ $service ]->code . '"]/rate' );
-			
+
 			if( is_object( $nodes->item( 0 ) ) ) {
 				$nodeRate = $nodes->item( 0 )->textContent;
 			} else {
 				$nodeRate = 0;
 			}
-			
+
 			$rate  = floatval( $nodeRate * $box_count );
 
 			if ( $this->services[ $service ]->code == '0' ) {
@@ -735,9 +733,7 @@ class MP_Shipping_USPS extends MP_Shipping_API_Calculated {
 	 * return array $shipping_options
 	 */
 	function ratev2_request() {
-		$shipping_options = array_filter($this->get_setting('intl_services', array()), function($val) {
-			return ($val == 1);
-		});		
+		$shipping_options = array_filter( $this->get_setting( 'intl_services', array() ), create_function( '$val', 'return ($val == 1);' ) );
 
 		if ( count( $shipping_options ) == 0 ) {
 			//no services enabled - bail
@@ -770,7 +766,7 @@ class MP_Shipping_USPS extends MP_Shipping_API_Calculated {
 		//$package->appendChild($gxg);
 
 		$package->appendChild( $dom->createElement( 'ValueOfContents', $total ) );  //For insurance?
-		$countries = mp_countries();		
+		$countries = mp_countries();
 		$package->appendChild( $dom->createElement( 'Country', $countries[ $this->country ] ) );
 
 		// If greater than 12" it's a LARGE parcel otherwise REGULAR
@@ -889,19 +885,19 @@ endif;
 
 
 //register plugin as calculated. Only in US and US Possesions
-$settings = get_option( 'mp_settings' );
-if ( is_array( $settings ) && in_array( $settings['base_country'], array(
-	'US', 
-	'UM', 
-	'AS', 
-	'FM', 
-	'GU', 
-	'MH', 
-	'MP', 
-	'PW', 
-	'PR', 
-	'PI', 
-	'VI'
-) ) ) {
-	MP_Shipping_API::register_plugin( 'MP_Shipping_USPS', 'usps', __( 'USPS', 'mp' ), true );
+$settings = get_option('mp_settings');
+if (isset($settings['base_country']) && in_array($settings['base_country'], array(
+    'US',
+    'UM',
+    'AS',
+    'FM',
+    'GU',
+    'MH',
+    'MP',
+    'PW',
+    'PR',
+    'PI',
+    'VI'
+))) {
+    MP_Shipping_API::register_plugin('MP_Shipping_USPS', 'usps', __('USPS', 'mp'), true);
 }

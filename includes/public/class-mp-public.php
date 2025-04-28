@@ -1,17 +1,18 @@
 <?php
 
 class MP_Public {
-    
-    
+
+
 	/**
 	 * Refers to the store page types that MarketPress uses
-	 *
+	 *12.3.20 mp_agb (mp-agb) eingefügt, php template noch erstellen dazu. 
+	 *Übersetzungen verbessern, sonst fein. DN
 	 * @since 3.2.5
 	 * @access public
 	 * @var array
 	 */
 
-	public static $supported_store_pages_types = array( 'store', 'products', 'cart', 'checkout', 'order_status' );
+	public static $supported_store_pages_types = array( 'store', 'products', 'cart', 'checkout', 'order_status', );
 
 	/**
 	 * Refers to a single instance of the class
@@ -45,13 +46,15 @@ class MP_Public {
 	 */
 	private function __construct() {
 		//$this->includes();
+		add_action( 'wp', array( $this, 'disable_caching' ) );
+
 		add_action( 'init', array( &$this, 'includes' ), 1 );
 
 		add_filter( 'get_post_metadata', array( &$this, 'remove_product_post_thumbnail' ), 999, 4 );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'frontend_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'frontend_styles' ) );
-		add_filter( 'comments_open', array( &$this, 'disable_comments_on_store_pages' ), 10, 2 );
-		add_action( 'wp', array( &$this, 'maybe_start_session' ) );
+		//add_filter( 'comments_open', array( &$this, 'disable_comments_on_store_pages' ), 10, 2 );
+		add_action( 'wp', array( &$this, 'maybe_session_start' ) );
 
 		// Template Stuff
 		add_filter( 'taxonomy_template', array( &$this, 'load_taxonomy_template' ) );
@@ -66,6 +69,27 @@ class MP_Public {
 		add_action( 'template_redirect', array( &$this, 'maybe_serve_download' ) );
 
 		add_filter( 'body_class', array( &$this, 'add_mp_body_class' ) );
+	}
+
+	/**
+	 * Add DONOTCACHEPAGE constant on all MP pages.
+	 *
+	 * @since 3.2.9
+	 */
+	public function disable_caching() {
+		// Überprüfen, ob die Konstante DONOTCACHEPAGE bereits definiert ist
+		if (!defined('DONOTCACHEPAGE')) {
+			$post_type = MP_Product::get_post_type();
+
+			if (
+				get_post_type() == $post_type ||
+				get_query_var($post_type) ||
+				$this->is_store_page() ||
+				(is_singular($post_type) || is_tax(array('product_category', 'product_tag')))
+			) {
+				define('DONOTCACHEPAGE', true);
+			}
+		}
 	}
 
 	public function add_mp_body_class( $classes ) {
@@ -107,6 +131,7 @@ class MP_Public {
 		if ( isset( $settings['pages']['order_status'] ) && is_page( $settings['pages']['order_status'] ) ) {
 			$classes[] = 'mp-order-status';
 		}
+		
 
 
 		return $classes;
@@ -118,9 +143,8 @@ class MP_Public {
 	 * @since 3.0
 	 * @access protected
 	 */
-	public function start_session() {
-		$sess_id = session_id();
-		if ( empty( $sess_id ) ) {
+	public function session_start() {
+		if (!session_id()) {
 			@session_start();
 		}
 	}
@@ -165,7 +189,7 @@ class MP_Public {
 	 * @return bool
 	 */
 	function is_store_page( $page = null ) {
-		if ( is_null( $page ) ) {			
+		if ( is_null( $page ) ) {
 			return ( ( get_post_meta( get_the_ID(), '_mp_store_page', true ) !== '' && get_post_meta( get_the_ID(), '_mp_store_page', true ) != 'none' ) || is_singular( MP_Product::get_post_type() ) || is_tax( array(
 					'product_category',
 					'product_tag'
@@ -180,7 +204,7 @@ class MP_Public {
 			return ( in_array( get_post_meta( get_the_ID(), '_mp_store_page', true ), $page ) );
 		}
 	}
-    
+
     /**
 	 * Checks if page is a Product or one of the Store Pages
 	 *
@@ -194,14 +218,14 @@ class MP_Public {
 	public function page_in_store_pages( $page ){
 
 		$page_id = ! is_null( $page ) ? $page : get_the_ID();
-		
+
 		if( ! is_numeric( $page_id ) ){
 			if ( $page instanceof WP_Post ) {
 				$page_id = $page->ID;
 			}
 			else{
 				//TODO : Perhaps we should check for slug
-				return false;	
+				return false;
 			}
 		}
 
@@ -225,8 +249,8 @@ class MP_Public {
 
 		foreach ( $store_pages_settings as $store_page => $store_page_id ) {
 
-			//We need to check if the page type ( $store_page ) is included in the supported 
-			//store pages types ( 'store', 'products', 'cart', 'checkout', 'order_status' ). 
+			//We need to check if the page type ( $store_page ) is included in the supported
+			//store pages types ( 'store', 'products', 'cart', 'checkout', 'order_status' ).
 			//It is possible that the pages array in the settings to contain a page id with key "none"
 			if( ! in_array( $store_page, self::$supported_store_pages_types ) ){
 				continue;
@@ -311,7 +335,7 @@ class MP_Public {
 	 * @access public
 	 */
 
-	public function frontend_styles() {
+	 public function frontend_styles() {
 		//Display styles for all pages
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style( 'jquery-ui', mp_plugin_url( 'ui/css/jquery-ui.min.css' ), false, MP_VERSION );
@@ -352,7 +376,7 @@ class MP_Public {
 			return;
 		}
 		*/
-		
+
 		// JS
 		wp_register_script( 'hover-intent', mp_plugin_url( 'ui/js/hoverintent.min.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_register_script( 'mp-select2', mp_plugin_url( 'ui/select2/select2.js' ), array( 'jquery' ), MP_VERSION, true );
@@ -363,13 +387,13 @@ class MP_Public {
 			'hover-intent',
 			'mp-select2'
 		), MP_VERSION );
-		
+
 		$grid_with_js = apply_filters('mp-do_grid_with_js', true);
-		
+
 		if ( $grid_with_js == "true" ) {
 			wp_enqueue_script( 'mp-equal-height', mp_plugin_url( 'ui/js/mp-equal-height.js' ), array('jquery'), MP_VERSION );
 		}
-		
+
 		// Get product category links
 		$terms = get_terms( 'product_category' );
 		$cats  = array();
@@ -382,23 +406,23 @@ class MP_Public {
 			'productsURL'  => mp_store_page_url( 'products', false ),
 			'productCats'  => $cats,
 			'validation'   => array(
-				'required'    => __( 'This field is required.', 'mp' ),
-				'remote'      => __( 'Please fix this field.', 'mp' ),
-				'email'       => __( 'Please enter a valid email address.', 'mp' ),
-				'url'         => __( 'Please enter a valid URL.', 'mp' ),
-				'date'        => __( 'Please enter a valid date.', 'mp' ),
-				'dateISO'     => __( 'Please enter a valid date (ISO).', 'mp' ),
-				'number'      => __( 'Please enter a valid number.', 'mp' ),
-				'digits'      => __( 'Please enter only digits.', 'mp' ),
-				'creditcard'  => __( 'Please enter a valid credit card number.', 'mp' ),
-				'equalTo'     => __( 'Please enter the same value again.', 'mp' ),
-				'accept'      => __( 'Please enter a value with a valid extension.', 'mp' ),
-				'maxlength'   => __( 'Please enter no more than {0} characters.', 'mp' ),
-				'minlength'   => __( 'Please enter at least {0} characters.', 'mp' ),
-				'rangelength' => __( 'Please enter a value between {0} and {1} characters long.', 'mp' ),
-				'range'       => __( 'Please enter a value between {0} and {1}.', 'mp' ),
-				'max'         => __( 'Please enter a value less than or equal to {0}.', 'mp' ),
-				'min'         => __( 'Please enter a value greater than or equal to {0}.', 'mp' ),
+				'required'    => __( 'Dieses Feld wird benötigt.', 'mp' ),
+				'remote'      => __( 'Bitte korrigiere dieses Feld.', 'mp' ),
+				'email'       => __( 'Bitte gib eine gültige E-Mail-Adresse ein.', 'mp' ),
+				'url'         => __( 'Bitte gib eine gültige URL ein.', 'mp' ),
+				'date'        => __( 'Bitte gib ein korrektes Datum an.', 'mp' ),
+				'dateISO'     => __( 'Bitte gib ein gültiges Datum (ISO) ein.', 'mp' ),
+				'number'      => __( 'Bitte gib eine gültige Nummer ein.', 'mp' ),
+				'digits'      => __( 'Bitte gib nur Ziffern ein.', 'mp' ),
+				'creditcard'  => __( 'Bitte gib eine gültige Kreditkartennummer ein.', 'mp' ),
+				'equalTo'     => __( 'Bitte gib den gleichen Wert erneut ein.', 'mp' ),
+				'accept'      => __( 'Bitte gib einen Wert mit einer gültigen Erweiterung ein.', 'mp' ),
+				'maxlength'   => __( 'Bitte gib nicht mehr als {0} Zeichen ein.', 'mp' ),
+				'minlength'   => __( 'Bitte gib mindestens {0} Zeichen ein.', 'mp' ),
+				'rangelength' => __( 'Bitte gib einen Wert zwischen {0} und {1} Zeichen ein.', 'mp' ),
+				'range'       => __( 'Bitte gib einen Wert zwischen {0} und {1} ein.', 'mp' ),
+				'max'         => __( 'Bitte gib einen Wert kleiner oder gleich {0} ein.', 'mp' ),
+				'min'         => __( 'Bitte gib einen Wert größer oder gleich {0} ein.', 'mp' ),
 			),
 		) );
 	}
@@ -426,7 +450,7 @@ class MP_Public {
 			$custom_template = locate_template( array( 'mp_checkout.php', 'mp_cart.php' ) );
 		} elseif ( mp_get_setting( 'pages->order_status' ) == $post->ID ) {
 			$custom_template = locate_template( array( 'mp_orderstatus.php' ) );
-		}
+		} 
 
 		if ( $custom_template != false ) {
 			return $custom_template;
@@ -530,15 +554,14 @@ class MP_Public {
 		}
 
 		if ( strpos( $template, 'page.php' ) !== false ) {
-			// Hide edit-post links
-			add_filter('edit_post_link', function() {
-				return "";
-			});			
-			// Filter output of the_title()
+// Hide edit-post links
+			//add_filter( 'edit_post_link', create_function( '', 'return "";' ) );
+			add_filter( 'edit_post_link', function() {return "";} );
+// Filter output of the_title()
 			add_filter( 'the_title', array( &$this, 'taxonomy_title' ) );
-			// Filter output of the_content()
+// Filter output of the_content()
 			add_filter( 'the_content', array( &$this, 'taxonomy_content' ) );
-			// Only show the first post	
+// Only show the first post
 			$wp_query->post_count = 1;
 		}
 
@@ -566,14 +589,14 @@ class MP_Public {
 	 * @access public
 	 * @action init
 	 */
-	public function maybe_start_session() {
-		if ( ! mp_is_shop_page( 'checkout' ) && ! mp_is_shop_page( 'cart' ) ) {
-			return;
+	public function maybe_session_start() {
+		if ( mp_is_shop_page( 'checkout' ) || mp_is_shop_page( 'cart' ) ) {
+			if ( session_id() === '' ) {
+				session_start();
+			}
 		}
-
-		$this->start_session();
 	}
-
+	
 	/**
 	 * Hide the post thumbnail on single product, product category and product tag templates
 	 *
@@ -608,12 +631,12 @@ class MP_Public {
 //get the order
 		$order = new MP_Order( $order_id );
 		if ( ! $order->exists() ) {
-			wp_die( __( 'Sorry, the link is invalid for this download.', 'mp' ) );
+			wp_die( __( 'Der Link ist für diesen Download leider ungültig.', 'mp' ) );
 		}
 
 //check that order is paid
 		if ( $order->post_status == 'order_received' ) {
-			wp_die( __( 'Sorry, your order has been marked as unpaid.', 'mp' ) );
+			wp_die( __( 'Leider wurde Deine Bestellung als unbezahlt markiert.', 'mp' ) );
 		}
 
 //get the product object
@@ -662,7 +685,7 @@ class MP_Public {
 //check for too many downloads
 		$max_downloads = mp_get_setting( 'max_downloads', 5 );
 		if ( $download_count >= $max_downloads ) {
-			wp_die( sprintf( __( 'Sorry, our records show you\'ve downloaded this file %d out of %d times allowed. Please contact us if you still need help.', 'mp' ), $download_count, $max_downloads ) );
+			wp_die( sprintf( __( 'Entschuldigung, unsere Aufzeichnungen zeigen, dass Du diese Datei %d schon %d mal heruntergeladen hast. Bitte kontaktiere uns, wenn Du noch Hilfe benötigst.', 'mp' ), $download_count, $max_downloads ) );
 		}
 
 		/**
@@ -688,7 +711,7 @@ class MP_Public {
 		}
 
 		set_time_limit( 0 ); //try to prevent script from timing out
-		//create unique filename
+//create unique filename
 		$ext      = ltrim( strrchr( basename( $url ), '.' ), '.' );
 
 		$file_name = strtolower( get_the_title( $product_id ) );
@@ -697,33 +720,31 @@ class MP_Public {
 		if( $file_number ){
 			$file_name = $file_name.'_'.$file_number;
 		}
-		
+
 		$filename = sanitize_file_name( $file_name . '.' . $ext );
 
 		$dirs     = wp_upload_dir();
 		$location = str_replace( $dirs['baseurl'], $dirs['basedir'], $url );
 		if ( file_exists( $location ) ) {
-			// File is in our server
+// File is in our server
 			$tmp        = $location;
 			$not_delete = true;
 		} else {
-			// File is remote so we need to download it first
+// File is remote so we need to download it first
 			require_once ABSPATH . '/wp-admin/includes/file.php';
 
-		//don't verify ssl connections
-		add_filter('https_local_ssl_verify', function($ssl_verify) {
-			return false;
-		});
-		add_filter('https_ssl_verify', function($ssl_verify) {
-			return false;
-		});
+//don't verify ssl connections
+			//add_filter( 'https_local_ssl_verify', create_function( '$ssl_verify', 'return false;' ) );
+			add_filter( 'https_local_ssl_verify', function( $ssl_verify ) {return false;} );
+			//add_filter( 'https_ssl_verify', create_function( '$ssl_verify', 'return false;' ) );
+			add_filter( 'https_ssl_verify', function( $ssl_verify ) {return false;} );
 
 			$tmp = download_url( $url ); //we download the url so we can serve it via php, completely obfuscating original source
 
 			if ( is_wp_error( $tmp ) ) {
 				@unlink( $tmp );
-				trigger_error( "MarketPress was unable to download the file $url for serving as download: " . $tmp->get_error_message(), E_USER_WARNING );
-				wp_die( __( 'Whoops, there was a problem loading up this file for your download. Please contact us for help.', 'mp' ) );
+				trigger_error( "MarketPress konnte die Datei $url nicht herunterladen, um sie als Download bereitzustellen: " . $tmp->get_error_message(), E_USER_WARNING );
+				wp_die( __( 'Hoppla, beim Laden dieser Datei für Deinen Download ist ein Problem aufgetreten. Bitte kontaktiere uns für Hilfe.', 'mp' ) );
 			}
 		}
 
@@ -766,7 +787,7 @@ class MP_Public {
 				$handle = fopen( $tmp, 'rb' );
 
 				if ( $handle === false ) {
-					trigger_error( "MarketPress was unable to read the file $tmp for serving as download.", E_USER_WARNING );
+					trigger_error( "MarketPress konnte die Datei $tmp für die Bereitstellung als Download nicht lesen.", E_USER_WARNING );
 
 					return false;
 				}
@@ -784,7 +805,7 @@ class MP_Public {
 				readfile( $tmp );
 			}
 
-			if ( ! $not_delete ) {
+			if ( empty( $not_delete ) ) {
 				@unlink( $tmp );
 			}
 		}

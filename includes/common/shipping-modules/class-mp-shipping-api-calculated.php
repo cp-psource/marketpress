@@ -134,7 +134,7 @@ if ( ! class_exists( 'MP_Shipping_API_Calculated' ) ) {
 		 * @return string
 		 */
 		protected function _get_units_length() {
-			return ( mp_get_setting( 'shipping->system' ) == 'english' ) ? __( 'Inches', 'mp' ) : __( 'Centimeters', 'mp' );
+			return ( mp_get_setting( 'shipping->system' ) == 'english' ) ? __( 'Zoll', 'mp' ) : __( 'Zentimeter', 'mp' );
 		}
 
 		/**
@@ -143,7 +143,7 @@ if ( ! class_exists( 'MP_Shipping_API_Calculated' ) ) {
 		 * @return string
 		 */
 		protected function _get_units_weight() {
-			return ( mp_get_setting( 'shipping->system' ) == 'english' ) ? __( 'Pounds', 'mp' ) : __( 'Kilograms', 'mp' );
+			return ( mp_get_setting( 'shipping->system' ) == 'english' ) ? __( 'Pfund', 'mp' ) : __( 'Kilogramm', 'mp' );
 		}
 
 		/**
@@ -175,15 +175,15 @@ if ( ! class_exists( 'MP_Shipping_API_Calculated' ) ) {
 		 * @param array $cart , the contents of the shopping cart for advanced calculations
 		 * @param string $address1
 		 * @param string $address2
+		 * @param string $zip , postal code
 		 * @param string $city
 		 * @param string $state , state/province/region
-		 * @param string $zip , postal code
 		 * @param string $country , ISO 3166-1 alpha-2 country code
 		 * @param string $selected_option , if a calculated shipping module, passes the currently selected sub shipping option if set
 		 * return float $price
 		 */
-		public function calculate_shipping( $price, $total, $cart, $address1, $address2, $city, $state, $zip, $country, $selected_option ) {
-			$this->shipping_options( $cart, $address1, $address2, $city, $state, $zip, $country );
+		public function calculate_shipping( $price, $total, $cart, $address1, $address2, $zip, $city, $state, $country, $selected_option ) {
+			$this->shipping_options( $cart, $address1, $address2, $zip, $city, $state, $country );
 
 			return (float) mp_get_session_value( 'mp_shipping_info->shipping_cost', 0 );
 		}

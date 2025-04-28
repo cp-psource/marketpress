@@ -4,7 +4,7 @@ class MP_Coupon {
 
 	/**
 	 * Refers to the coupon's ID.
-	 *
+	 *12.3.20 alles fein DN
 	 * @since 3.0
 	 * @access public
 	 * @var int
@@ -232,7 +232,7 @@ class MP_Coupon {
 
 		$value = false;
 		if ( function_exists( 'get_field_value' ) ) {
-			// Try to get WPMUDEV_Field value
+			// Try to get PSOURCE_Field value
 			$value = get_field_value( $name, $this->ID, $raw );
 		}
 
@@ -347,11 +347,11 @@ class MP_Coupon {
 				//We first check if a category has been defined for the user
 				$coupon_terms = $this->get_meta( 'user_category' );
 
-				if ( count( $coupon_terms ) > 0 && isset( $coupon_terms[0] ) && !empty( $coupon_terms[0] ) ) {					
-					
+				if ( count( $coupon_terms ) > 0 && isset( $coupon_terms[0] ) && !empty( $coupon_terms[0] ) ) {
+
 					$products      = array();
 					$cart_products = mp_cart()->get_items_as_objects();
-					
+
 					foreach ( $cart_products as $product ) {
 
 						$product_id = $product->ID;
@@ -455,19 +455,16 @@ class MP_Coupon {
 		//Moved to variable as it will be used in many instances
 		$cart_products = $this->get_products( true ) ;
 
-		$date_format			= get_option( 'date_format' );
-		$coupon_start 			= $this->get_meta( 'start_date', 0, false );
-		$coupon_start_object 	= DateTime::createFromFormat( $date_format, $coupon_start );
-		$coupon_end 			= $this->get_meta( 'end_date', 0, false );
-		$coupon_end_object		= DateTime::createFromFormat( $date_format, $coupon_end );
+		$coupon_start 			= $this->get_meta( 'start_date', 0, true );
+		$coupon_end 			= $this->get_meta( 'end_date', 0, true );
 
 		if ( ! $this->exists() ) {
 			$is_valid = false;
 		} elseif ( $this->remaining_uses( false, true ) == 0 ) {
 			$is_valid = false;
-		} elseif ( $now < strtotime( $coupon_start_object->format( 'd-m-Y' ) ) ) {
+		} elseif ( $now < strtotime( $coupon_start ) ) {
 			$is_valid = false;
-		} elseif ( $this->get_meta( 'has_end_date' ) && ( $now > strtotime( $coupon_end_object->format( 'd-m-Y' ) ) ) ) {
+		} elseif ( $this->get_meta( 'has_end_date' ) && ( $now > strtotime( $coupon_end ) ) ) {
 			$is_valid = false;
 		} elseif ( array() == $cart_products) {
 			$is_valid = false;
@@ -490,7 +487,7 @@ class MP_Coupon {
 				}
 			}
 		}
-		
+
 		/**
 		 * Filter is coupon is valid
 		 *
@@ -502,7 +499,7 @@ class MP_Coupon {
 
 		return apply_filters( 'mp_coupon/is_valid', $is_valid, $this );
 	}
-	
+
 	/**
 	 * Check if coupon is valid for combination
 	 *
@@ -511,23 +508,23 @@ class MP_Coupon {
 	 *
 	 * @return bool
 	 */
-	
+
 	public function is_valid_for_combination() {
 		$is_valid = true;
 		$applied_coupons = mp_coupons_addon()->get_applied_as_objects();
-		
+
 		// If we dont have any applied coupons, we can apply current one no matter what type it is
 		if( empty( $applied_coupons ) ) {
 			return true;
 		}
-		
+
 		// Check if coupon can be combined
 		if ( $this->get_meta( 'can_be_combined' ) ) {
 			$allowed_coupon_combos = $this->get_meta( 'allowed_coupon_combos' );
 
 			foreach ( $applied_coupons as $coupon ) {
 				$combinable = $coupon->get_meta( 'can_be_combined' );
-				
+
 				if( ! $combinable ) {
 					// Check if already applied coupon is in allowed_coupon_combos list
 					if( ! in_array( $coupon->ID, $allowed_coupon_combos )) {
@@ -540,7 +537,7 @@ class MP_Coupon {
 				$allowed_coupon_combos = $coupon->get_meta( 'allowed_coupon_combos' );
 
 				// Check if already applied coupon is in allowed_coupon_combos list
-				if( in_array( $this->ID, $allowed_coupon_combos )) {					
+				if( in_array( $this->ID, $allowed_coupon_combos )) {
 					$is_valid = true;
 				} else {
 					return false;
@@ -548,8 +545,8 @@ class MP_Coupon {
 			}
 
 		}
-		
-		return $is_valid;	
+
+		return $is_valid;
 	}
 
 
@@ -622,7 +619,7 @@ class MP_Coupon {
 				}
 			}
 		}
-		
+
 		return true;
 	}
 

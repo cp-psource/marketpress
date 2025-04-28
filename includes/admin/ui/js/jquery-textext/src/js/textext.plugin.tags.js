@@ -112,7 +112,7 @@
 		 * Tags plugin triggers the `isTagAllowed` event before adding each tag to the tag list. Other plugins have
 		 * an opportunity to interrupt this by setting `result` of the second argument to `false`. For example:
 		 *
-		 *     $('textarea').textext({...}).bind('isTagAllowed', function(e, data)
+		 *     $('textarea').textext({...}).on('isTagAllowed', function(e, data)
 		 *     {
 		 *         if(data.tag === 'foo')
 		 *             data.result = false;
@@ -132,7 +132,7 @@
 		 * Tags plugin triggers the `tagClick` event when user clicks on one of the tags. This allows to process
 		 * the click and potentially change the value of the tag (for example in case of user feedback).
 		 *
-		 *     $('textarea').textext({...}).bind('tagClick', function(e, tag, value, callback)
+		 *     $('textarea').textext({...}).on('tagClick', function(e, tag, value, callback)
 		 *     {
 		 *         var newValue = window.prompt('New value', value);
 
@@ -192,7 +192,7 @@
 		if(self.opts(OPT_ENABLED))
 		{
 			container = $(self.opts(OPT_HTML_TAGS));
-			input.after(container);
+			input.before(container);
 
 			$(self).data('container', container);
 

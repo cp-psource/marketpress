@@ -88,7 +88,7 @@
 				.val( data.id )
 				.appendTo( $paymentForm );
 			
-			$form.get( 0 ).submit();
+			$form.get( 0 ).trigger("submit");
 		}
 	}
 	

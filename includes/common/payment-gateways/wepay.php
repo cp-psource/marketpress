@@ -5,15 +5,9 @@ Author: Marko Miljus (Incsub)
 */
 
 class MP_Gateway_Wepay extends MP_Gateway_API {
-
-	public $client_id;
-	public $client_secret;
-	public $access_token;
-	public $account_id;
-	
 	//build
 	var $build = 2;
-	
+
 	var $version = '1.0b';
 	//private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
 	var $plugin_name = 'wepay';
@@ -91,24 +85,24 @@ class MP_Gateway_Wepay extends MP_Gateway_API {
 	public function update( $settings ) {
 		if ( $val = $this->get_setting('client_id') ) {
 		 	mp_push_to_array($settings, 'gateways->wepay->api_credentials->client_id', $val);
-		 	unset($settings['gateways']['wepay']['client_id']);	
+		 	unset($settings['gateways']['wepay']['client_id']);
 		}
-		
+
 		if ( $val = $this->get_setting('client_secret') ) {
 		 	mp_push_to_array($settings, 'gateways->wepay->api_credentials->client_secret', $val);
-		 	unset($settings['gateways']['wepay']['client_secret']);	
+		 	unset($settings['gateways']['wepay']['client_secret']);
 		}
-		
+
 		if ( $val = $this->get_setting('access_token') ) {
 		 	mp_push_to_array($settings, 'gateways->wepay->api_credentials->access_token', $val);
-		 	unset($settings['gateways']['wepay']['access_token']);	
+		 	unset($settings['gateways']['wepay']['access_token']);
 		}
-		
+
 		if ( $val = $this->get_setting('account_id') ) {
 		 	mp_push_to_array($settings, 'gateways->wepay->api_credentials->account_id', $val);
-		 	unset($settings['gateways']['wepay']['account_id']);	
+		 	unset($settings['gateways']['wepay']['account_id']);
 		}
-		
+
 		return $settings;
 	}
 
@@ -119,9 +113,9 @@ class MP_Gateway_Wepay extends MP_Gateway_API {
 	 * @access public
 	 */
 	public function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox(array(
+		$metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('Wepay makes it easy to start accepting credit cards directly on your site with full PCI compliance. Accept cards directly on your site. You don\'t need a merchant account or gateway. WePay handles everything including storing cards. Credit cards go directly to WePay\'s secure environment, and never hit your servers so you can avoid most PCI requirements.', 'mp'),
@@ -164,8 +158,8 @@ class MP_Gateway_Wepay extends MP_Gateway_API {
 			'label' => array('text' => __('API Credentials', 'mp')),
 			'desc' => __('You must login to WePay to <a target="_blank" href="https://www.wepay.com/">get your API credentials</a>. Make sure to check "Tokenize credit cards" option under "API Keys" section of your WePay app.', 'mp'),
 		));
-		
-		if ( $creds instanceof WPMUDEV_Field ) {
+
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field('text', array(
 				'name' => 'client_id',
 				'label' => array('text' => __('Client ID', 'mp')),
@@ -196,7 +190,7 @@ class MP_Gateway_Wepay extends MP_Gateway_API {
 			));
 		}
 	}
-	
+
 	/**
 	 * Use this to do the final payment. Create the order then process the payment. If
 	 * you know the payment is successful right away go ahead and change the order status
@@ -232,7 +226,7 @@ class MP_Gateway_Wepay extends MP_Gateway_API {
 
 			// Credit card id to charge
 			//$credit_card_id = $_SESSION['payment_method_id'];
-			
+
 			if ( 'staging' == $this->mode ) {
 				WePay::useStaging( $this->client_id, $this->client_secret );
 			} else {
@@ -281,7 +275,7 @@ class MP_Gateway_Wepay extends MP_Gateway_API {
 					'cart' => $cart,
 					'paid' => true,
 				) );
-				
+
 				wp_redirect( $order->tracking_url( false ) );
 				exit;
 			}

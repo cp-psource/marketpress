@@ -3,7 +3,7 @@
 /**
  * MarketPress CubePoints Plugin
  *
- * Requires the CubePoints plugin: http://wordpress.org/extend/plugins/cubepoints/
+ * Requires the CubePoints plugin: http://classicpress.org/extend/plugins/cubepoints/
  *
  * @since 3.0
  *
@@ -179,9 +179,9 @@ class MP_Gateway_CubePoints extends MP_Gateway_API {
    * @access public
    */
   public function init_settings_metabox() {
-    $metabox = new WPMUDEV_Metabox(array(
+    $metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('Accept CubePoints as payment(requires the CubePoints plugin).', 'mp'),

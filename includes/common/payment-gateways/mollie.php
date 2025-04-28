@@ -7,8 +7,6 @@
 
 class MP_Gateway_Mollie extends MP_Gateway_API {
 
-	public $API_Key;
-
 	//the current build version
 	var $build					 = 2;
 	//private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
@@ -67,9 +65,9 @@ class MP_Gateway_Mollie extends MP_Gateway_API {
 	 * @access public
 	 */
 	function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id'			 => $this->generate_metabox_id(),
-			'page_slugs'	 => array( 'store-settings-payments', 'store-settings_page_store-settings-payments' ),
+			'page_slugs'	 => array( 'shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments' ),
 			'title'			 => sprintf( __( '%s Settings', 'mp' ), $this->admin_name ),
 			'option_name'	 => 'mp_settings',
 			'desc'			 => sprintf( __( '%sMollie%s provides a fully PCI Compliant and secure way to collect payments via iDeal, Credit Card, Bancontact / Mister Cash, SOFORT Banking, Overbooking, Bitcoin, PayPal, paysafecard and AcceptEmail.', 'mp' ), '<a href="https://www.mollie.com/">', '</a>' ),

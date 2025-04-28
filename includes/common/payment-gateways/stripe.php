@@ -243,9 +243,9 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 	 * @access public
 	 */
 	public function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id'			 => $this->generate_metabox_id(),
-			'page_slugs'	 => array( 'store-settings-payments', 'store-settings_page_store-settings-payments' ),
+			'page_slugs'	 => array( 'shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments' ),
 			'title'			 => sprintf( __( '%s Settings', 'mp' ), $this->admin_name ),
 			'option_name'	 => 'mp_settings',
 			'desc'			 => __( 'Stripe makes it easy to start accepting credit cards directly on your site with full PCI compliance. Accept Visa, MasterCard, American Express, Discover, JCB, and Diners Club cards directly on your site. You don\'t need a merchant account or gateway. Stripe handles everything, including storing cards, subscriptions, and direct payouts to your bank account. Credit cards go directly to Stripe\'s secure environment, and never hit your servers so you can avoid most PCI requirements.', 'mp' ),
@@ -266,7 +266,7 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 			'desc'	 => __( 'You must login to Stripe to <a target="_blank" href="https://manage.stripe.com/#account/apikeys">get your API credentials</a>. You can enter your test credentials, then live ones when ready.', 'mp' ),
 		) );
 
-		if ( $creds instanceof WPMUDEV_Field ) {
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field( 'text', array(
 				'name'		 => 'secret_key',
 				'label'		 => array( 'text' => __( 'Secret Key', 'mp' ) ),
@@ -377,7 +377,7 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 					'billing_info'	 => $billing_info,
 					'shipping_info'	 => $shipping_info
 				) );
-				
+
 				//In order to each the mp_order_order_paid action
 				$order->change_status( 'order_paid', true );
 			}
@@ -390,7 +390,7 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 	 * INS and payment return
 	 */
 	function process_ipn_return() {
-		
+
 	}
 
 	function print_checkout_scripts() {
@@ -404,7 +404,7 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 	function config_amount( $total = false ){
 
 		if( ! $total ) return 0;
-		
+
 		$zero_decimal_currencies = array(
 			'BIF',
 			'CLP',

@@ -206,7 +206,7 @@ class RapidAPI {
      */
     private function PostToRapidAPI( $url, $request, $IsPost = true ) {
         $url = $this->_url . $url;
-        
+
         $args = array(
 	        'timeout' => mp_get_api_timeout( 'eway30' ),
 	        'sslverify' => false,

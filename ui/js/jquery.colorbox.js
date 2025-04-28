@@ -229,7 +229,7 @@
 		this.get = function(key) {
 			var value = this.value(key);
 			return typeof value === 'function' ? value.call(this.el, this) : value;
-		};
+		};		
 	}
 
 	// Determine the next and previous members in a group.
@@ -322,8 +322,8 @@
 				.one(click, stop);
 
 			$events
-				.on(event_complete, set)
-				.on(event_load, clear);
+				.bind(event_complete, set)
+				.bind(event_load, clear);
 
 			$box.removeClass(className + "off").addClass(className + "on");
 		}
@@ -332,8 +332,8 @@
 			clear();
 
 			$events
-				.off(event_complete, set)
-				.off(event_load, clear);
+				.unbind(event_complete, set)
+				.unbind(event_load, clear);
 
 			$slideshow
 				.html(settings.get('slideshowStart'))
@@ -351,15 +351,15 @@
 			$slideshow.hide();
 			clear();
 			$events
-				.off(event_complete, set)
-				.off(event_load, clear);
+				.unbind(event_complete, set)
+				.unbind(event_load, clear);
 			$box.removeClass(className + "off " + className + "on");
 		}
 
 		return function(){
 			if (active) {
 				if (!settings.get('slideshow')) {
-					$events.off(event_cleanup, reset);
+					$events.unbind(event_cleanup, reset);
 					reset();
 				}
 			} else {
@@ -420,13 +420,11 @@
 				publicMethod.position();
 
 				trigger(event_open);
-				if (typeof settings.get('onOpen') === 'function') {
-					settings.get('onOpen')();
-				}
-				
+				settings.get('onOpen');
+
 				$groupControls.add($title).hide();
-				
-				$box.on('focus', function() {});
+
+				$box.focus();
 
 				if (settings.get('trapFocus')) {
 					// Confine focus to the modal
@@ -535,16 +533,16 @@
 				init = true;
 
 				// Anonymous functions here keep the public method from being cached, thereby allowing them to be redefined on the fly.
-				$next.on('click', function () {
+				$next.click(function () {
 					publicMethod.next();
 				});
-				$prev.on('click', function () {
+				$prev.click(function () {
 					publicMethod.prev();
 				});
-				$close.on('click', function () {
+				$close.click(function () {
 					publicMethod.close();
 				});
-				$overlay.on('click', function () {
+				$overlay.click(function () {
 					if (settings.get('overlayClose')) {
 						publicMethod.close();
 					}
@@ -552,29 +550,30 @@
 
 				// Key Bindings
 				$(document).on('keydown.' + prefix, function (e) {
-					var key = e.key; // Verwendung von e.key anstatt e.keyCode
-
-					if (open && settings.get('escKey') && key === 'Escape') {
+					var key = e.key;
+					if (open && settings.get('escKey') && key === 27) {
 						e.preventDefault();
 						publicMethod.close();
 					}
 					if (open && settings.get('arrowKey') && $related[1] && !e.altKey) {
-						if (key === 'ArrowLeft') {
+						if (key === 37) {
 							e.preventDefault();
 							$prev.click();
-						} else if (key === 'ArrowRight') {
+						} else if (key === 39) {
 							e.preventDefault();
 							$next.click();
 						}
 					}
 				});
 
-				if ($.fn.on) {
-					// Für jQuery 1.7+
-					$(document).on('click.' + prefix, '.' + boxElement, clickHandler);
+				if (typeof $.fn.on === 'function') {
+					// For jQuery 1.7+
+					$(document).on('click.'+prefix, '.'+boxElement, clickHandler);
 				} else {
-					// Für jQuery 1.3.x -> 1.6.x
-					$('.' + boxElement).on('click.' + prefix, clickHandler);
+					// For jQuery 1.3.x -> 1.6.x
+					// This code is never reached in jQuery 1.9, so do not contact me about 'live' being removed.
+					// This is not here for jQuery 1.9, it's here for legacy users.
+					$('.'+boxElement).live('click.'+prefix, clickHandler);
 				}
 			}
 			return true;
@@ -644,7 +643,7 @@
 		scrollTop,
 		scrollLeft;
 
-		$window.off('resize.' + prefix);
+		$window.unbind('resize.' + prefix);
 
 		// remove the modal so that it doesn't influence the document width/height
 		$box.css({top: -9e4, left: -9e4});
@@ -724,13 +723,13 @@
 
 				if (settings.get('reposition')) {
 					setTimeout(function () {  // small delay before binding onresize due to an IE8 bug.
-						$window.on('resize.' + prefix, publicMethod.position);
+						$window.bind('resize.' + prefix, publicMethod.position);
 					}, 1);
 				}
 
 				if (typeof loadedCallback === 'function') {
 					loadedCallback();
-				}
+				}				
 			},
 			step: modalDimensions
 		});
@@ -1060,7 +1059,7 @@
 			open = false;
 			trigger(event_cleanup);
 			settings.get('onCleanup');
-			$window.off('.' + prefix);
+			$window.unbind('.' + prefix);
 			$overlay.fadeTo(settings.get('fadeOut') || 0, 0);
 
 			$box.stop().fadeTo(settings.get('fadeOut') || 0, 0, function () {

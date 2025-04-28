@@ -33,7 +33,8 @@ class MP_Installer {
 	 * @access public
 	 */
 	private function __construct() {
-		add_action( 'init', array( &$this, 'run' ) );
+		$this->run();
+
 		add_action( 'after_switch_theme', array( &$this, 'add_admin_store_caps' ) );
 		add_action( 'admin_notices', array( &$this, 'db_update_notice' ) );
 		add_action( 'admin_menu', array( &$this, 'add_menu_items' ), 99 );
@@ -42,6 +43,8 @@ class MP_Installer {
 			&$this,
 			'enqueue_db_update_scripts',
 		) );
+		// Give admin role all store capabilities
+		add_action( 'init', array( $this, 'add_admin_store_caps' ) );
 	}
 
 	/**
@@ -55,13 +58,13 @@ class MP_Installer {
 			return;
 		}
 
-		wp_enqueue_style( 'jquery-smoothness', mp_plugin_url( 'includes/admin/ui/smoothness/jquery-ui-1.10.4.custom.css' ), '', MP_VERSION );
+		wp_enqueue_style( 'jquery-smoothness', mp_plugin_url( 'includes/admin/ui/smoothness/jquery-ui-1.12.1.custom.css' ), '', MP_VERSION );
 		wp_enqueue_script( 'mp-db-update', mp_plugin_url( 'includes/admin/ui/js/db-update.js' ), array( 'jquery-ui-progressbar' ), MP_VERSION );
 		wp_localize_script( 'mp-db-update', 'mp_db_update', array(
-			'error_text'  => __( 'An error occurred while updating. Please refresh this page and try again.', 'mp' ),
+			'error_text'  => __( 'Beim Aktualisieren ist ein Fehler aufgetreten. Bitte aktualisiere diese Seite und versuche es erneut.', 'mp' ),
 			'progressbar' => array(
-				'label_text'    => __( 'Upgrading Database...Please Wait...', 'mp' ),
-				'complete_text' => __( 'Complete!', 'mp' ),
+				'label_text'    => __( 'Datenbank aktualisieren ... Bitte warten ...', 'mp' ),
+				'complete_text' => __( 'ERLEDIGT!', 'mp' ),
 			),
 		) );
 	}
@@ -278,7 +281,7 @@ class MP_Installer {
 					//we need to check, if term is numeric, treat it
 					if ( is_numeric( $variation_term_vals[1] ) ) {
 						//usually this is the term name, check if not exist, we will create with a prefix on slug,
-						//to force it to string, as when WordPress using the term_exist, it will priority the ID than slug, which can cause wrong import
+						//to force it to string, as when ClassicPress using the term_exist, it will priority the ID than slug, which can cause wrong import
 						$slug = $variation_term_vals[1] . '_mp_attr';
 						if ( ! term_exists( $slug ) ) {
 							$tid = wp_insert_term( $variation_term_vals[1], $variation_term_vals[0], array(
@@ -524,7 +527,7 @@ class MP_Installer {
 	 */
 	public function add_menu_items() {
 		if ( get_option( 'mp_db_update_required' ) || mp_get_get_value( 'force_upgrade', 0 ) == 1 ) {
-			add_submenu_page( 'store-settings', __( 'Update Data', 'mp' ), __( 'Update Data', 'mp' ), 'activate_plugins', 'mp-db-update', array(
+			add_submenu_page( 'shop-einstellungen', __( 'Update Data', 'mp' ), __( 'Update Data', 'mp' ), 'activate_plugins', 'mp-db-update', array(
 				&$this,
 				'db_update_page',
 			) );
@@ -594,8 +597,8 @@ class MP_Installer {
 		global $wpdb;
 		?>
 		<div class="wrap">
-			<h2><?php _e( 'Update MarketPress Data', 'mp' ); ?></h2>
-			<h4><?php _e( 'MarketPress requires a database update to continue working correctly.<br />Below you will find a list of items that require your attention.', 'mp' ); ?></h4>
+			<h2><?php _e( 'Aktualisiere die MarketPress-Daten', 'mp' ); ?></h2>
+			<h4><?php _e( 'MarketPress erfordert ein Datenbank-Update, um weiterhin ordnungsgemäß zu funktionieren.<br />Unten findest Du eine Liste von Elementen, die Deine Aufmerksamkeit erfordern.', 'mp' ); ?></h4>
 
 			<br/>
 
@@ -626,7 +629,7 @@ class MP_Installer {
 						width: 100%;
 					}
 				</style>
-				<h2><?php _e( 'Product Metadata', 'mp' ); ?></h2>
+				<h2><?php _e( 'Produkt Metadaten', 'mp' ); ?></h2>
 				<form id="mp-update-product-postmeta-form" action="<?php echo admin_url( 'admin-ajax.php' ); ?>">
 					<?php wp_nonce_field( 'mp_update_product_postmeta' ); ?>
 					<input type="hidden" name="action" value="mp_update_product_postmeta"/>
@@ -635,23 +638,23 @@ class MP_Installer {
 						   value="<?php echo mp_get_get_value( 'force_upgrade', 0 ) ?>"/>
 
 					<p class="mp-important">
-						<strong><?php _e( 'Depending on the amount of products you have, this update could take quite some time. Please keep this window open while the update completes. If you have products with multiple variations, the progress bar may move slower, please don\'t exit the window.', 'mp' ); ?></strong>
+						<strong><?php _e( 'Abhängig von der Anzahl Deiner Produkte kann dieses Update einige Zeit dauern. Bitte lasse dieses Fenster geöffnet, während das Update abgeschlossen ist. Wenn Du Produkte mit mehreren Variationen hast, bewegt sich der Fortschrittsbalken möglicherweise langsamer. Verlasse das Fenster nicht.', 'mp' ); ?></strong>
 					</p>
 					<?php
 					if ( is_multisite() ) {
 						?>
 						<p class="mp-important">
-							<strong><?php _e( 'Please update each subsite in your WordPress network where you have older version of the MarketPress plugin.', 'mp' ); ?></strong>
+							<strong><?php _e( 'Bitte aktualisiere jede Unterwebsite in Deinem ClassicPress-Netzwerk, auf der Du eine ältere Version des MarketPress-Plugins hast.', 'mp' ); ?></strong>
 						</p>
 						<?php
 					}
 					?>
 					<p class="submit"><input class="button-primary" type="submit"
-											 value="<?php _e( 'Perform Update', 'mp' ); ?>"></p>
+											 value="<?php _e( 'Aktualisierung durchführen', 'mp' ); ?>"></p>
 				</form>
 				<?php
 			} else {
-				_e( 'MarketPress performed a quick automatic update successfully!', 'mp' );
+				_e( 'MarketPress hat ein schnelles automatisches Update erfolgreich durchgeführt!', 'mp' );
 				delete_option( 'mp_db_update_required' );
 			} // End if().
 			?>
@@ -671,7 +674,7 @@ class MP_Installer {
 			return;
 		}
 
-		echo '<div class="error"><p>' . sprintf( __( 'MarketPress requires a database update to continue working correctly. <a class="button-primary" href="%s">Go to update page</a>', 'mp' ), admin_url( 'admin.php?page=mp-db-update' ) ) . '</p></div>';
+		echo '<div class="error"><p>' . sprintf( __( 'MarketPress erfordert ein Datenbank-Update, um weiterhin ordnungsgemäß zu funktionieren. <a class="button-primary" href="%s">Gehe zur Update-Seite</a>', 'mp' ), admin_url( 'admin.php?page=mp-db-update' ) ) . '</p></div>';
 	}
 
 	/**
@@ -690,6 +693,9 @@ class MP_Installer {
 
 		// Create/update product attributes table
 		$this->create_product_attributes_table();
+
+		// Add "term_order" to $wpdb->terms table
+		$this->add_term_order_column();
 
 		//If current MP version equals to old version skip importer
 		if ( MP_VERSION == $old_version && 0 == $force_upgrade ) {
@@ -741,15 +747,15 @@ class MP_Installer {
 			if ( version_compare( $old_version, '3.2.6', '<' ) || ( false !== $force_version && version_compare( $force_version, '3.2.6', '<' ) ) ) {
 				$this->update_326();
 			}
+
+			// 3.2.8 update.
+			if ( version_compare( $old_version, '3.2.8', '<' ) || ( false !== $force_version && version_compare( $force_version, '3.2.8', '<' ) ) ) {
+				$this->upgrade_328();
+			}
 		} // End if().
 
 		// Update settings
 		update_option( 'mp_settings', $settings );
-
-		// Give admin role all store capabilities
-		$this->add_admin_store_caps();
-		// Add "term_order" to $wpdb->terms table
-		$this->add_term_order_column();
 
 		// Only run these on first install
 		if ( empty( $old_settings ) ) {
@@ -1411,6 +1417,34 @@ class MP_Installer {
 
 			if ( isset( $price ) ) {
 				update_post_meta( $product_id, 'sort_price', $price );
+			}
+		}
+	}
+
+
+	/**
+	 * Update to version 3.2.8.
+	 *
+	 * Adds enabled options for sending all notification types.
+	 *
+	 * @since 3.2.8
+	 * @access private
+	 */
+	private function upgrade_328() {
+		$settings = get_option( 'mp_settings' );
+		//only if this setting is overwritten
+		if ( $settings ) {
+			$notification_kinds = array(
+				'new_order',
+				'new_order_mixed',
+				'new_order_downloads',
+				'order_shipped',
+				'order_shipped_mixed',
+				'order_shipped_downloads',
+				'admin_order',
+			);
+			foreach ( $notification_kinds as $kind ) {
+				mp_update_setting( 'email->' . $kind . '->send_email', 1 );
 			}
 		}
 	}

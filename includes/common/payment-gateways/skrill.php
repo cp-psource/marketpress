@@ -115,9 +115,9 @@ class MP_Gateway_Skrill extends MP_Gateway_API {
 	 * @access public
 	 */
 	public function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id'			 => $this->generate_metabox_id(),
-			'page_slugs'	 => array( 'store-settings-payments', 'store-settings_page_store-settings-payments' ),
+			'page_slugs'	 => array( 'shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments' ),
 			'title'			 => sprintf( __( '%s Settings', 'mp' ), $this->admin_name ),
 			'option_name'	 => 'mp_settings',
 			'desc'			 => __( 'Resell your inventory via Skrill.com (Moneybookers)', 'mp' ),
@@ -321,7 +321,7 @@ class MP_Gateway_Skrill extends MP_Gateway_API {
 			$message .= "Field " . htmlspecialchars( $key ) . " = " . htmlspecialchars( $value ) . "<br>";
 		}
 
-		
+
 		$order_id	 = mp_get_get_value( 'order_id' );
 		$order		 = new MP_Order( $order_id );
 		$order->log_ipn_status( __( 'Skrill IPN message received.', 'mp' ) );
@@ -357,7 +357,7 @@ class MP_Gateway_Skrill extends MP_Gateway_API {
 					break;
 
 				case '0':
-					$status			 = __( 'Pending - The payment is pending. It can take 2-3 days for bank transfers to complete.', 'mp' );
+					$status			 = __( 'Pending - Die Zahlung steht noch aus. It can take 2-3 days for bank transfers to complete.', 'mp' );
 					$create_order	 = true;
 					$paid			 = false;
 					break;

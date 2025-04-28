@@ -145,14 +145,14 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
     $output .=  "<option " . ($sel==2?' selected':'') . "  value='02'>02 - Feb</option>";
     $output .=  "<option " . ($sel==3?' selected':'') . "  value='03'>03 - Mar</option>";
     $output .=  "<option " . ($sel==4?' selected':'') . "  value='04'>04 - Apr</option>";
-    $output .=  "<option " . ($sel==5?' selected':'') . "  value='05'>05 - May</option>";
+    $output .=  "<option " . ($sel==5?' selected':'') . "  value='05'>05 - Mai</option>";
     $output .=  "<option " . ($sel==6?' selected':'') . "  value='06'>06 - Jun</option>";
     $output .=  "<option " . ($sel==7?' selected':'') . "  value='07'>07 - Jul</option>";
     $output .=  "<option " . ($sel==8?' selected':'') . "  value='08'>08 - Aug</option>";
     $output .=  "<option " . ($sel==9?' selected':'') . "  value='09'>09 - Sep</option>";
-    $output .=  "<option " . ($sel==10?' selected':'') . "  value='10'>10 - Oct</option>";
+    $output .=  "<option " . ($sel==10?' selected':'') . "  value='10'>10 - Okt</option>";
     $output .=  "<option " . ($sel==11?' selected':'') . "  value='11'>11 - Nov</option>";
-    $output .=  "<option " . ($sel==12?' selected':'') . "  value='12'>12 - Dec</option>";
+    $output .=  "<option " . ($sel==12?' selected':'') . "  value='12'>12 - Dez</option>";
 
     return($output);
   }
@@ -169,25 +169,25 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
    */
   function process_payment_form($cart, $shipping_info) {
     if ( ! is_email(mp_get_post_value('email', '')) )
-      mp_checkout()->add_error('Please enter a valid Email Address.', 'email');
+      mp_checkout()->add_error('Bitte gib eine gültige E-Mail-Adresse ein.', 'email');
 
     if ( ! mp_get_post_value('name') )
-      mp_checkout()->add_error('Please enter your Full Name.', 'name');
+      mp_checkout()->add_error('Bitte trage Deinen vollen Namen ein.', 'name');
 
     if ( mp_get_post_value('address1') )
-      mp_checkout()->add_error('Please enter your Street Address.', 'address1');
+      mp_checkout()->add_error('Bitte gib Deine Adresse ein.', 'address1');
 
     if ( ! mp_get_post_value('city') )
-      mp_checkout()->add_error('Please enter your City.', 'city');
+      mp_checkout()->add_error('Bitte gib Deine Stadt ein.', 'city');
 
     if ((mp_get_post_value('country') == 'US' || mp_get_post_value('country') == 'CA') && empty($_POST['state']))
-      mp_checkout()->add_error('Please enter your State/Province/Region.', 'state');
+      mp_checkout()->add_error('Bitte gib Dein Bundesland/Deine Provinz/Region ein.', 'state');
 
     if ( ! mp()->is_valid_zip(mp_get_post_value('zip'), mp_get_post_value('country')) )
-      mp_checkout()->add_error('Please enter a valid Zip/Postal Code.', 'zip');
+      mp_checkout()->add_error('Bitte gib eine gültige Postleitzahl ein.', 'zip');
 
     if ( empty($_POST['country']) || strlen(mp_get_post_value('country', '')) != 2 )
-      mp_checkout()->add_error('Please enter your Country.', 'country');
+      mp_checkout()->add_error('Bitte gib Dein Land ein.', 'country');
 
     //for checkout plugins
     do_action('mp_billing_process');
@@ -210,18 +210,18 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
       update_user_meta($current_user->ID, 'mp_billing_info', $_SESSION['mp_billing_info']);
 
     if (!isset($_POST['exp_month']) || !isset($_POST['exp_year']) || empty($_POST['exp_month']) || empty($_POST['exp_year'])) {
-      mp_checkout()->add_error( __('Please select your credit card expiration date.', 'mp'), 'exp');
+      mp_checkout()->add_error( __('Bitte wähle das Ablaufdatum Deiner Kreditkarte.', 'mp'), 'exp');
     }
 
     if (!isset($_POST['card_code']) || empty($_POST['card_code'])) {
-      mp_checkout()->add_error( __('Please enter your credit card security code', 'mp'), 'card_code');
+      mp_checkout()->add_error( __('Bitte gib Deinen Kreditkarten-Sicherheitscode ein', 'mp'), 'card_code');
     }
 
     if (!isset($_POST['card_num']) || empty($_POST['card_num'])) {
-      mp_checkout()->add_error( __('Please enter your credit card number', 'mp'), 'card_num');
+      mp_checkout()->add_error( __('Bitte gib Deine Kreditkartennummer ein', 'mp'), 'card_num');
     } else {
       if ($this->_get_card_type($_POST['card_num']) == "") {
-        mp_checkout()->add_error( __('Please enter a valid credit card number', 'mp'), 'card_num');
+        mp_checkout()->add_error( __('Bitte gib eine gültige Kreditkartennummer ein', 'mp'), 'card_num');
       }
     }
 
@@ -230,7 +230,7 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
         ($this->_get_card_type($_POST['card_num']) == "American Express" && strlen($_POST['card_code']) != 4) ||
         ($this->_get_card_type($_POST['card_num']) != "American Express" && strlen($_POST['card_code']) != 3)
         ) {
-        mp_checkout()->add_error(__('Please enter a valid credit card security code', 'mp'), 'card_code');
+        mp_checkout()->add_error(__('Bitte gib einen gültigen Kreditkarten-Sicherheitscode ein', 'mp'), 'card_code');
       }
     }
 
@@ -370,12 +370,12 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
    * @access public
    */
   public function init_settings_metabox() {
-    $metabox = new WPMUDEV_Metabox(array(
+    $metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
-			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
+			'title' => sprintf(__('%s Einstellungen', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
-			'desc' => __('Use Payflow payment gateway to accept online payments using your Internet merchant account and processing network. PayPal Payflow Pro is a customizable payment processing solution that gives the merchant control over all the steps in processing a transaction. An SSL certificate is required to use this gateway.', 'mp'),
+			'desc' => __('Verwende das Payflow-Zahlungsgateway, um Online-Zahlungen über Dein Internet-Händlerkonto und Deinem Verarbeitungsnetzwerk zu akzeptieren. PayPal Payflow Pro ist eine anpassbare Zahlungsverarbeitungslösung, mit der der Händler alle Schritte bei der Verarbeitung einer Transaktion steuern kann. Für die Verwendung dieses Gateways ist ein SSL-Zertifikat erforderlich.', 'mp'),
 			'conditional' => array(
 				'name' => 'gateways[allowed][' . $this->plugin_name . ']',
 				'value' => 1,
@@ -384,7 +384,7 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
 		));
 		$metabox->add_field('radio_group', array(
 			'name' => $this->get_field_name('mode'),
-			'label' => array('text' => __('Mode', 'mp')),
+			'label' => array('text' => __('Modus', 'mp')),
 			'default_value' => 'sandbox',
 			'options' => array(
 				'sandbox' => __('Sandbox', 'mp'),
@@ -393,20 +393,20 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
 		));
 		$creds = $metabox->add_field('complex', array(
 			'name' => $this->get_field_name('api_credentials'),
-			'label' => array('text' => __('Gateway Credentials', 'mp')),
+			'label' => array('text' => __('Gateway-Anmeldeinformationen', 'mp')),
 		));
 
-		if ( $creds instanceof WPMUDEV_Field ) {
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field('text', array(
 				'name' => 'user',
-				'label' => array('text' => __('User', 'mp')),
+				'label' => array('text' => __('Benutzer', 'mp')),
 				'validation' => array(
 					'required' => true,
 				),
 			));
 			$creds->add_field('text', array(
 				'name' => 'vendor',
-				'label' => array('text' => __('Vendor', 'mp')),
+				'label' => array('text' => __('Händler', 'mp')),
 				'validation' => array(
 					'required' => true,
 				),
@@ -420,7 +420,7 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
 			));
 			$creds->add_field('text', array(
 				'name' => 'password',
-				'label' => array('text' => __('Password', 'mp')),
+				'label' => array('text' => __('Passwort', 'mp')),
 				'validation' => array(
 					'required' => true,
 				),
@@ -429,7 +429,7 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
 
 		$metabox->add_field('advanced_select', array(
 			'name' => $this->get_field_name('currency'),
-			'label' => array('text' => __('Currency', 'mp')),
+			'label' => array('text' => __('Währung', 'mp')),
 			'width' => 'element',
 			'multiple' => false,
 			'default_value' => mp_get_setting('currency'),
@@ -437,13 +437,13 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
 		));
 		$metabox->add_field('checkbox', array(
 			'name' => $this->get_field_name('email_customer'),
-			'label' => array('text' => __('Email Customer (on success)', 'mp')),
+			'label' => array('text' => __('E-Mail-Kunde (bei Erfolg)', 'mp')),
 			'message' => __('Yes', 'mp'),
 		));
 		$metabox->add_field('text', array(
 			'name' => $this->get_field_name('header_email_receipt'),
 			'label' => array('text' => __('Email Header', 'mp')),
-			'desc' => __('This text will appear as the header of the email receipt sent to the customer.', 'mp'),
+			'desc' => __('Dieser Text wird als Kopfzeile der an den Kunden gesendeten E-Mail-Quittung angezeigt.', 'mp'),
 			'conditional' => array(
 				'name' => $this->get_field_name('email_customer'),
 				'value' => 1,
@@ -452,8 +452,8 @@ class MP_Gateway_PayPal_Payflow extends MP_Gateway_API {
 		));
 		$metabox->add_field('text', array(
 			'name' => $this->get_field_name('footer_email_receipt'),
-			'label' => array('text' => __('Email Footer', 'mp')),
-			'desc' => __('This text will appear as the footer of the email receipt sent to the customer.', 'mp'),
+			'label' => array('text' => __('E-Mail-Fußzeile', 'mp')),
+			'desc' => __('Dieser Text wird als Fußzeile der an den Kunden gesendeten E-Mail-Quittung angezeigt.', 'mp'),
 			'conditional' => array(
 				'name' => $this->get_field_name('email_customer'),
 				'value' => 1,

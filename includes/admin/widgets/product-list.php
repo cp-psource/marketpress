@@ -4,8 +4,8 @@
 class MarketPress_Product_List extends WP_Widget {
 
 	function __construct() {
-		$widget_ops = array( 'classname' => 'mp_widget mp_widget_products_list', 'description' => __( 'Shows a customizable list of products from your MarketPress store.', 'mp' ) );
-		parent::__construct( 'mp_product_list_widget', __( 'Product List', 'mp' ), $widget_ops );
+		$widget_ops = array( 'classname' => 'mp_widget mp_widget_products_list', 'description' => __( 'Zeigt eine anpassbare Liste von Produkten aus Deinem MarketPress-Shop an.', 'mp' ) );
+		parent::__construct( 'mp_product_list_widget', __( '(MarketPress) Produktliste', 'mp' ), $widget_ops );
 	}
 
 	function widget( $args, $instance ) {
@@ -141,7 +141,7 @@ class MarketPress_Product_List extends WP_Widget {
 		} else {
 			?>
 			<div class="mp_widget_empty">
-				<?php _e( 'No Products', 'mp' ) ?>
+				<?php _e( 'Keine Produkte', 'mp' ) ?>
 			</div><!-- end mp_widget_empty -->
 			<?php
 		}
@@ -174,7 +174,7 @@ class MarketPress_Product_List extends WP_Widget {
 	}
 
 	function form( $instance ) {
-		$instance	 = wp_parse_args( (array) $instance, array( 'title' => __( 'Our Products', 'mp' ), 'custom_text' => '', 'num_products' => 10, 'order_by' => 'title', 'order' => 'DESC', 'show_thumbnail' => 1, 'size' => 50, 'only_store_pages' => 0 ) );
+		$instance	 = wp_parse_args( (array) $instance, array( 'title' => __( 'Unsere Produkte', 'mp' ), 'custom_text' => '', 'num_products' => 10, 'order_by' => 'title', 'order' => 'DESC', 'show_thumbnail' => 1, 'size' => 50, 'only_store_pages' => 0 ) );
 		$title		 = $instance[ 'title' ];
 		$custom_text = $instance[ 'custom_text' ];
 
@@ -196,69 +196,69 @@ class MarketPress_Product_List extends WP_Widget {
 
 		$only_store_pages = isset( $instance[ 'only_store_pages' ] ) ? (bool) $instance[ 'only_store_pages' ] : false;
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'mp' ) ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></label></p>
-		<p><label for="<?php echo $this->get_field_id( 'custom_text' ); ?>"><?php _e( 'Custom Text:', 'mp' ) ?><br />
+		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Widgettitel:', 'mp' ) ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'custom_text' ); ?>"><?php _e( 'Benutzerdefinierter Text:', 'mp' ) ?><br />
 				<textarea class="widefat" id="<?php echo $this->get_field_id( 'custom_text' ); ?>" name="<?php echo $this->get_field_name( 'custom_text' ); ?>"><?php echo esc_attr( $custom_text ); ?></textarea></label>
 		</p>
 
-		<h3><?php _e( 'List Settings', 'mp' ); ?></h3>
+		<h3><?php _e( 'Listeneinstellungen', 'mp' ); ?></h3>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'num_products' ); ?>"><?php _e( 'Number of Products:', 'mp' ) ?> <input id="<?php echo $this->get_field_id( 'num_products' ); ?>" name="<?php echo $this->get_field_name( 'num_products' ); ?>" type="text" size="3" value="<?php echo $num_products; ?>" /></label><br />
+			<label for="<?php echo $this->get_field_id( 'num_products' ); ?>"><?php _e( 'Anzahl der Produkte:', 'mp' ) ?> <input id="<?php echo $this->get_field_id( 'num_products' ); ?>" name="<?php echo $this->get_field_name( 'num_products' ); ?>" type="text" size="3" value="<?php echo $num_products; ?>" /></label><br />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'order_by' ); ?>"><?php _e( 'Order Products By:', 'mp' ) ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'order_by' ); ?>"><?php _e( 'Ordne Produkte nach:', 'mp' ) ?></label><br />
 			<select id="<?php echo $this->get_field_id( 'order_by' ); ?>" name="<?php echo $this->get_field_name( 'order_by' ); ?>">
-				<option value="title"<?php selected( $order_by, 'title' ) ?>><?php _e( 'Product Name', 'mp' ) ?></option>
-				<option value="date"<?php selected( $order_by, 'date' ) ?>><?php _e( 'Publish Date', 'mp' ) ?></option>
-				<option value="ID"<?php selected( $order_by, 'ID' ) ?>><?php _e( 'Product ID', 'mp' ) ?></option>
-				<option value="author"<?php selected( $order_by, 'author' ) ?>><?php _e( 'Product Author', 'mp' ) ?></option>
-				<option value="sales"<?php selected( $order_by, 'sales' ) ?>><?php _e( 'Number of Sales', 'mp' ) ?></option>
-				<option value="price"<?php selected( $order_by, 'price' ) ?>><?php _e( 'Product Price', 'mp' ) ?></option>
-				<option value="featured"<?php selected( $order_by, 'featured' ) ?>><?php _e( 'Featured', 'mp' ) ?></option>
-				<option value="rand"<?php selected( $order_by, 'rand' ) ?>><?php _e( 'Random', 'mp' ) ?></option>
+				<option value="title"<?php selected( $order_by, 'title' ) ?>><?php _e( 'Produktname', 'mp' ) ?></option>
+				<option value="date"<?php selected( $order_by, 'date' ) ?>><?php _e( 'Erscheinungsdatum', 'mp' ) ?></option>
+				<option value="ID"<?php selected( $order_by, 'ID' ) ?>><?php _e( 'Produkt ID', 'mp' ) ?></option>
+				<option value="author"<?php selected( $order_by, 'author' ) ?>><?php _e( 'Produktautor', 'mp' ) ?></option>
+				<option value="sales"<?php selected( $order_by, 'sales' ) ?>><?php _e( 'Anzahl der Verkäufe', 'mp' ) ?></option>
+				<option value="price"<?php selected( $order_by, 'price' ) ?>><?php _e( 'Produktpreis', 'mp' ) ?></option>
+				<option value="featured"<?php selected( $order_by, 'featured' ) ?>><?php _e( 'Empfohlen', 'mp' ) ?></option>
+				<option value="rand"<?php selected( $order_by, 'rand' ) ?>><?php _e( 'Zufällig', 'mp' ) ?></option>
 			</select><br />
-			<label><input value="DESC" name="<?php echo $this->get_field_name( 'order' ); ?>" type="radio"<?php checked( $order, 'DESC' ) ?> /> <?php _e( 'Descending', 'mp' ) ?></label>
-			<label><input value="ASC" name="<?php echo $this->get_field_name( 'order' ); ?>" type="radio"<?php checked( $order, 'ASC' ) ?> /> <?php _e( 'Ascending', 'mp' ) ?></label>
+			<label><input value="DESC" name="<?php echo $this->get_field_name( 'order' ); ?>" type="radio"<?php checked( $order, 'DESC' ) ?> /> <?php _e( 'Absteigend', 'mp' ) ?></label>
+			<label><input value="ASC" name="<?php echo $this->get_field_name( 'order' ); ?>" type="radio"<?php checked( $order, 'ASC' ) ?> /> <?php _e( 'Aufsteigend', 'mp' ) ?></label>
 		</p>
 		<p>
-			<label><?php _e( 'Taxonomy Filter:', 'mp' ) ?></label><br />
+			<label><?php _e( 'Taxonomie-Filter:', 'mp' ) ?></label><br />
 			<select id="<?php echo $this->get_field_id( 'taxonomy_type' ); ?>" name="<?php echo $this->get_field_name( 'taxonomy_type' ); ?>">
-				<option value=""<?php selected( $taxonomy_type, '' ) ?>><?php _e( 'No Filter', 'mp' ) ?></option>
-				<option value="category"<?php selected( $taxonomy_type, 'category' ) ?>><?php _e( 'Category', 'mp' ) ?></option>
+				<option value=""<?php selected( $taxonomy_type, '' ) ?>><?php _e( 'Kein Filter', 'mp' ) ?></option>
+				<option value="category"<?php selected( $taxonomy_type, 'category' ) ?>><?php _e( 'Kategorie', 'mp' ) ?></option>
 				<option value="tag"<?php selected( $taxonomy_type, 'tag' ) ?>><?php _e( 'Tag', 'mp' ) ?></option>
 			</select>
-			<input id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" type="text" size="17" value="<?php echo $taxonomy; ?>" title="<?php _e( 'Enter the Slug', 'mp' ); ?>" />
+			<input id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" type="text" size="17" value="<?php echo $taxonomy; ?>" title="<?php _e( 'Gib den Slug an', 'mp' ); ?>" />
 		</p>
 
-		<h3><?php _e( 'Display Settings', 'mp' ); ?></h3>
+		<h3><?php _e( 'Anzeigeeinstellungen', 'mp' ); ?></h3>
 		<p><input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'show_only_featured' ); ?>" name="<?php echo $this->get_field_name( 'show_only_featured' ); ?>"<?php checked( $show_only_featured ); ?> />
-			<label for="<?php echo $this->get_field_id( 'show_only_featured' ); ?>"><?php _e( 'Show Only Featured Products', 'mp' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'show_only_featured' ); ?>"><?php _e( 'Nur empfohlene Produkte', 'mp' ); ?></label><br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>" name="<?php echo $this->get_field_name( 'show_thumbnail' ); ?>"<?php checked( $show_thumbnail ); ?> />
-			<label for="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>"><?php _e( 'Show Thumbnail', 'mp' ); ?></label><br />
-			<label for="<?php echo $this->get_field_id( 'size' ); ?>"><?php _e( 'Thumbnail Size:', 'mp' ) ?> <input id="<?php echo $this->get_field_id( 'size' ); ?>" name="<?php echo $this->get_field_name( 'size' ); ?>" type="text" size="3" value="<?php echo $size; ?>" /></label></p>
+			<label for="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>"><?php _e( 'Produktbild anzeigen', 'mp' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'size' ); ?>"><?php _e( 'Produktbildgröße:', 'mp' ) ?> <input id="<?php echo $this->get_field_id( 'size' ); ?>" name="<?php echo $this->get_field_name( 'size' ); ?>" type="text" size="3" value="<?php echo $size; ?>" /></label></p>
 
 		<p><input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'show_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'show_excerpt' ); ?>"<?php checked( $show_excerpt ); ?> />
-			<label for="<?php echo $this->get_field_id( 'show_excerpt' ); ?>"><?php _e( 'Show Excerpt', 'mp' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'show_excerpt' ); ?>"><?php _e( 'Auszug anzeigen', 'mp' ); ?></label><br />
 
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'show_price' ); ?>" name="<?php echo $this->get_field_name( 'show_price' ); ?>"<?php checked( $show_price ); ?> />
-			<label for="<?php echo $this->get_field_id( 'show_price' ); ?>"><?php _e( 'Show Price', 'mp' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'show_price' ); ?>"><?php _e( 'Preis anzeigen', 'mp' ); ?></label><br />
 
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'show_thumbnail_placeholder' ); ?>" name="<?php echo $this->get_field_name( 'show_thumbnail_placeholder' ); ?>"<?php checked( $show_thumbnail_placeholder ); ?> />
-			<label for="<?php echo $this->get_field_id( 'show_thumbnail_placeholder' ); ?>"><?php _e( 'Show Thumbnail Placeholder image (if image is not set)', 'mp' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'show_thumbnail_placeholder' ); ?>"><?php _e( 'Platzhalterbild anzeigen (wenn kein Produktbild festgelegt ist)', 'mp' ); ?></label><br />
 
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'show_button' ); ?>" name="<?php echo $this->get_field_name( 'show_button' ); ?>"<?php checked( $show_button ); ?> />
-			<label for="<?php echo $this->get_field_id( 'show_button' ); ?>"><?php _e( 'Show Buy Button', 'mp' ); ?></label></p>
+			<label for="<?php echo $this->get_field_id( 'show_button' ); ?>"><?php _e( 'Kaufschaltfläche anzeigen', 'mp' ); ?></label></p>
 
 		<p><input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'only_store_pages' ); ?>" name="<?php echo $this->get_field_name( 'only_store_pages' ); ?>"<?php checked( $only_store_pages ); ?> />
-			<label for="<?php echo $this->get_field_id( 'only_store_pages' ); ?>"><?php _e( 'Only show on store pages', 'mp' ); ?></label></p>
+			<label for="<?php echo $this->get_field_id( 'only_store_pages' ); ?>"><?php _e( 'Nur auf Shop-Seiten anzeigen', 'mp' ); ?></label></p>
 		<?php
 	}
 
 }
 
-function register_marketpress_product_list_widget() {
-    register_widget('MarketPress_Product_List');
+function MarketPress_Product_init_List ()
+{
+	return register_widget('MarketPress_Product_List');
 }
-add_action('widgets_init', 'register_marketpress_product_list_widget');
-
+add_action ('widgets_init', 'MarketPress_Product_init_List');
 ?>

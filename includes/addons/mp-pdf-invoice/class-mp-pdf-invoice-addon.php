@@ -190,7 +190,7 @@ class MP_PDF_Invoice_Addon {
 	 * @since 3.0
 	 */
 	public function view_settings() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id'          => 'mp-invoice-pdf-general-metabox',
 			'title'       => __( 'General Settings', 'mp' ),
 			'page_slugs'  => array( 'store-settings-addons' ),
@@ -221,7 +221,7 @@ class MP_PDF_Invoice_Addon {
 			'message' => __( "Disable automatic creation/attachment of invoices when only free products are ordered", "mp" )
 		) );
 
-		$metabox   = new WPMUDEV_Metabox( array(
+		$metabox   = new PSOURCE_Metabox( array(
 			'id'          => 'mp-invoice-pdf-template-metabox',
 			'title'       => __( 'Template Settings', 'mp' ),
 			'page_slugs'  => array( 'store-settings-addons' ),

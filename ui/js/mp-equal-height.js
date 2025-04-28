@@ -15,7 +15,7 @@
     }
 	
 
-    $( window ).on('resize', function() {
+    $( window ).on( 'resize', function( ) {
         $( '#mp-products.mp_products-grid' ).each( function( ) {
             var $this = $( this );
             $this.find( '.mp_product_meta' ).equalHeights();
@@ -29,7 +29,7 @@
 
     } );
 	
-	$(window).on('load', function() {
+	$( window ).on( 'load', function() {
 		$( '#mp-products.mp_products-grid' ).each( function( ) {
 			var $this = $( this );
 			$this.find( '.mp_product_meta' ).equalHeights();

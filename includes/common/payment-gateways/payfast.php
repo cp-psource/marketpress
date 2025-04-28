@@ -516,7 +516,7 @@ class MP_Gateway_PayFast extends MP_Gateway_API {
             {
                 case 'COMPLETE':
                     pflog('- Complete');
-                    $status = __('The payment has been completed, and the funds have been added successfully to your account balance.', 'mp');
+                    $status = __('Die Zahlung wurde abgeschlossen und das Guthaben wurde erfolgreich Deinem Kontostand hinzugefügt.', 'mp');
                     $payment_info = $order->mp_payment_info;
                     $payment_info['transaction_id'] = $pfData['pf_payment_id'];
                     $payment_info['method'] = "PayFast";
@@ -536,7 +536,7 @@ class MP_Gateway_PayFast extends MP_Gateway_API {
 
                 case 'PENDING':
                     pflog('- Pending');
-                    $status = __('The payment is pending.', 'mp');
+                    $status = __('Die Zahlung steht noch aus.', 'mp');
                     $paid = false;
 
                     // Need to wait for "Completed" before processing

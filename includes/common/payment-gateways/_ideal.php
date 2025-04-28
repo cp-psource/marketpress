@@ -8,31 +8,31 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 
   //private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
   var $plugin_name = 'ideal';
-  
+
   //name of your gateway, for the admin side.
   var $admin_name = '';
-  
+
   //public name of your gateway, for lists and such.
   var $public_name = '';
-  
+
   //url for an image for your checkout method. Displayed on method form
   var $method_img_url = '';
 
   //url for an submit button image for your checkout method. Displayed on checkout form if set
   var $method_button_img_url = '';
-  
+
   //whether or not ssl is needed for checkout page
   var $force_ssl = false;
-  
+
   //always contains the url to send payment notifications to if needed by your gateway. Populated by the parent class
   var $ipn_url;
-  
+
 	//whether if this is the only enabled gateway it can skip the payment_form step
   var $skip_form = true;
 
   //if the gateway uses the order confirmation step during checkout (e.g. PayPal)
   var $use_confirmation_step = true;
-  
+
   /****** Below are the public methods you may overwrite via a plugin ******/
 
 	/**
@@ -53,9 +53,9 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 		$shastring = $key . $merchantID . $subID . $total . $purchaseID . $paymentType . $validUntil;
 		foreach ( $items as $i => $item ) {
 			$idx = ($i + 1);
-			$shastring .= $item[ 'itemNumber' . $idx ] . $item[ 'itemDescription' . $idx ] . $item[ 'itemQuantity' . $idx ] . $item[ 'itemPrice' . $idx ];	
+			$shastring .= $item[ 'itemNumber' . $idx ] . $item[ 'itemDescription' . $idx ] . $item[ 'itemQuantity' . $idx ] . $item[ 'itemPrice' . $idx ];
 		}
-		
+
 		// Remove HTML Entities
 		$shastring = html_entity_decode( $shastring );
 
@@ -64,10 +64,10 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 
 		// Generate hash
 		$shasign = sha1( $shastring );
-		
-		return $shasign;	
+
+		return $shasign;
 	}
-	 
+
   /**
    * Runs when your class is instantiated. Use to setup your plugin instead of __construct()
    */
@@ -96,7 +96,7 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
   public function payment_form( $cart, $shipping_info ) {
 	  return __( 'Your payment will be processed by the iDEAL network', 'mp' );
   }
-  
+
 	/**
 	 * Use this to do the final payment. Create the order then process the payment. If
 	 * you know the payment is successful right away go ahead and change the order status
@@ -116,16 +116,16 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 		$validUntil = date( 'Y-m-d\TG:i:s\Z', strtotime( '+1 hour' ) );
 		$cart_items = $cart->get_items_as_objects();
 		$total = ($cart->total( false ) * 100);
-		
+
 		$i = 1;
 		foreach ( $cart_items as $item ) {
 			$items[] = array(
 				'itemNumber' . $i => ( '' == $item->get_meta( 'sku', '' ) ) ? $item->ID : substr( $item->get_meta( 'sku', '' ), 0, 12 ), // Article number
 				'itemDescription' . $i => substr( $item->title( false ), 0, 32 ), // Description
 				'itemQuantity' . $i => $item->qty, // Quantity
-				'itemPrice' . $i => ($item->get_price( 'lowest' ) * 100) // Artikel price in cents
+				'itemPrice' . $i => ($item->get_price( 'lowest' ) * 100) // Produkt price in cents
 			);
-			
+
 			$i++;
 		}
 
@@ -158,30 +158,30 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 		$currency = 'EUR';
 		$description = substr( sprintf( __( '%s Store Purchase - Order ID: %s', 'mp' ), get_bloginfo( 'name' ), $order_id ), 0, 32 );
 		$test = ( $this->get_setting('mode', 'test') == 'test');
-		
+
 		// Setup bank specific urls
 		switch ( $this->get_setting('bank') ) {
 			case 'ing' :
 				$redirectURL = 'https://ideal' . ($test ? 'test' : '') . '.secure-ing.com/ideal/mpiPayInitIng.do?';
 			break;
-			
+
 			case 'rabo' :
 				$redirectURL = 'https://ideal' . ($test ? 'test' : '') . '.rabobank.nl/ideal/mpiPayInitRabo.do?';
 			break;
-			
+
 			case 'fries' :
 				$redirectURL = 'https://' . ($test ? 'test' : '') . 'idealkassa.frieslandbank.nl/ideal/mpiPayInitFriesland.do?';
 			break;
-				
+
 			case 'abn' :
 				$redirectURL = 'https://abnamro' . ($test ? '-test' : '') . '.ideal-payment.de/ideal/mpiPayInitFortis.do?';
 			break;
-			
+
 			default :
 				$redirectURL = 'https://www.ideal-checkout.nl/simulator/?';
 			break;
 		}
-		
+
 		var_dump( $merchantID ); die;
 		// Build the request array
 		$request = array();
@@ -195,21 +195,21 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 		$request['hash'] = $shasign;
 		$request['paymentType'] = $paymentType;
 		$request['validUntil'] = $validUntil;
-		
+
 		foreach ( $items as $item ) {
 			foreach ( $item as $k => $val ) {
 				$request[ $k ] = $val;
 			}
 		}
-	
+
 		$request['urlSuccess'] = $this->return_url;
 		$request['urlCancel'] = $this->cancel_url;
 		$request['urlError'] = $this->return_url;
-		
+
 		wp_redirect( $redirectURL . http_build_query( $request ) );
 		exit;
   }
-  
+
   /**
    * Process order confirmation before page loads (e.g. verify callback data, etc)
    *
@@ -219,7 +219,7 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
    */
   public function process_confirm_order() {
 		$timestamp = time();
-	  
+
 		$totals = array();
 		foreach ($cart as $product_id => $variations) {
 			foreach ($variations as $data) {
@@ -227,21 +227,21 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 			}
 		}
 		$total = array_sum($totals);
-	
+
 		if ( $coupon = mp()->coupon_value(mp()->get_coupon_code(), $total) ) {
 			$total = $coupon['new_total'];
 		}
-		
+
 		//shipping line
 		if ( ($shipping_price = mp()->shipping_price()) !== false ) {
 			$total = $total + $shipping_price;
 		}
-		
+
 		//tax line
 		if ( ($tax_price = mp()->tax_price()) !== false ) {
 			$total = $total + $tax_price;
 		}
-	
+
 		$payment_info['gateway_public_name'] = $this->public_name;
 		$payment_info['gateway_private_name'] = $this->admin_name;
 		$payment_info['status'][$timestamp] = __('Invoiced', 'mp');
@@ -249,10 +249,10 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 		$payment_info['currency'] = mp_get_setting('currency');
 		$payment_info['method'] = __('iDEAL', 'mp');
 		$payment_info['transaction_id'] = $order_id;
-	
+
 		//create our order now
 		$result = mp()->create_order($order_id, $cart, $shipping_info, $payment_info, false);
-		
+
 	}
 
   /**
@@ -262,9 +262,9 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
    * @access public
    */
   public function init_settings_metabox() {
-  	$metabox = new WPMUDEV_Metabox(array(
+  	$metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('To make it easier to pay for online products and services, the Dutch banking community has developed the iDEAL online payment method. iDEAL allows online payments to be made using online banking in EUR only.', 'mp'),

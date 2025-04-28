@@ -7,8 +7,6 @@
 
 class MP_Gateway_PIN extends MP_Gateway_API {
 
-	public $public_key;
-
 	//build
 	var $build					 = 2;
 	//private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
@@ -141,9 +139,9 @@ class MP_Gateway_PIN extends MP_Gateway_API {
 	 * @access public
 	 */
 	public function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id'			 => $this->generate_metabox_id(),
-			'page_slugs'	 => array( 'store-settings-payments', 'store-settings_page_store-settings-payments' ),
+			'page_slugs'	 => array( 'shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments' ),
 			'title'			 => sprintf( __( '%s Settings', 'mp' ), $this->admin_name ),
 			'option_name'	 => 'mp_settings',
 			'desc'			 => __( 'PIN makes it easy to start accepting credit card payments with Australia’s first all-in-one online payment system. Accept all major credit cards directly on your site. Your sales proceeds are deposited to any Australian bank account, no merchant account required.', 'mp' ),
@@ -166,7 +164,7 @@ class MP_Gateway_PIN extends MP_Gateway_API {
 			'desc'	 => __( 'You must login to PIN to <a target="_blank" href="https://dashboard.pin.net.au/account">get your API credentials</a>. You can enter your test keys, then live ones when ready.', 'mp' ),
 		) );
 
-		if ( $creds instanceof WPMUDEV_Field ) {
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field( 'text', array(
 				'name'		 => 'private_key',
 				'label'		 => array( 'text' => __( 'Secret Key', 'mp' ) ),

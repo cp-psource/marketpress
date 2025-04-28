@@ -3,7 +3,7 @@
 class MP_Gateway_Simplify extends MP_Gateway_API {
 	//build
 	var $build = 2;
-	
+
 	var $plugin_name = 'simplify';
 	var $admin_name = '';
 	var $public_name = '';
@@ -21,7 +21,7 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 		$this->private_key = $this->get_setting( 'api_credentials->private_key' );
 		$this->force_ssl = $this->get_setting( 'is_ssl' );
 		$this->currency = $this->get_setting( 'currency', 'USD' );
-		
+
 		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ) );
 	}
 
@@ -63,9 +63,9 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 	 * @access public
 	 */
 	public function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox(array(
+		$metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('Simplify helps merchants to accept online payments from Mastercard, Visa, American Express, Discover, JCB, and Diners Club cards. It\'s that simple. We offer a merchant account and payment gateway in a single, secure package so you can concentrate on what really matters to your business. Only supports USD currently.', 'mp'),
@@ -80,8 +80,8 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 			'label' => array('text' => __('API Credentials', 'mp')),
 			'desc' => __('Login to Simplify to <a target="_blank" href="https://www.simplify.com/commerce/app#/account/apiKeys">get your API credentials</a>. Enter your test credentials, then live ones when ready.', 'mp'),
 		));
-		
-		if ( $creds instanceof WPMUDEV_Field ) {
+
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field('text', array(
 				'name' => 'public_key',
 				'label' => array('text' => __('Public Key', 'mp')),
@@ -97,14 +97,14 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 				),
 			));
 		}
-		
+
 		$metabox->add_field('checkbox', array(
 			'name' => $this->get_field_name('is_ssl'),
 			'label' => array('text' => __('Force SSL?', 'mp')),
 			'desc' => __('When in live mode, although it is not required, Simplify recommends you have an SSL certificate.', 'mp'),
 		));
 	}
-	
+
 	/**
 	 * Updates the gateway settings
 	 *
@@ -116,14 +116,14 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 	public function update( $settings ) {
 		if ( $val = $this->get_setting('private_key') ) {
 		 	mp_push_to_array($settings, 'gateways->simplify->api_credentials->private_key', $val);
-		 	unset($settings['gateways']['simplify']['private_key']);	
+		 	unset($settings['gateways']['simplify']['private_key']);
 		}
-		
+
 		if ( $val = $this->get_setting('publishable_key') ) {
 		 	mp_push_to_array($settings, 'gateways->simplify->api_credentials->public_key', $val);
-		 	unset($settings['gateways']['simplify']['public_key']);	
+		 	unset($settings['gateways']['simplify']['public_key']);
 		}
-		
+
 		return $settings;
 	}
 
@@ -136,7 +136,7 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 	function print_checkout_scripts() {
 		 // Intentionally left blank
 	}
-	
+
 	/**
 	 * Use this to do the final payment. Create the order then process the payment. If
 	 * you know the payment is successful right away go ahead and change the order status
@@ -155,7 +155,7 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 		if ( ! class_exists( 'Simplify' ) ) {
 			require_once mp_plugin_dir( 'includes/common/payment-gateways/simplify-files/lib/Simplify.php' );
 		}
-		
+
 		Simplify::$publicKey = $this->public_key;
 		Simplify::$privateKey = $this->private_key;
 
@@ -181,13 +181,13 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 				$payment_info['status'][ time() ] = __( 'Paid', 'mp' );
 				$payment_info['total'] = $total;
 				$payment_info['currency'] = $this->currency;
-				
+
 				$order->save( array(
 					'payment_info' => $payment_info,
 					'cart' => $cart,
 					'paid' => true,
 				) );
-				
+
 				wp_redirect( $order->tracking_url( false ) );
 				exit;
 			}

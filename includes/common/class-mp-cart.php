@@ -100,8 +100,8 @@ class MP_Cart {
 	 */
 	public $is_editable = true;
 
-	/*	 * Refers to the number of times products have been downloaded
-	 *
+	/**
+	 * Refers to the number of times products have been downloaded
 	 *
 	 * @since 3.0
 	 * @access public
@@ -132,6 +132,8 @@ class MP_Cart {
 	 *
 	 * @param int $item_id The id of the item to add
 	 * @param int $qty The quantity of the item
+	 *
+	 * @return bool
 	 */
 	public function add_item( $item_id, $qty = 1 ) {
 		$cart_updated = true;
@@ -169,6 +171,7 @@ class MP_Cart {
 	 *
 	 * @since 3.0
 	 * @access public
+	 * @param string $hook  Hook name
 	 * @action admin_enqueue_scripts
 	 */
 	public function admin_enqueue_styles_scripts( $hook ) {
@@ -272,7 +275,7 @@ class MP_Cart {
 
                 //clean special instructions field
                 mp_update_session_value( "mp_shipping_info->special_instructions", '' );
-                
+
 		switch ( mp_get_post_value( 'cart_action' ) ) {
 			case 'add_item' :
 				$cart_updated = $this->add_item( $item_id, $qty );
@@ -297,7 +300,6 @@ class MP_Cart {
 				break;
 
 			case 'remove_item' :
-
 				$this->remove_item( $item_id );
 				$product      = new MP_Product( $item_id, $this->get_blog_id() );
 				wp_send_json_success( array(
@@ -345,8 +347,11 @@ class MP_Cart {
 	 * @return array
 	 */
 	protected function _convert_to_objects( $items ) {
-		$cache_key = implode( ',', $items );
 		$products  = array();
+		if ( empty( $items ) ) {
+			return $products;
+		}
+		$cache_key = implode( ',', $items );
 
 		if ( $_posts = wp_cache_get( $cache_key, 'mp_cart' ) ) {
 			$posts = $_posts;
@@ -549,7 +554,7 @@ class MP_Cart {
 
 				case 'title' :
 					$column_html = '<h2 class="mp_cart_item_title">' . sprintf( '<a href="%s">%s</a>', $product->url( false ), $product->title( false ) ) . '</h2>';
-					
+
 					if ( ! $this->is_editable && $product->is_download() && mp_is_shop_page( 'order_status' ) ) {
 						//Handle multiple files
 						$download_url = $product->download_url( get_query_var( 'mp_order_id' ), false );
@@ -559,7 +564,7 @@ class MP_Cart {
 							foreach ( $download_url as $key => $value ){
 								$column_html .= '<a target="_blank" href="' . $value . '">' . sprintf( __( 'Download %1$s', 'mp' ),( $key+1 ) ) . '</a><br/>';
 							}
-							
+
 						} else {
 							$column_html .= '<a target="_blank" href="' . $product->download_url( get_query_var( 'mp_order_id' ), false ) . '">' . __( 'Download', 'mp' ) . '</a>';
 						}
@@ -584,7 +589,7 @@ class MP_Cart {
 							) );
 						}
 						$column_html .= '
-						<a class="mp_cart_item_remove_item" href="javascript:mp_cart.removeItem(' . $id . ')">' . __( 'Remove', 'mp' ) . '</a>';
+						<a class="mp_cart_item_remove_item" href="javascript:mp_cart.removeItem(' . $id . ')">' . __( 'ENTFERNEN', 'mp' ) . '</a>';
 					} else {
 						$column_html = $product->qty;
 					}
@@ -658,13 +663,13 @@ class MP_Cart {
 			$city    = mp_get_current_user_city();
 
 			if ( empty( $zipcode ) && empty( $city ) ) {
-				$header = __( 'Estimated Total', 'mp' );
+				$header = __( 'Aktueller Gesamtpreis', 'mp' );
 			} elseif ( empty( $zipcode ) && ! empty( $city ) ) {
-				$header = sprintf( __( 'Estimated Total (%s)', 'mp' ), $city );
+				$header = sprintf( __( 'Aktueller Gesamtpreis (%s)', 'mp' ), $city );
 			} elseif ( ! empty( $zipcode ) && empty( $city ) ) {
-				$header = sprintf( __( 'Estimated Total (%s, %s)', 'mp' ), $zipcode );
+				$header = sprintf( __( 'Aktueller Gesamtpreis (%s, %s)', 'mp' ), $zipcode );
 			} else {
-				$header = sprintf( __( 'Estimated Total (%s, %s)', 'mp' ), $city, $zipcode );
+				$header = sprintf( __( 'Aktueller Gesamtpreis (%s, %s)', 'mp' ), $zipcode, $city );
 			}
 
 			/**
@@ -689,7 +694,7 @@ class MP_Cart {
 
 		$line .= '
 				<div class="mp_cart_resume_item mp_cart_resume_item-product-total">
-					<span class="mp_cart_resume_item_label">' . __( 'Product Total', 'mp' ) . '</span>
+					<span class="mp_cart_resume_item_label">' . __( 'Produkte gesamt', 'mp' ) . '</span>
 					<span class="mp_cart_resume_item_amount">' . $this->product_original_total( true, true ) . '</span>
 				</div><!-- end mp_cart_resume_item_product-total -->';
 
@@ -709,7 +714,7 @@ class MP_Cart {
 
 			$shipping_line .= '
 				<div class="mp_cart_resume_item mp_cart_resume_item-shipping-total">
-					<span class="mp_cart_resume_item_label">' . ( ( $this->is_editable ) ? __( 'Estimated Shipping', 'mp' ) : __( 'Shipping', 'mp' ) ) . '</span>
+					<span class="mp_cart_resume_item_label">' . ( ( $this->is_editable ) ? __( 'Versandkosten', 'mp' ) : __( 'Versand', 'mp' ) ) . '</span>
 					<span class="mp_cart_resume_item_amount">' . $this->shipping_total( true ) . '</span>
 				</div><!-- end mp_cart_resume_item-shipping-total -->';
 		}
@@ -727,7 +732,7 @@ class MP_Cart {
 		if ( 0 < $this->tax_total( false, true ) ) {
 			$line = '
 					<div class="mp_cart_resume_item mp_cart_resume_item-estimated-tax">
-						<span class="mp_cart_resume_item_label">' . ( ( $this->is_editable ) ? sprintf( __( 'Estimated %s', 'mp' ), mp_get_setting( 'tax->label' ) ) : mp_get_setting( 'tax->label' ) ) . '</span>
+						<span class="mp_cart_resume_item_label">' . ( ( $this->is_editable ) ? sprintf( __( 'Berechnete %s', 'mp' ), mp_get_setting( 'tax->label' ) ) : mp_get_setting( 'tax->label' ) ) . '</span>
 						<span class="mp_cart_resume_item_amount">' . $this->tax_total( true, true ) . '</span>
 					</div><!-- end mp_cart_resume_item-estimated-tax -->';
 
@@ -744,7 +749,7 @@ class MP_Cart {
 
 		$line = '
 				<div class="mp_cart_resume_item mp_cart_resume_item-order-total">
-					<span class="mp_cart_resume_item_label">' . ( ( $this->is_editable ) ? __( 'Estimated Total', 'mp' ) : __( 'Order Total', 'mp' ) ) . '</span>
+					<span class="mp_cart_resume_item_label">' . ( ( $this->is_editable ) ? __( 'Aktueller Gesamtpreis', 'mp' ) : __( 'Gesamtbetrag:', 'mp' ) ) . '</span>
 					<span class="mp_cart_resume_item_amount">' . $this->total( true ) . '</span>
 				</div><!-- end mp_cart_resume_item-order-total -->
 			</div><!-- end mp_cart-resume -->';
@@ -808,9 +813,9 @@ class MP_Cart {
 			$message = '<div class="mp_cart_empty">';
 			$message .= '<p class="mp_cart_empty_message">';
 			if ( $disable_cart == '1' ) {
-				$message .= __( 'The cart is disabled.', 'mp' );
+				$message .= __( 'Der Einkaufskorb ist deaktiviert.', 'mp' );
 			} else {
-				$message .= sprintf( __( 'There are no items in your cart - <a href="%s">go add some</a> !', 'mp' ), mp_store_page_url( 'products', false ) );
+				$message .= sprintf( __( 'In Deinem Warenkorb befinden sich keine Produkte - <a href="%s">füge welche hinzu</a> !', 'mp' ), mp_store_page_url( 'products', false ) );
 			}
 			$message .= '</p><!-- end mp_cart_empty_message -->';
 			$message .= '</div><!-- end mp_cart_empty -->';
@@ -947,13 +952,13 @@ class MP_Cart {
 					<section id="mp-cart-meta" class="mp_cart_meta">' .
 			         $this->cart_meta( false, $editable );
 
-			$button_text     = __( 'Submit Order', 'mp' );
-			$button_alt_text = __( 'Continue &raquo;', 'mp' );
+			$button_text     = __( 'Bestellung abschicken', 'mp' );
+			$button_alt_text = __( 'Weiter &raquo;', 'mp' );
 
 			if ( get_query_var( 'mp_confirm_order_step' ) ) {
-				$tooltip_text = __( '<strong>You are about to submit your order!</strong><br />Please review your order details before continuing. You will be charged immediately upon clicking "Submit Order".', 'mp' );
+				$tooltip_text = __( '<strong>Du bist im Begriff, Deine Bestellung einzureichen!</strong><br/>Bitte überprüfe Deine Bestelldaten, bevor Du fortfährst. Du wist sofort belastet, wenn Du auf "Bestellung abschicken" klickst..', 'mp' );
 			} else {
-				$tooltip_text = __( '<strong>Secure Checkout</strong><br />Shopping is always safe and secure.', 'mp' );
+				$tooltip_text = __( '<strong>Sichere Kasse</strong><br />Einkaufen ist immer sicher und verschlüsselt.', 'mp' );
 			}
 
 			/**
@@ -966,7 +971,7 @@ class MP_Cart {
 			$tooltip_text = apply_filters( 'mp_cart/checkout_button/tooltip_text', $tooltip_text );
 
 			if ( $editable ) {
-				$button_text    = __( 'Checkout', 'mp' );
+				$button_text    = __( 'Zur Kasse', 'mp' );
 				$p_class        = 'mp-secure-checkout-tooltip-text';
 				$button_classes = array(
 					'mp_button',
@@ -1025,7 +1030,7 @@ class MP_Cart {
 
 			// Continue shopping button
 			$html .= '
-					<a href="' . mp_store_page_url( 'products', false ) . '" class="' . implode( ' ', $continue_shopping_button_classes ) . '">' . __( 'Continue Shopping?', 'mp'  ) . '</a>';
+					<a href="' . mp_store_page_url( 'products', false ) . '" class="' . implode( ' ', $continue_shopping_button_classes ) . '">' . __( 'Weiter Einkaufen?', 'mp'  ) . '</a>';
 
 			if ( $editable ) {
 				$html .= '
@@ -1217,11 +1222,11 @@ class MP_Cart {
 		}*/
 
 		// Styles
-		wp_enqueue_style( 'colorbox', mp_plugin_url( 'ui/css/colorbox.css' ), false, MP_VERSION );
+		wp_enqueue_style( 'colorbox', mp_plugin_url( 'ui/css/colorbox.css' ), false, /*MP_VERSION*/ );
 
 		// Scripts
-		wp_register_script( 'jquery-validate', mp_plugin_url( 'ui/js/jquery.validate.js' ), array( 'jquery' ), MP_VERSION, true );
-		wp_register_script( 'jquery-validate-methods', mp_plugin_url( 'ui/js/jquery.validate.methods.js' ), array( 'jquery-validate' ), MP_VERSION, true );
+		wp_register_script( 'jquery-validate', mp_plugin_url( 'ui/js/jquery.validate.min.js' ), array( 'jquery' ), MP_VERSION, true );
+		wp_register_script( 'jquery-validate-methods', mp_plugin_url( 'ui/js/jquery.validate.methods.min.js' ), array( 'jquery-validate' ), MP_VERSION, true );
 		wp_register_script( 'ajaxq', mp_plugin_url( 'ui/js/ajaxq.min.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_register_script( 'colorbox', mp_plugin_url( 'ui/js/jquery.colorbox.js' ), array( 'jquery' ), MP_VERSION, true );
 		wp_enqueue_script( 'mp-cart', mp_plugin_url( 'ui/js/mp-cart.js' ), array(
@@ -1233,8 +1238,8 @@ class MP_Cart {
 		// Localize scripts
 		wp_localize_script( 'mp-cart', 'mp_cart_i18n', array(
 			'ajaxurl'                  => mp_get_ajax_url(),
-			'ajax_loader'              => '<span class="mp_ajax_loader"><img src="' . mp_plugin_url( 'ui/images/ajax-loader.gif' ) . '" alt=""> ' . __( 'Adding...', 'mp' ) . '</span>',
-			'cart_updated_error_limit' => __( 'Cart update notice: this item has a limit per order or you have reached the stock limit.', 'mp' ),
+			'ajax_loader'              => '<span class="mp_ajax_loader"><img src="' . mp_plugin_url( 'ui/images/ajax-loader.gif' ) . '" alt=""> ' . __( 'Hinzufügen...', 'mp' ) . '</span>',
+			'cart_updated_error_limit' => __( 'Warenkorbaktualisierungshinweis: Dieses Produkt hat ein Limit pro Bestellung oder Du hast das Lagerlimit erreicht.', 'mp' ),
 			'is_cart_page'             => mp_is_shop_page( 'cart' )
 		) );
 	}
@@ -1290,7 +1295,7 @@ class MP_Cart {
 		</div><!-- end mp_mini_cart -->';
 
 		if ( ! mp_doing_ajax() ) {
-			$html .= '<span class="mp_ajax_loader" style="display:none"><img src="' . mp_plugin_url( 'ui/images/ajax-loader.gif' ) . '" alt=""> ' . __( 'Adding...', 'mp' ) . '</span>';
+			$html .= '<span class="mp_ajax_loader" style="display:none"><img src="' . mp_plugin_url( 'ui/images/ajax-loader.gif' ) . '" alt=""> ' . __( 'Hinzufügen...', 'mp' ) . '</span>';
 		}
 
 		if ( $echo ) {
@@ -1345,17 +1350,17 @@ class MP_Cart {
 
 			if ( $context == "widget" ) {
 				$html .= '
-					<a class="mp_button mp_button-remove mp_button-widget-cart mp_button-widget-cart-empty" href="#">' . __( 'Empty Cart', 'mp' ) . '</a>
-					<a class="mp_button mp_button-checkout mp_button-widget-cart" href="' . mp_store_page_url( 'cart', false ) . '">' . __( 'Checkout', 'mp' ) . '</a>';
+					<a class="mp_button mp_button-remove mp_button-widget-cart mp_button-widget-cart-empty" href="#">' . __( 'Korb leeren', 'mp' ) . '</a>
+					<a class="mp_button mp_button-checkout mp_button-widget-cart" href="' . mp_store_page_url( 'cart', false ) . '">' . __( 'Zur Kasse', 'mp' ) . '</a>';
 			} else {
 				$html .= '
-					<a class="mp_button mp_button-mini-cart" href="' . $this->cart_url() . '">' . __( 'View Cart', 'mp' ) . '</a>';
+					<a class="mp_button mp_button-mini-cart" href="' . $this->cart_url() . '">' . __( 'Zur Kasse', 'mp' ) . '</a>';
 			}
 		} else {
 			$html .= '
 				<div class="mp_mini_cart_items-empty">
-					<p><strong>' . __( 'Your shopping cart is empty.', 'mp' ) . '</strong></p>
-					<p>' . __( 'Items/Products added to Cart will show here.', 'mp' ) . '</p>
+					<p><strong>' . __( 'Dein Warenkorb ist leer.', 'mp' ) . '</strong></p>
+					<p>' . __( 'Produkte welche dem Warenkorb hinzugefügt wurden, werden hier angezeigt', 'mp' ) . '</p>
 				</div><!-- end mp_mini_cart_items-empty -->';
 		}
 
@@ -1401,13 +1406,13 @@ class MP_Cart {
 		// Display price
 		if ( $show_product_qty ) {
 			$html .= '
-						<span class="mp_mini_cart_item-attribute mp_mini_cart_item_attribute-qty"><strong>' . __( 'Quantity', 'mp' ) . ':</strong> <em>' . $qty . '</em></span>';
+						<span class="mp_mini_cart_item-attribute mp_mini_cart_item_attribute-qty"><strong>' . __( 'Menge', 'mp' ) . ':</strong> <em>' . $qty . '</em></span>';
 		}
 
 		// Display price
 		if ( $show_product_price ) {
 			$html .= '
-						<span class="mp_mini_cart_item-attribute mp_mini_cart_item_attribute-price"><strong>' . __( 'Price', 'mp' ) . ':</strong> <em>' . $product->display_price( false ) . '</em></span>';
+						<span class="mp_mini_cart_item-attribute mp_mini_cart_item_attribute-price"><strong>' . __( 'Preis', 'mp' ) . ':</strong> <em>' . $product->display_price( false ) . '</em></span>';
 		}
 
 		// Display attributes
@@ -1444,7 +1449,7 @@ class MP_Cart {
 	 * @since 3.0
 	 * @access public
 	 *
-	 * @param $item_id The item ID
+	 * @param int $item_id The item ID.
 	 *
 	 * @return int How many of the item are in the cart
 	 */
@@ -1555,12 +1560,12 @@ class MP_Cart {
 
 		if ( $format ) {
 			if ( $numitems == 0 ) {
-				$snippet = '<span class="mp_mini_cart_count">0</span>' . '<span class="mp_mini_cart_count-title">' . __( 'items', 'mp' ) . '</span>';
+				$snippet = '<span class="mp_mini_cart_count">0</span>' . '<span class="mp_mini_cart_count-title">' . __( 'Produkte', 'mp' ) . '</span>';
 			} else {
 				if ( $numitems == 1 ) {
-					$snippet = '<span class="mp_mini_cart_count">1</span>' . '<span class="mp_mini_cart_count-title">' . __( 'item', 'mp' ) . '</span>';
+					$snippet = '<span class="mp_mini_cart_count">1</span>' . '<span class="mp_mini_cart_count-title">' . __( 'Produkt', 'mp' ) . '</span>';
 				} else {
-					$snippet = '<span class="mp_mini_cart_count">' . $numitems . '</span>' . '<span class="mp_mini_cart_count-title">' . __( 'items', 'mp' ) . '</span>';
+					$snippet = '<span class="mp_mini_cart_count">' . $numitems . '</span>' . '<span class="mp_mini_cart_count-title">' . __( 'Produkte', 'mp' ) . '</span>';
 				}
 			}
 		}
@@ -1728,7 +1733,7 @@ class MP_Cart {
 				}
 
 				/**
-				 * Filter the product original total, also, this variable should be internal
+				 * Filter the product original 'total', also, this variable should be internal
 				 *
 				 * @since 3.0
 				 *
@@ -1844,13 +1849,13 @@ class MP_Cart {
 					break;
 
 				case 'title' :
-					$column_html = '<small  class="mp_cart_deleted_item_title">' . sprintf( '<a href="%s">%s</a>', $product->url( false ), $product->title( false ) ) . ' ' .  __( 'was removed from Shopping Cart', 'mp' ) . '</small >';
+					$column_html = '<small  class="mp_cart_deleted_item_title">' . sprintf( '<a href="%s">%s</a>', $product->url( false ), $product->title( false ) ) . ' ' .  __( 'wurde aus dem Warenkorb entfernt', 'mp' ) . '</small >';
 
 					break;
 				case 'qty' :
 					if ( $this->is_editable ) {
 						$column_html .= '
-						<a class="mp_cart_item_remove_item" href="javascript:mp_cart.undoRemoveItem(' . $id . ')">' . __( 'Add again', 'mp' ) . '</a>';
+						<a class="mp_cart_item_remove_item" href="javascript:mp_cart.undoRemoveItem(' . $id . ')">' . __( 'Wieder hinzufügen', 'mp' ) . '</a>';
 					} else {
 						$column_html = $product->qty;
 					}
@@ -1946,15 +1951,15 @@ class MP_Cart {
 	public function shipping_tax_total( $format = false ) {
 		$shipping_tax   = 0;
 		$shipping_price = (float) $this->shipping_total();
-
-		/* if ( mp_get_setting( 'tax->tax_shipping' ) && $shipping_price ) {
+//testweise aktiviert, check mal was tut
+		if ( mp_get_setting( 'tax->tax_shipping' ) && $shipping_price ) {
 		  if ( mp_get_setting( 'tax->tax_inclusive' ) ) {
 		  $shipping_tax = ($shipping_price - mp_before_tax_price( $shipping_price ));
 		  } else {
 		  $tax_rate		 = mp_tax_rate();
 		  $shipping_tax	 = ($shipping_price * $tax_rate);
+		  }//hier ausmarkieren 
 		  }
-		  } */
 		$tax_rate     = (float) mp_tax_rate();
 		$shipping_tax = ( $shipping_price * $tax_rate );
 		/**
@@ -2002,9 +2007,9 @@ class MP_Cart {
 			$what     = ( mp_get_user_address( 'shipping' ) != mp_get_user_address( 'billing' ) ) ? 'shipping' : 'billing';
 			$address1 = mp_get_user_address_part( 'address1', $what );
 			$address2 = mp_get_user_address_part( 'address2', $what );
-			$city     = mp_get_user_address_part( 'city', $what );
-			$state    = mp_get_user_address_part( 'state', $what );
 			$zip      = mp_get_user_address_part( 'zip', $what );
+			$city     = mp_get_user_address_part( 'city', $what );
+			$state    = mp_get_user_address_part( 'state', $what );			
 			$country  = mp_get_user_address_part( 'country', $what );
 
 			//check required fields
@@ -2046,10 +2051,10 @@ class MP_Cart {
 					$price = 0;
 				} else if ( mp_get_setting( 'shipping->method' ) == 'calculated' && $selected_option ) {
 					//shipping plugins tie into this to calculate their shipping cost
-					$price = (float) apply_filters( 'mp_calculate_shipping_' . $selected_option, 0, $total, $cart, $address1, $address2, $city, $state, $zip, $country, $selected_option );
+					$price = (float) apply_filters( 'mp_calculate_shipping_' . $selected_option, 0, $total, $cart, $address1, $address2, $zip, $city, $state, $country, $selected_option );
 				} else {
 					//shipping plugins tie into this to calculate their shipping cost
-					$price = (float) apply_filters( 'mp_calculate_shipping_' . mp_get_setting( 'shipping->method' ), 0, $total, $cart, $address1, $address2, $city, $state, $zip, $country, $selected_option );
+					$price = (float) apply_filters( 'mp_calculate_shipping_' . mp_get_setting( 'shipping->method' ), 0, $total, $cart, $address1, $address2, $zip, $city, $state, $country, $selected_option );
 				}
 
 				//calculate extra shipping
@@ -2435,11 +2440,11 @@ class MP_Cart {
 
 		$message = '';
 		if ( count( $this->_items_unavailable['deleted'] ) != 0 ) {
-			$message .= __( 'Some items in your cart are no longer available. We have removed these items from your cart automatically.', 'mp' ) . '\n\n';
+			$message .= __( 'Einige Produkte in Deinem Warenkorb sind nicht mehr verfügbar. Wir haben dieses Produkt automatisch aus Deinem Warenkorb entfernt.', 'mp' ) . '\n\n';
 		}
 
 		if ( count( $this->_items_unavailable['stock_issue'] ) != 0 ) {
-			$message .= __( 'Some items in your cart have fallen below the quantity you currently have in your cart. We have adjusted the quantity in your cart automatically.', 'mp' );
+			$message .= __( 'Einige Produkte in Deinem Warenkorb haben die Menge, die Sie derzeit in Ihrem Warenkorb haben, unterschritten. Wir haben die Menge in Deinem Warenkorb automatisch angepasst.', 'mp' );
 		}
 		?>
 		<script type="text/javascript">

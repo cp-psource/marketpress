@@ -15,13 +15,13 @@ class MP_Shipping_Table_Quantity extends MP_Shipping_API {
   var $public_name = '';
 
   //set to true if you need to use the shipping_metabox() method to add per-product shipping options
-  var $use_metabox = false;
-	
+  var $use_metabox = true;
+
 	//set to true if you want to add per-product extra shipping cost field
 	var $use_extra = true;
-	
+
 	//set to true if you want to add per-product weight shipping field
-	var $use_weight = false;
+	var $use_weight = true;
 
   /**
    * Runs when your class is instantiated. Use to setup your plugin instead of __construct()
@@ -43,7 +43,7 @@ class MP_Shipping_Table_Quantity extends MP_Shipping_API {
     <script type="text/javascript">
 			jQuery(document).ready(function ($) {
 				$("#mp-table-quantity-rows").on('change', function() {
-					$("#mp-shipping-form").submit();
+					$("#mp-shipping-form").trigger("submit");
 				});
 			});
     </script>
@@ -133,7 +133,7 @@ class MP_Shipping_Table_Quantity extends MP_Shipping_API {
 	function calculate_shipping($price, $total, $cart, $address1, $address2, $city, $state, $zip, $country, $selected_option) {
 		global $mp;
     $settings = get_option('mp_settings');
-		
+
     $total_order_quantity = 0;
     foreach ($cart as $product_id => $variations) {
 			foreach ($variations as $variation => $data) {

@@ -76,7 +76,7 @@
 						}
 					}
 				} );
-			} ).change();
+			} ).trigger("change");
 		};
 		
 		var initCustomerInfoLightbox = function() {
@@ -112,7 +112,7 @@
 					$('.mp-order-custom-tracking-link').addClass('mp-hide');						
 				}	
 
-			}).change();
+			}).trigger("change");
 		};
 
 		var removeCustomShippingMethod = function () {
@@ -133,7 +133,7 @@
 					success: function (data) {
 						if (data.status == 'success') {
 							$('select[name="mp[tracking_info][shipping_method]"] option[value="' + selected + '"]').remove();
-							$('select[name="mp[tracking_info][shipping_method]"]').change();
+							$('select[name="mp[tracking_info][shipping_method]"]').trigger("change");
 						} else {
 							alert(data.err);
 						}

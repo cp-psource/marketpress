@@ -448,27 +448,20 @@
                     });
                 };
                 setCss();
-                if (obj.has('img').length) {
-                    obj.find('img').each(function() {
-                        this.addEventListener('load', function() {
-                            setTimeout(function() {
-                                setCss();
-                                if (!interval) {
-                                    $this.auto();
-                                }
-                            }, 100);
-                        });
-                
-                        // Fallback für Browser, die das load-Event auf img nicht richtig unterstützen
-                        if (this.complete) {
-                            this.dispatchEvent(new Event('load'));
-                        }
+                if (obj.has('img')) {
+                    obj.find('img').on( 'load', function () {
+                        setTimeout(function () {
+                            setCss();
+                            if (!interval) {
+                                $this.auto();
+                            }
+                        }, 100);
                     });
-                } else {
+                }else{
                     if (!interval) {
                         $this.auto();
                     }
-                }                
+                }
             },
             active: function (ob, t) {
                 if (this.doCss() && settings.mode === 'fade') {

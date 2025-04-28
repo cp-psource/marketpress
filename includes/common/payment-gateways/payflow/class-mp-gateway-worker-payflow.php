@@ -1,5 +1,5 @@
 <?php
-	
+
 if ( ! class_exists( 'MP_Gateway_Worker_Payflow' ) ) :
 class MP_Gateway_Worker_Payflow
 {
@@ -40,7 +40,7 @@ class MP_Gateway_Worker_Payflow
 
 	function process( $retries = 1 ) {
 		$post_string = '';
-		
+
 		foreach ( $this->params as $key => $value ) {
 			$value = utf8_encode ( trim( $value ) );
 			$post_string .= $key . '[' . strlen( $value ) . ']=' . $value . '&';
@@ -48,23 +48,23 @@ class MP_Gateway_Worker_Payflow
 
 		$post_string = rtrim( $post_string, '&' );
 		$count = 0;
-		
+
 		while ( $count < $retries ) {
 			$response = $this->sendTransactionToGateway( $this->url, $post_string );
-			
+
 			if ( ! is_wp_error( $response ) ) {
 				break;
 			}
-			
+
 			$count ++;
 		}
-		
+
 		$response_array = array();
 		parse_str( $response, $response_array );
-		
+
 		$this->results = $response_array;
 		$this->results['METHOD'] = 'Sale';
-		
+
 		$result_code = mp_arr_get_value( 'RESULT', $response_array );
 		switch ( $result_code ) {
 			// Approved
@@ -74,7 +74,7 @@ class MP_Gateway_Worker_Payflow
 				$this->error = false;
 				$this->method = $this->getMethod();
 			break;
-			
+
 			// Held for review
 			case 126 :
 			case 127 :
@@ -83,7 +83,7 @@ class MP_Gateway_Worker_Payflow
 				$this->status = mp_arr_get_value( 'PREFPSMSG', $response_array );
 				$this->held_for_review = true;
 			break;
-			
+
 			// Declined
 			default :
 				$this->approved = false;
@@ -109,21 +109,21 @@ class MP_Gateway_Worker_Payflow
 		if ( '' != mp_arr_get_value( 'user', $server, '' ) && '' != mp_arr_get_value( 'pass', $server, '' ) ) {
 			$headers[] = 'Authorization: Basic ' . base64_encode( $server['user'] . ':' . $server['pass'] );
 		}
-		
+
 		$url = $server['scheme'] . '://' . $server['host'] . $server['path'] . (( isset( $server['query'] ) ) ? '?' . $server['query'] : '');
 		$result = wp_remote_post( $url, array(
-			'user-agent' => 'MarketPress/' . MP_VERSION . ': http://premium.wpmudev.org/project/e-commerce | PayPal Payflow Plugin/' . MP_VERSION,
+			'user-agent' => 'MarketPress/' . MP_VERSION . ': http://premium.psource.org/project/e-commerce | PayPal Payflow Plugin/' . MP_VERSION,
 			'sslverify' => false,
 			'body' => $parameters,
 			'timeout' => mp_get_api_timeout( 'payflow' ),
 		) );
-		
+
 		if ( ! is_wp_error( $result ) ) {
 			if ( $result['response']['code'] != 200 ) {
 				return new WP_Error( '', __( 'There was an error connecting to PayPal. Please try again.', 'mp' ) );
 			}
 		}
-		
+
 		return wp_remote_retrieve_body( $result );
 	}
 
@@ -141,7 +141,7 @@ class MP_Gateway_Worker_Payflow
 		foreach( $this->params as $key => $value ) {
 			$this->fields = http_build_query( $this->params );
 		}
-		
+
 		foreach ( $this->line_items as $i => $line_item ) {
 			$this->fields .= '&x_line_item=' . $line_item;
 		}

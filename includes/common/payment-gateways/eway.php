@@ -9,14 +9,6 @@
  */
 
 class MP_Gateway_eWay_Shared extends MP_Gateway_API {
-
-	public $returnURL;
-	public $cancelURL;
-	public $CustomerID;
-	public $UserName;
-	public $UserAPIKey;
-	public $UserPassword;
-
 	/**
 	 * Build of the gateway plugin
 	 *
@@ -25,7 +17,7 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 	 * @var int
 	 */
 	var $build = 2;
-	
+
   /**
    * Private gateway slug. Lowercase alpha (a-z) and dashes (-) only please!
    *
@@ -90,6 +82,24 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
   var $ipn_url;
 
 	/**
+   * Contains the return URL for the payment gateway.
+   *
+   * @since 3.0
+   * @access public
+   * @var string
+   */
+  var $returnURL;
+
+	/**
+   * Contains the cancel URL for the payment gateway.
+   *
+   * @since 3.0
+   * @access public
+   * @var string
+   */
+  var $cancelURL;
+
+	/**
    * Whether if this is the only enabled gateway it can skip the payment_form step.
    *
    * @since 3.0
@@ -97,7 +107,7 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
    * @var string
    */
   var $skip_form = true;
-  
+
   /**
    * The API base url
    *
@@ -106,9 +116,9 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
    * @var string
    */
   var $api_url = '';
-  
+
   /**
-   * The gateway's currencies 
+   * The gateway's currencies
    *
    * @since 3.0
    * @access public
@@ -125,7 +135,7 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
     'SGD' => 'SGD - Singapore Dollar',
     'USD' => 'USD - U.S. Dollar'
   );
-  
+
   /**
    * The gateway's locales
    *
@@ -180,10 +190,10 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 	 */
 	function process_payment( $cart, $billing_info, $shipping_info ) {
     $timestamp = time();
-    
+
     $order = new MP_Order();
     $order_id = $order->get_id();
-    
+
     $params = array();
 		$params['CustomerID'] = $this->CustomerID;
   	$params['UserName'] = $this->UserName;
@@ -195,57 +205,57 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 		$params['CancelURL'] = $this->cancelURL;
 		$params['ModifiableCustomerDetails'] = 'false';
 		$params['InvoiceDescription'] = sprintf( __( '%s Store Purchase - Order ID: %s', 'mp' ), get_bloginfo( 'name' ), $order_id ); //cart name
-		
+
 		if ( $company_name = $this->get_setting('CompanyName') ) {
 			$params['CompanyName'] = $company_name;
 		}
-		
+
 		if ( $page_title = $this->get_setting('PageTitle') ) {
 			$params['PageTitle'] = $page_title;
 		}
-		
+
 		if ( $page_desc = $this->get_setting('PageDescription') ) {
 			$params['PageDescription'] = $page_desc;
 		}
-		
+
 		if ( $page_footer = $this->get_setting('PageFooter') ) {
 			$params['PageFooter'] = $page_footer;
 		}
-		
+
 		if ( $company_logo = $this->get_setting('CompanyLogo') ) {
 			$params['CompanyLogo'] = $company_logo;
 		}
-		
+
 		if ( $page_banner = $this->get_setting('PageBanner') ) {
 			$params['PageBanner'] = $page_banner;
 		}
-			
+
 		$params['CustomerEmail'] = mp_arr_get_value('email', $shipping_info);
-		
+
 		//add shipping info if set
-		if ( ! $cart->is_download_only() && mp_get_setting( 'shipping->method' ) != 'none' && mp_arr_get_value( 'first_name', $shipping_info ) ) {	
+		if ( ! $cart->is_download_only() && mp_get_setting( 'shipping->method' ) != 'none' && mp_arr_get_value( 'first_name', $shipping_info ) ) {
 			$params['CustomerFirstName'] = mp_arr_get_value( 'first_name', $shipping_info );
 			$params['CustomerLastName'] = mp_arr_get_value( 'last_name', $shipping_info );
 			$params['CustomerAddress'] = mp_arr_get_value('address1', $shipping_info);
-			
+
 			if ( $address2 = mp_arr_get_value( 'address2', $shipping_info ) ) {
 				$params['CustomerAddress'] = $params['CustomerAddress'] . ' ' . $address2;
 			}
-			
+
 			$params['CustomerPhone'] = mp_arr_get_value( 'phone', $shipping_info );
 			$params['CustomerPostCode'] = mp_arr_get_value( 'zip', $shipping_info );
 			$params['CustomerCity'] = mp_arr_get_value( 'city', $shipping_info );
 			$params['CustomerState'] = mp_arr_get_value( 'state', $shipping_info );
 			$params['CustomerCountry'] = mp_arr_get_value( 'country', $shipping_info );
 		}
-    
+
     $total = $cart->total( false );
 		$product_count = $cart->item_count( false );
-		
+
     $params['Amount'] = number_format( $total, 2, '.', '' );
-    
+
     $result = $this->api_call( $this->api_url . '/Request', $params );
-		
+
 		if ( false !== $result ) {
 			libxml_use_internal_errors(true);
 			$xml = new SimpleXMLElement( $result) ;
@@ -274,7 +284,7 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
   public function payment_form( $cart, $shipping_info ) {
     return __( 'You will be redirected to https://www.eway.com.au to finalize your payment.', 'mp' );
   }
-    
+
   /**
    * Process order confirmation before page loads (e.g. verify callback data, etc)
    *
@@ -288,7 +298,7 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 			$params['CustomerID'] = $this->CustomerID;
 			$params['UserName'] = $this->UserName;
 			$params['AccessPaymentCode'] = $payment_code;
-			
+
 			$result = $this->api_call( $this->api_url . '/Result', $params );
 			if ( $result ) {
 				libxml_use_internal_errors( true );
@@ -309,13 +319,13 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 					$payment_info['total'] = (string) $xml->ReturnAmount;
 					$payment_info['currency'] = $this->get_setting( 'Currency' );
 
-					$order = new MP_Order( $xml->MerchantInvoice );					
+					$order = new MP_Order( $xml->MerchantInvoice );
 					$order->save( array(
 						'cart' => mp_cart(),
 						'payment_info' => $payment_info,
 						'paid' => true,
 					) );
-					
+
 					wp_redirect( $order->tracking_url( false ) );
 					exit;
 				} else {
@@ -338,12 +348,12 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 	  	mp_push_to_array($settings, 'gateways->eway->api_credentials->UserName', $username);
 	  	unset($settings['gateways']['eway']['UserName']);
   	}
-  	
+
   	if ( $cust_id = $this->get_setting('CustomerID') ) {
 	  	mp_push_to_array($settings, 'gateways->eway->api_credentials->CustomerID', $cust_id);
 	  	unset($settings['gateways']['eway']['CustomerID']);
   	}
-  	
+
   	return $settings;
   }
 
@@ -354,9 +364,9 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
    * @access public
    */
   public function init_settings_metabox() {
-  	$metabox = new WPMUDEV_Metabox(array(
+  	$metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('The Hosted Page is a webpage hosted on eWAY\'s side eliminating the need for merchants to capture, transmit or store credit card numbers. At the checkout time the merchant automatically redirects the customer to the Hosted Page where they would enter their details and have the transaction processed. Upon completion of the transaction the customer is redirected back to the MarketPress checkout confirmation page.', 'mp'),
@@ -388,8 +398,8 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 			'name' => $this->get_field_name('api_credentials'),
 			'label' => array('text' => __('Live API Credentials', 'mp')),
 		));
-		
-		if ( $creds instanceof WPMUDEV_Field ) {
+
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field('text', array(
 				'name' => 'UserName',
 				'label' => array('text' => __('Username', 'mp')),
@@ -405,7 +415,7 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 				),
 			));
 		}
-		
+
 		$metabox->add_field('advanced_select', array(
 			'name' => $this->get_field_name('Language'),
 			'label' => array('text' => __('Hosted Payment Page Language', 'mp')),
@@ -445,13 +455,13 @@ class MP_Gateway_eWay_Shared extends MP_Gateway_API {
 			'desc' => __('The url of the image can be hosted on your website and pass the secure https:// path of the image to be displayed at the top of the website. This is the second image block on the webpage and is restricted to 960px X 65px. A default secure image is used if none is supplied.', 'mp'),
 		));
 	}
-		
+
 	function api_call( $url, $fields ) {
     $url .= '?' . http_build_query( $fields );
-		
+
 	  //build args
 	  $args = array();
-	  $args['user-agent'] = 'MarketPress/' . MP_VERSION . ': http://premium.wpmudev.org/project/e-commerce | eWay Shared Payments Gateway/' . MP_VERSION;
+	  $args['user-agent'] = 'MarketPress/' . MP_VERSION . ': http://premium.psource.org/project/e-commerce | eWay Shared Payments Gateway/' . MP_VERSION;
 	  $args['sslverify'] = false;
 	  $args['timeout'] = mp_get_api_timeout( $this->plugin_name );
 

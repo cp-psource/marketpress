@@ -21,7 +21,7 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 	var $skip_form = false;
 	//credit card vars
 	var $API_Username, $API_Password, $SandboxFlag, $returnURL, $cancelURL, $API_Endpoint, $version, $currencyCode, $locale;
-	
+
 	/**
 	 * Refers to the gateways currencies
 	 *
@@ -53,7 +53,7 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 		$this->method_button_img_url = mp_plugin_url('images/cc-button.png');
 
 		$this->version = "63.0"; //api version
-		
+
 		//set credit card vars
 		$this->API_Username = $this->get_setting('api_credentials->api_user');
 		$this->currencyCode = $this->get_setting('currency', 'USD');
@@ -83,15 +83,15 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 			mp_push_to_array($settings, 'gateways->authorizenet-aim->api_credentials->api_key', $api_key);
 			unset($settings['gateways']['authorizenet-aim']['api_user'], $settings['gateways']['authorizenet-aim']['api_key']);
 		}
-		
+
 		return $settings;
 	}
-	
+
 	/**
 	 * Return fields you need to add to the top of the payment screen, like your credit card info fields
 	 *
 	 * @since 3.0
-	 * @access public		 
+	 * @access public
 	 * @param array $cart. Contains the cart contents for the current blog, global cart if mp()->global_cart is true
 	 * @param array $shipping_info. Contains shipping info and email in case you need it
 	 */
@@ -112,14 +112,14 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 		if ( ! class_exists( 'MP_Gateway_Worker_AuthorizeNet_AIM' ) ) {
 			require_once mp_plugin_dir( 'includes/common/payment-gateways/authorizenet-aim/class-mp-gateway-worker-authorizenet-aim.php' );
 		}
-		
+
 		$timestamp = time();
 		$payment = new MP_Gateway_Worker_AuthorizeNet_AIM( $this->API_Endpoint, $this->get_setting('delim_data'),	$this->get_setting('delim_char'), $this->get_setting('encap_char'), $this->get_setting('api_credentials->api_user'), $this->get_setting('api_credentials->api_key'), ($this->get_setting('mode') == 'sandbox') );
 		$items = $cart->get_items_as_objects();
 		$order = new MP_Order();
-		
+
 		$payment->transaction( mp_get_post_value( 'mp_cc_num' ) );
-		
+
 		foreach ( $items as $item ) {
 			$item_id = ( '' == $item->get_meta( 'sku', '' ) ) ? $item->ID : $item->get_meta( 'sku' );
 			$price = $item->get_price( 'lowest' );
@@ -137,7 +137,7 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 		$payment->setParameter("x_invoice_num", $order->get_id());
 		$payment->setParameter("x_test_request", false);	// this should NEVER be true, even in sandbox mode
 		$payment->setParameter("x_duplicate_window", 30);
-		
+
 		// E-mail
 		$payment->setParameter("x_header_email_receipt",	$this->get_setting('header_email_receipt'));
 		$payment->setParameter("x_footer_email_receipt", $this->get_setting('footer_email_receipt'));
@@ -174,7 +174,7 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 			$payment->setParameter("x_ship_to_country", mp_arr_get_value( 'country', $shipping_info ));
 			$payment->setParameter("x_ship_to_zip", mp_arr_get_value( 'zip', $shipping_info ));
 		}
-		
+
 		// Customer IP
 		$payment->setParameter("x_customer_ip", $_SERVER['REMOTE_ADDR']);
 
@@ -197,7 +197,7 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 				 'transaction_id' => $payment->getTransactionID(),
 				 ),
 			) );
-			
+
 			wp_redirect( $order->tracking_url( false ) );
 			exit;
 		} else {
@@ -213,9 +213,9 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 	 * @access public
 	 */
 	function init_settings_metabox() {
-		 $metabox = new WPMUDEV_Metabox(array(
+		 $metabox = new PSOURCE_Metabox(array(
 			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+			'page_slugs' => array('shop-einstellungen-payments', 'shop-einstellungen_page_shop-einstellungen-payments'),
 			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
 			'option_name' => 'mp_settings',
 			'desc' => __('Authorize.net AIM is a customizable payment processing solution that gives the merchant control over all the steps in processing a transaction. An SSL certificate is required to use this gateway. USD is the only currency supported by this gateway.', 'mp'),
@@ -239,8 +239,8 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 			'label' => array('text' => __('API Credentials', 'mp')),
 			'desc' => __('You must login to Authorize.net merchant dashboard to obtain the API login ID and API transaction key. <a target="_blank" href="https://support.authorize.net/authkb/index?page=content&id=A576">Instructions &raquo;</a>', 'mp'),
 		));
-		
-		if ( $creds instanceof WPMUDEV_Field ) {
+
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field('text', array(
 				'name' => 'api_user',
 				'label' => array('text' => __('Login ID', 'mp')),
@@ -256,7 +256,7 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 				),
 			));
 		}
-		
+
 		$metabox->add_field('advanced_select', array(
 			'name' => 'gateways[' . $this->plugin_name . '][currency]',
 			'label' => array('text' => __('Currency', 'mp')),

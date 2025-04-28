@@ -172,11 +172,11 @@ class MP_Product {
 								<?php $product->attribute_fields(); ?>
 								<?php if ( mp_get_setting( 'product_button_type' ) == 'addcart' ) : ?>
 									<button class="mp_button mp_button-addcart" type="submit"
-											name="addcart"><?php _e( 'Add To Cart', 'mp' ); ?></button>
+											name="addcart"><?php _e( 'In den Warenkorb', 'mp' ); ?></button>
 								<?php elseif ( mp_get_setting( 'product_button_type' ) == 'buynow' ) :
 									?>
 									<button class="mp_button mp_button-buynow" type="submit"
-											name="buynow"><?php _e( 'Buy Now', 'mp' ); ?></button>
+											name="buynow"><?php _e( 'In den Warenkorb', 'mp' ); ?></button>
 								<?php endif; ?>
 							</form>
 							<!-- end mp-product-options-callout-form -->
@@ -281,7 +281,7 @@ class MP_Product {
 								 * @param string The default message.
 								 * @param MP_Product The product that is out of stock.
 								 */
-								$json['out_of_stock'] = apply_filters( 'mp_product/out_of_stock_alert', sprintf( __( 'We\'re sorry, we only have %d of this item in stock right now.', 'mp' ), $json['qty_in_stock'] ), $product );
+								$json['out_of_stock'] = apply_filters( 'mp_product/out_of_stock_alert', sprintf( __( 'Es tut uns leid, wir haben momentan nur %d dieses Produktes auf Lager.', 'mp' ), $json['qty_in_stock'] ), $product );
 							}
 						}
 					}
@@ -289,7 +289,7 @@ class MP_Product {
 			}
 		} else {
 			$json['status']       = 'out of stock';
-			$json['out_of_stock'] = apply_filters( 'mp_product/out_of_stock_alert', sprintf( __( 'We\'re sorry, we only have %d of this item in stock right now.', 'mp' ), $json['qty_in_stock'] ), $product );
+			$json['out_of_stock'] = apply_filters( 'mp_product/out_of_stock_alert', sprintf( __( 'Es tut uns leid, wir haben momentan nur %d dieses Produktes auf Lager.', 'mp' ), $json['qty_in_stock'] ), $product );
 		}
 
 		// Format attribute terms for display
@@ -523,7 +523,7 @@ class MP_Product {
 			 *
 			 * @param string The default option label.
 			 */
-			$default_option_label = apply_filters( 'mp_product/attribute_fields/default_option_label', sprintf( __( 'Choose a %s', 'mp' ), $att['name'] ) );
+			$default_option_label = apply_filters( 'mp_product/attribute_fields/default_option_label', sprintf( __( 'Wähle %s', 'mp' ), $att['name'] ) );
 
 			$html .= '
 				<div class="mp_product_options_att">
@@ -556,7 +556,7 @@ class MP_Product {
 
 		$html .= '
 				<div class="mp_product_options_att"' . ( ( mp_get_setting( 'show_quantity' ) ) ? '' : ' style="display:none"' ) . '>
-					<strong class="mp_product_options_att_label">' . __( 'Quantity', 'mp' ) . '</strong>
+					<strong class="mp_product_options_att_label">' . __( 'Menge', 'mp' ) . '</strong>
 					<div class="mp_form_field mp_product_options_att_field">
 						'. $this->attribute_input_fields( true, false, $selected_variation ) .'
 					</div><!-- end mp_product_options_att_field -->
@@ -599,7 +599,7 @@ class MP_Product {
 		$disabled 			= '';
 		$error				= '';
 
-		$max_max = $this->max_product_quantity( $product_id, false, false );			
+		$max_max = $this->max_product_quantity( $product_id, false, false );
 		extract($this->max_product_quantity( $product_id, false, true ), EXTR_PREFIX_ALL, "max");
 
 		$max = 'max="' . esc_attr( $max_qty ) . '" ';
@@ -612,7 +612,7 @@ class MP_Product {
 		 * @param string The default message.
 		 * @param MP_Product The product that is out of stock.
 		 */
-		$out_of_stock_msg = apply_filters( 'mp_product/out_of_stock_alert', sprintf( __( 'We\'re sorry, we only have %d of this item in stock right now.', 'mp' ), $max_max ), $product );
+		$out_of_stock_msg = apply_filters( 'mp_product/out_of_stock_alert', sprintf( __( 'Es tut uns leid, wir haben momentan nur %d dieses Produktes auf Lager.', 'mp' ), $max_max ), $product );
 
 		/**
 		 * Filter the order limit alert message
@@ -622,7 +622,7 @@ class MP_Product {
 		 * @param string The default message.
 		 * @param MP_Product The product that is out of order limit.
 		 */
-		$order_limit_msg = apply_filters( 'mp_product/order_limit_alert', sprintf ( __( 'This product has an order limit of %d.', 'mp' ), $max_max ), $product );
+		$order_limit_msg = apply_filters( 'mp_product/order_limit_alert', sprintf ( __( 'Dieses Produkt hat ein Limit von %d pro Bestellung.', 'mp' ), $max_max ), $product );
 
 		$max_msg = ( $max_reason == 'inventory' ) ? $out_of_stock_msg : $order_limit_msg;
 
@@ -632,10 +632,10 @@ class MP_Product {
 
 		if( $max_max !== $max_qty ) {
 			if( $max_qty > 0 ){
-				$max_msg_2 = " " . __('You can only add {0} to cart.', 'mp');
+				$max_msg_2 = " " . __('Du kannst nur {0} Produkte zum Warenkorb hinzufügen.', 'mp');
 			}
 			else {
-				$max_msg_2 = " " . __('You can not add more items to cart.', 'mp');
+				$max_msg_2 = " " . __('Du kannst dem Warenkorb keine weiteren Produkte hinzufügen.', 'mp');
 			}
 		}
 
@@ -654,7 +654,7 @@ class MP_Product {
 		if( (! mp_doing_ajax() && ! $product->in_stock( 1, true ) ) || $max_qty == 0 ){
 			$error = '<label class="mp_form_label mp_product_options_att_input_label" for="' . $input_id . '"><span id="mp_product_options_att_quantity-error" class="mp_form_input_error">' . $max_msg . $max_msg_2 . '</span></label>';
 		}
-		
+
 
 		return $error . '<input id="' . $input_id . '" class="mp_form_input mp_form_input-qty required digits" min="' . esc_attr( $min_value ) . '" ' . $max . ' type="number" name="product_quantity" value="' . $product_quantity . '" ' . $disabled . '>';
 	}
@@ -968,15 +968,15 @@ class MP_Product {
 	 * @param array $selected_atts Optional, the attributes that should be selected by default.
 	 */
 
-	public function buy_button( $echo = true, $context = 'list', $selected_atts = array(), $no_single = false, $mp_buy_button = false ) {
+	 public function buy_button( $echo = true, $context = 'list', $selected_atts = array(), $no_single = false, $mp_buy_button = false ) {
 		$button = '';
 		if ( $this->get_meta( 'product_type' ) == 'external' && ( $url = $this->get_meta( 'external_url' ) ) ) {
-			$button = '<a class="mp_link-buynow" href="' . esc_url( $url ) . '">' . __( 'Buy Now &raquo;', 'mp' ) . '</a>';
+			$button = '<a class="mp_link-buynow" href="' . esc_url( $url ) . '">' . __( 'Jetzt kaufen &raquo;', 'mp' ) . '</a>';
 		} elseif ( ! mp_get_setting( 'disable_cart' ) ) {
 			$button = '<form id="mp-buy-product-' . $this->ID . '-form" class="mp_form mp_form-buy-product ' . ( $no_single ? 'mp_no_single' : '' ) . ' ' . ( $mp_buy_button ? 'mp_buy_button' : '' ) . '" method="post" data-ajax-url="' . mp_get_ajax_url( 'admin-ajax.php?action=mp_update_cart' ) . '" action="' . mp_cart_link( false, true ) . '">';
 
 			if ( ! $this->in_stock() ) {
-				$button .= '<span class="mp_no_stock">' . __( 'Out of Stock', 'mp' ) . '</span>';
+				$button .= '<span class="mp_no_stock">' . __( 'Nicht vorrätig', 'mp' ) . '</span>';
 			} else {
 				$button .= '<input type="hidden" name="product_id" value="' . $this->ID . '">';
 				$disabled = '';
@@ -985,19 +985,19 @@ class MP_Product {
 				}
 				if ( $context == 'list' ) {
 					if ( $this->has_variations() ) {
-						$button .= '<a class="mp_button mp_link-buynow mp_button-has_variations" data-href="' . admin_url( 'admin-ajax.php?action=mp_product_get_variations_lightbox&amp;product_id=' . $this->ID ) . '" href="' . $this->url( false ) . '">' . __( 'Choose Options', 'mp' ) . '</a>';
+						$button .= '<a class="mp_button mp_link-buynow mp_button-has_variations" data-href="' . admin_url( 'admin-ajax.php?action=mp_product_get_variations_lightbox&amp;product_id=' . $this->ID ) . '" href="' . $this->url( false ) . '">' . __( 'Optionen wählen', 'mp' ) . '</a>';
 					} else if ( mp_get_setting( 'list_button_type' ) == 'addcart' ) {
-						$button .= '<button ' . $disabled . ' class="mp_button mp_button-addcart" type="submit" name="addcart">' . __( 'Add To Cart', 'mp' ) . '</button>';
+						$button .= '<button ' . $disabled . ' class="mp_button mp_button-addcart" type="submit" name="addcart">' . __( 'In den Warenkorb', 'mp' ) . '</button>';
 					} else if ( mp_get_setting( 'list_button_type' ) == 'buynow' ) {
-						$button .= '<button ' . $disabled . ' class="mp_button mp_button-buynow" type="submit" name="buynow">' . __( 'Buy Now', 'mp' ) . '</button>';
+						$button .= '<button ' . $disabled . ' class="mp_button mp_button-buynow" type="submit" name="buynow">' . __( 'In den Warenkorb', 'mp' ) . '</button>';
 					}
 				} else {
 					$button .= $this->attribute_fields( false, $selected_atts );
 
 					if ( mp_get_setting( 'product_button_type' ) == 'addcart' ) {
-						$button .= '<button ' . $disabled . ' class="mp_button mp_button-addcart" type="submit" name="addcart">' . __( 'Add To Cart', 'mp' ) . '</button>';
+						$button .= '<button ' . $disabled . ' class="mp_button mp_button-addcart" type="submit" name="addcart">' . __( 'In den Warenkorb', 'mp' ) . '</button>';
 					} else if ( mp_get_setting( 'product_button_type' ) == 'buynow' ) {
-						$button .= '<button ' . $disabled . ' class="mp_button mp_button-buynow" type="submit" name="buynow">' . __( 'Buy Now', 'mp' ) . '</button>';
+						$button .= '<button ' . $disabled . ' class="mp_button mp_button-buynow" type="submit" name="buynow">' . __( 'In den Warenkorb', 'mp' ) . '</button>';
 					}
 				}
 			}
@@ -1081,7 +1081,7 @@ class MP_Product {
 	 */
 	public function excerpt( $excerpt = null, $content = null, $excerpt_more = null ) {
 		if ( is_null( $excerpt_more ) ) {
-			$excerpt_more = ' <a class="mp_product_more_link" href="' . get_permalink( $this->ID ) . '">' . __( 'More Info &raquo;', 'mp' ) . '</a>';
+			$excerpt_more = ' <a class="mp_product_more_link" href="' . get_permalink( $this->ID ) . '">' . __( 'Mehr Produktdetails &raquo;', 'mp' ) . '</a>';
 		}
 
 		if ( is_null( $excerpt ) ) {
@@ -1263,7 +1263,24 @@ class MP_Product {
 				if ( $price['lowest_regular'] != $price['highest_regular'] ) {
 					$snippet .= '<span class="mp_product_price-normal mp_strikeout">' . mp_format_currency( '', $this->manage_price_tax( $price['lowest_regular'] ) ) . ' - ' . mp_format_currency( '', $this->manage_price_tax( $price['highest_regular'] ) ) . $this->display_tax_string( false ) . '</span>';
 				} else {
-					$snippet .= '<span class="mp_product_price-normal mp_strikeout">' . mp_format_currency( '', $this->manage_price_tax( ( $price['regular'] * $this->qty ) ) ) . $this->display_tax_string( false ) . '</span>';
+					/**
+					 * Fix for the following bug.
+					 *
+					 * Steps to reproduce:
+					 * - Create a variable product with at least 2 variations
+					 * - Set the regular price of the products for a spread wide enough to clearly see the effect (ie: 19.99 and 29.99)
+					 * - Set the sale price on the lower value variation (ie: 15.99)
+					 * - Set the lower value variation (sale product) as Default
+					 * - View the Products page (the strike out price should be wrong)
+					 * - Set the higher priced variation (non-sale product) as Default
+					 * - View the Products page (the strike out price should be correct)
+					 */
+					if ( $price['highest_regular'] > $price['regular'] ) {
+						$snippet .= '<span class="mp_product_price-normal mp_strikeout">' . mp_format_currency( '', $this->manage_price_tax( ( $price['regular'] * $this->qty ) ) ) . $this->display_tax_string( false ) . '</span>';
+					} else {
+						$snippet .= '<span class="mp_product_price-normal mp_strikeout">' . mp_format_currency( '', $this->manage_price_tax( ( $price['highest_regular'] * $this->qty ) ) ) . $this->display_tax_string( false ) . '</span>';
+					}
+
 				}
 
 			}
@@ -1280,22 +1297,22 @@ class MP_Product {
 
 			if ( $this->qty > 1 ) {
 				$snippet .= '<span class="mp_product_price-extended">' . mp_format_currency( '', $this->manage_price_tax( ( $price['lowest'] * $this->qty ) ) ) . $this->display_tax_string( false ) . '</span>';
-				$snippet .= '<span class="mp_product_price-each" itemprop="price">(' . sprintf( __( '%s each', 'mp' ), mp_format_currency( '', $this->manage_price_tax( $price['sale']['amount'] ) ) ) . ') ' . $this->display_tax_string( false ) . '</span>';
+				$snippet .= '<span class="mp_product_price-each" itemprop="price">(' . sprintf( __( '%s jeder', 'mp' ), mp_format_currency( '', $this->manage_price_tax( $price['sale']['amount'] ) ) ) . ') ' . $this->display_tax_string( false ) . '</span>';
 			} else {
 				$snippet .= '<span class="mp_product_price-sale" itemprop="price">' . mp_format_currency( '', $this->manage_price_tax( $price['sale']['amount'] ) ) . $this->display_tax_string( false ) . '</span>';
 			}
 
 			$snippet .= '<span class="mp_product_price-normal mp_strikeout">' . mp_format_currency( '', $this->manage_price_tax( ( $price['regular'] * $this->qty ) ) ) . $this->display_tax_string( false ) . '</span>';
 
-			/* if ( ($end_date	 = $price[ 'sale' ][ 'end_date' ]) && ($days_left	 = $price[ 'sale' ][ 'days_left' ]) ) {
-			  $snippet .= '<strong class="mp_savings_amt">' . sprintf( __( 'You Save: %s', 'mp' ), $amt_off ) . sprintf( _n( ' - only 1 day left!', ' - only %s days left!', $days_left, 'mp' ), $days_left ) . '</strong>';
+			  if ( ($end_date	 = $price[ 'sale' ][ 'end_date' ]) && ($days_left	 = $price[ 'sale' ][ 'days_left' ]) ) {
+			  $snippet .= '<strong class="mp_savings_amt">' . sprintf( __( ' Spare: %s', 'mp' ), $amt_off ) . sprintf( _n( ' - 1 Tag verbleibend!', ' - noch %s Tage!', $days_left, 'mp' ), $days_left ) . '</strong>';
 			  } else {
-			  $snippet .= '<strong class="mp_savings_amt">' . sprintf( __( 'You Save: %s', 'mp' ), $amt_off ) . '</strong>';
-			  } */
+			  $snippet .= '<strong class="mp_savings_amt">' . sprintf( __( ' Ersparnis: %s', 'mp' ), $amt_off ) . '</strong>';
+			  } 
 		} else {
 			if ( $this->qty > 1 ) {
 				$snippet .= '<span class="mp_product_price-extended">' . mp_format_currency( '', $this->manage_price_tax( ( $price['lowest'] * $this->qty ) ) ) . $this->display_tax_string( false ) . '</span>';
-				$snippet .= '<span class="mp_product_price-each" itemprop="price">(' . sprintf( __( '%s each', 'mp' ), mp_format_currency( '', $this->manage_price_tax( $price['lowest'] ) ) ) . ') ' . $this->display_tax_string( false ) . '</span>';
+				$snippet .= '<span class="mp_product_price-each" itemprop="price">(' . sprintf( __( '%s jeder', 'mp' ), mp_format_currency( '', $this->manage_price_tax( $price['lowest'] ) ) ) . ') ' . $this->display_tax_string( false ) . '</span>';
 			} else {
 				$snippet .= '<span class="mp_product_price-normal" itemprop="price">' . mp_format_currency( '', $this->manage_price_tax( $price['lowest'] ) ). $this->display_tax_string( false ) . '</span>';
 			}
@@ -1348,7 +1365,7 @@ class MP_Product {
 				} else {
 					$special_fixed_tax = true;
 				}
-			} else {
+			} elseif ( 0 === $tax_rate ) {
 				$tax_rate = mp_get_setting( 'tax->rate', '' );
 			}
 
@@ -1402,15 +1419,15 @@ class MP_Product {
 		}
 
 		if( $tax_inclusive != 1 && $include_tax_to_price != 1 ) {
-			$string = '<span class="exclusive_tax"> ' . __('(tax excl.)', 'mp') . '</span>';
+			$string = '<span class="exclusive_tax"> ' . __('(exkl.)', 'mp') . '</span>';
 		} elseif( $tax_inclusive == 1 ) {
 			if( $include_tax_to_price != 1 )  {
-				$string = '<span class="exclusive_tax"> ' . __('(tax excl.)', 'mp') . '</span>';
+				$string = '<span class="exclusive_tax"> ' . __('( exkl.)', 'mp') . '</span>';
 			} else {
-				$string = '<span class="inclusve_tax"> ' . __('(tax incl.)', 'mp') . '</span>';
+				$string = '<span class="inclusve_tax"> ' . __('( inkl.)', 'mp') . '</span>';
 			}
 		} elseif( $tax_inclusive != 1 && $include_tax_to_price == 1 ) {
-			$string = '<span class="exclusive_tax"> ' . __('(tax incl.)', 'mp') . '</span>';
+			$string = '<span class="exclusive_tax"> ' . __('( inkl.)', 'mp') . '</span>';
 		}
 
 		if ( $echo ) {
@@ -1456,7 +1473,7 @@ class MP_Product {
 				}
 
 			}
-			
+
 		}
 
 		/**
@@ -1797,7 +1814,7 @@ class MP_Product {
 			if ( $return_bool ) {
 				return false;
 			} else {
-				$html .= wpautop( __( '<p class="mp_related_products_empty_message">There are no related products for this item.</p>', 'mp' ) );
+				$html .= wpautop( __( '<p class="mp_related_products_empty_message">Es gibt keine anderen hierzu empfohlene Produkte.</p>', 'mp' ) );
 			}
 		}
 
@@ -2018,17 +2035,17 @@ class MP_Product {
 					}
 				}
 
-				/*if ( mp_get_setting( 'product_img_size' ) == 'custom' ) {
+				if ( mp_get_setting( 'product_img_size' ) == 'custom' ) {
 					$size = array( mp_get_setting( 'product_img_size_custom->width' ), mp_get_setting( 'product_img_size_custom->height' ) );
 				} else {
 					$size = mp_get_setting( 'product_img_size' );
-				}*/
+				}
 
 				if ( mp_get_setting( 'disable_large_image' ) ) {
 					$link = false;
 				} else {
 					$link  = $this->image_url( false, 'fullsize', false );
-					$title = __( 'View Larger Image &raquo;', 'mp' );
+					$title = __( 'Größeres Bild anzeigen &raquo;', 'mp' );
 				}
 
 				$link_class = ' class="mp_product_image_link mp_lightbox"';
@@ -2293,15 +2310,15 @@ class MP_Product {
 			$name .= ': ' . $this->get_meta( 'name' );
 		}
 
-		$subject = __( 'Low Product Inventory Notification', 'mp' );
-		$msg     = __( 'This message is being sent to notify you of low stock of a product in your online store according to your preferences.<br /><br />', 'mp' );
+		$subject = __( 'Benachrichtigung über niedrigen Produktbestand', 'mp' );
+		$msg     = __( 'Diese Nachricht wird gesendet, um Dich über einen geringen Lagerbestand eines Produkts in Deinem Online-Shop gemäß Deiner Präferenzen zu informieren.<br /><br />', 'mp' );
 
-		$msg .= __( 'Product: %s', 'mp' );
-		$msg .= __( 'Current Inventory: %s', 'mp' );
+		$msg .= __( 'Produkt: %s', 'mp' );
+		$msg .= __( 'Aktueller Bestand: %s', 'mp' );
 		$msg .= __( 'Link: %s<br /><br />', 'mp' );
 
-		$msg .= __( 'Edit Product: %s', 'mp' );
-		$msg .= __( 'Notification Preferences: %s', 'mp' );
+		$msg .= __( 'Produkt bearbeiten: %s', 'mp' );
+		$msg .= __( 'Benachrichtigungseinstellungen: %s', 'mp' );
 		$msg = sprintf( $msg, $name, number_format_i18n( $stock ), $this->url( false ), $this->url_edit( false ), admin_url( 'admin.php?page=mp-settings-general-misc#mp-settings-general-misc' ) );
 
 		/**
@@ -2450,7 +2467,7 @@ class MP_Product {
 
 		$value = false;
 		if ( function_exists( 'get_field_value' ) ) {
-			// Try to get WPMUDEV_Field value
+			// Try to get PSOURCE_Field value
 			$value = get_field_value( $name, $this->ID, $raw );
 		}
 
@@ -2757,7 +2774,7 @@ class MP_Product {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = '//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4';
+  js.src = '//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.4';
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <div class='fb-like' data-href='" . $url . "' data-layout='button' data-action='" . $action . "' data-show-faces='false' data-share='" . $show_share . "'></div>
@@ -2880,7 +2897,7 @@ class MP_Product {
 				$related_products = $product->related_products( $args, true );
 
 				if ( $related_products !== false ) {
-					$tabs['mp-related-products'] = __( 'Related Products', 'mp' );
+					$tabs['mp-related-products'] = __( 'Empfohlene Produkte', 'mp' );
 				}
 			}
 
@@ -2896,7 +2913,7 @@ class MP_Product {
 
 			// Make sure product overview tab is always at the beginning if not empty
 			if( $product->has_content() ){
-				$tabs = array( 'mp-product-overview' => __( 'Description', 'mp' ) ) + $tabs;
+				$tabs = array( 'mp-product-overview' => __( 'Beschreibung', 'mp' ) ) + $tabs;
 			}
 
 			$this->content_tabs = $tabs;

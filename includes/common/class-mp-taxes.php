@@ -39,7 +39,7 @@ class MP_Taxes {
 	 *
 	 * @return array
 	 */
-	public function calculate( $price, $inclusive_tax = false, $applied_rates ) {
+	public function calculate( $price, $applied_rates, $inclusive_tax = false ) {
 		$taxes = array();
 		if ( $inclusive_tax ) {
 			$taxes = $this->calc_inclusive_taxes( $price, $applied_rates );
@@ -57,7 +57,7 @@ class MP_Taxes {
 			return array();
 		}
 
-		$applied_rates = $this->find_matched_rate_taxes( $address['country'], $address['state'], $address['city'], $address['zip'], $table_rate );
+		$applied_rates = $this->find_matched_rate_taxes( $address['country'], $address['state'], $address['zip'], $address['city'], $table_rate );
 
 		if ( $is_shipping ) {
 			foreach ( $applied_rates as $key => $rate ) {
@@ -146,8 +146,8 @@ class MP_Taxes {
 		return $address = array(
 			'country' => mp_get_setting( 'base_country' ),
 			'state'   => mp_get_setting( 'base_province' ),
-			'city'    => '',
 			'zip'     => mp_get_setting( 'base_zip' ),
+			'city'    => '',
 		);
 	}
 
@@ -159,8 +159,9 @@ class MP_Taxes {
 			$address = array(
 				'country' => '',
 				'state'   => '',
-				'city'    => '',
 				'zip'     => '',
+				'city'    => '',
+				
 			);
 		}
 
@@ -176,8 +177,9 @@ class MP_Taxes {
 		$address      = array(
 			'country' => '',
 			'state'   => '',
-			'city'    => '',
 			'zip'     => '',
+			'city'    => '',
+			
 		);
 		switch ( $address_type ) {
 			case 'shipping_address':
@@ -201,8 +203,9 @@ class MP_Taxes {
 			$address = array(
 				'country' => '',
 				'state'   => '',
-				'city'    => '',
 				'zip'     => '',
+				'city'    => '',
+				
 			);
 		}
 
@@ -295,7 +298,7 @@ class MP_Taxes {
 		}
 
 		$address       = $this->get_tax_address();
-		$applied_rates = $this->find_matched_rate_taxes( $address['country'], $address['state'], $address['city'], $address['zip'], $table_rate );
+		$applied_rates = $this->find_matched_rate_taxes( $address['country'], $address['state'], $address['zip'], $address['city'], $table_rate );
 
 		if ( $context == 'cart' ) {
 			$mode = mp_get_setting( 'tax->cart_price_with_tax' );
@@ -333,7 +336,7 @@ class MP_Taxes {
 			$tables = array();
 		}
 		$data = array(
-			'standard' => __( "Standard Table", "mp" )
+			'standard' => __( "Standardsatz", "mp" )
 		);
 		foreach ( $tables as $table ) {
 			$data[ str_replace( '-', '_', sanitize_title( $table ) ) ] = $table;

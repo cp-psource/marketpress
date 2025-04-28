@@ -93,7 +93,7 @@
                     .val( data.credit_card_id )
                     .appendTo( $paymentForm );
 
-                $form.get( 0 ).submit();
+                $form.get( 0 ).trigger("submit");
             }
         } );
     }

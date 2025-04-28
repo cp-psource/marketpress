@@ -56,10 +56,10 @@ $this->defaults = array(
  */
 $this->default_settings = array(
 	'base_country'				 => 'AT',
-	'zip_label'					 => __( 'Postleitzahl', 'mp' ),
+	'zip_label'					 => 'Postleitzahl',
 	'tax'						 => array(
 		'rate'					 => 20,
-		'label'					 => __( 'Steuer', 'mp' ),
+		'label'					 => 'Steuer',
 		'tax_shipping'			 => 1,
 		'tax_inclusive'			 => 0,
 		'include_tax'			 => 1,
@@ -98,12 +98,12 @@ $this->default_settings = array(
 	'per_row'					 => 3,
 	/* Translators: change default slugs here */
 	'slugs'						 => array(
-		'store'			 => __( 'Shop', 'mp' ),
-		'products'		 => __( 'Produkt', 'mp' ),
-		'cart'			 => __( 'Warenkorb', 'mp' ),
-		'orderstatus'	 => __( 'Bestellstatus', 'mp' ),
-		'category'		 => __( 'Shopkategorie', 'mp' ),
-		'tag'			 => __( 'Eigenschaft', 'mp' )
+		'store'			 => 'Shop',
+		'products'		 => 'Produkt',
+		'cart'			 => 'Warenkorb',
+		'orderstatus'	 => 'Bestellstatus',
+		'category'		 => 'Shopkategorie',
+		'tag'			 => 'Eigenschaft',
 	),
 	'product_button_type'		 => 'addcart',
 	'show_quantity'				 => 1,
@@ -140,55 +140,49 @@ $this->default_settings = array(
 	),
 	'msg'						 => array(
 		'product_list'		 => '',
-		'order_status'		 => __( '<p>Wenn Du Fragen zu Deiner Bestellung hast, zögere bitte nicht, uns zu kontaktieren.</p>', 'mp' ),
+		'order_status'		 => '<p>Wenn Du Fragen zu Deiner Bestellung hast, zögere bitte nicht, uns zu kontaktieren.</p>',
 		'cart'				 => '',
-		'shipping'			 => __( '<p>Bitte gib Deine Versandinformationen in das unten stehende Formular ein, um mit Deiner Bestellung fortzufahren.</p>', 'mp' ),
+		'shipping'			 => '<p>Bitte gib Deine Versandinformationen in das unten stehende Formular ein, um mit Deiner Bestellung fortzufahren.</p>',
 		'checkout'			 => '',
-		'confirm_checkout'	 => __( '<p>Du bist fast fertig! Bitte überprüfe Deine Bestellung abschließend, um sicherzustellen, dass alles korrekt ist, und klicke dann auf die Schaltfläche "Zahlung bestätigen".</p>', 'mp' ),
-		'success'			 => __( '<p>Vielen Dank für Deinen Auftrag! Wir wissen Deinen Einkauf zu schätzen und komme bitte oft wieder, um unsere neuen Produkte zu testen.</p>', 'mp' )
+		'confirm_checkout'	 => '<p>Du bist fast fertig! Bitte überprüfe Deine Bestellung abschließend, um sicherzustellen, dass alles korrekt ist, und klicke dann auf die Schaltfläche "Zahlung bestätigen".</p>',
+		'success'			 => '<p>Vielen Dank für Deinen Auftrag! Wir wissen Deinen Einkauf zu schätzen und komme bitte oft wieder, um unsere neuen Produkte zu testen.</p>',
 	),
 	'store_email'				 => get_option( "admin_email" ),
 	'email'						 => array(
 		'admin_order'	 => array(
 			'send_email' => 1,
-			'subject'	 => __( 'Benachrichtigung über neue Bestellung: ORDERID', 'mp' ),
-			'text'	 	 => __( "In Deinem Shop wurde eine neue Bestellung (ORDERID) erstellt:\n\n ORDERINFOSKU\n\n SHIPPINGINFO\n\n PAYMENTINFO\n\n", 'mp' ),
+			'subject'	 => 'Benachrichtigung über neue Bestellung: ORDERID',
+			'text'	 	 => 'In Deinem Shop wurde eine neue Bestellung (ORDERID) erstellt:\n\n ORDERINFOSKU\n\n SHIPPINGINFO\n\n PAYMENTINFO\n\n',
 		),
 		'new_order'		 => array(
 			'send_email' => 1,
-			'subject'	 => __( 'Deine Bestellbestätigung (ORDERID)', 'mp' ),
-			'text'		 => __( "Vielen Dank für Deine Bestellung KUNDENNAME!\n\n Deine Bestellung ist eingegangen und alle zu versendenden Artikel werden so schnell wie möglich bearbeitet. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Versandinformationen:\n SHIPPINGINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\n Hier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!", 'mp'
-			),
+			'subject'	 => 'Deine Bestellbestätigung (ORDERID)',
+			'text'		 => 'Vielen Dank für Deine Bestellung KUNDENNAME!\n\n Deine Bestellung ist eingegangen und alle zu versendenden Artikel werden so schnell wie möglich bearbeitet. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Versandinformationen:\n SHIPPINGINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\n Hier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!',
 		),
 		'new_order_downloads'		 => array(
 			'send_email' => 1,
-			'subject'	 => __( 'Deine Bestellbestätigung (ORDERID)', 'mp' ),
-			'text'		 => __( "Vielen Dank für Deine Bestellung CUSTOMERNAME!\n\nDeine Bestellung ist eingegangen und Deine digitalen Güter stehen zum Download bereit. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!", 'mp'
-			),
+			'subject'	 => 'Deine Bestellbestätigung (ORDERID)',
+			'text'		 => 'Vielen Dank für Deine Bestellung CUSTOMERNAME!\n\nDeine Bestellung ist eingegangen und Deine digitalen Güter stehen zum Download bereit. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!',
 		),
 		'new_order_mixed'		 => array(
 			'send_email' => 1,
-			'subject'	 => __( 'Deine Bestellbestätigung (ORDERID)', 'mp' ),
-			'text'		 => __( "Vielen Dank für Deine Bestellung CUSTOMERNAME!\n\nDeine Bestellung ist eingegangen, Deine digitalen Waren stehen zum Download bereit und alle zu versendenden Artikel werden so schnell wie möglich bearbeitet. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Versandinformationen:\n SHIPPINGINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!", 'mp'
-			),
+			'subject'	 => 'Deine Bestellbestätigung (ORDERID)',
+			'text'		 => 'Vielen Dank für Deine Bestellung CUSTOMERNAME!\n\nDeine Bestellung ist eingegangen, Deine digitalen Waren stehen zum Download bereit und alle zu versendenden Artikel werden so schnell wie möglich bearbeitet. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Versandinformationen:\n SHIPPINGINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!',
 		),
 		'order_shipped'	 => array(
 			'send_email' => 1,
-			'subject'	 => __( 'Deinee Bestellung wurde versandt! (ORDERID)', 'mp' ),
-			'text'		 => __( "Sehr geehrter CUSTOMERNAME,\nDeine Bestellung wurde versandt! Abhängig von der Versandart und Deinem Standort sollte es in Kürze eintreffen. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Versandinformationen:\n SHIPPINGINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!", 'mp'
-			),
+			'subject'	 => 'Deine Bestellung wurde versandt! (ORDERID)',
+			'text'		 => 'Sehr geehrter CUSTOMERNAME,\nDeine Bestellung wurde versandt! Abhängig von der Versandart und Deinem Standort sollte es in Kürze eintreffen. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Versandinformationen:\n SHIPPINGINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!',
 		),
 		'order_shipped_downloads'	 => array(
 			'send_email' => 1,
-			'subject'	 => __( 'Deine Bestellung steht zum Download bereit! (ORDERID)', 'mp' ),
-			'text'		 => __( "Sehr geehrter CUSTOMERNAME,\nDeine Bestellung steht jetzt zum Download bereit! Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!", 'mp'
-			),
+			'subject'	 => 'Deine Bestellung steht zum Download bereit! (ORDERID)',
+			'text'		 => 'Sehr geehrter CUSTOMERNAME,\nDeine Bestellung steht jetzt zum Download bereit! Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!',
 		),
 		'order_shipped_mixed'	 => array(
 			'send_email' => 1,
-			'subject'	 => __( 'Deine Bestellung wurde versandt! (ORDERID)', 'mp' ),
-			'text'		 => __( "Sehr geehrter CUSTOMERNAME,\nDeine Bestellung wurde versandt! Außerdem können die in Deiner Bestellung enthaltenen digitalen Downloads jetzt heruntergeladen werden. Abhängig von der Versandart und Deinem Standort sollte es in Kürze eintreffen. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Versandinformationen:\n SHIPPINGINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!", 'mp'
-			),
+			'subject'	 => 'Deine Bestellung wurde versandt! (ORDERID)',
+			'text'		 => 'Sehr geehrter CUSTOMERNAME,\nDeine Bestellung wurde versandt! Außerdem können die in Deiner Bestellung enthaltenen digitalen Downloads jetzt heruntergeladen werden. Abhängig von der Versandart und Deinem Standort sollte es in Kürze eintreffen. Bitte beziehe Dich bei jeder Kontaktaufnahme mit uns auf Deine Bestell-ID (ORDERID)..\n\nHier ist eine Bestätigung Deiner Bestelldaten:\n\n Bestellinformationen:\n ORDERINFO\n\n Versandinformationen:\n SHIPPINGINFO\n\n Zahlungsinformationen:\n PAYMENTINFO\n\n ORDERNOTES\n\nHier kannst Du den aktuellen Status Deiner Bestellung verfolgen: TRACKINGURL\n\nDanke noch einmal!',
 		) ),
 	'social'					 => array(
 		'pinterest' => array(

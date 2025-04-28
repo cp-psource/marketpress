@@ -82,19 +82,21 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 	var $locales = array(
 		'AR' => 'Argentina',
 		'AU' => 'Australia',
-		'AT' => 'Austria',
+		'AT' => 'Österreich',
 		'BE' => 'Belgium',
 		'BR' => 'Brazil',
 		'CA' => 'Canada',
 		'CN' => 'China',
 		'FI' => 'Finland',
 		'FR' => 'France',
-		'DE' => 'Germany',
+		'DE' => 'Deutschland',
+		'GR' => 'Greece',
 		'HK' => 'Hong Kong',
 		'IE' => 'Ireland',
 		'IL' => 'Israel',
 		'IT' => 'Italy',
 		'JP' => 'Japan',
+		'MT' => 'Malta',
 		'MX' => 'Mexico',
 		'NL' => 'Netherlands',
 		'NO' => 'Norway',
@@ -104,7 +106,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		'SG' => 'Singapore',
 		'ES' => 'Spain',
 		'SE' => 'Sweden',
-		'CH' => 'Switzerland',
+		'CH' => 'Schweiz',
 		'TR' => 'Turkey',
 		'GB' => 'United Kingdom',
 		'US' => 'United States'
@@ -136,7 +138,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 
 		//make API call
 		$response = wp_remote_post( $this->API_Endpoint, array(
-			'user-agent'  => 'MarketPress/' . MP_VERSION . ': http://premium.wpmudev.org/project/e-commerce | PayPal Express Plugin/' . MP_VERSION,
+			'user-agent'  => 'MarketPress/' . MP_VERSION . ': https://n3rds.work/piestingtal_source/marketpress-shopsystem/ | PayPal Express Plugin/' . MP_VERSION,
 			'body'        => http_build_query( $request ),
 			'sslverify'   => false,
 			'timeout'     => mp_get_api_timeout( $this->plugin_name ),
@@ -144,7 +146,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		) );
 
 		if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
-			return new WP_Error( '', __( 'There was a problem connecting to PayPal. Please try again.', 'mp' ) );
+			return new WP_Error( '', __( 'Beim Herstellen einer Verbindung zu PayPal ist ein Problem aufgetreten. Bitte versuche es erneut.', 'mp' ) );
 		} else {
 			return $this->_deformat_nvp( $response['body'] );
 		}
@@ -276,9 +278,9 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 			$request['PAYMENTREQUEST_0_SHIPTONAME']        = $this->trim_name( $name, 128 );
 			$request['PAYMENTREQUEST_0_SHIPTOSTREET']      = $this->trim_name( mp_arr_get_value( 'address1', $shipping_info, '' ), 100 );
 			$request['PAYMENTREQUEST_0_SHIPTOSTREET2']     = $this->trim_name( mp_arr_get_value( 'address2', $shipping_info, '' ), 100 );
+			$request['PAYMENTREQUEST_0_SHIPTOZIP']         = $this->trim_name( mp_arr_get_value( 'zip', $shipping_info, '' ), 20 );
 			$request['PAYMENTREQUEST_0_SHIPTOCITY']        = $this->trim_name( mp_arr_get_value( 'city', $shipping_info, '' ), 40 );
 			$request['PAYMENTREQUEST_0_SHIPTOSTATE']       = $this->trim_name( mp_arr_get_value( 'state', $shipping_info, '' ), 40 );
-			$request['PAYMENTREQUEST_0_SHIPTOZIP']         = $this->trim_name( mp_arr_get_value( 'zip', $shipping_info, '' ), 20 );
 			$request['PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE'] = $this->trim_name( mp_arr_get_value( 'country', $shipping_info, '' ), 2 );
 			$request['PAYMENTREQUEST_0_SHIPTOPHONENUM']    = $this->trim_name( mp_arr_get_value( 'phone', $shipping_info, '' ), 20 );
 			$request['NOSHIPPING']                         = 2; //enable shipping fields
@@ -317,7 +319,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		}
 
 		//order details
-		$request["PAYMENTREQUEST_0_DESC"]             = $this->trim_name( sprintf( __( '%s Store Purchase - Order ID: %s', 'mp' ), get_bloginfo( 'name' ), $order_id ) );
+		$request["PAYMENTREQUEST_0_DESC"]             = $this->trim_name( sprintf( __( '%s Kauf im Shop - Bestell ID: %s', 'mp' ), get_bloginfo( 'name' ), $order_id ) );
 		$request["PAYMENTREQUEST_0_AMT"]              = $cart->total( false );
 		$request["PAYMENTREQUEST_0_INVNUM"]           = $order_id;
 		$request["PAYMENTREQUEST_0_PAYMENTREQUESTID"] = $blog_id . ':' . $order_id;
@@ -383,14 +385,14 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 			}
 
 			if ( $cart->is_global ) {
-				
+
 				//check if the current merchant don't have email setting, we bypass
 				$gateways = mp_get_network_setting( 'gateways' );
 				$merchant_email_network = trim( $gateways['paypal_express']['merchant_email'] );
-				
+
 				$gateways = mp_get_setting( 'gateways' );
                 $merchant_email = trim( $gateways['paypal_express']['merchant_email'] );
-				
+
 				// Subsite merchant_email empty use network setting
 				if( empty( $merchant_email ) ) {
 					$merchant_email = $merchant_email_network;
@@ -417,9 +419,9 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTONAME' ]        = $this->trim_name( $name, 128 );
 				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTOSTREET' ]      = $this->trim_name( mp_arr_get_value( 'address1', $shipping_info, '' ), 100 );
 				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTOSTREET2' ]     = $this->trim_name( mp_arr_get_value( 'address2', $shipping_info, '' ), 100 );
+				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTOZIP' ]         = $this->trim_name( mp_arr_get_value( 'zip', $shipping_info, '' ), 20 );
 				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTOCITY' ]        = $this->trim_name( mp_arr_get_value( 'city', $shipping_info, '' ), 40 );
 				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTOSTATE' ]       = $this->trim_name( mp_arr_get_value( 'state', $shipping_info, mp_arr_get_value( 'city', $shipping_info, 'No State' ) ), 40 );
-				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTOZIP' ]         = $this->trim_name( mp_arr_get_value( 'zip', $shipping_info, '' ), 20 );
 				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTOCOUNTRYCODE' ] = $this->trim_name( mp_arr_get_value( 'country', $shipping_info, '' ), 2 );
 				$request[ 'PAYMENTREQUEST_' . $index . '_SHIPTOPHONENUM' ]    = $this->trim_name( mp_arr_get_value( 'phone', $shipping_info, '' ), 20 );
 				$request['NOSHIPPING']                                        = 2; //enable shipping fields
@@ -442,7 +444,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 					$request["L_PAYMENTREQUEST_{$index}_NUMBER{$i}-{$q}"]       = $item->get_meta( 'sku', '' );
 					$request["L_PAYMENTREQUEST_{$index}_QTY{$i}-{$q}"]          = $quantity;
 					$request["L_PAYMENTREQUEST_{$index}_ITEMURL{$i}-{$q}"]      = $item->url( false );
-					$request["L_PAYMENTREQUEST_{$index}_ITEMCATEGORY{$i}-{$q}"] = 'Physical';	
+					$request["L_PAYMENTREQUEST_{$index}_ITEMCATEGORY{$i}-{$q}"] = 'Physical';
 
 					$vcart->add_item( $product_id, 1 );
 				}
@@ -468,7 +470,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 			}
 
 			//order details
-			$request["PAYMENTREQUEST_{$index}_DESC"]             = $this->trim_name( sprintf( __( '%s Store Purchase - Order ID: %s', 'mp' ), get_bloginfo( 'name' ), $order_id ) );
+			$request["PAYMENTREQUEST_{$index}_DESC"]             = $this->trim_name( sprintf( __( '%s Kauf im Shop - Bestell ID: %s', 'mp' ), get_bloginfo( 'name' ), $order_id ) );
 			$request["PAYMENTREQUEST_{$index}_AMT"]              = $vcart->total( false );
 			$request["PAYMENTREQUEST_{$index}_INVNUM"]           = $order_id;
 			$request["PAYMENTREQUEST_{$index}_PAYMENTREQUESTID"] = $bid . ':' . $order_id;
@@ -533,19 +535,19 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 			$this->API_Endpoint = "https://api-3t.paypal.com/nvp";
 			$this->paypalURL    = "https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=";
 		}
-		
-		add_filter( 'wpmudev_field/get_value/gateways[paypal_express][mode]', array(
+
+		add_filter( 'psource_field/get_value/gateways[paypal_express][mode]', array(
 			&$this,
 			'force_check_mode'
 		), 10, 4 );
 	}
-	
+
 	/**
 	 * Force check the force_check_mode
 	 *
 	 * @since 3.0
 	 * @access public
-	 * @filter wpmudev_field/get_value/gateways[paypal_express][mode]
+	 * @filter psource_field/get_value/gateways[paypal_express][mode]
 	 */
 	public function force_check_mode( $value, $post_id, $raw, $field ) {
 		if ( is_plugin_active_for_network( mp_get_plugin_slug() ) && mp_get_network_setting( 'global_cart' ) == 1 ) {
@@ -553,7 +555,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		} else {
 			$mode = $this->get_setting( 'mode' );
 		}
-		
+
 		return $mode;
 	}
 
@@ -571,7 +573,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		if ( ( $api_user = $this->get_setting( 'api_user' ) ) && ( $api_pass = $this->get_setting( 'api_pass' ) ) && ( $api_sig = $this->get_setting( 'api_sig' ) ) ) {
 			// Update api mode
 			mp_push_to_array( $settings, 'gateways->paypal_express->mode', $api_mode );
-			
+
 			// Update api user
 			mp_push_to_array( $settings, 'gateways->paypal_express->api_credentials->username', $api_user );
 
@@ -595,12 +597,12 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 	 * @access public
 	 */
 	function init_network_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id'               => $this->generate_metabox_id(),
-			'page_slugs'       => array( 'network-store-settings' ),
-			'title'            => __( 'Paypal Express Network Settings', 'mp' ),
+			'page_slugs'       => array( 'network-shop-einstellungen' ),
+			'title'            => __( 'Paypal Express-Netzwerkeinstellungen', 'mp' ),
 			'site_option_name' => 'mp_network_settings',
-			'desc'             => __( 'Express Checkout is PayPal\'s premier checkout solution, which streamlines the checkout process for buyers and keeps them on your site after making a purchase. Unlike PayPal Pro, there are no additional fees to use Express Checkout, though you may need to do a free upgrade to a business account. <a target="_blank" href="https://developer.paypal.com/webapps/developer/docs/classic/api/apiCredentials/">More Info &raquo;</a>', 'mp' ),
+			'desc'             => __( 'Express Checkout ist die führende Checkout-Lösung von PayPal, die den Checkout-Prozess für Käufer rationalisiert und sie nach dem Kauf auf Deiner Webseite hält. Im Gegensatz zu PayPal Pro fallen für die Verwendung von Express Checkout keine zusätzlichen Gebühren an. Möglicherweise musst Du jedoch ein kostenloses Upgrade auf ein Geschäftskonto durchführen. <a target="_blank" href="https://developer.paypal.com/webapps/developer/docs/classic/api/apiCredentials/">Mehr Information &raquo;</a>', 'mp' ),
 			'order'            => 16,
 			'conditional'      => array(
 				'operator' => 'AND',
@@ -615,18 +617,18 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 				),
 			),
 		) );
-		
+
 		if ( is_plugin_active_for_network( mp_get_plugin_slug() ) && mp_get_network_setting( 'global_cart' ) ) {
 			$metabox->add_field( 'text', array(
 				'name'       => $this->get_field_name( 'merchant_email' ),
-				'label'      => array( 'text' => __( 'Merchant Email', 'mp' ) ),
+				'label'      => array( 'text' => __( 'Händler-E-Mail', 'mp' ) ),
 				'validation' => array(
 					'required' => true,
 					'email'    => true,
 				),
 			) );
 		}
-		
+
 		$this->common_metabox_fields( $metabox );
 	}
 
@@ -637,12 +639,12 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 	 * @access public
 	 */
 	function init_settings_metabox() {
-		$metabox = new WPMUDEV_Metabox( array(
+		$metabox = new PSOURCE_Metabox( array(
 			'id'          => $this->generate_metabox_id(),
-			'page_slugs'  => array( 'store-settings-payments' ),
-			'title'       => __( 'Paypal Express Checkout Settings', 'mp' ),
+			'page_slugs'  => array( 'shop-einstellungen-payments' ),
+			'title'       => __( 'Paypal Express Checkout-Einstellungen', 'mp' ),
 			'option_name' => 'mp_settings',
-			'desc'        => __( 'Express Checkout is PayPal\'s premier checkout solution, which streamlines the checkout process for buyers and keeps them on your site after making a purchase. Unlike PayPal Pro, there are no additional fees to use Express Checkout, though you may need to do a free upgrade to a business account. <a target="_blank" href="https://developer.paypal.com/webapps/developer/docs/classic/api/apiCredentials/">More Info &raquo;</a>', 'mp' ),
+			'desc'        => __( 'Express Checkout ist die führende Checkout-Lösung von PayPal, die den Checkout-Prozess für Käufer rationalisiert und sie nach dem Kauf auf Deiner Webseite hält. Im Gegensatz zu PayPal Pro fallen für die Verwendung von Express Checkout keine zusätzlichen Gebühren an. Möglicherweise musst Du jedoch ein kostenloses Upgrade auf ein Geschäftskonto durchführen. <a target="_blank" href="https://developer.paypal.com/webapps/developer/docs/classic/api/apiCredentials/">Mehr Information &raquo;</a>', 'mp' ),
 			'conditional' => array(
 				'name'   => 'gateways[allowed][' . $this->plugin_name . ']',
 				'value'  => 1,
@@ -653,7 +655,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		if ( is_plugin_active_for_network( mp_get_plugin_slug() ) && mp_get_network_setting( 'global_cart' ) ) {
 			$metabox->add_field( 'text', array(
 				'name'       => $this->get_field_name( 'merchant_email' ),
-				'label'      => array( 'text' => __( 'Merchant Email', 'mp' ) ),
+				'label'      => array( 'text' => __( 'Händler-E-Mail', 'mp' ) ),
 				'validation' => array(
 					'required' => true,
 					'email'    => true,
@@ -670,12 +672,12 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 	 * @since 3.0
 	 * @access public
 	 *
-	 * @param WPMUDEV_Metabox $metabox
+	 * @param PSOURCE_Metabox $metabox
 	 */
 	function common_metabox_fields( $metabox ) {
 		$metabox->add_field( 'advanced_select', array(
 			'name'     => $this->get_field_name( 'locale' ),
-			'label'    => array( 'text' => __( 'Locale', 'mp' ) ),
+			'label'    => array( 'text' => __( 'Gebietsschema', 'mp' ) ),
 			'multiple' => false,
 			'site_option_name' => 'mp_network_settings',
 			'options'  => $this->locales,
@@ -683,14 +685,14 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		) );
 		$metabox->add_field( 'advanced_select', array(
 			'name'     => $this->get_field_name( 'currency' ),
-			'label'    => array( 'text' => __( 'Currency', 'mp' ) ),
+			'label'    => array( 'text' => __( 'Währung', 'mp' ) ),
 			'multiple' => false,
 			'options'  => $this->currencies,
 			'width'    => 'element',
 		) );
 		$metabox->add_field( 'radio_group', array(
 			'name'          => $this->get_field_name( 'mode' ),
-			'label'         => array( 'text' => __( 'Mode', 'mp' ) ),
+			'label'         => array( 'text' => __( 'Modus', 'mp' ) ),
 			'default_value' => 'sandbox',
 			'options'       => array(
 				'sandbox' => __( 'Sandbox', 'mp' ),
@@ -699,28 +701,28 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		) );
 		$creds = $metabox->add_field( 'complex', array(
 			'name'  => $this->get_field_name( 'api_credentials' ),
-			'label' => array( 'text' => __( 'API Credentials', 'mp' ) ),
-			'desc'  => __( 'You must login to PayPal and create an API signature to get your credentials. <a target="_blank" href="https://developer.paypal.com/webapps/developer/docs/classic/api/apiCredentials/">Instructions &raquo;</a>', 'mp' ),
+			'label' => array( 'text' => __( 'API-Anmeldeinformationen', 'mp' ) ),
+			'desc'  => __( 'Du musst Dich bei PayPal anmelden und eine API-Signatur erstellen, um Deine Anmeldeinformationen abzurufen. <a target="_blank" href="https://developer.paypal.com/webapps/developer/docs/classic/api/apiCredentials/">Anleitung &raquo;</a>', 'mp' ),
 		) );
 
-		if ( $creds instanceof WPMUDEV_Field ) {
+		if ( $creds instanceof PSOURCE_Field ) {
 			$creds->add_field( 'text', array(
 				'name'       => 'username',
-				'label'      => array( 'text' => __( 'Username', 'mp' ) ),
+				'label'      => array( 'text' => __( 'Benutzername', 'mp' ) ),
 				'validation' => array(
 					'required' => true,
 				),
 			) );
 			$creds->add_field( 'text', array(
 				'name'       => 'password',
-				'label'      => array( 'text' => __( 'Password', 'mp' ) ),
+				'label'      => array( 'text' => __( 'Passwort', 'mp' ) ),
 				'validation' => array(
 					'required' => true,
 				),
 			) );
 			$creds->add_field( 'text', array(
 				'name'       => 'signature',
-				'label'      => array( 'text' => __( 'Signature', 'mp' ) ),
+				'label'      => array( 'text' => __( 'Signatur', 'mp' ) ),
 				'validation' => array(
 					'required' => true,
 				),
@@ -729,23 +731,23 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 
 		$metabox->add_field( 'file', array(
 			'name'  => $this->get_field_name( 'header_img' ),
-			'label' => array( 'text' => __( 'Header Image', 'mp' ) ),
-			'desc'  => __( 'URL for an image you want to appear at the top left of the payment page. The image has a maximum size of 750 pixels wide by 90 pixels high. PayPal recommends that you provide an image that is stored on a secure (https) server. If you do not specify an image, the business name is displayed.', 'mp' ),
+			'label' => array( 'text' => __( 'Header-Bild', 'mp' ) ),
+			'desc'  => __( 'URL für ein Bild, das oben links auf der Zahlungsseite angezeigt werden soll. Das Bild hat eine maximale Größe von 750 Pixel Breite und 90 Pixel Höhe. PayPal empfiehlt, dass Du ein Image bereitstellst, das auf einem sicheren (https) Server gespeichert ist. Wenn Du kein Bild angibst, wird der Firmenname angezeigt.', 'mp' ),
 		) );
 		$metabox->add_field( 'colorpicker', array(
 			'name'  => $this->get_field_name( 'header_border' ),
-			'label' => array( 'text' => __( 'Header Border Color', 'mp' ) ),
-			'desc'  => __( 'Sets the border color around the header of the payment page. The border is a 2-pixel perimeter around the header space, which is 750 pixels wide by 90 pixels high. By default, the color is black.', 'mp' ),
+			'label' => array( 'text' => __( 'Header-Rahmenfarbe', 'mp' ) ),
+			'desc'  => __( 'Legt die Rahmenfarbe um die Kopfzeile der Zahlungsseite fest. Der Rand ist ein 2-Pixel-Umfang um den Header-Bereich, der 750 Pixel breit und 90 Pixel hoch ist. Standardmäßig ist die Farbe schwarz.', 'mp' ),
 		) );
 		$metabox->add_field( 'colorpicker', array(
 			'name'  => $this->get_field_name( 'header_back' ),
-			'label' => array( 'text' => __( 'Header Background Color', 'mp' ) ),
-			'desc'  => __( 'Sets the background color for the header of the payment page. By default, the color is white.', 'mp' ),
+			'label' => array( 'text' => __( 'Hintergrundfarbe der Kopfzeile', 'mp' ) ),
+			'desc'  => __( 'Legt die Hintergrundfarbe für die Kopfzeile der Zahlungsseite fest. Standardmäßig ist die Farbe weiß.', 'mp' ),
 		) );
 		$metabox->add_field( 'colorpicker', array(
 			'name'  => $this->get_field_name( 'page_back' ),
-			'label' => array( 'text' => __( 'Page Background Color', 'mp' ) ),
-			'desc'  => __( 'Sets the background color for the payment page. By default, the color is white.', 'mp' ),
+			'label' => array( 'text' => __( 'Seitenhintergrundfarbe', 'mp' ) ),
+			'desc'  => __( 'Legt die Hintergrundfarbe für die Zahlungsseite fest. Standardmäßig ist die Farbe weiß.', 'mp' ),
 		) );
 	}
 
@@ -775,7 +777,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 	 * @param array $shipping_info . Contains shipping info and email in case you need it
 	 */
 	function payment_form( $cart, $shipping_info ) {
-		return __( 'You will be redirected to the PayPal site to finalize your payment.', 'mp' );
+		return __( 'Du wirst zur PayPal-Webseite weitergeleitet, um Deine Zahlung abzuschließen.', 'mp' );
 	}
 
 	/**
@@ -793,74 +795,74 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 
 				switch ( $result["PAYMENTSTATUS"] ) {
 					case 'Canceled-Reversal':
-						$status     = __( 'A reversal has been canceled; for example, when you win a dispute and the funds for the reversal have been returned to you.', 'mp' );
+						$status     = __( 'Eine Stornierung wurde abgebrochen. Zum Beispiel, wenn Du einen Streit gewinnst und das Geld an Dich zurückgegeben wurde.', 'mp' );
 						$authorized = true;
 						break;
 					case 'Expired':
-						$status     = __( 'The authorization period for this payment has been reached.', 'mp' );
+						$status     = __( 'Die Autorisierungsfrist für diese Zahlung ist erreicht.', 'mp' );
 						$authorized = false;
 						break;
 					case 'Voided':
-						$status     = __( 'An authorization for this transaction has been voided.', 'mp' );
+						$status     = __( 'Eine Autorisierung für diese Transaktion wurde ungültig.', 'mp' );
 						$authorized = false;
 						break;
 					case 'Failed':
-						$status     = __( 'The payment has failed. This happens only if the payment was made from your customer\'s bank account.', 'mp' );
+						$status     = __( 'Die Zahlung ist fehlgeschlagen. Dies geschieht nur, wenn die Zahlung vom Bankkonto Deines Kunden erfolgt ist.', 'mp' );
 						$authorized = false;
 						break;
 					case 'Partially-Refunded':
-						$status     = __( 'The payment has been partially refunded.', 'mp' );
+						$status     = __( 'Die Zahlung wurde teilweise zurückerstattet.', 'mp' );
 						$authorized = true;
 						break;
 					case 'In-Progress':
-						$status     = __( 'The transaction has not terminated, e.g. an authorization may be awaiting completion.', 'mp' );
+						$status     = __( 'Die Transaktion wurde nicht beendet, Möglicherweise wartet eine Autorisierung auf den Abschluss.', 'mp' );
 						$authorized = false;
 						break;
 					case 'Completed':
-						$status     = __( 'The payment has been completed, and the funds have been added successfully to your account balance.', 'mp' );
+						$status     = __( 'Die Zahlung wurde abgeschlossen und das Guthaben wurde erfolgreich Deinem Kontostand hinzugefügt.', 'mp' );
 						$authorized = true;
 						break;
 					case 'Processed':
-						$status     = __( 'A payment has been accepted.', 'mp' );
+						$status     = __( 'Eine Zahlung wurde akzeptiert.', 'mp' );
 						$authorized = true;
 						break;
 					case 'Reversed':
-						$status          = __( 'A payment was reversed due to a chargeback or other type of reversal. The funds have been removed from your account balance and returned to the buyer', 'mp' );
+						$status          = __( 'Eine Zahlung wurde aufgrund einer Rückbuchung oder einer anderen Art der Stornierung storniert. Das Geld wurde von Deinem Kontostand entfernt und an den Käufer zurückgegeben', 'mp' );
 						$reverse_reasons = array(
 							'none'            => '',
-							'chargeback'      => __( 'A reversal has occurred on this transaction due to a chargeback by your customer.', 'mp' ),
-							'guarantee'       => __( 'A reversal has occurred on this transaction due to your customer triggering a money-back guarantee.', 'mp' ),
-							'buyer-complaint' => __( 'A reversal has occurred on this transaction due to a complaint about the transaction from your customer.', 'mp' ),
-							'refund'          => __( 'A reversal has occurred on this transaction because you have given the customer a refund.', 'mp' ),
-							'other'           => __( 'A reversal has occurred on this transaction due to an unknown reason.', 'mp' )
+							'chargeback'      => __( 'Bei dieser Transaktion ist aufgrund einer Rückbuchung durch Deinen Kunden eine Stornierung aufgetreten.', 'mp' ),
+							'guarantee'       => __( 'Bei dieser Transaktion ist eine Stornierung aufgetreten, da Dein Kunde eine Geld-zurück-Garantie ausgelöst hat.', 'mp' ),
+							'buyer-complaint' => __( 'Bei dieser Transaktion ist eine Stornierung aufgrund einer Beschwerde Deines Kunden über die Transaktion aufgetreten.', 'mp' ),
+							'refund'          => __( 'Bei dieser Transaktion ist eine Stornierung aufgetreten, da Du dem Kunden eine Rückerstattung gewährt hast.', 'mp' ),
+							'other'           => __( 'Bei dieser Transaktion ist aus einem unbekannten Grund eine Stornierung aufgetreten.', 'mp' )
 						);
 						$status .= ': ' . $reverse_reasons[ $result["REASONCODE"] ];
 						$authorized = false;
 						break;
 					case 'Refunded':
-						$status     = __( 'You refunded the payment.', 'mp' );
+						$status     = __( 'Du hast die Zahlung zurückerstattet.', 'mp' );
 						$authorized = false;
 						break;
 					case 'Denied':
-						$status     = __( 'You denied the payment when it was marked as pending.', 'mp' );
+						$status     = __( 'Du hast die Zahlung abgelehnt, als sie als ausstehend markiert wurde.', 'mp' );
 						$authorized = false;
 						break;
 					case 'Pending':
 						$pending_str = array(
-							'address'        => __( 'The payment is pending because your customer did not include a confirmed shipping address and your Payment Receiving Preferences is set such that you want to manually accept or deny each of these payments. To change your preference, go to the Preferences	 section of your Profile.', 'mp' ),
-							'authorization'  => __( 'The payment is pending because it has been authorized but not settled. You must capture the funds first.', 'mp' ),
-							'echeck'         => __( 'The payment is pending because it was made by an eCheck that has not yet cleared.', 'mp' ),
-							'intl'           => __( 'The payment is pending because you hold a non-U.S. account and do not have a withdrawal mechanism. You must manually accept or deny this payment from your Account Overview.', 'mp' ),
-							'multi-currency' => __( 'You do not have a balance in the currency sent, and you do not have your Payment Receiving Preferences set to automatically convert and accept this payment. You must manually accept or deny this payment.', 'mp' ),
-							'order'          => __( 'The payment is pending because it is part of an order that has been authorized but not settled.', 'mp' ),
-							'paymentreview'  => __( 'The payment is pending while it is being reviewed by PayPal for risk.', 'mp' ),
-							'unilateral'     => __( 'The payment is pending because it was made to an email address that is not yet registered or confirmed.', 'mp' ),
-							'upgrade'        => __( 'The payment is pending because it was made via credit card and you must upgrade your account to Business or Premier status in order to receive the funds. It can also mean that you have reached the monthly limit for transactions on your account.', 'mp' ),
-							'verify'         => __( 'The payment is pending because you are not yet verified. You must verify your account before you can accept this payment.', 'mp' ),
-							'other'          => __( 'The payment is pending for an unknown reason. For more information, contact PayPal customer service.', 'mp' ),
+							'address'        => __( 'Die Zahlung steht noch aus, da Dein Kunde keine bestätigte Versandadresse angegeben hat und Deine Zahlungsempfangseinstellungen so festgelegt sind, dass Du jede dieser Zahlungen manuell akzeptieren oder ablehnen möchtest. Um Deine Einstellungen zu ändern, gehe zum Abschnitt Einstellungen Deines Profils.', 'mp' ),
+							'authorization'  => __( 'Die Zahlung steht noch aus, da sie genehmigt, aber nicht beglichen wurde. Du musst zuerst das Geld erfassen.', 'mp' ),
+							'echeck'         => __( 'Die Zahlung steht noch aus, da sie von einem noch nicht eingelösten eCheck getätigt wurde.', 'mp' ),
+							'intl'           => __( 'Die Zahlung steht noch aus, da Du ein Konto außerhalb der USA besitzt und keinen Auszahlungsmechanismus hast. Du musst diese Zahlung in Deiner Kontoübersicht manuell akzeptieren oder ablehnen.', 'mp' ),
+							'multi-currency' => __( 'Du hast kein Guthaben in der gesendeten Währung und Deine Zahlungsempfangseinstellungen sind nicht so eingestellt, dass diese Zahlung automatisch konvertiert und akzeptiert wird. Du musst diese Zahlung manuell akzeptieren oder ablehnen.', 'mp' ),
+							'order'          => __( 'Die Zahlung steht noch aus, da sie Teil einer Bestellung ist, die autorisiert, aber nicht abgewickelt wurde.', 'mp' ),
+							'paymentreview'  => __( 'Die Zahlung steht noch aus, während sie von PayPal auf Risiko überprüft wird.', 'mp' ),
+							'unilateral'     => __( 'Die Zahlung steht noch aus, da sie an eine E-Mail-Adresse gesendet wurde, die noch nicht registriert oder bestätigt wurde.', 'mp' ),
+							'upgrade'        => __( 'Die Zahlung steht noch aus, da sie per Kreditkarte erfolgt ist und Du Dein Konto auf den Business- oder Premier-Status aktualisieren musst, um das Geld zu erhalten. Dies kann auch bedeuten, dass Du das monatliche Limit für Transaktionen auf Deinem Konto erreicht hast.', 'mp' ),
+							'verify'         => __( 'Die Zahlung steht noch aus, da Du noch nicht überprüft wurdest. Du musst Dein Konto verifizieren, bevor Du diese Zahlung akzeptieren kannst.', 'mp' ),
+							'other'          => __( 'Die Zahlung steht aus einem unbekannten Grund aus. Weitere Informationen erhältst Du vom PayPal-Kundendienst.', 'mp' ),
 							'*'              => ''
 						);
-						$status      = __( 'The payment is pending', 'mp' );
+						$status      = __( 'Die Zahlung steht noch aus', 'mp' );
 						if ( isset( $pending_str[ $result["PENDINGREASON"] ] ) ) {
 							$status .= ': ' . $pending_str[ $result["PENDINGREASON"] ];
 						}
@@ -962,12 +964,12 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 									'gateway_public_name'  => $this->public_name,
 									'gateway_private_name' => $this->admin_name,
 									'status'               => array(
-										$timestamp => __( 'Paid', 'mp' ),
+										$timestamp => __( 'Bezahlt', 'mp' ),
 									),
 									'total'                => $cart->total(),
 									'currency'             => $this->currencyCode,
 									'transaction_id'       => mp_arr_get_value( 'PAYMENTINFO_0_TRANSACTIONID', $response ),
-									'method'               => __( 'Credit Card', 'mp' ),
+									'method'               => __( 'Kreditkarte', 'mp' ),
 								),
 								'cart'         => mp_cart(),
 								'paid'         => true,
@@ -1039,7 +1041,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		$req = array_merge( array( 'cmd' => '_notify-validate' ), $_POST );
 
 		$response = wp_remote_post( $domain, array(
-			'user-agent' => 'MarketPress/' . MP_VERSION . ': http://premium.wpmudev.org/project/e-commerce | PayPal Express Plugin/' . MP_VERSION,
+			'user-agent' => 'MarketPress/' . MP_VERSION . ': http://premium.psource.org/project/e-commerce | PayPal Express Plugin/' . MP_VERSION,
 			'body'       => http_build_query( $req ),
 			'sslverify'  => false,
 			'timeout'    => mp_get_api_timeout( $this->plugin_name ),
@@ -1048,7 +1050,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		//check results
 		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 || $response['body'] != 'VERIFIED' ) {
 			header( "HTTP/1.1 503 Service Unavailable" );
-			_e( 'There was a problem verifying the IPN string with PayPal. Please try again.', 'mp' );
+			_e( 'Beim Überprüfen der IPN-Zeichenfolge mit PayPal ist ein Problem aufgetreten. Bitte versuche es erneut.', 'mp' );
 			exit;
 		}
 
@@ -1057,84 +1059,84 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 		// process PayPal response
 		switch ( $payment_status ) {
 			case 'Canceled-Reversal':
-				$status = __( 'A reversal has been canceled; for example, when you win a dispute and the funds for the reversal have been returned to you.', 'mp' );
+				$status = __( 'Eine Stornierung wurde abgebrochen. Zum Beispiel, wenn Du einen Streit gewinnst und das Geld an Dich zurückgegeben wurde.', 'mp' );
 				$paid   = true;
 				break;
 
 			case 'Expired':
-				$status = __( 'The authorization period for this payment has been reached.', 'mp' );
+				$status = __( 'Die Autorisierungsfrist für diese Zahlung ist erreicht.', 'mp' );
 				$paid   = false;
 				break;
 
 			case 'Voided':
-				$status = __( 'An authorization for this transaction has been voided.', 'mp' );
+				$status = __( 'Eine Autorisierung für diese Transaktion wurde ungültig.', 'mp' );
 				$paid   = false;
 				break;
 
 			case 'Failed':
-				$status = __( "The payment has failed. This happens only if the payment was made from your customer's bank account.", 'mp' );
+				$status = __( "Die Zahlung ist fehlgeschlagen. Dies geschieht nur, wenn die Zahlung vom Bankkonto Deines Kunden erfolgt ist.", 'mp' );
 				$paid   = false;
 				break;
 
 			case 'Partially-Refunded':
-				$status = __( 'The payment has been partially refunded.', 'mp' );
+				$status = __( 'Die Zahlung wurde teilweise zurückerstattet.', 'mp' );
 				$paid   = true;
 				break;
 
 			case 'In-Progress':
-				$status = __( 'The transaction has not terminated, e.g. an authorization may be awaiting completion.', 'mp' );
+				$status = __( 'Die Transaktion wurde nicht beendet, Möglicherweise wartet eine Autorisierung auf den Abschluss.', 'mp' );
 				$paid   = false;
 				break;
 
 			case 'Completed':
-				$status = __( 'The payment has been completed, and the funds have been added successfully to your account balance.', 'mp' );
+				$status = __( 'Die getroffen wurde geschlossen und das Guthaben wurde erfolgreich Deinem Kontostand hinzugefügt.', 'mp' );
 				$paid   = true;
 				break;
 
 			case 'Processed':
-				$status = __( 'A payment has been accepted.', 'mp' );
+				$status = __( 'Eine Zahlung wurde akzeptiert.', 'mp' );
 				break;
 
 			case 'Reversed':
-				$status          = __( 'A payment was reversed due to a chargeback or other type of reversal. The funds have been removed from your account balance and returned to the buyer:', 'mp' );
+				$status          = __( 'Eine Zahlung wurde aufgrund einer Rückbuchung oder einer anderen Art der Stornierung storniert. Das Geld wurde von Deinem Kontostand entfernt und an den Käufer zurückgegeben:', 'mp' );
 				$reverse_reasons = array(
 					'none'            => '',
-					'chargeback'      => __( 'A reversal has occurred on this transaction due to a chargeback by your customer.', 'mp' ),
-					'guarantee'       => __( 'A reversal has occurred on this transaction due to your customer triggering a money-back guarantee.', 'mp' ),
-					'buyer-complaint' => __( 'A reversal has occurred on this transaction due to a complaint about the transaction from your customer.', 'mp' ),
-					'refund'          => __( 'A reversal has occurred on this transaction because you have given the customer a refund.', 'mp' ),
-					'other'           => __( 'A reversal has occurred on this transaction due to an unknown reason.', 'mp' )
+					'chargeback'      => __( 'Bei dieser Transaktion ist aufgrund einer Rückbuchung durch Deinen Kunden eine Stornierung aufgetreten.', 'mp' ),
+					'guarantee'       => __( 'Bei dieser Transaktion ist eine Stornierung aufgetreten, da Dein Kunde eine Geld-zurück-Garantie ausgelöst hat.', 'mp' ),
+					'buyer-complaint' => __( 'Bei dieser Transaktion ist eine Stornierung aufgrund einer Beschwerde Deines Kunden über die Transaktion aufgetreten.', 'mp' ),
+					'refund'          => __( 'Bei dieser Transaktion ist eine Stornierung aufgetreten, da Du dem Kunden eine Rückerstattung gewährt hast.', 'mp' ),
+					'other'           => __( 'Bei dieser Transaktion ist aus einem unbekannten Grund eine Stornierung aufgetreten.', 'mp' )
 				);
 				$status .= '<br />' . mp_arr_get_value( mp_get_post_value( 'reason_code' ), $reverse_reasons, '' );
 				$paid = false;
 				break;
 
 			case 'Refunded':
-				$status = __( 'You refunded the payment.', 'mp' );
+				$status = __( 'Du hast die Zahlung zurückerstattet.', 'mp' );
 				$paid   = false;
 				break;
 
 			case 'Denied':
-				$status = __( 'You denied the payment when it was marked as pending.', 'mp' );
+				$status = __( 'Du hast die Zahlung abgelehnt, als sie als ausstehend markiert wurde.', 'mp' );
 				$paid   = false;
 				break;
 
 			case 'Pending':
 				$pending_str = array(
-					'address'        => __( 'The payment is pending because your customer did not include a confirmed shipping address and your Payment Receiving Preferences is set such that you want to manually accept or deny each of these payments. To change your preference, go to the Preferences	 section of your Profile.', 'mp' ),
-					'authorization'  => __( 'The payment is pending because it has been authorized but not settled. You must capture the funds first.', 'mp' ),
-					'echeck'         => __( 'The payment is pending because it was made by an eCheck that has not yet cleared.', 'mp' ),
-					'intl'           => __( 'The payment is pending because you hold a non-U.S. account and do not have a withdrawal mechanism. You must manually accept or deny this payment from your Account Overview.', 'mp' ),
-					'multi-currency' => __( 'You do not have a balance in the currency sent, and you do not have your Payment Receiving Preferences set to automatically convert and accept this payment. You must manually accept or deny this payment.', 'mp' ),
-					'order'          => __( 'The payment is pending because it is part of an order that has been authorized but not settled.', 'mp' ),
-					'paymentreview'  => __( 'The payment is pending while it is being reviewed by PayPal for risk.', 'mp' ),
-					'unilateral'     => __( 'The payment is pending because it was made to an email address that is not yet registered or confirmed.', 'mp' ),
-					'upgrade'        => __( 'The payment is pending because it was made via credit card and you must upgrade your account to Business or Premier status in order to receive the funds. It can also mean that you have reached the monthly limit for transactions on your account.', 'mp' ),
-					'verify'         => __( 'The payment is pending because you are not yet verified. You must verify your account before you can accept this payment.', 'mp' ),
-					'other'          => __( 'The payment is pending for an unknown reason. For more information, contact PayPal customer service.', 'mp' ),
+					'address'        => __( 'Die Zahlung steht noch aus, da Dein Kunde keine bestätigte Versandadresse angegeben hat und Deine Zahlungsempfangseinstellungen so festgelegt sind, dass Du jede dieser Zahlungen manuell akzeptieren oder ablehnen möchtest. Um Deine Einstellungen zu ändern, gehe zum Abschnitt Einstellungen Deines Profils.', 'mp' ),
+					'authorization'  => __( 'Die Zahlung steht noch aus, da sie genehmigt, aber nicht beglichen wurde. Du musst zuerst das Geld erfassen.', 'mp' ),
+					'echeck'         => __( 'Die Zahlung steht noch aus, da sie von einem noch nicht eingelösten eCheck getätigt wurde.', 'mp' ),
+					'intl'           => __( 'Die Zahlung steht noch aus, da Du ein Konto außerhalb der USA besitzt und keinen Auszahlungsmechanismus hast. Du musst diese Zahlung in Deiner Kontoübersicht manuell akzeptieren oder ablehnen.', 'mp' ),
+					'multi-currency' => __( 'Du hast kein Guthaben in der gesendeten Währung und Deine Zahlungsempfangseinstellungen sind nicht so eingestellt, dass diese Zahlung automatisch konvertiert und akzeptiert wird. Du musst diese Zahlung manuell akzeptieren oder ablehnen.', 'mp' ),
+					'order'          => __( 'Die Zahlung steht noch aus, da sie Teil einer Bestellung ist, die autorisiert, aber nicht abgewickelt wurde.', 'mp' ),
+					'paymentreview'  => __( 'Die Zahlung steht noch aus, während sie von PayPal auf Risiko überprüft wird.', 'mp' ),
+					'unilateral'     => __( 'Die Zahlung steht noch aus, da sie an eine E-Mail-Adresse gesendet wurde, die noch nicht registriert oder bestätigt wurde.', 'mp' ),
+					'upgrade'        => __( 'Die Zahlung steht noch aus, da sie per Kreditkarte erfolgt ist und Du Dein Konto auf den Business- oder Premier-Status aktualisieren musst, um das Geld zu erhalten. Dies kann auch bedeuten, dass Du das monatliche Limit für Transaktionen auf Deinem Konto erreicht hast.', 'mp' ),
+					'verify'         => __( 'Die Zahlung steht noch aus, da Du noch nicht überprüft wurdest. Du musst Dein Konto verifizieren, bevor Du diese Zahlung akzeptieren kannst.', 'mp' ),
+					'other'          => __( 'Die Zahlung steht aus einem unbekannten Grund aus. Weitere Informationen erhältst Du vom PayPal-Kundendienst.', 'mp' ),
 					'*'              => ''
 				);
-				$status      = __( 'The payment is pending.', 'mp' );
+				$status      = __( 'Die Zahlung steht noch aus.', 'mp' );
 				$status .= '<br />' . mp_arr_get_value( mp_get_post_value( 'pending_reason' ), $pending_str, '' );
 				$paid = false;
 				break;
