@@ -6,6 +6,20 @@ Author: Mariusz Maniu (Incsub)
 
 class MP_Gateway_eWay31 extends MP_Gateway_API {
 	/**
+	 * @var string
+	 */
+	public $returnURL;
+
+	/**
+	 * @var string
+	 */
+	public $UserAPIKey;
+
+	/**
+	 * @var string
+	 */
+	public $UserPassword;
+	/**
 	 * Build of the gateway plugin
 	 *
 	 * @since 3.0

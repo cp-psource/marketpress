@@ -9,6 +9,23 @@
  */
 
 class MP_Gateway_eWay_Shared extends MP_Gateway_API {
+  /**
+   * Customer ID for the eWay API.
+   *
+   * @since 3.0
+   * @access public
+   * @var string
+   */
+  public $CustomerID;
+
+  /**
+   * Username for the eWay API.
+   *
+   * @since 3.0
+   * @access public
+   * @var string
+   */
+  public $UserName;
 	/**
 	 * Build of the gateway plugin
 	 *

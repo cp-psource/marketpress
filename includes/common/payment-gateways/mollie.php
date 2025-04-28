@@ -26,7 +26,7 @@ class MP_Gateway_Mollie extends MP_Gateway_API {
 	//whether if this is the only enabled gateway it can skip the payment_form step
 	var $skip_form				 = true;
 	//credit card vars
-	var $API_Username, $API_Password, $SandboxFlag, $returnURL, $cancelURL, $API_Endpoint, $version, $currencyCode, $locale;
+	var $API_Username, $API_Password, $SandboxFlag, $returnURL, $cancelURL, $API_Endpoint, $version, $currencyCode, $locale, $API_Key;
 	//if the gateway uses the order confirmation step during checkout (e.g. PayPal)
 	var $use_confirmation_step	 = true;
 

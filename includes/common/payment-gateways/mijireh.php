@@ -27,6 +27,9 @@ class MP_Gateway_Mijireh extends MP_Gateway_API {
 	var $skip_form				 = true;
 	//credit card vars
 	var $API_Username, $API_Password, $SandboxFlag, $returnURL, $cancelURL, $API_Endpoint, $version, $currencyCode, $locale;
+
+	// access key for Mijireh
+	var $access_key;
 	//if the gateway uses the order confirmation step during checkout (e.g. PayPal)
 	var $use_confirmation_step	 = true;
 	var $currencies				 = array();

@@ -26,7 +26,7 @@ class MP_Gateway_PIN extends MP_Gateway_API {
 	//whether if this is the only enabled gateway it can skip the payment_form step
 	var $skip_form				 = false;
 	//api vars
-	var $publishable_key, $private_key, $currency;
+	var $publishable_key, $private_key, $currency, $public_key;
 
 	/**
 	 * Gateway currencies

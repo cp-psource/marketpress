@@ -26,7 +26,7 @@ class MP_Gateway_Wepay extends MP_Gateway_API {
 	//whether if this is the only enabled gateway it can skip the payment_form step
 	var $skip_form = false;
 	//api vars
-	var $publishable_key, $private_key, $currency, $mode, $checkout_type;
+	var $publishable_key, $private_key, $currency, $mode, $checkout_type, $client_id, $client_secret, $access_token, $account_id;
 
 	/**
 	 * Runs when your class is instantiated. Use to setup your plugin instead of __construct()
