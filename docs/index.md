@@ -1,15 +1,17 @@
 ---
-layout: default
 title: Home
 ---
 
 <link rel="stylesheet" href="assets/style.css">
+
+<h2 align="center" style="color:#38c2bb;">📚 Inhaltsverzeichnis</h2>
 
 <div class="menu">
   <a href="#features" style="color:#38c2bb;">🚀 Features</a> •
   <a href="#schnelleinstieg" style="color:#38c2bb;">📖 Schnelleinstieg</a> •
   <a href="https://github.com/cp-psource/marketpress/discussions" style="color:#38c2bb;">💬 Forum</a> •
   <a href="https://github.com/cp-psource/marketpress/releases" style="color:#38c2bb;">📝 Download</a>
+  <a href="readme-en.md" style="color:#38c2bb;">📝 ENGLISCH</a>
 </div>
 
 # MarketPress eCommerce

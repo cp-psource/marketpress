@@ -1,13 +1,19 @@
-# MarketPress eCommerce
+---
+title: Home
+---
 
-<div style="display: flex; justify-content: space-around; background-color: #f3f3f3; padding: 10px; border-radius: 5px;">
-  <a href="https://cp-psource.github.io/marketpress/" style="text-decoration: none; color: #0366d6; font-weight: bold;">Home</a>
-  <a href="https://github.com/cp-psource/marketpress/releases" style="text-decoration: none; color: #0366d6; font-weight: bold;">Downloads</a>
-  <a href="https://github.com/cp-psource/marketpress/wiki" style="text-decoration: none; color: #0366d6; font-weight: bold;">Docs</a>
-  <a href="https://github.com/cp-psource/marketpress/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
-  <a href="https://github.com/cp-psource/marketpress/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
-  <a href="https://cp-psource.github.io/marketpress/psource.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">PSOURCE</a>
+<link rel="stylesheet" href="assets/style.css">
+
+<h2 align="center" style="color:#38c2bb;">📚 Inhaltsverzeichnis</h2>
+
+<div class="menu">
+  <a href="#features" style="color:#38c2bb;">🚀 Features</a> •
+  <a href="#schnelleinstieg" style="color:#38c2bb;">📖 Schnelleinstieg</a> •
+  <a href="https://github.com/cp-psource/marketpress/discussions" style="color:#38c2bb;">💬 Forum</a> •
+  <a href="https://github.com/cp-psource/marketpress/releases" style="color:#38c2bb;">📝 Download</a>
+  <a href="index.md" style="color:#38c2bb;">📝 DEUTSCH</a>
 </div>
+# MarketPress eCommerce
 
 ## Sell everything from digital downloads to physical goods. MarketPress is the eCommerce plugin that does it all – no extensions required.
 
