@@ -80,15 +80,15 @@ jQuery( document ).ready( function( $ ) {
         $( this ).inlineEdit( $( '<input name="temp" class="mp_inline_temp_value" type="text" value="" />' ), $( 'input.editable_value' ) );//' + $.trim( $( this ).html( ) ) + '
     } );
 
-    $( ".mp_inline_temp_value" ).live( 'keyup', function( e ) {
+    $( document ).on( 'keyup', ".mp_inline_temp_value", function( e ) {
         if ( e.keyCode == 13 ) {
             $( this ).blur( );
         }
         e.preventDefault( );
     } );
 
-    $( '#mp-product-price-inventory-variants-metabox' ).keydown( function( event ) {//window
-        if ( event.keyCode == 13 ) {
+    $( '#mp-product-price-inventory-variants-metabox' ).on( 'keydown', function( event ) {
+        if ( event.keyCode === 13 ) {
             event.preventDefault();
             return false;
         }
@@ -215,13 +215,13 @@ jQuery( document ).ready( function( $ ) {
     } )
 
     /* Close thickbox window on link / cancel click */
-    $( '.mp_popup_controls a.cancel' ).live( 'click', function( e ) {
+    $( document ).on( 'click', '.mp_popup_controls a.cancel', function( e ) {
         parent.jQuery.colorbox.close();
         return false;
         e.preventDefault();
     } );
 
-    $( "a.open_ajax" ).live( 'click', function( e ) {
+    $( document ).on( 'click', "a.open_ajax", function( e ) {
         $.colorbox( {
             href: mp_product_admin_i18n.ajaxurl + '?action=mp_variation_popup&variation_id=' + ( $( this ).attr( 'data-popup-id' ) ),
             opacity: .7,
@@ -244,7 +244,7 @@ jQuery( document ).ready( function( $ ) {
         // return false;
     } );
 
-    $( '#variant_add' ).live( 'click', function( e ) {
+    $( document ).on( 'click', '#variant_add', function( e ) {
         var url = mp_product_admin_i18n.ajaxurl + '?action=ajax_add_new_variant';
 
         $.post( url, {
@@ -279,7 +279,7 @@ jQuery( document ).ready( function( $ ) {
         e.preventDefault();
     } );
 
-    $( 'body' ).live( 'mp-variation-popup-loaded', function() {
+    $( 'body' ).on( 'mp-variation-popup-loaded', function() {
 
         $( '#variation_popup a.remove_popup_image' ).on( 'click', function( e ) {
 
@@ -388,7 +388,7 @@ jQuery( document ).ready( function( $ ) {
             $( '.variation_content_type_plain' ).show();
         }
 
-        $( "input[name='variation_content_type']" ).live( 'change', function() {
+        $( document ).on( 'change', "input[name='variation_content_type']", function() {
             var variation_content_type = $( "input[name='variation_content_type']:checked" ).val();
             if ( variation_content_type == 'html' ) {
                 $( '.variation_description_button' ).show();
@@ -401,7 +401,7 @@ jQuery( document ).ready( function( $ ) {
 
     } );
 
-    $( '.has_controller' ).live( 'change', function() {
+    $( document ).on( 'change', '.has_controller', function() {
         var parent_holder = $( this ).closest( '.fieldset_check' );
         var controller = $( this );
         if ( controller.is( ':checked' ) ) {
@@ -412,7 +412,7 @@ jQuery( document ).ready( function( $ ) {
     } );
 
 
-    $( '#variation_popup input, #variation_popup textarea, #variation_popup select' ).live( 'change', function( e ) {
+    $( document ).on( 'change', '#variation_popup input, #variation_popup textarea, #variation_popup select', function( e ) {
         // Setup form validation on the #register-form element
 
         $( "#variation_popup" ).validate( {
@@ -439,7 +439,7 @@ jQuery( document ).ready( function( $ ) {
 
     } );
 
-    $( '#save-variation-popup-data, .variation_description_button' ).live( 'click', function( e ) {
+    $( document ).on( 'click', '#save-variation-popup-data, .variation_description_button', function( e ) {
         var form = $( 'form#variation_popup' );
 
         $( '.mp_ajax_response' ).attr( 'class', 'mp_ajax_response' );
@@ -477,7 +477,7 @@ jQuery( document ).ready( function( $ ) {
     } );
 
 
-    $( '#mp_dashboard_widget_inventory_threshhold' ).live( 'change', function( e ) {
+    $( document ).on( 'change', '#mp_dashboard_widget_inventory_threshhold', function( e ) {
 
         $( '.mp-dashboard-widget-low-stock-wrap-overlay' ).show();
 

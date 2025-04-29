@@ -1,6 +1,6 @@
 jQuery( document ).ready( function( $ ) {
 
-    $( '.mp-variation-row .mp-variation-attribute-name' ).live( 'keyup', function( e ) {
+    $( document ).on( 'keyup', '.mp-variation-row .mp-variation-attribute-name', function( e ) {
         if ( $( this ).val() == '' ) {
             $( this ).addClass( 'mp_variation_invalid' );
         } else {
@@ -8,7 +8,7 @@ jQuery( document ).ready( function( $ ) {
         }
     } );
 
-    $( '.mp-variation-row .text-wrap' ).live( 'click', function( e ) {
+    $( document ).on( 'click', '.mp-variation-row .text-wrap', function( e ) {
 
         //if ( $( this ).val() == '' || $( this ).val() == '[]' ) {
         //  $( this ).parent().find( '.mp-variation-field-required' ).addClass( 'mp_variation_invalid' );
@@ -17,7 +17,7 @@ jQuery( document ).ready( function( $ ) {
         //}
     } );
 
-    $( 'textarea.variation_values' ).live( 'keyup', function( e ) {
+    $( document ).on( 'keyup', 'textarea.variation_values', function( e ) {
 
         var keyCode = e.keyCode || e.which;
 
@@ -104,7 +104,7 @@ jQuery( document ).ready( function( $ ) {
         $( this ).repeatable_fields( );
     } );
 
-	$( '.mp-variation-add-all' ).live( 'click', function( e ) {
+    $( document ).on( 'click', '.mp-variation-add-all', function( e ) {
 		e.preventDefault();
 		var $variation_tags_textarea = $( this ).parents( '.variation-row' ).find( 'textarea.variation_values' ),
 		variation_tags = $( this ).parents( '.variation-row' ).find( '.mp_product_attributes_select option:selected' ).attr( 'data-tags' ),
@@ -117,7 +117,7 @@ jQuery( document ).ready( function( $ ) {
 		$variation_tags_textarea.textext()[0].tags().addTags( all_tags );
 	} );
 
-	$( '.mp_product_attributes_select' ).live( 'change', function( ) {
+    $( document ).on( 'change', '.mp_product_attributes_select', function( ) {
 		var $variation_tags_textarea = $( this ).parents( '.variation-row' ).find( 'textarea.variation_values' );
 		$variation_tags_textarea.textext()[0].input().unbind('getSuggestions');
 		if ( $( this ).val( ) == '-1' ) {
@@ -145,7 +145,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 	} );
 
-    $( '.select_attributes_filter a' ).live( 'click', function( event ) {
+    $( document ).on( 'click', '.select_attributes_filter a', function( event ) {
         $( '.select_attributes_filter a' ).removeClass( 'selected' );
         if ( $( this ).hasClass( 'selected' ) ) {
             $( this ).removeClass( 'selected' );
@@ -177,11 +177,11 @@ jQuery( document ).ready( function( $ ) {
         event.preventDefault( );
     } );
 
-    $( ".select_attributes_filter a" ).live( 'focus', function( event ) {
+    $( document ).on( 'focus', '.select_attributes_filter a', function( event ) {
         $( this ).blur( );
     } );
 
-    $( '#mp_make_combinations, #publishing-action #publish' ).live( 'click', function( event ) {//
+    $( document ).on( 'click', '#mp_make_combinations, #publishing-action #publish', function( event ) {//
 
         var caller_id = $( this ).attr( 'id' );
 
@@ -369,13 +369,13 @@ jQuery( document ).ready( function( $ ) {
     $( ".original_value" ).each( function( index ) {
         $( this ).inlineEdit( $( '<input name="temp" class="mp_inline_temp_value" type="text" value="" />' ), $( 'input.editable_value' ) ); //' + $.trim( $( this ).html( ) ) + '
     } );
-    $( ".mp_inline_temp_value" ).live( 'keyup', function( e ) {
+    $( document ).on( 'keyup', '.mp_inline_temp_value', function( e ) {
         if ( e.keyCode == 13 ) {
             $( this ).blur( );
         }
         e.preventDefault( );
     } );
-    $( '.mp_variations_table_box [name="selected_variation[]"]' ).live('keydown', function( e ) {
+    $( document ).on('keydown', '.mp_variations_table_box [name="selected_variation[]"]', function( e ) {
 		if ( e.keyCode == 9 ) {
 			e.preventDefault( );
 			var parentContainer = $( this ).parent( 'th' );
@@ -385,7 +385,7 @@ jQuery( document ).ready( function( $ ) {
            $( this ).blur( );
         }
     });
-	$( ".mp_inline_temp_value" ).live( 'keydown', function( e ) {
+    $( document ).on( 'keydown', ".mp_inline_temp_value", function( e ) {
 		if ( e.keyCode == 9 ) {
 			e.preventDefault( );
 			
@@ -396,9 +396,9 @@ jQuery( document ).ready( function( $ ) {
             $( this ).blur( );
         }
 	});
-    $( '#mp-product-price-inventory-variants-metabox' ).keydown( function( event ) {//window
-        if ( event.keyCode == 13 ) {
-            event.preventDefault( );
+    $( '#mp-product-price-inventory-variants-metabox' ).on( 'keydown', function( event ) {
+        if ( event.key === 'Enter' ) {
+            event.preventDefault();
             return false;
         }
     } );
@@ -658,12 +658,12 @@ jQuery( document ).ready( function( $ ) {
     } )
 
     /* Close thickbox window on link / cancel click */
-    $( '.mp_popup_controls a.cancel' ).live( 'click', function( e ) {
+    $( document ).on( 'click', '.mp_popup_controls a.cancel', function( e ) {
         parent.jQuery.colorbox.close( );
         return false;
         e.preventDefault( );
     } );
-    $( "a.open_ajax" ).live( 'click', function( e ) {
+    $( document ).on( 'click', "a.open_ajax", function( e ) {
         $.colorbox( {
             href: mp_product_admin_i18n.ajaxurl + '?action=mp_variation_popup&variation_id=' + ( $( this ).attr( 'data-popup-id' ) ),
             opacity: .7,
@@ -687,7 +687,7 @@ jQuery( document ).ready( function( $ ) {
         //$.colorbox.remove
         // return false;
     } );
-    $( '#variant_add' ).live( 'click', function( e ) {
+    $( document ).on( 'click', '#variant_add', function( e ) {
         var url = mp_product_admin_i18n.ajaxurl + '?action=ajax_add_new_variant';
         $.post( url, {
             action: 'ajax_add_new_variant',
@@ -719,7 +719,7 @@ jQuery( document ).ready( function( $ ) {
         } );
         e.preventDefault( );
     } );
-    $( 'body' ).live( 'mp-variation-popup-loaded', function( ) {
+    $( 'body' ).on( 'mp-variation-popup-loaded', function( ) {
 
         $( '#variation_popup a.remove_popup_image' ).on( 'click', function( e ) {
 
@@ -806,7 +806,7 @@ jQuery( document ).ready( function( $ ) {
             $( '.variation_content_type_plain' ).show( );
         }
 
-        $( "input[name='variation_content_type']" ).live( 'change', function( ) {
+        $( document ).on( 'change', "input[name='variation_content_type']", function( ) {
             var variation_content_type = $( "input[name='variation_content_type']:checked" ).val( );
             if ( variation_content_type == 'html' ) {
                 $( '.variation_description_button' ).show( );
@@ -883,7 +883,7 @@ jQuery( document ).ready( function( $ ) {
             } );
         } );
 
-        $( '#variation_popup input, #variation_popup textarea, #variation_popup select' ).live( 'keypress', function( e ) {
+        $( document ).on( 'keypress', '#variation_popup input, #variation_popup textarea, #variation_popup select', function( e ) {
         
             $( '#save-variation-popup-data' ).toggleClass( "disabled", !$( 'form#variation_popup' ).valid() );
         
@@ -891,7 +891,7 @@ jQuery( document ).ready( function( $ ) {
 
     } );
     
-    $( '.has_controller' ).live( 'change', function( ) {
+    $( document ).on( 'change', '.has_controller', function( ) {
         var parent_holder = $( this ).closest( '.fieldset_check' );
         var controller = $( this );
         if ( controller.is( ':checked' ) ) {
@@ -903,7 +903,7 @@ jQuery( document ).ready( function( $ ) {
 
     } );
     
-    $( '#save-variation-popup-data, .variation_description_button' ).live( 'click', function( e ) {
+    $( document ).on( 'click', '#save-variation-popup-data, .variation_description_button', function( e ) {
         var form = $( 'form#variation_popup' );
         if( !form.valid() ) {
             e.preventDefault( );

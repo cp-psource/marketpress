@@ -683,15 +683,14 @@
         hiddenInput = $( self.opts( OPT_HTML_HIDDEN ) );
 
         input
-            .wrap( container )
-            .keydown( function( e ) {
-                return self.onKeyDown( e )
-            } )
-            .keyup( function( e ) {
-                return self.onKeyUp( e )
-            } )
-            .data( 'textext', self )
-            ;
+            .wrap(container)
+            .on('keydown', function(e) {
+            return self.onKeyDown(e);
+            })
+            .on('keyup', function(e) {
+            return self.onKeyUp(e);
+            })
+            .data('textext', self);
 
         // keep references to html elements using jQuery.data() to avoid circular references
         $( self ).data( {
