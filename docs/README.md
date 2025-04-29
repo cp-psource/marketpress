@@ -1,11 +1,16 @@
-<h2 align="center" style="color:#38c2bb;">📚 Inhaltsverzeichnis</h2>
+---
+layout: default
+title: Home
+---
 
-<p align="center">
+<link rel="stylesheet" href="assets/style.css">
+
+<div class="menu">
   <a href="#features" style="color:#38c2bb;">🚀 Features</a> •
   <a href="#schnelleinstieg" style="color:#38c2bb;">📖 Schnelleinstieg</a> •
   <a href="https://github.com/cp-psource/marketpress/discussions" style="color:#38c2bb;">💬 Forum</a> •
   <a href="https://github.com/cp-psource/marketpress/releases" style="color:#38c2bb;">📝 Download</a>
-</p>
+</div>
 
 # MarketPress eCommerce
 
