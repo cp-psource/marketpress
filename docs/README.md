@@ -10,7 +10,7 @@ MarketPress bietet die einfachste Möglichkeit, alles online zu verkaufen, mit u
 
 MarketPress ist unser bislang ehrgeizigstes Plugin-Update. Es vereint Hunderte von Stunden Entwicklungszeit mit den Anfragen und dem Feedback der Mitglieder. MarketPress war noch nie einfacher, von der Kundenakquise bis zum Bezahlvorgang, und es wird immer besser.
 
-![marketpress-coupon-735x470](https://n3rds.work/wp-content/uploads/2023/10/marketpress-coupon-735x470.jpg)
+![marketpress-coupon-735x470](assets/marketpress-coupon-735x470.jpg)
 
   Gutscheine sind nur ein Beispiel für unseren wachsenden Katalog an Add-ons.
 
@@ -18,7 +18,7 @@ MarketPress ist unser bislang ehrgeizigstes Plugin-Update. Es vereint Hunderte v
 
 Egal, ob Du individuelle T-Shirts verkaufen möchtest, die Du selbst in Deiner Garage entworfen und im Siebdruckverfahren gedruckt hast, herunterladbare Kopien der neuesten EP Deiner Band oder sogar Deine Zeit als Berater – MarketPress macht alles möglich.
 
-![marketpress-similar-products-735x470](https://n3rds.work/wp-content/uploads/2023/10/marketpress-similar-products-735x470-583x373.jpg)
+![marketpress-similar-products-735x470](assets/similar-products-735x470-583x373.jpg)
 
   Variationen sind leistungsfähiger und einfacher zu verwenden.
 
