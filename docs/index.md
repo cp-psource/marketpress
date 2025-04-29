@@ -382,3 +382,10 @@ Wenn Du ein Caching-Plugin wie W3 Total Cache verwendest oder einen anderen Cach
 * mp_globalcart_*
 
 Wenn Du W3 Total Cache verwendest, möchtest Du diese zur Einstellung „Abgelehnte Cookies“ hinzufügen (ein Element pro Zeile) unter: _Leistung -> Seiten-Cache -> Erweitert_ Wenn Dein Server Varnish-Cache verwendet, wende Dich bitte an Dein Hosting Bitte Deinen Anbieter, diese Ausnahmen hinzuzufügen.
+
+<footer class="psource-footer">
+  <p>
+    ❤️ Entwickelt mit Liebe von <a href="https://github.com/cp-psource" target="_blank">PSOURCE</a><br>
+    © 2025 – Alle Rechte vorbehalten
+  </p>
+</footer>

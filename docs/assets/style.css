@@ -20,3 +20,23 @@
     background-color: #38c2bb;
     color: #ffffff!important;
   }
+
+  .psource-footer {
+    margin-top: 60px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    text-align: center;
+    border-top: 2px solid #38c2bb;
+    font-size: 0.9rem;
+    color: #333;
+  }
+  
+  .psource-footer a {
+    color: #38c2bb;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .psource-footer a:hover {
+    text-decoration: underline;
+  }
