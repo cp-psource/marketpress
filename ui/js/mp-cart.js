@@ -652,14 +652,14 @@ var mp_cart = { };
     mp_cart.initCartAnimation = function() {
         var $cart = $( '#mp-floating-cart' );
 
-        $cart.hover( function() {
+        $cart.on('mouseenter', function() {
             $cart.addClass( 'in-transition' );
             setTimeout( function() {
                 $cart.addClass( 'visible' );
             }, 300 );
-        }, function() {
+        }).on('mouseleave', function() {
             $cart.removeClass( 'visible in-transition' );
-        } ).on('click', function() {
+        }).on('click', function() {
             $cart.addClass( 'in-transition' );
             setTimeout( function() {
                 $cart.addClass( 'visible' );

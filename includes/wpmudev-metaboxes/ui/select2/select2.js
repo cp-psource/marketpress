@@ -428,7 +428,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 if (handler && typeof handler.abort === "function") { handler.abort(); }
 
                 if (options.params) {
-                    if ($.isFunction(options.params)) {
+                    if (typeof options.params === "function") {
                         $.extend(params, options.params.call(self));
                     } else {
                         $.extend(params, options.params);
@@ -485,7 +485,7 @@ the specific language governing permissions and limitations under the Apache Lic
         if (dataItem.text) {
             text = dataItem.text;
             // if text is not a function we assume it to be a key name
-            if (!$.isFunction(text)) {
+            if (typeof text !== "function") {
                 dataText = dataItem.text; // we need to store this in a separate variable because in the next step data gets reset and data.text is no longer available
                 text = function (item) { return item[dataText]; };
             }
@@ -525,7 +525,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
     // TODO javadoc
     function tags(data) {
-        var isFunc = $.isFunction(data);
+        var isFunc = typeof data === "function";
         return function (query) {
             var t = query.term, filtered = {results: []};
             var result = isFunc ? data(query) : data;
@@ -1043,7 +1043,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     } else if ("tags" in opts) {
                         opts.query = tags(opts.tags);
                         if (opts.createSearchChoice === undefined) {
-                            opts.createSearchChoice = function (term) { return {id: $.trim(term), text: $.trim(term)}; };
+                            opts.createSearchChoice = function (term) { return {id: term.trim(), text: term.trim()}; };
                         }
                         if (opts.initSelection === undefined) {
                             opts.initSelection = function (element, callback) {
@@ -1051,7 +1051,7 @@ the specific language governing permissions and limitations under the Apache Lic
                                 $(splitVal(element.val(), opts.separator)).each(function () {
                                     var obj = { id: this, text: this },
                                         tags = opts.tags;
-                                    if ($.isFunction(tags)) tags=tags();
+                                    if (typeof tags === "function") tags=tags();
                                     $(tags).each(function() { if (equal(this.id, obj.id)) { obj = this; return false; } });
                                     data.push(obj);
                                 });
@@ -2319,7 +2319,7 @@ the specific language governing permissions and limitations under the Apache Lic
                             }
                             return is_match;
                         },
-                        callback: !$.isFunction(callback) ? $.noop : function() {
+                        callback: typeof callback !== "function" ? $.noop : function() {
                             callback(match);
                         }
                     });
@@ -2591,7 +2591,7 @@ the specific language governing permissions and limitations under the Apache Lic
                             }
                             return is_match;
                         },
-                        callback: !$.isFunction(callback) ? $.noop : function() {
+                        callback: !(typeof callback === "function") ? $.noop : function() {
                             // reorder matches based on the order they appear in the ids array because right now
                             // they are in the order in which they appear in data array
                             var ordered = [];

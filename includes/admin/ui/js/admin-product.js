@@ -271,17 +271,19 @@ jQuery( document ).ready( function( $ ) {
     };
     $.fn.inlineEdit = function( replaceWith, connectWith ) {
         var inline_icon_edit = '<span class="inline-edit-icon"><i class="fa fa-pencil fa-lg"></i></span>';
-        $( this ).hover( function( ) {
+        $( this ).on('mouseenter', function( ) {
             $( this ).append( inline_icon_edit );
             $( this ).parent( ).find( '.currency' ).hide( );
-        }, function( ) {
+        });
+
+        $( this ).on('mouseleave', function( ) {
             $( this ).find( '.inline-edit-icon' ).remove( );
             if ( $( this ).parent( ).find( '.currency' ).hasClass( '.no_currency' ) ) {
-                //Currency shouln't be shown
+                //Currency shouldn't be shown
             } else {
                 $( this ).parent( ).find( '.currency' ).show( );
             }
-        } );
+        });
 
         $( this ).on( 'click', function( ) {
 

@@ -349,7 +349,7 @@ jQuery.fn = jQuery.prototype = {
 
 	filter: function( selector ) {
 		return this.pushStack(
-			jQuery.isFunction( selector ) &&
+			typeof selector === "function" &&
 			jQuery.grep(this, function(elem, i){
 				return selector.call( elem, i );
 			}) ||
@@ -573,7 +573,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 	}
 
 	// Handle case when target is a string or something (possible in deep copy)
-	if ( typeof target !== "object" && !jQuery.isFunction(target) )
+	if ( typeof target !== "object" && typeof target !== "function" )
 		target = {};
 
 	// extend jQuery itself if only one argument is passed
@@ -698,7 +698,7 @@ jQuery.extend({
 
 	prop: function( elem, value, type, i, name ) {
 		// Handle executable functions
-		if ( jQuery.isFunction( value ) )
+		if ( typeof value === "function" )
 			value = value.call( elem, i );
 
 		// Handle passing in a number to a CSS property
@@ -1074,10 +1074,10 @@ jQuery.extend({
 		if( array != null ){
 			var i = array.length;
 			// The window, strings (and functions) also have 'length'
-			if( i == null || typeof array === "string" || jQuery.isFunction(array) || array.setInterval )
+			if (i == null || typeof array === "string" || typeof array === "function" || array.setInterval)
 				ret[0] = array;
 			else
-				while( i )
+				while (i)
 					ret[--i] = array[i];
 		}
 
@@ -3242,7 +3242,7 @@ jQuery.fn.extend({
 		// If the second parameter was provided
 		if ( params )
 			// If it's a function
-			if ( jQuery.isFunction( params ) ) {
+			if ( typeof params === "function" ) {
 				// We assume that it's the callback
 				callback = params;
 				params = null;
@@ -3322,7 +3322,7 @@ jQuery.extend({
   
 	get: function( url, data, callback, type ) {
 		// shift arguments if data argument was ommited
-		if ( jQuery.isFunction( data ) ) {
+		if ( typeof data === "function" ) {
 			callback = data;
 			data = null;
 		}
@@ -3345,7 +3345,7 @@ jQuery.extend({
 	},
 
 	post: function( url, data, callback, type ) {
-		if ( jQuery.isFunction( data ) ) {
+		if ( typeof data === "function" ) {
 			callback = data;
 			data = {};
 		}
@@ -3756,7 +3756,7 @@ jQuery.extend({
 						add( j, this );
 					});
 				else
-					add( j, jQuery.isFunction(a[j]) ? a[j]() : a[j] );
+					add( j, typeof a[j] === "function" ? a[j]() : a[j] );
 
 		// Return the resulting serialization
 		return s.join("&").replace(/%20/g, "+");
@@ -3849,7 +3849,7 @@ jQuery.fn.extend({
 	toggle: function( fn, fn2 ){
 		var bool = typeof fn === "boolean";
 
-		return jQuery.isFunction(fn) && jQuery.isFunction(fn2) ?
+		return typeof fn === "function" && typeof fn2 === "function" ?
 			this._toggle.apply( this, arguments ) :
 			fn == null || bool ?
 				this.each(function(){
@@ -3969,9 +3969,9 @@ jQuery.extend({
 	speed: function(speed, easing, fn) {
 		var opt = typeof speed === "object" ? speed : {
 			complete: fn || !fn && easing ||
-				jQuery.isFunction( speed ) && speed,
+				typeof speed === "function" && speed,
 			duration: speed,
-			easing: fn && easing || easing && !jQuery.isFunction(easing) && easing
+			easing: (fn && easing) || (easing && typeof easing !== "function" && easing)
 		};
 
 		opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
@@ -3982,7 +3982,7 @@ jQuery.extend({
 		opt.complete = function(){
 			if ( opt.queue !== false )
 				jQuery(this).dequeue();
-			if ( jQuery.isFunction( opt.old ) )
+			if ( typeof opt.old === "function" )
 				opt.old.call( this );
 		};
 
