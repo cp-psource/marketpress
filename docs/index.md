@@ -35,7 +35,7 @@ MarketPress ist unser bislang ehrgeizigstes Plugin-Update. Es vereint Hunderte v
 
 Egal, ob Du individuelle T-Shirts verkaufen möchtest, die Du selbst in Deiner Garage entworfen und im Siebdruckverfahren gedruckt hast, herunterladbare Kopien der neuesten EP Deiner Band oder sogar Deine Zeit als Berater – MarketPress macht alles möglich.
 
-![marketpress-similar-products-735x470](assets/images/similar-products-735x470-583x373.jpg)
+![similar-products-735x470](assets/images/similar-products-735x470-583x373.jpg)
 
   Variationen sind leistungsfähiger und einfacher zu verwenden.
 
@@ -47,7 +47,7 @@ Variationen wurden von Grund auf neu geschrieben, sodass Du jetzt unbegrenzt vie
 
 Akzeptiere Zahlungen über 15 beliebte Zahlungsabwickler, darunter Stripe, PayPal und Authorize.net. Mache es jedem leicht, Dich zu bezahlen. Eine reibungslose Transaktionsabwicklung ist für den Aufbau von Vertrauen und Kundenbindung unerlässlich.
 
-![marketpress-credit-card-735x470](assets/images/credit-card-735x470.png)
+![credit-card-735x470](assets/images/credit-card-735x470.jpg)
 
   Weitere integrierte Zahlungsoptionen.
 
