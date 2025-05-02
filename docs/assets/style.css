@@ -21,7 +21,66 @@
     color: #ffffff!important;
   }
 
-  .psource-footer {
+  body {
+    font-family: system-ui, sans-serif;
+    background: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .site-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1rem;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+  
+  .site-header {
+    border-bottom: 2px solid #38c2bb;
+    margin-bottom: 1.5rem;
+  }
+  
+  .main-nav {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+  
+  .main-nav a {
+    color: #38c2bb;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  
+  .main-content {
+    flex: 2 1 60%;
+  }
+  
+  .sidebar {
+    flex: 1 1 30%;
+    background: #f0f8f8;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .widget h3 {
+    color: #38c2bb;
+    margin-top: 0;
+  }
+  
+  .widget ul {
+    padding-left: 1rem;
+  }
+  
+  .site-footer {
     margin-top: 60px;
     padding: 20px;
     background-color: #f8f8f8;
@@ -31,12 +90,21 @@
     color: #333;
   }
   
-  .psource-footer a {
+  .site-footer a {
     color: #38c2bb;
     text-decoration: none;
     font-weight: bold;
   }
-  
-  .psource-footer a:hover {
+
+  .site-footer a:hover {
     text-decoration: underline;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background: #38c2bb;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
   }

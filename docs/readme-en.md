@@ -1,15 +1,12 @@
 ---
-title: Home
+layout: psource-theme
+title: "Multiste-Reader"
 ---
 
-<link rel="stylesheet" href="assets/style.css">
-
-<h2 align="center" style="color:#38c2bb;">📚 Inhaltsverzeichnis</h2>
+<h2 align="center" style="color:#38c2bb;">📚 MarketPress Reloaded</h2>
 
 <div class="menu">
-  <a href="#features" style="color:#38c2bb;">🚀 Features</a> •
-  <a href="#schnelleinstieg" style="color:#38c2bb;">📖 Schnelleinstieg</a> •
-  <a href="https://github.com/cp-psource/marketpress/discussions" style="color:#38c2bb;">💬 Forum</a> •
+  <a href="https://github.com/cp-psource/marketpress/discussions" style="color:#38c2bb;">💬 Forum</a>
   <a href="https://github.com/cp-psource/marketpress/releases" style="color:#38c2bb;">📝 Download</a>
   <a href="index.md" style="color:#38c2bb;">📝 DEUTSCH</a>
 </div>
@@ -393,15 +390,3 @@ If you are using a caching plugin such as W3 Total Cache, or have another cachin
 
 If you are using W3 Total Cache you'll want to add these to the "Rejected cookies" setting (one item per line), inside of: _Performance -> Page Cache -> Advanced_ If your server's using Varnish cache, please contact your hosting provider and ask them to add these exceptions.
 
-<div style="display: flex; justify-content: space-around; background-color: #f3f3f3; padding: 10px; border-radius: 5px;">
-  <a href="https://cp-psource.github.io/marketpress/" style="text-decoration: none; color: #0366d6; font-weight: bold;">Home</a>
-  <a href="https://github.com/cp-psource/marketpress/releases" style="text-decoration: none; color: #0366d6; font-weight: bold;">Downloads</a>
-  <a href="https://github.com/cp-psource/marketpress/wiki" style="text-decoration: none; color: #0366d6; font-weight: bold;">Docs</a>
-  <a href="https://github.com/cp-psource/marketpress/discussions" style="text-decoration: none; color: #0366d6; font-weight: bold;">Support</a>
-  <a href="https://github.com/cp-psource/marketpress/issues" style="text-decoration: none; color: #0366d6; font-weight: bold;">Bug Report</a>
-  <a href="https://cp-psource.github.io/marketpress/psource.html" style="text-decoration: none; color: #0366d6; font-weight: bold;">PSOURCE</a>
-</div>
-
-<div>
- <a href="https://github.com/cp-psource">Copyright PSOURCE 2024</a>
-</div>

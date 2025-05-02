@@ -3,8 +3,8 @@ Contributors: PSOURCE
 Tags: E-commerce, ecommerce, storefront, sell, store, shopping, cart, payment gateways, digital downloads, online store
 Requires at least: 3.7
 Requires PHP: 7.4
-Tested up to: 6.5.4
-Stable tag: main
+Tested up to: 6.8.1
+Stable tag: 3.2.8
 
 Full-power ecommerce marketplace for WordPress and Multisite. 100% free and no extensions required.
 
