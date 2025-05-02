@@ -1,6 +1,6 @@
 ---
 layout: psource-theme
-title: "Multiste-Reader"
+title: "MarketPress Reloaded"
 ---
 
 <h2 align="center" style="color:#38c2bb;">📚 MarketPress Reloaded</h2>
