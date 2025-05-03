@@ -472,7 +472,7 @@ class Marketpress {
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
-
+	
 		if ( ! function_exists( 'mp_get_plugin_slug' ) ) {
 			/**
 			 * Get plugin slug.
@@ -483,7 +483,7 @@ class Marketpress {
 				return 'marketpress/marketpress.php';
 			}
 		}
-
+	
 		if ( ! function_exists( 'mp_is_main_site' ) ) {
 			/**
 			 * Check if mp is main site.
@@ -492,7 +492,7 @@ class Marketpress {
 			 */
 			function mp_is_main_site() {
 				global $wpdb;
-
+	
 				if ( MP_ROOT_BLOG !== false ) {
 					return MP_ROOT_BLOG === $wpdb->blogid;
 				} else {
@@ -500,12 +500,14 @@ class Marketpress {
 				}
 			}
 		}
+	
+		// Widgets laden
 		require_once( $this->plugin_dir( 'includes/admin/widgets/cart.php' ) );
 		require_once( $this->plugin_dir( 'includes/admin/widgets/categories.php' ) );
 		require_once( $this->plugin_dir( 'includes/admin/widgets/product-list.php' ) );
 		require_once( $this->plugin_dir( 'includes/admin/widgets/product-tag-cloud.php' ) );
-
-		// Multisite Widgets.
+	
+		// Multisite Widgets
 		if ( is_multisite() && is_plugin_active_for_network( mp_get_plugin_slug() ) ) {
 			$settings = get_site_option( 'mp_network_settings', array() );
 			if ( ( isset( $settings['main_blog'] ) && mp_is_main_site() ) || isset( $settings['main_blog'] ) && ! $settings['main_blog'] ) {
@@ -514,6 +516,9 @@ class Marketpress {
 				require_once( $this->plugin_dir( 'includes/admin/widgets/ms-global-categories.php' ) );
 			}
 		}
+	
+		// Widgets-to-Blocks laden
+		require_once( $this->plugin_dir( 'includes/admin/widgets/mp-widgets-to-blocks.php' ) );
 	}
 
 	/**
