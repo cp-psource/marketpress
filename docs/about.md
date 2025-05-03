@@ -1,7 +1,20 @@
+---
+layout: psource-theme
+title: "PSOURCE"
+---
+
+<h2 align="center" style="color:#38c2bb;">📚 PSOURCE</h2>
+
+<div class="menu">
+  <a href="https://github.com/orgs/cp-psource/discussions" style="color:#38c2bb;">💬 Forum</a>
+  <a href="https://github.com/cp-psource" style="color:#38c2bb;">📝 GitHub</a>
+</div>
+
+
 ## PSOURCE - DEUTSCH
 ## PSOURCE ist eine Sammlung von Plugins und Themes für Classic/WordPress, die kostenlos nutzbar sind. Es gibt keine Premium-Features, Abo-Kosten oder ähnliches. Alles ist komplett kostenlos in vollem Umfang nutzbar. Die Community ist eingeladen, zu ihren Favoriten beizutragen und diese gemeinsam weiterzuentwickeln
 
-Wir haben eine große Auswahl an Plugins und Themes für ClassicPress. Insbesondere sind viele unserer Plugins/Themes für den Einsatz in einer Multisite-Umgebung und für den professionellen Einsatz konzipiert.
+Wir haben eine große Auswahl an Plugins und Themes für WordPress. Insbesondere sind viele unserer Plugins/Themes für den Einsatz in einer Multisite-Umgebung und für den professionellen Einsatz konzipiert.
 
 Erkunde unser Repository und probiere unsere Plugins/Themes aus.
 
@@ -22,7 +35,7 @@ Vielen Dank für Deinen Besuch bei PSOURCE. Wir hoffen, dass unsere Plugins/Them
 ## PSOURCE - ENGLISH
 ## PSOURCE is a collection of plugins and themes for WordPress that are free to use. There are no premium features, subscription costs or anything like that. Everything is completely free to use. The community is invited to contribute their favorites and develop them further together
 
-We have a large selection of plugins and themes for ClassicPress. In particular, many of our plugins/themes are designed for use in a multisite environment and for professional use.
+We have a large selection of plugins and themes for WordPress. In particular, many of our plugins/themes are designed for use in a multisite environment and for professional use.
 
 Explore our repository and try out our plugins/themes.
 

@@ -52,7 +52,7 @@ $this->defaults = array(
 );
 
 /*
-  PSeCommerce Data Structures
+  MarketPress Data Structures
  */
 $this->default_settings = array(
 	'base_country'				 => 'AT',

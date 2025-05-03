@@ -18,7 +18,6 @@ Sell everything from digital downloads to physical goods in all shapes and sizes
 
 No need to spend hundreds of dollars purchasing add-ons or special licenses. MarketPress brings together the power of dozens of different plugins in one solid standalone ecommerce product.
 
-[youtube http://www.youtube.com/watch?v=4QX1P7e-9dw&hd=1]
 
 = Features = 
 

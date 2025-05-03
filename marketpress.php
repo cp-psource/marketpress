@@ -751,6 +751,24 @@ class Marketpress {
 			'has_settings' => false,
 		) );
 
+		// Allow Produkt Comments.
+		mp_register_addon( array(
+			'label'        => __( 'Erlaube Produktkommentare', 'mp' ),
+			'desc'         => __( 'Erlaube das kommentieren von Produkten', 'mp' ),
+			'class'        => 'MP_MARKETPRESS_COMMENTS_Addon',
+			'path'         => mp_plugin_dir( 'includes/addons/mp-comments/class-mp-comments.php' ),
+			'has_settings' => false,
+		) );
+		
+		// Frontend Produkteditor
+		mp_register_addon( array(
+			'label'        => __( 'Shop Statistiken (ALFAVERSION)', 'mp' ),
+			'desc'         => __( 'Aktiviere diese Erweiterung um eine Dashboard-Seite mit Shop-Statistiken zu erstellen', 'mp' ),
+			'class'        => 'MP_MARKETPRESS_STATS_Addon',
+			'path'         => mp_plugin_dir( 'includes/addons/mp-statistics/mp-stats.php' ),
+			'has_settings' => false,
+		) );
+
 		/**
 		 * Fires after all internal addons have been registered
 		 *

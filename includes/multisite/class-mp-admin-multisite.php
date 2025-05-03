@@ -437,7 +437,7 @@ class MP_Admin_Multisite {
 			'page_slugs'       => array( 'network-shop-einstellungen' ),
 			'title'            => __( 'Theme Berechtigungen', 'mp' ),
 			'site_option_name' => 'mp_network_settings',
-			'desc'             => __( 'Festlegen von Theme-Zugriffsberechtigungen für Netzwerkspeicher. Speichere für ein benutzerdefiniertes CSS-Thema Deine CSS-Datei mit dem Header <strong> PSeCommerce Theme: NAME </strong> im Ordner <strong> /psecommerce/ui/themes/ </strong>, damit es in dieser Liste angezeigt wird.', 'mp' ),
+			'desc'             => __( 'Festlegen von Theme-Zugriffsberechtigungen für Netzwerkspeicher. Speichere für ein benutzerdefiniertes CSS-Thema Deine CSS-Datei mit dem Header <strong> MarketPress Theme: NAME </strong> im Ordner <strong> /marketpress/ui/themes/ </strong>, damit es in dieser Liste angezeigt wird.', 'mp' ),
 			'order'            => 15,
 		) );
 
