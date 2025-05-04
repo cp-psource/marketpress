@@ -57,7 +57,7 @@ class MP_Gateway_IDeal extends MP_Gateway_API {
 		}
 		
 		// Remove HTML Entities
-		$shastring = html_entity_decode( $shastring );
+		$shastring = html_entity_decode( $shastring ?? '', ENT_QUOTES, get_option( 'blog_charset' ) );
 
 		// Remove space characters: "\t", "\n", "\r" and " "
 		$shastring = str_replace( array( "\t", "\n", "\r", ' '), '', $shastring );
