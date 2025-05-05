@@ -30,7 +30,6 @@ function mp_st_admin_menu() {
         'manage_options',
         'mp_st',
         'mp_st_page',
-        'dashicons-analytics'
     );
 }
 

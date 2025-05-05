@@ -7,11 +7,10 @@ title: "MarketPress Reloaded"
 
 <div class="menu">
   <a href="https://github.com/cp-psource/marketpress/discussions" style="color:#38c2bb;">💬 Forum</a>
-  <a href="https://github.com/cp-psource/marketpress/releases" style="color:#38c2bb;">📝 Download</a>
-  <a href="readme-en.html" style="color:#38c2bb;">📝 ENGLISCH</a>
+  <a href="https://github.com/cp-psource/marketpress/releases" style="color:#38c2bb;">⬇️ Download</a>
+  <a href="themes.html" style="color:#38c2bb;">🎨 Design</a>
+  <a href="readme-en.html" style="color:#38c2bb;">🌐 English</a>
 </div>
-
-# MarketPress eCommerce
 
 Das einfachste und dennoch mächtigste ClassicPress-E-Commerce-Plugin - Ob kleiner Onlineshop, Digitales Schaufenster, funktioniert auch perfekt mit BuddyPress und Multisite, um einen sozialen Marktplatz zu schaffen, auf dem Du einen Prozentsatz nehmen kannst! Aktiviere das Plugin, passe Deine Einstellungen an und füge Deinem Shop einige Produkte hinzu.
 

@@ -103,7 +103,7 @@ class MP_Multisite {
 
 		$screen = mp_get_current_screen();
 
-		if ( $screen->id == 'shop-einstellungen_page_store-setup-wizard' ) {
+		if ( $screen->id == 'store-settings_page_store-setup-wizard' ) {
 			//user already inside this first time, return
 			update_option( 'mp_subsite_need_redirect', 0 );
 			return;
@@ -113,9 +113,9 @@ class MP_Multisite {
 			'product',
 			'edit-product',
 			'edit-mp_order',
-			'toplevel_page_shop-einstellungen'
+			'toplevel_page_store-settings'
 		);
-		$base = 'shop-einstellungen_page';
+		$base = 'store-settings_page';
 		if ( ( in_array( $screen->id, $ids ) || strpos( $screen->id, $base ) === 0 ) ) {
 			update_option( 'mp_subsite_need_redirect', 0 );
 			wp_redirect( admin_url( 'admin.php?page=store-setup-wizard' ) );

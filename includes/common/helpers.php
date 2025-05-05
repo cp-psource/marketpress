@@ -912,7 +912,7 @@ if ( ! function_exists( 'mp_arr_get_value' ) ) :
 	 * @return mixed
 	 */
 	function mp_arr_get_value( $key, $array, $default = false ) {
-		$keys  = explode( '->', $key );
+		$keys  = explode( '->', (string) $key );
 		$keys  = array_map( 'trim', $keys );
 		$value = mp_arr_search( $array, $key );
 
@@ -1101,7 +1101,7 @@ if ( ! function_exists( 'mp_arr_search' ) ) :
 	 * @return mixed
 	 */
 	function mp_arr_search( $array, $path ) {
-		$keys = explode( '->', $path );
+		$keys = explode( '->', (string) $path );
 		$keys = array_map( 'trim', $keys );
 
 		for ( $i = $array; ( $key = array_shift( $keys ) ) !== null; $i = $i[ $key ] ) {

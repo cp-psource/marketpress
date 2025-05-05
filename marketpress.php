@@ -517,8 +517,7 @@ class Marketpress {
 			}
 		}
 	
-		// Widgets-to-Blocks laden
-		require_once( $this->plugin_dir( 'includes/admin/widgets/mp-widgets-to-blocks.php' ) );
+
 	}
 
 	/**
@@ -773,6 +772,7 @@ class Marketpress {
 			'path'         => mp_plugin_dir( 'includes/addons/mp-statistics/mp-stats.php' ),
 			'has_settings' => false,
 		) );
+
 
 		/**
 		 * Fires after all internal addons have been registered

@@ -110,7 +110,7 @@ class MP_Admin_Multisite {
 					var $this = $(this),
 						$select = $this.siblings('[name="network_store_page"]');
 
-					$this.isWorking(true);
+					$this.addClass('working');
 
 					$.getJSON($this.attr('href'), function (resp) {
 						if (resp.success) {
@@ -119,7 +119,7 @@ class MP_Admin_Multisite {
 							$('.mp-network-store-page-slug').html(resp.data.parent_slug);
 						} else {
 							alert('<?php _e( 'beim Fehler beim erstellen der Shopseite, bitte versuche es nochmal.', 'mp' ); ?>');
-							$this.isWorking(false);
+							$this.removeClass('working');
 						}
 					});
 				});
@@ -168,7 +168,7 @@ class MP_Admin_Multisite {
 	public function init_general_settings_metabox() {
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-general',
-			'page_slugs'       => array( 'network-shop-einstellungen' ),
+			'page_slugs'       => array( 'network-store-settings' ),
 			'title'            => __( 'Shopnetzwerk Einstellungen', 'mp' ),
 			'site_option_name' => 'mp_network_settings',
 			'order'            => 0,
@@ -194,7 +194,7 @@ class MP_Admin_Multisite {
 
 			$metabox = new WPMUDEV_Metabox( array(
 				'id'               => 'mp-global-store-currency',
-				'page_slugs'       => array( 'network-shop-einstellungen' ),
+				'page_slugs'       => array( 'network-store-settings' ),
 				'title'            => __( 'Netzwerkwährung', 'mp' ),
 				'site_option_name' => 'mp_network_settings',
 				'order'            => 0,
@@ -281,7 +281,7 @@ class MP_Admin_Multisite {
 		$html .= '<p class="index-status" style="display: none;">' . __( "Index läuft, bitte warten...", "mp" ) . '</p>';
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-post-indexer',
-			'page_slugs'       => array( 'network-shop-einstellungen' ),
+			'page_slugs'       => array( 'network-store-settings' ),
 			'title'            => __( 'Produkt Indexierung', 'mp' ),
 			'desc'             => $html,
 			'site_option_name' => '',
@@ -346,7 +346,7 @@ class MP_Admin_Multisite {
 	public function init_global_gateway_settings_metabox() {
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-global-gateway',
-			'page_slugs'       => array( 'network-shop-einstellungen' ),
+			'page_slugs'       => array( 'network-store-settings' ),
 			'title'            => __( 'Netzwerk Zahlungsgateway', 'mp' ),
 			'site_option_name' => 'mp_network_settings',
 			'order'            => 0,
@@ -386,7 +386,7 @@ class MP_Admin_Multisite {
 	public function init_gateway_permissions_metabox() {
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-gateway-permissions',
-			'page_slugs'       => array( 'network-shop-einstellungen' ),
+			'page_slugs'       => array( 'network-store-settings' ),
 			'title'            => __( 'Gateway-Berechtigungen', 'mp' ),
 			'site_option_name' => 'mp_network_settings',
 			'order'            => 0,
@@ -434,7 +434,7 @@ class MP_Admin_Multisite {
 	public function init_theme_permissions_metabox() {
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-network-settings-theme-permissions',
-			'page_slugs'       => array( 'network-shop-einstellungen' ),
+			'page_slugs'       => array( 'network-store-settings' ),
 			'title'            => __( 'Theme Berechtigungen', 'mp' ),
 			'site_option_name' => 'mp_network_settings',
 			'desc'             => __( 'Festlegen von Theme-Zugriffsberechtigungen für Netzwerkspeicher. Speichere für ein benutzerdefiniertes CSS-Thema Deine CSS-Datei mit dem Header <strong> MarketPress Theme: NAME </strong> im Ordner <strong> /marketpress/ui/themes/ </strong>, damit es in dieser Liste angezeigt wird.', 'mp' ),
@@ -475,7 +475,7 @@ class MP_Admin_Multisite {
 	 * @access public
 	 */
 	public function add_menu_items() {
-		add_submenu_page( 'settings.php', __( 'Shopnetzwerk Einstellungen', 'mp' ), __( 'Shopnetzwerk', 'mp' ), 'manage_network_options', 'network-shop-einstellungen', array(
+		add_submenu_page( 'settings.php', __( 'Shopnetzwerk Einstellungen', 'mp' ), __( 'Shopnetzwerk', 'mp' ), 'manage_network_options', 'network-store-settings', array(
 			&$this,
 			'network_store_settings'
 		) );
@@ -519,7 +519,7 @@ class MP_Admin_Multisite {
 	public function init_network_pages() {
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'               => 'mp-settings-network-pages-slugs',
-			'page_slugs'       => array( 'network-shop-einstellungen' ),
+			'page_slugs'       => array( 'network-store-settings' ),
 			'title'            => __( 'Netzwerkmarktplatz Seiten', 'mp' ),
 			'site_option_name' => 'mp_network_settings',
 			'order'            => 2
@@ -610,7 +610,7 @@ class MP_Admin_Multisite {
 					var $this = $(this),
 						$select = $this.siblings('[name^="pages"]');
 
-					$this.isWorking(true);
+					$this.addClass('working');
 
 					$.getJSON($this.attr('href'), function (resp) {
 						if (resp.success) {
