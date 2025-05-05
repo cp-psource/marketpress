@@ -150,6 +150,11 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 
 == Changelog ==
 
+= 3.2.9 =
+
+* Bugfix create Network-Store pages
+* Update jQuery Code
+
 = 3.2.8 =
 
 * New: Development by PSOURCE
