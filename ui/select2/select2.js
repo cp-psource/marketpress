@@ -698,6 +698,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.containerId="s2id_"+(opts.element.attr("id") || "autogen"+nextUid());
             this.containerEventName= this.containerId
+                .replace(/\\/g, '\\\\') // Escape backslashes
                 .replace(/([.])/g, '_')
                 .replace(/([;&,\-\.\+\*\~':"\!\^#$%@\[\]\(\)=>\|])/g, '\\$1');
             this.container.attr("id", this.containerId);
