@@ -30,7 +30,7 @@
         initialize( this );
 
         function initialize( parent ) {
-            $( settings.wrapper, parent ).each( function( index, element ) {
+            $( parent ).find( settings.wrapper ).each( function( index, element ) {
                 var wrapper = this;
 
                 var container = $( wrapper ).children( settings.container );
