@@ -4,83 +4,81 @@ Tags: E-commerce, ecommerce, storefront, sell, store, shopping, cart, payment ga
 Requires at least: 3.7
 Requires PHP: 7.4
 Tested up to: 6.8.1
-Stable tag: 3.2.8
+Stable tag: 3.2.9
 
-Full-power ecommerce marketplace for WordPress and Multisite. 100% free and no extensions required.
+Leistungsstarker E-Commerce-Marktplatz für WordPress und Multisite. 100 % kostenlos und keine Erweiterungen erforderlich.
 
-== Description ==
+== Beschreibung ==
 
-MarketPress ecommerce is a completely free premium online storefront for WordPress and Multisite.
+MarketPress E-Commerce ist ein vollständig kostenloser Premium-Online-Shop für WordPress und Multisite.
 
-Sell everything from digital downloads to physical goods in all shapes and sizes, offer product variations and instant downloads from one easy-to-use online marketplace.
+Verkaufen Sie alles, von digitalen Downloads bis hin zu physischen Waren in allen Formen und Größen, bieten Sie Produktvariationen und sofortige Downloads von einem benutzerfreundlichen Online-Marktplatz an.
 
-= The Only Premium And Completely Free Ecommerce Plugin =
+= Das einzige Premium- und vollständig kostenlose E-Commerce-Plugin =
 
-No need to spend hundreds of dollars purchasing add-ons or special licenses. MarketPress brings together the power of dozens of different plugins in one solid standalone ecommerce product.
+Es ist nicht erforderlich, Hunderte von Euro für den Kauf von Add-ons oder speziellen Lizenzen auszugeben. MarketPress vereint die Leistung von Dutzenden verschiedener Plugins in einem soliden eigenständigen E-Commerce-Produkt.
 
+= Funktionen = 
 
-= Features = 
+Das Einrichten Ihres eigenen Online-Shops war noch nie so einfach wie mit MarketPress. Zu den Funktionen gehören:
 
-Setting up your own online store couldn't be easier with MarketPress. Features include:
-
-* Setting up your own online store couldn't be easier with MarketPress. Features include:
-* Full suite of 15 payment gateways
-* Choose from 120 different currencies as your default currency
-* Fully internationalized by the WPML crew
-* Sell real objects or digital downloads
-* Simple one-page checkout
-* Easy setup with built-in Wizard
-* Choose how many times a customer can download a file they have purchased
-* Ready to go for tax and VAT
-* PDF Invoicing
-* Calculated shipping modules (UPS, USPS, Fedex, in-store pickup)
-* Pinterest, Facebook and Twitter shares buttons
-* Coupons, discounts and affiliate-ready
-* Fully integrated with Google Universal Analytics eCommerce tracking
-* Unlimited product variations
-* Coupons and sales pricing
-* Stock tracking and alerts per variation
-* Per order product limits
-* AJAX cart and cart widget
-* Powerful shortcodes you can use anywhere
-* Shortcode button in the post visual editor
-* Link any product to an external link
-* Stock tracking and order management and alerts
-* Automatically hide products when they are out of stock
-* Display related products
-* Checkout without having to be a site user
+* Ein vollständiges Paket mit 15 Zahlungsgateways
+* Wählen Sie aus 120 verschiedenen Währungen Ihre Standardwährung
+* Vollständig internationalisiert von der WPML-Crew
+* Verkaufen Sie reale Objekte oder digitale Downloads
+* Einfacher Checkout auf einer Seite
+* Einfache Einrichtung mit integriertem Assistenten
+* Legen Sie fest, wie oft ein Kunde eine Datei herunterladen kann, die er gekauft hat
+* Bereit für Steuern und Mehrwertsteuer
+* PDF-Rechnungen
+* Berechnete Versandmodule (UPS, USPS, Fedex, Abholung im Geschäft)
+* Pinterest-, Facebook- und Twitter-Share-Buttons
+* Gutscheine, Rabatte und Affiliate-fähig
+* Vollständig integriert mit Google Universal Analytics E-Commerce-Tracking
+* Unbegrenzte Produktvariationen
+* Gutscheine und Sonderpreise
+* Lagerverfolgung und Benachrichtigungen pro Variation
+* Produktlimits pro Bestellung
+* AJAX-Warenkorb und Warenkorb-Widget
+* Leistungsstarke Shortcodes, die Sie überall verwenden können
+* Shortcode-Schaltfläche im visuellen Editor des Beitrags
+* Verknüpfen Sie jedes Produkt mit einem externen Link
+* Lagerverfolgung, Bestellverwaltung und Benachrichtigungen
+* Produkte automatisch ausblenden, wenn sie nicht mehr auf Lager sind
+* Ähnliche Produkte anzeigen
+* Checkout ohne Registrierung als Benutzer der Website
 
 
-= Customize Without Code = 
+= Anpassen ohne Programmierkenntnisse = 
 
-MarketPress is built to work flawlessly with any well-coded WordPress theme.
+MarketPress ist so konzipiert, dass es nahtlos mit jedem gut programmierten WordPress-Theme funktioniert.
 
-* Shortcodes and built-in widgets let you display elements anywhere on your site
-* Includes CSS style presets
-* Product thumbnails/images with lightbox zooming
+* Shortcodes und integrierte Widgets ermöglichen es Ihnen, Elemente überall auf Ihrer Website anzuzeigen
+* Enthält CSS-Stilvorlagen
+* Produkt-Thumbnails/Bilder mit Lightbox-Zoom
 
-Or go download one of our Upfront themes with built-in MarketPress styles and a powerful drag-and-drop front end visual theme editor.
+Oder laden Sie eines unserer Upfront-Themes herunter, die integrierte MarketPress-Stile und einen leistungsstarken Drag-and-Drop-Frontend-Theme-Editor bieten.
 
-= Multisite and BuddyPress Compatible = 
+= Multisite- und BuddyPress-kompatibel = 
 
-Set up your own eBay or Etsy-style network of stores and take a percentage of each sale.
+Richten Sie Ihr eigenes eBay- oder Etsy-ähnliches Netzwerk von Shops ein und nehmen Sie einen Prozentsatz von jedem Verkauf.
 
-Whether you want to set up an individual storefront online or an entire ecommerce network for stores, MarketPress is the go-to solution.
+Egal, ob Sie einen individuellen Online-Shop oder ein ganzes E-Commerce-Netzwerk für Shops einrichten möchten, MarketPress ist die ideale Lösung.
 
 ★★★★★
-“I love this plugin! Other ecommerce plugins were just complicated. I set up Marketpress yesterday and woke up this morning with sales that took place seamlessly!” – <a href="https://wordpress.org/support/users/roseee">roseee</a>
+„Ich liebe dieses Plugin! Andere E-Commerce-Plugins waren einfach kompliziert. Ich habe MarketPress gestern eingerichtet und bin heute Morgen mit Verkäufen aufgewacht, die nahtlos abliefen!“ – <a href="https://wordpress.org/support/users/roseee">roseee</a>
 
 ★★★★★
-“I never dreamed it possible yet here I am doing it. I Launched an etsy-style network using MarketPress. Really nice work. Can’t do this with Woo!” – <a href="https://wordpress.org/support/users/leedman/">leedman</a>
+„Ich hätte nie gedacht, dass es möglich ist, aber hier bin ich und mache es. Ich habe ein Etsy-ähnliches Netzwerk mit MarketPress gestartet. Wirklich tolle Arbeit. Das geht nicht mit Woo!“ – <a href="https://wordpress.org/support/users/leedman/">leedman</a>
 
-= Free Payment Gateways =
-Accept payments using any of the 15 built-in popular payment gateways, including Stripe, PayPal and Authorize.net.
+= Kostenlose Zahlungs-Gateways =
+Akzeptieren Sie Zahlungen mit einem der 15 integrierten beliebten Zahlungs-Gateways, darunter Stripe, PayPal und Authorize.net.
 
 * 2Checkout
 * Authorize.net AIM
-* eWay shared payments
+* eWay Shared Payments
 * eWay Rapid 3.1 Payments
-* Manual Payments
+* Manuelle Zahlungen
 * Mijireh
 * Mollie
 * Paymill
@@ -88,65 +86,65 @@ Accept payments using any of the 15 built-in popular payment gateways, including
 * PayPal Express Checkout
 * PayPal PayFlow Pro
 * PIN
-* Simplify Commerce by MasterCard
+* Simplify Commerce von MasterCard
 * Stripe
 * WePay
 
-= Shipping Made Easy =
-Ship anywhere in the world with confidence. Use flat rate shipping or cater to specific distribution logistics using table or weight rates
+= Versand leicht gemacht =
+Versenden Sie weltweit mit Zuversicht. Nutzen Sie Pauschalversand oder passen Sie die Logistik mit Tabellen- oder Gewichtstarifen an Ihre spezifischen Anforderungen an.
 
 = Google Analytics =
-MarketPress is both Google Universal Analytics and Google Analytics eCommerce compatible. Track sales and site activity and grow your business
- 
-= Social Sharing =
-Go viral with the included Pinterest, Facebook and Twitter share buttons. MarketPress makes it easy for your customers to share your products with their friends and family.
+MarketPress ist sowohl mit Google Universal Analytics als auch mit Google Analytics eCommerce kompatibel. Verfolgen Sie Verkäufe und Website-Aktivitäten, um Ihr Geschäft auszubauen.
 
-= Automated Inventory Manager =
-When youвЂ™re running out of any of your products, MarketPress will let you know when itвЂ™s time to restock вЂ“ or automatically hide products when they are no longer available.
+= Soziale Netzwerke =
+Werden Sie viral mit den integrierten Pinterest-, Facebook- und Twitter-Share-Buttons. MarketPress macht es Ihren Kunden leicht, Ihre Produkte mit Freunden und Familie zu teilen.
 
-= Setup Wizard Included =
-ItвЂ™s big and powerful but donвЂ™t worry...the MarketPress setup wizard will walk you through setting up your store, step-by-step, so you donвЂ™t have to think about whatвЂ™s going on behind the scenes.
+= Automatischer Bestandsmanager =
+Wenn Ihnen eines Ihrer Produkte ausgeht, informiert Sie MarketPress, wann es Zeit ist, nachzubestellen – oder blendet Produkte automatisch aus, wenn sie nicht mehr verfügbar sind.
 
-If you run into any problems getting started, <a href="https://cp-psource.github.io/marketpress/#usage">MarketPress</a> is well documented and our support team is available around the clock to answer any questions you may have.
+= Setup-Assistent inklusive =
+Es ist groß und leistungsstark, aber keine Sorge... Der MarketPress-Setup-Assistent führt Sie Schritt für Schritt durch die Einrichtung Ihres Shops, sodass Sie sich keine Gedanken darüber machen müssen, was im Hintergrund passiert.
 
-So what are you waiting for? Get started with <a href="http://premium.wpmudev.org/project/e-commerce/">MarketPress ecommerce</a> today. Everything you need to start and grow your online store.
+Falls Sie beim Einstieg auf Probleme stoßen, ist <a href="https://cp-psource.github.io/marketpress/#usage">MarketPress</a> gut dokumentiert, und unser Support-Team steht Ihnen rund um die Uhr zur Verfügung, um alle Ihre Fragen zu beantworten.
+
+Also, worauf warten Sie noch? Starten Sie noch heute mit <a href="http://premium.wpmudev.org/project/e-commerce/">MarketPress eCommerce</a>. Alles, was Sie brauchen, um Ihren Online-Shop zu starten und auszubauen.
 
 
 == Installation ==
-= To Install: =
+= So installieren Sie MarketPress: =
 
-1.  Download the MarketPress plugin file
-2.  Unzip the file into a folder on your hard drive
-3.  Upload the `/wordpress-ecommerce/` folder to the `/wp-content/plugins/` folder on your site
-4.  Visit your Dashboard -> Plugins and Activate it there.
+1.  Laden Sie die MarketPress-Plugin-Datei herunter.
+2.  Entpacken Sie die Datei in einen Ordner auf Ihrer Festplatte.
+3.  Laden Sie den Ordner `/wordpress-ecommerce/` in den Ordner `/wp-content/plugins/` auf Ihrer Website hoch.
+4.  Besuchen Sie Ihr Dashboard -> Plugins und aktivieren Sie es dort.
 
-= To Set Up And Configure MarketPress =
-* You can find <a href='http://premium.wpmudev.org/project/e-commerce/#usage'>in-depth setup and usage instructions with screenshots here &raquo;</a>
+= MarketPress einrichten und konfigurieren =
+* Sie finden <a href='http://premium.wpmudev.org/project/e-commerce/#usage'>detaillierte Anleitungen zur Einrichtung und Nutzung mit Screenshots hier &raquo;</a>
 
-= Importing products from the WP e-Commerce plugin =
-You can import products directly into MarketPress from WP e-Commerce
+= Produkte aus dem WP e-Commerce-Plugin importieren =
+Sie können Produkte direkt aus WP e-Commerce in MarketPress importieren.
 
-1.  Activate WP e-Commerce and MarketPress plugins
-2.  Go to Site Admin>Products>Store Settings and click the tab for "WP e-Commerce Importer"
-3.  Select 'Import Now'.
-4.  You should see a success message letting you know the process has been completed.
+1.  Aktivieren Sie die WP e-Commerce- und MarketPress-Plugins.
+2.  Gehen Sie zu Site Admin > Produkte > Store-Einstellungen und klicken Sie auf den Tab "WP e-Commerce Importer".
+3.  Wählen Sie "Jetzt importieren".
+4.  Sie sollten eine Erfolgsmeldung sehen, die Ihnen mitteilt, dass der Vorgang abgeschlossen wurde.
 
-== Frequently Asked Questions ==
+== Häufig gestellte Fragen ==
 
-= Do I need to be a paid WPMU DEV member? =
-Nope! This plugin is offered at no charge.
+= Muss ich ein zahlendes Mitglied bei WPMU DEV sein? =
+Nein! Dieses Plugin wird kostenlos angeboten.
 
-= Is this BuddyPress compatible? =
-Absolutely.  MarketPress will work on individual sites in BuddyPress.
+= Ist dieses Plugin mit BuddyPress kompatibel? =
+Absolut. MarketPress funktioniert auf individuellen Seiten in BuddyPress.
 
-= How do I get support? =
-We provide comprehensive and guaranteed support on the <a href='http://premium.wpmudev.org/forums/tags/marketpress-ecommerce'>WPMU DEV forums</a>.
+= Wie erhalte ich Unterstützung? =
+Wir bieten umfassenden und garantierten Support in den <a href='https://github.com/cp-psource/marketpress/discussions'>PSOURCE-Foren</a>.
 
 == Screenshots ==
 
-1. Beautiful grid product layouts.
-2. Clean and easy-to-read product pages.
-3. Descriptions and Reviews.
+1. Wunderschöne Rasterlayouts für Produkte.
+2. Saubere und leicht lesbare Produktseiten.
+3. Beschreibungen und Bewertungen.
 
 == Changelog ==
 
@@ -154,6 +152,7 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 
 * Bugfix create Network-Store pages
 * Update jQuery Code
+* Several Security-Fixes (Crosssite Scripting)
 
 = 3.2.8 =
 
