@@ -130,7 +130,7 @@ jQuery.validator.addMethod( 'lessthan', function( value, element, param ) {
         $.each( conditionals, function( i, conditional ) {
             if ( conditional.name.indexOf( '[' ) >= 0 && $obj.closest( '.wpmudev-subfield-group' ).length ) {
                 var nameParts = conditional.name.split( '[' );
-                var $input = $obj.closest( '.wpmudev-subfield-group' ).find( '[name^="' + nameParts[0] + '"][name*="[' + nameParts[1].replace( ']', '' ) + ']"]' );
+                var $input = $obj.closest( '.wpmudev-subfield-group' ).find( '[name^="' + nameParts[0] + '"][name*="[' + nameParts[1].replace( /\]/g, '' ) + ']"]' );
             } else {
                 var $input = $( '[name="' + conditional.name + '"]' );
             }
