@@ -4,7 +4,7 @@
  * @since 3.0
  */
 String.prototype.escapeSelector = function() {
-    return this.replace( /(:|\.|\[|\])/g, "\\$1" );
+    return this.replace( /([:\\.\\[\\]\\\\])/g, "\\$1" );
 };
 
 var mp_cart = { };
