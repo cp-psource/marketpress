@@ -32,7 +32,6 @@ class MP_Admin {
 	 * @access private
 	 */
 	private function __construct() {
-		$this->_init_dash_notices();
 		add_action( 'init',array( &$this, '_includes' ), 1 );
 
 		//save orders screen options
@@ -146,38 +145,6 @@ class MP_Admin {
 		require_once mp_plugin_dir( 'includes/admin/class-mp-store-settings-admin.php' );
 		require_once mp_plugin_dir( 'includes/admin/class-mp-setup-wizard.php' );
 		require_once mp_plugin_dir( 'includes/admin/class-mp-shortcode-builder.php' );
-	}
-
-	/**
-	 * Initialize dash notices
-	 *
-	 * @since 3.0
-	 * @access public
-	 */
-	protected function _init_dash_notices() {
-		if ( MP_LITE ) {
-			return;
-		}
-		
-		//load dashboard notice
-		if ( file_exists( dirname( __FILE__ ) . '/includes/admin/dash-notice/wpmudev-dash-notification.php' ) ) {
-			global $wpmudev_notices;
-			$wpmudev_notices[] = array(
-				'id'		 => 144,
-				'name'		 => 'MarketPress',
-				'screens'	 => array(
-					'edit-product',
-					'edit-mp_product',
-					'product',
-					'mp_product',
-					'edit-product_category',
-					'edit-product_tag',
-					'settings_page_marketpress-ms-network'
-				)
-			);
-			
-			include_once mp_plugin_dir( 'includes/admin/dash-notice/wpmudev-dash-notification.php' );
-		}
 	}
 
 	/**

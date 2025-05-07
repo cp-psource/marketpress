@@ -27,7 +27,7 @@ Grundlegende Stile bestehen aus einer CSS-Datei und einem optionalen Bilderordne
   MarketPress Style: CUSTOMNAME
   */
   ```
-  Durch das Hinzufügen dieses Headers wird dein benutzerdefiniertes Theme im Dropdown-Menü auf der Seite **"Shop-Einstellungen -> Darstellung"** angezeigt, sodass du es auswählen kannst.
+  Durch das Hinzufügen dieses Headers wird dein benutzerdefiniertes Theme im Dropdown-Menü auf der Seite **"Store Settings -> Darstellung"** angezeigt, sodass du es auswählen kannst.
 3. Optional kannst du auch ein Unterverzeichnis für deine CSS-Bilder im Ordner `/wp-content/marketpress-styles/` erstellen und mit relativen URLs wie `image-folder/my-image.jpg` auf Bilder verweisen.
 
 ### Erweiterte Themes:

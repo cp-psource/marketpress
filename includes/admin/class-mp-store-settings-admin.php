@@ -103,10 +103,9 @@ class MP_Store_Settings_Admin {
 	 */
 	public function add_menu_items() {
 		global $wp_version;
-
-		//store settings
+	
 		$cap = apply_filters( 'mp_store_settings_cap', 'manage_store_settings' );
-
+	
 		add_menu_page( __( 'Store Settings', 'mp' ), __( 'Store Settings', 'mp' ), $cap, 'store-settings', null, 'dashicons-store', 99.33 );
 		add_submenu_page( 'store-settings', __( 'Store Settings: General', 'mp' ), __( 'General', 'mp' ), $cap, 'store-settings', array( &$this, 'display_settings_form' ) );
 		add_submenu_page( 'store-settings', __( 'Store Settings: Presentation', 'mp' ), __( 'Presentation', 'mp' ), $cap, 'store-settings-presentation', array( &$this, 'display_settings_form' ) );
@@ -114,21 +113,33 @@ class MP_Store_Settings_Admin {
 		add_submenu_page( 'store-settings', __( 'Store Settings: Shipping', 'mp' ), __( 'Shipping', 'mp' ), $cap, 'store-settings-shipping', array( &$this, 'display_settings_form' ) );
 		add_submenu_page( 'store-settings', __( 'Store Settings: Payments', 'mp' ), __( 'Payments', 'mp' ), $cap, 'store-settings-payments', array( &$this, 'display_settings_form' ) );
 		add_submenu_page( 'store-settings', __( 'Store Settings: Product Attributes', 'mp' ), __( 'Product Attributes', 'mp' ), $cap, 'store-settings-productattributes', array( 'MP_Product_Attributes_Admin', 'display_product_attributes' ) );
-		add_submenu_page( 'store-settings', __( 'Store Settings: Product Categories', 'mp' ), __( 'Product Categories', 'mp' ), apply_filters( 'mp_manage_product_categories_cap', 'manage_product_categories' ), 'edit-tags.php?taxonomy=product_category&post_type=' . MP_Product::get_post_type() );
-		add_submenu_page( 'store-settings', __( 'Store Settings: Product Tags', 'mp' ), __( 'Product Tags', 'mp' ), apply_filters( 'mp_manage_product_tags_cap', 'manage_product_tags' ), 'edit-tags.php?taxonomy=product_tag&post_type=' . MP_Product::get_post_type() );
+	
+		add_submenu_page( 'store-settings', __( 'Store Settings: Product Categories', 'mp' ), __( 'Product Categories', 'mp' ),
+			apply_filters( 'mp_manage_product_categories_cap', 'manage_product_categories' ),
+			'store-settings-productcategories', array( $this, 'redirect_to_product_categories' )
+		);
+	
+		add_submenu_page( 'store-settings', __( 'Store Settings: Product Tags', 'mp' ), __( 'Product Tags', 'mp' ),
+			apply_filters( 'mp_manage_product_tags_cap', 'manage_product_tags' ),
+			'store-settings-producttags', array( $this, 'redirect_to_product_tags' )
+		);
+	
 		add_submenu_page( 'store-settings', __( 'Store Settings: Capabilities', 'mp' ), __( 'User Capabilities', 'mp' ), $cap, 'store-settings-capabilities', array( &$this, 'display_settings_form' ) );
-		//add_submenu_page( 'store-settings', __( 'Store Settings: Import/Export', 'mp' ), __( 'Import/Export', 'mp' ), $cap, 'store-settings-import', array( MP_Store_Settings_Import::get_instance(), 'display_settings' ) );
-		//add_submenu_page('store-settings', __('Store Settings: Importers', 'mp'), __('Importers', 'mp'), $cap, 'store-settings-importers', false);
-		//add_submenu_page('store-settings', __('Store Settings: Exporters', 'mp'), __('Exporters', 'mp'), $cap, 'store-settings-exporters', false);		
+	
+		// Importers (Redirect)
+		//add_submenu_page( 'store-settings', __( 'Store Settings: Importers', 'mp' ), __( 'Importers', 'mp' ), $cap, 'store-settings-importers', array( $this, 'redirect_to_importers' ) );
+	
+		// Exporters (Redirect)
+		//add_submenu_page( 'store-settings', __( 'Store Settings: Exporters', 'mp' ), __( 'Exporters', 'mp' ), $cap, 'store-settings-exporters', array( $this, 'redirect_to_exporters' ) );
+	
 		add_submenu_page( 'store-settings', __( 'Store Settings: Add Ons', 'mp' ), __( 'Add Ons', 'mp' ), $cap, 'store-settings-addons', array( MP_Store_Settings_Addons::get_instance(), 'display_settings' ) );
-
+	
 		$mp_needs_quick_setup = get_option( 'mp_needs_quick_setup', 1 );
-
-		// Show Quick Setup link even if admin have "Skipped" the setup
-		if ( $mp_needs_quick_setup == 'skip' || $mp_needs_quick_setup == 1 && current_user_can( 'manage_options' ) || (isset( $_GET[ 'quick_setup_step' ] )) ) {
+	
+		if ( $mp_needs_quick_setup == 'skip' || $mp_needs_quick_setup == 1 && current_user_can( 'manage_options' ) || ( isset( $_GET['quick_setup_step'] ) ) ) {
 			add_submenu_page( 'store-settings', __( 'Quick Setup', 'mp' ), __( 'Quick Setup', 'mp' ), $cap, 'store-setup-wizard', array( &$this, 'display_settings_form' ) );
 		}
-
+	
 		if ( !WPMUDEV_REMOVE_BRANDING ) {
 			add_action( 'load-toplevel_page_store-settings', array( &$this, 'add_help_tab' ) );
 			add_action( 'store-settings_page_store-settings-presentation', array( &$this, 'add_help_tab' ) );
@@ -142,6 +153,26 @@ class MP_Store_Settings_Admin {
 			add_action( 'store-settings_page_store-setup-wizard', array( &$this, 'add_help_tab' ) );
 			add_action( 'store-settings_page_store-settings-addons', array( &$this, 'add_help_tab' ) );
 		}
+	}
+	
+	public function redirect_to_product_categories() {
+		wp_redirect( admin_url( 'edit-tags.php?taxonomy=product_category&post_type=' . MP_Product::get_post_type() ) );
+		exit;
+	}
+	
+	public function redirect_to_product_tags() {
+		wp_redirect( admin_url( 'edit-tags.php?taxonomy=product_tag&post_type=' . MP_Product::get_post_type() ) );
+		exit;
+	}
+	
+	public function redirect_to_importers() {
+		wp_redirect( admin_url( 'tools.php?page=store-settings-import' ) );
+		exit;
+	}
+	
+	public function redirect_to_exporters() {
+		wp_redirect( admin_url( 'tools.php?page=store-settings-export' ) );
+		exit;
 	}
 
 	/**

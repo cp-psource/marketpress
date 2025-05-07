@@ -214,7 +214,7 @@ Unser Freund, die Registerkarte „Shopeinstellungen“, enthält alle Einstellu
 
 ![MarketPress – Shopeinstellungen](assets/images/mp-3006-store-settings-tab.png)
 
-  Wir stellen eine Inline-Dokumentation für alle Einstellungen innerhalb von MarketPress bereit, möchten jedoch bei der Einrichtung dieses neuen Shops insbesondere auf einige Punkte eingehen. **Digitale Downloads** Wenn Du vorhast, digitale Produkte in Deinem Shop anzubieten, solltest Du den Abschnitt „Download-Einstellungen“ unter „Store-Einstellungen“ -> „Allgemein“ lesen.
+  Wir stellen eine Inline-Dokumentation für alle Einstellungen innerhalb von MarketPress bereit, möchten jedoch bei der Einrichtung dieses neuen Shops insbesondere auf einige Punkte eingehen. **Digitale Downloads** Wenn Du vorhast, digitale Produkte in Deinem Shop anzubieten, solltest Du den Abschnitt „Download-Einstellungen“ unter „Store-Settings“ -> „Allgemein“ lesen.
 
 ![MarketPress – Einstellungen für digitale Downloads](assets/images/mp-3006-digital-download-settings.png)
 
@@ -224,11 +224,11 @@ Unser Freund, die Registerkarte „Shopeinstellungen“, enthält alle Einstellu
 * Aktiviere die alternative Download-Methode von MarketPress (für große Downloads, z.B. Dateien mit einer Größe von mehreren hundert Megabyte).
 * Begrenze die Anzahl digitaler Produkte pro Bestellung
 
-**Google Analytics E-Commerce-Tracking** Wenn Du Google Analytics bereits auf Deiner Webseite verwendest, wird es Dich freuen zu erfahren, dass wir eine Integration damit in MarketPress anbieten, sodass Du auch Deine E-Commerce-Aktivitäten verfolgen kannst (ohne dass Add-Ons erforderlich sind)! Die Einstellungen für diese Integration findest Du auch unter: _Store-Einstellungen -> Allgemein_
+**Google Analytics E-Commerce-Tracking** Wenn Du Google Analytics bereits auf Deiner Webseite verwendest, wird es Dich freuen zu erfahren, dass wir eine Integration damit in MarketPress anbieten, sodass Du auch Deine E-Commerce-Aktivitäten verfolgen kannst (ohne dass Add-Ons erforderlich sind)! Die Einstellungen für diese Integration findest Du auch unter: _Store-Settings -> Allgemein_
 
 ![MarketPress – Google Analytics-Integration](assets/images/mp-3006-google-analytics-tracking.png)
 
-  Von dort aus kannst Du MarketPress so konfigurieren, dass es mit dem auf Deiner Webseite verwendeten Tracking-Code funktioniert (unabhängig davon, ob Du den alten, neuen oder universellen Tracking-Code verwendest). **Store-Seiten** Wenn Du den Schritt weiter oben in der Schnelleinrichtung zum Erstellen der Store-Seiten übersprungen hast, solltest Du unbedingt zum Abschnitt „Store-Seiten“ unter: _Store-Einstellungen -> Präsentation_ gehen und diese Seiten einrichten. Du kannst für jede Shop-Seite auf die Schaltfläche „Seite erstellen“ klicken und MarketPress erstellt automatisch eine Seite für Dich:
+  Von dort aus kannst Du MarketPress so konfigurieren, dass es mit dem auf Deiner Webseite verwendeten Tracking-Code funktioniert (unabhängig davon, ob Du den alten, neuen oder universellen Tracking-Code verwendest). **Store-Seiten** Wenn Du den Schritt weiter oben in der Schnelleinrichtung zum Erstellen der Store-Seiten übersprungen hast, solltest Du unbedingt zum Abschnitt „Store-Seiten“ unter: _Store-Settings -> Präsentation_ gehen und diese Seiten einrichten. Du kannst für jede Shop-Seite auf die Schaltfläche „Seite erstellen“ klicken und MarketPress erstellt automatisch eine Seite für Dich:
 
 ![MarketPress – Shopeinstellungen – Shop-Seiten erstellen](assets/images/mp-3006-create-store-pages.png)
 
@@ -300,7 +300,7 @@ Du hast jetzt also Bestellungen von allen Toms, Dicks und Harrys... lasst uns si
 
 ### Add-Ons
 
-Zu finden unter: Store-Einstellungen -> Add-Ons. Du siehst die in MarketPress verfügbaren Add-Ons, die variieren, je nachdem, ob Du eine normale ClassicPress-Site oder eine Multisite-Installation ausführst. Für das Add-on „Gutscheine“ siehst Du im Menüpunkt „Store“ einen neuen Untereintrag, über den Du neue Gutscheine erstellen kannst:
+Zu finden unter: Store-Settings -> Add-Ons. Du siehst die in MarketPress verfügbaren Add-Ons, die variieren, je nachdem, ob Du eine normale ClassicPress-Site oder eine Multisite-Installation ausführst. Für das Add-on „Gutscheine“ siehst Du im Menüpunkt „Store“ einen neuen Untereintrag, über den Du neue Gutscheine erstellen kannst:
 
 ![MarketPress – Gutscheine – Startseite](assets/images/mp-3006-coupons-home.png)
 
@@ -364,7 +364,7 @@ Nun zu verketteten Zahlungen (auch bekannt als [parallele Zahlungen](https://dev
 
 ### PS Bloghosting-Integration
 
-Mit Hilfe unseres eigenen [PS Bloghosting](https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/)-Plugins kannst Du den Zugriff auf bestimmte Gateways und CSS-Themes innerhalb von MarketPress auf einfache Weise steuern Eine feinere Art und Weise erfordert, dass ein Benutzer zunächst über ein bestimmtes PS Bloghosting-Level verfügt. Installiere und konfiguriere einfach PS Bloghosting in Deinem Netzwerk und richte verschiedene Ebenen nach Deinen Wünschen ein. Sobald Du das getan hast, gehe zum Dashboard der Hauptseite und gehe zu: _Store-Einstellungen -> Add-ons_ und aktiviere von dort aus das PS Bloghosting-Add-on. Auf der Seite „Store-Netzwerk“ im Netzwerk-Dashboard siehst Du nun im Dropdown-Feld weitere Optionen für den Zugriff, in denen die von Dir konfigurierten PS Bloghosting-Ebenen angezeigt werden:
+Mit Hilfe unseres eigenen [PS Bloghosting](https://n3rds.work/piestingtal_source/ps-bloghosting-multisite-next-level-plugin/)-Plugins kannst Du den Zugriff auf bestimmte Gateways und CSS-Themes innerhalb von MarketPress auf einfache Weise steuern Eine feinere Art und Weise erfordert, dass ein Benutzer zunächst über ein bestimmtes PS Bloghosting-Level verfügt. Installiere und konfiguriere einfach PS Bloghosting in Deinem Netzwerk und richte verschiedene Ebenen nach Deinen Wünschen ein. Sobald Du das getan hast, gehe zum Dashboard der Hauptseite und gehe zu: _Store-Settings -> Add-ons_ und aktiviere von dort aus das PS Bloghosting-Add-on. Auf der Seite „Store-Netzwerk“ im Netzwerk-Dashboard siehst Du nun im Dropdown-Feld weitere Optionen für den Zugriff, in denen die von Dir konfigurierten PS Bloghosting-Ebenen angezeigt werden:
 
 ![MarketPress – PS Bloghosting Integration](assets/images/mp-3006-pro-sites-integration.png)
 

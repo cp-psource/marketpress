@@ -125,7 +125,7 @@ Also, worauf warten Sie noch? Starten Sie noch heute mit <a href="http://premium
 Sie können Produkte direkt aus WP e-Commerce in MarketPress importieren.
 
 1.  Aktivieren Sie die WP e-Commerce- und MarketPress-Plugins.
-2.  Gehen Sie zu Site Admin > Produkte > Store-Einstellungen und klicken Sie auf den Tab "WP e-Commerce Importer".
+2.  Gehen Sie zu Site Admin > Produkte > Store-Settings und klicken Sie auf den Tab "WP e-Commerce Importer".
 3.  Wählen Sie "Jetzt importieren".
 4.  Sie sollten eine Erfolgsmeldung sehen, die Ihnen mitteilt, dass der Vorgang abgeschlossen wurde.
 
