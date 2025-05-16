@@ -6,17 +6,25 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
     var $admin_name    = 'PayPal Express';
     var $public_name   = 'PayPal Express';
 
-    function __construct($no_ui = false) {
-        if (!$no_ui) {
-            $this->on_creation();
-        }
-    }
+function on_creation() {
+    // Einstellungen laden
+    $this->init_settings_metabox();
 
-    function on_creation() {
-        $this->init_settings_metabox();
+    // Zahlungsprozess-Callback registrieren
+    add_action('mp_order/payment_process/' . $this->plugin_name, array($this, 'process_payment'));
 
-        add_action('mp_order/payment_process/' . $this->plugin_name, array($this, 'process_payment'));
-    }
+    // Beispiel aus Manual Payment anpassen auf PayPal
+    $this->admin_name = __('PayPal Express', 'mp');
+
+    $public_name = $this->get_setting('name', __('PayPal Express', 'mp'));
+    $this->public_name = empty($public_name) ? __('PayPal Express', 'mp') : $public_name;
+
+    // Optional: Email-Notification Filter registrieren, falls du Bestätigungsmails anpassen willst
+    add_filter('mp_order/notification_body/' . $this->plugin_name, array($this, 'order_confirmation_email'), 10, 2);
+
+    // Optional: Bestätigungstext nach Zahlung
+    add_filter('mp_order/confirmation_text/' . $this->plugin_name, array($this, 'order_confirmation_text'), 10, 2);
+}
 
     public function init_settings_metabox() {
         $metabox = new WPMUDEV_Metabox(array(
@@ -118,6 +126,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
                 'total'                => $body['purchase_units'][0]['payments']['captures'][0]['amount']['value'],
                 'currency'             => $body['purchase_units'][0]['payments']['captures'][0]['amount']['currency_code'],
                 'method'               => __('PayPal Express', 'mp'),
+                'transaction_id'       => $body['purchase_units'][0]['payments']['captures'][0]['id'],
             );
 
             $order = new MP_Order();
@@ -134,19 +143,31 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
         }
     }
 
-    private function get_access_token($base_url, $client_id, $client_secret) {
-        $response = wp_remote_post("$base_url/v1/oauth2/token", array(
-            'headers' => array(
-                'Authorization' => 'Basic ' . base64_encode("$client_id:$client_secret"),
-                'Accept'        => 'application/json',
-                'Content-Type'  => 'application/x-www-form-urlencoded',
-            ),
-            'body' => 'grant_type=client_credentials',
-        ));
+private function get_access_token($base_url, $client_id, $client_secret) {
+    $response = wp_remote_post("$base_url/v1/oauth2/token", array(
+        'headers' => array(
+            'Authorization' => 'Basic ' . base64_encode("$client_id:$client_secret"),
+            'Accept'        => 'application/json',
+            'Content-Type'  => 'application/x-www-form-urlencoded',
+        ),
+        'body' => 'grant_type=client_credentials',
+    ));
 
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-        return isset($body['access_token']) ? $body['access_token'] : false;
+    if (is_wp_error($response)) {
+        error_log('PayPal token request failed: ' . $response->get_error_message());
+        return false;
     }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    if (empty($data['access_token'])) {
+        error_log('PayPal token response: ' . $body);
+        return false;
+    }
+
+    return $data['access_token'];
+}
 
     private function create_order_request($base_url, $token, $cart) {
         $response = wp_remote_post("$base_url/v2/checkout/orders", array(
@@ -164,7 +185,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
                 )),
                 'application_context' => array(
                     'return_url' => add_query_arg('paypal-express-return', '1', home_url()),
-                    'cancel_url' => mp_cart_url(),
+                    'cancel_url' => $cart->cart_url(),
                 ),
             )),
         ));
@@ -175,6 +196,24 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
     public function get_field_name($field) {
         return "gateways[{$this->plugin_name}][{$field}]";
     }
+
+    /**
+     * Output additional order confirmation text
+     *
+     * @param MP_Order $order
+     * @return string
+     */
+public function order_confirmation_text( $order ) {
+	// Falls nur die Order-ID übergeben wurde, hole das Objekt manuell
+	if ( is_string( $order ) ) {
+		$order = new MP_Order( $order );
+	}
+
+	return sprintf(
+		__( 'Thank you for your order. Your transaction ID is: %s', 'mp' ),
+		esc_html( $order->get_meta( 'transaction_id' ) )
+	);
+}
 }
 
 // Init-Hook fürs Capturing, ohne doppelte Metaboxen etc.
@@ -187,5 +226,6 @@ add_action('init', function () {
 });
 
 mp_register_gateway_plugin('MP_Gateway_Paypal_Express', 'paypal_express', __('PayPal Express', 'mp'));
+
 
 

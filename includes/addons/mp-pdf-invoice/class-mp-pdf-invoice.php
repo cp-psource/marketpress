@@ -16,7 +16,7 @@ class MP_PDF_Invoice {
 	 */
 	public function __construct() {
 		if ( ! class_exists( 'DOMPDF' ) ) {
-			require_once dirname( __FILE__ ) . '/vendors/dompdf/dompdf_config.inc.php';
+			require_once dirname( __FILE__ ) . '/vendors/dompdf/autoload.inc.php';
 		}
 		$this->settings = mp_get_setting( 'pdf_invoice' );
 	}
