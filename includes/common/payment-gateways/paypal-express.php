@@ -122,7 +122,7 @@ function on_creation() {
                 'gateway_public_name'  => $this->public_name,
                 'gateway_private_name' => $this->admin_name,
                 'gateway_plugin_name'  => $this->plugin_name,
-                'status'               => array(time() => __('Bezahlt', 'mp')),
+                'status'               => array(time() => __('Paid', 'mp')),
                 'total'                => $body['purchase_units'][0]['payments']['captures'][0]['amount']['value'],
                 'currency'             => $body['purchase_units'][0]['payments']['captures'][0]['amount']['currency_code'],
                 'method'               => __('PayPal Express', 'mp'),
@@ -136,6 +136,8 @@ function on_creation() {
                 'paid'         => true,
             ));
 
+            update_post_meta($order->_order_id, 'transaction_id', $payment_info['transaction_id']);
+
             wp_redirect($order->tracking_url(false));
             exit;
         } else {
@@ -143,31 +145,31 @@ function on_creation() {
         }
     }
 
-private function get_access_token($base_url, $client_id, $client_secret) {
-    $response = wp_remote_post("$base_url/v1/oauth2/token", array(
-        'headers' => array(
-            'Authorization' => 'Basic ' . base64_encode("$client_id:$client_secret"),
-            'Accept'        => 'application/json',
-            'Content-Type'  => 'application/x-www-form-urlencoded',
-        ),
-        'body' => 'grant_type=client_credentials',
-    ));
+    private function get_access_token($base_url, $client_id, $client_secret) {
+        $response = wp_remote_post("$base_url/v1/oauth2/token", array(
+            'headers' => array(
+                'Authorization' => 'Basic ' . base64_encode("$client_id:$client_secret"),
+                'Accept'        => 'application/json',
+                'Content-Type'  => 'application/x-www-form-urlencoded',
+            ),
+            'body' => 'grant_type=client_credentials',
+        ));
 
-    if (is_wp_error($response)) {
-        error_log('PayPal token request failed: ' . $response->get_error_message());
-        return false;
+        if (is_wp_error($response)) {
+            error_log('PayPal token request failed: ' . $response->get_error_message());
+            return false;
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if (empty($data['access_token'])) {
+            error_log('PayPal token response: ' . $body);
+            return false;
+        }
+
+        return $data['access_token'];
     }
-
-    $body = wp_remote_retrieve_body($response);
-    $data = json_decode($body, true);
-
-    if (empty($data['access_token'])) {
-        error_log('PayPal token response: ' . $body);
-        return false;
-    }
-
-    return $data['access_token'];
-}
 
     private function create_order_request($base_url, $token, $cart) {
         $response = wp_remote_post("$base_url/v2/checkout/orders", array(
@@ -203,17 +205,18 @@ private function get_access_token($base_url, $client_id, $client_secret) {
      * @param MP_Order $order
      * @return string
      */
-public function order_confirmation_text( $order ) {
-	// Falls nur die Order-ID übergeben wurde, hole das Objekt manuell
-	if ( is_string( $order ) ) {
-		$order = new MP_Order( $order );
-	}
+    public function order_confirmation_text( $order ) {
+        if ( is_string( $order ) ) {
+            $order = new MP_Order( $order );
+        }
 
-	return sprintf(
-		__( 'Thank you for your order. Your transaction ID is: %s', 'mp' ),
-		esc_html( $order->get_meta( 'transaction_id' ) )
-	);
-}
+        $transaction_id = $order->get_meta( 'transaction_id' );
+        if (!$transaction_id && !empty($order->payment_info['transaction_id'])) {
+            $transaction_id = $order->payment_info['transaction_id'];
+        }
+
+        return __('Thank you for your order. Your payment was successful.', 'mp');
+    }
 }
 
 // Init-Hook fürs Capturing, ohne doppelte Metaboxen etc.
