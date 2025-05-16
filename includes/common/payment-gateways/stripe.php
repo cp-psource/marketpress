@@ -5,6 +5,11 @@
   Author - Aaron Edwards, Marko Miljus
  */
 
+
+if ( file_exists( __DIR__ . '/../../../vendor/autoload.php' ) ) {
+    require_once __DIR__ . '/../../../vendor/autoload.php';
+}
+
 class MP_Gateway_Stripe extends MP_Gateway_API {
 
 	//build
@@ -195,16 +200,17 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_scripts' ) );
 	}
 
+
 	function enqueue_scripts() {
 		if ( !mp_is_shop_page( 'checkout' ) ) {
 			return;
 		}
 
-		wp_enqueue_script( 'js-stripe', 'https://js.stripe.com/v2/', array( 'jquery' ), null );
-		wp_enqueue_script( 'stripe-token', mp_plugin_url( 'includes/common/payment-gateways/stripe-files/stripe_token.js' ), array( 'js-stripe', 'jquery-ui-core' ), MP_VERSION );
-		wp_localize_script( 'stripe-token', 'stripe', array(
-			'publisher_key' => $this->publishable_key
-		) );
+		wp_enqueue_script( 'stripe-js', 'https://js.stripe.com/v3/', array(), null );
+		wp_enqueue_script( 'stripe-token', mp_plugin_url( 'includes/common/payment-gateways/stripe-files/stripe_token.js' ), array( 'stripe-js', 'jquery-ui-core' ), MP_VERSION );
+wp_localize_script( 'stripe-token', 'mp_stripe_vars', array(
+    'publishable_key' => $this->publishable_key
+) );
 	}
 
 	/**
@@ -213,28 +219,18 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 	 * @param array $cart. Contains the cart contents for the current blog, global cart if mp()->global_cart is true
 	 * @param array $shipping_info. Contains shipping info and email in case you need it
 	 */
-	function payment_form( $cart, $shipping_info ) {
-		$name = mp_get_user_address_part( 'first_name', 'billing' ) . ' ' . mp_get_user_address_part( 'last_name', 'billing' );
+function payment_form($cart, $shipping_info) {
+    $name = mp_get_user_address_part('first_name', 'billing') . ' ' . mp_get_user_address_part('last_name', 'billing');
 
-		$content = '
-			<input id="mp-stripe-name" type="hidden" value="' . esc_attr( $name ) . '">
-			<div class="mp_checkout_field">
-				<label class="mp_form_label">' . __( 'Card Number', 'mp' ) . ' <span class="mp_field_required">*</span></label>
-				<input id="mp-stripe-cc-num" type="text" pattern="\d*" autocomplete="cc-number" class="mp_form_input mp_form_input-cc-num mp-input-cc-num" data-rule-required="true" data-rule-cc-num="true">
-			</div>
-			<div class="mp_checkout_fields">
-				<div class="mp_checkout_column mp_checkout_field">
-					<label class="mp_form_label">' . __( 'Expiration', 'mp' ) . ' <span class="mp_field_required">*</span> <span class="mp_tooltip-help">' . __( 'Enter in <strong>MM/YYYY</strong> or <strong>MM/YY</strong> format', 'mp' ) . '</span></label>
-					<input type="text" autocomplete="cc-exp" id="mp-stripe-cc-exp" class="mp_form_input mp_form_input-cc-exp mp-input-cc-exp" data-rule-required="true" data-rule-cc-exp="true">
-				</div>
-				<div class="mp_checkout_column mp_checkout_field">
-					<label class="mp_form_label">' . __( 'Security Code ', 'mp' ) . ' <span class="mp_field_required">*</span> <span class="mp_tooltip-help"><img src="' . mp_plugin_url( 'ui/images/cvv_2.jpg' ) . '" alt="CVV2"></span></label>
-					<input id="mp-stripe-cc-cvc" class="mp_form_input mp_form_input-cc-cvc mp-input-cc-cvc" type="text" autocomplete="off" data-rule-required="true" data-rule-cc-cvc="true">
-				</div>
-			</div>';
+    $content = '
+        <input id="mp-stripe-name" type="hidden" value="' . esc_attr($name) . '">
+        <div id="stripe-card-element"></div>
+        <div id="card-errors" role="alert" style="color: red; margin-top: 0.5em;"></div>
+        <input type="hidden" name="payment_method_id" id="payment_method_id">
+    ';
 
-		return $content;
-	}
+    return $content;
+}
 
 	/**
 	 * Initialize the settings metabox
@@ -294,97 +290,42 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 		) );
 	}
 
-	/**
-	 * Use this to do the final payment. Create the order then process the payment. If
-	 * you know the payment is successful right away go ahead and change the order status
-	 * as well.
-	 *
-	 * @param MP_Cart $cart. Contains the MP_Cart object.
-	 * @param array $billing_info. Contains billing info and email in case you need it.
-	 * @param array $shipping_info. Contains shipping info and email in case you need it
-	 */
-	function process_payment( $cart, $billing_info, $shipping_info ) {
-		//make sure token is set at this point
-		$token = mp_get_post_value( 'stripe_token' );
+	public function process_payment($cart, $billing_info, $shipping_info) {
+		$order = new MP_Order();
+		$order_id = $order->save($cart->get_items(), $billing_info, $shipping_info);
 
-		if ( false === $token ) {
-			mp_checkout()->add_error( __( 'The Stripe Token was not generated correctly. Please go back and try again.', 'mp' ), 'order-review-payment' );
-			return false;
-		}
+		$amount = $this->config_amount($cart->total());
+		$currency = mp_get_setting('currency');
 
-		//setup the Stripe API
-		if ( !class_exists( 'Stripe' ) ) {
-			require_once mp_plugin_dir( 'includes/common/payment-gateways/stripe-files/lib/Stripe.php' );
-		}
+		if (isset($_POST['payment_method_id'])) {
+			$pm_id = sanitize_text_field($_POST['payment_method_id']);
 
-		Stripe::setApiKey( $this->secret_key );
+			$payment_intent_data = [
+				'payment_method' => $pm_id,
+				'amount' => $amount,
+				'currency' => strtolower($currency),
+				'confirmation_method' => 'manual',
+				'confirm' => true,
+			];
 
-		// Create a new order object
-		$order		 = new MP_Order();
-		$order_id	 = $order->get_id();
+			try {
+				$intent = \Stripe\PaymentIntent::create($payment_intent_data);
 
-		// Calc total
-		$total = $cart->total( false );
+				$order = mp_get_order($order_id); // jetzt korrekt: ID existiert
+				$order->add_meta('stripe_payment_intent_id', $intent->id);
+				$order->change_status('paid');
+				$order->payment_complete($intent->id);
 
-		try {
-			// Customer's shipping info
-			$customer_info = array(
-				__('Store', 'mp')		=> get_bloginfo( 'blogname' ),
-				__('First name', 'mp')	=> $billing_info['first_name'],
-				__('Last name', 'mp')	=> $billing_info['last_name'],
-				__('Email', 'mp')		=> $billing_info['email'],
-				__('Country', 'mp')	=> $billing_info['country'],
-				__('State', 'mp')		=> $billing_info['state'],
-				__('City', 'mp')		=> $billing_info['city'],
-				__('ZIP Code', 'mp')	=> $billing_info['zip'],
-				__('Address', 'mp')	=> $billing_info['address1'],
-				__('Phone', 'mp')	=> $billing_info['phone'],
-			);
-			// Filter customer's shipping info
-			$customer_info = apply_filters( 'mp_checkout/stripe/customer_info', $customer_info, $cart, $billing_info, $shipping_info );
-			// create the customer on Stripe's servers
-			$customer = Stripe_Customer::create(array(
-				'email' => mp_get_user_address_part( 'email', 'billing' ),
-			  	'card'  => $token,
-			  	'metadata' => $customer_info
-			));
-			// create the charge on Stripe's servers - this will charge the user's card
-			$charge = Stripe_Charge::create( array(
-				'customer'		 => $customer->id,
-				'amount'		 => $this->config_amount( $total ), // Check if a zero-decimal currency used
-				'currency'		 => strtolower( $this->currency ),
-				'description'	 => sprintf( __( '%s Store Purchase - Order ID - %s, Email - %s', 'mp' ), get_bloginfo( 'name' ), $order_id, mp_get_user_address_part( 'email', 'billing' ) ),
-			) );
+				return ['result' => 'success', 'redirect' => $this->get_return_url($order)];
 
-			if ( $charge->paid == 'true' ) {
-				//setup our payment details
-				$timestamp		 = time();
-				$payment_info	 = array(
-					'gateway_public_name'	 => $this->public_name,
-					'gateway_private_name'	 => $this->admin_name,
-					'method'				 => sprintf( __( '%1$s Card ending in %2$s - Expires %3$s', 'mp' ), $charge->source->brand, $charge->source->last4, $charge->source->exp_month . '/' . $charge->source->exp_year ),
-					'transaction_id'		 => $charge->id,
-					'status'				 => array(
-						$timestamp => __( 'Paid', 'mp' ),
-					),
-					'total'					 => $cart->total(),
-					'currency'				 => $this->currency,
-				);
-
-				$order->save( array(
-					'cart'			 => $cart,
-					'payment_info'	 => $payment_info,
-					'billing_info'	 => $billing_info,
-					'shipping_info'	 => $shipping_info
-				) );
-				
-				//In order to each the mp_order_order_paid action
-				$order->change_status( 'order_paid', true );
+			} catch (\Exception $e) {
+				return ['result' => 'failure', 'message' => $e->getMessage()];
 			}
-		} catch ( Exception $e ) {
-			mp_checkout()->add_error( sprintf( __( 'There was an error processing your card - "%s". Please try again.', 'mp' ), $e->getMessage() ), 'general' );
 		}
+
+		return ['result' => 'failure', 'message' => 'Keine Payment Method ID übergeben.'];
 	}
+
 
 	/**
 	 * INS and payment return
@@ -431,3 +372,5 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 
 //register payment gateway plugin
 mp_register_gateway_plugin( 'MP_Gateway_Stripe', 'stripe', __( 'Stripe', 'mp' ) );
+
+

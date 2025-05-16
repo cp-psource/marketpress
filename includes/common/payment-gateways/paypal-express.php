@@ -8,7 +8,7 @@ class MP_Gateway_Paypal_Express extends MP_Gateway_API {
 
 function on_creation() {
     // Einstellungen laden
-    $this->init_settings_metabox();
+    //$this->init_settings_metabox();
 
     // Zahlungsprozess-Callback registrieren
     add_action('mp_order/payment_process/' . $this->plugin_name, array($this, 'process_payment'));
