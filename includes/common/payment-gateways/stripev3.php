@@ -332,35 +332,17 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 				'return_url'           => $this->get_return_url($order),
 			]);
 
-	if ($intent->status === 'succeeded') {
-		$order = new MP_Order($order_id);
+if ($intent->status === 'succeeded') {
+	update_post_meta( $order->get_id(), 'stripe_payment_intent', $intent->id );
+	$order->change_status( 'paid' );
+	$order->save();
 
-		$payment_info = [
-			'gateway_public_name'  => $this->public_name,
-			'gateway_private_name' => $this->admin_name,
-			'method'               => 'Stripe – ' . ucfirst($intent->payment_method_types[0]),
-			'transaction_id'       => $intent->id,
-			'status'               => [time() => __('Paid', 'mp')],
-			'total'                => $cart->total(),
-			'currency'             => $currency,
-		];
-
-		$order = new MP_Order();
-		$order_id = $order->get_id();
-			$order->save([
-				'cart'          => $cart,
-				'payment_info'  => $payment_info,
-				'billing_info'  => $billing_info,
-				'shipping_info' => $shipping_info,
-			]);
-			$order->change_status('order_paid', true);
-
-			wp_send_json([
-				'result'   => 'success',
-				'redirect' => $this->get_return_url($order),
-			]);
-			exit;
-			}
+	wp_send_json([
+		'result'   => 'success',
+		'redirect' => $this->get_return_url($order),
+	]);
+	exit;
+}
 
 			if ($intent->status === 'requires_action') {
 				wp_send_json_success([
@@ -373,14 +355,14 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 			}
 
 			wp_send_json([
-				'result'  => 'failure',
-				'message' => 'Unbekannter Zahlungsstatus: ' . $intent->status,
+			'result'  => 'failure',
+			'message' => $e->getMessage(),
 			]);
 			exit;
 
 		} catch (\Exception $e) {
-			error_log('Stripe Fehler: ' . $e->getMessage());
-			wp_send_json_error(['message' => 'Stripe-Exception: ' . $e->getMessage()]);
+			error_log('Stripe Fehler: '.$e->getMessage());
+			wp_send_json_error(['message' => 'Stripe-Exception: '.$e->getMessage()]);
 			exit;
 		}
 	}
@@ -439,5 +421,3 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 
 //register payment gateway plugin
 mp_register_gateway_plugin( 'MP_Gateway_Stripe', 'stripe', __( 'Stripe', 'mp' ) );
-
-
