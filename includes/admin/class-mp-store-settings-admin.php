@@ -31,50 +31,48 @@ class MP_Store_Settings_Admin {
 	 * @since 3.0
 	 * @access private
 	 */
-	private function __construct() {
-		mp_include_dir( mp_plugin_dir( 'includes/admin/store-settings/' ) );
+private function __construct() {
+    mp_include_dir( mp_plugin_dir( 'includes/admin/store-settings/' ) );
 
-		// Add menu items
-		add_action( 'admin_menu', array( &$this, 'add_menu_items' ) );
-		// Print scripts for setting the active admin menu item when on the product tag page
-		add_action( 'admin_footer', array( &$this, 'print_product_tag_scripts' ) );
-		// Print scripts for setting the active admin menu item when on the product category page
-		add_action( 'admin_footer', array( &$this, 'print_product_category_scripts' ) );
-		// Move product categories and tags to store settings menu
-		add_action( 'parent_file', array( &$this, 'set_menu_item_parent' ) );
+    // Add menu items
+    add_action( 'admin_menu', array( &$this, 'add_menu_items' ) );
+    // Print scripts for setting the active admin menu item when on the product tag page
+    add_action( 'admin_footer', array( &$this, 'print_product_tag_scripts' ) );
+    // Print scripts for setting the active admin menu item when on the product category page
+    add_action( 'admin_footer', array( &$this, 'print_product_category_scripts' ) );
+    // Move product categories and tags to store settings menu
+    add_action( 'parent_file', array( &$this, 'set_menu_item_parent' ) );
 
-		if ( mp_get_get_value( 'action' ) == 'mp_add_product_attribute' || mp_get_get_value( 'action' ) == 'mp_edit_product_attribute' ) {
-			MP_Product_Attributes_Admin::add_product_attribute_metaboxes();
-			add_action( 'wpmudev_metabox/before_save_fields/mp-store-settings-product-attributes-add', array( 'MP_Product_Attributes_Admin', 'save_product_attribute' ) );
-			add_action( 'store-settings_page_store-settings-productattributes', array( &$this, 'display_settings_form' ) );
+    if ( mp_get_get_value( 'action' ) == 'mp_add_product_attribute' || mp_get_get_value( 'action' ) == 'mp_edit_product_attribute' ) {
+        MP_Product_Attributes_Admin::add_product_attribute_metaboxes();
+        add_action( 'wpmudev_metabox/before_save_fields/mp-store-settings-product-attributes-add', array( 'MP_Product_Attributes_Admin', 'save_product_attribute' ) );
 
-			if ( mp_get_get_value( 'action' ) == 'mp_edit_product_attribute' ) {
-				add_filter( 'wpmudev_field/before_get_value', array( 'MP_Product_Attributes_Admin', 'get_product_attribute_value' ), 10, 4 );
-			}
-		} else {
-			$screen_ids = array(
-				'toplevel_page_store-settings',
-				'store-settings_page_store-settings-presentation',
-				'store-settings_page_store-settings-notifications',
-				'store-settings_page_store-settings-shipping',
-				'store-settings_page_store-settings-payments',
-				'store-settings_page_store-settings-importers',
-				'store-settings_page_store-settings-exporters',
-				'store-settings_page_store-settings-capabilities',
-				'store-settings_page_store-settings-import',
-				'store-settings_page_store-setup-wizard',
-			);
+        // Dynamisch die aktuelle Screen-ID holen und Action registrieren
+        add_action( 'current_screen', function() {
+            $screen = get_current_screen();
+            if ( $screen && strpos( $screen->id, 'productattributes' ) !== false ) {
+                add_action( $screen->id, array( &$this, 'display_settings_form' ) );
+            }
+        });
 
-			foreach ( $screen_ids as $screen_id ) {
-				add_action( $screen_id, array( &$this, 'display_settings_form' ) );
-			}
+        if ( mp_get_get_value( 'action' ) == 'mp_edit_product_attribute' ) {
+            add_filter( 'wpmudev_field/before_get_value', array( 'MP_Product_Attributes_Admin', 'get_product_attribute_value' ), 10, 4 );
+        }
+    } else {
+        // Dynamisch für alle relevanten Screens die Action registrieren
+        add_action( 'current_screen', function() {
+            $screen = get_current_screen();
+            if ( $screen && strpos( $screen->id, 'store-settings' ) !== false ) {
+                add_action( $screen->id, array( &$this, 'display_settings_form' ) );
+            }
+            if ( $screen && strpos( $screen->id, 'productattributes' ) !== false ) {
+                add_action( $screen->id, array( 'MP_Product_Attributes_Admin', 'display_product_attributes' ) );
+            }
+        });
+    }
 
-			// Product attributes list.
-			add_action( 'store-settings_page_store-settings-productattributes', array( 'MP_Product_Attributes_Admin', 'display_product_attributes' ) );
-		}
-        
-        add_action( 'wpmudev_metabox/after_settings_metabox_saved/mp-settings-presentation-pages-slugs', array( $this, 'reset_store_pages_cache' ) );
-	}
+    add_action( 'wpmudev_metabox/after_settings_metabox_saved/mp-settings-presentation-pages-slugs', array( $this, 'reset_store_pages_cache' ) );
+}
 
 	/**
 	 * Set menu item parent file
@@ -106,7 +104,7 @@ class MP_Store_Settings_Admin {
 	
 		$cap = apply_filters( 'mp_store_settings_cap', 'manage_store_settings' );
 	
-		add_menu_page( __( 'Store Settings', 'mp' ), __( 'Store Settings', 'mp' ), $cap, 'store-settings', null, 'dashicons-store', 99.33 );
+		add_menu_page( __( 'Shop Settings', 'mp' ), __( 'Shop Settings', 'mp' ), $cap, 'store-settings', null, 'dashicons-store', 99.33 );
 		add_submenu_page( 'store-settings', __( 'Store Settings: General', 'mp' ), __( 'General', 'mp' ), $cap, 'store-settings', array( &$this, 'display_settings_form' ) );
 		add_submenu_page( 'store-settings', __( 'Store Settings: Presentation', 'mp' ), __( 'Presentation', 'mp' ), $cap, 'store-settings-presentation', array( &$this, 'display_settings_form' ) );
 		add_submenu_page( 'store-settings', __( 'Store Settings: Notifications', 'mp' ), __( 'Notifications', 'mp' ), $cap, 'store-settings-notifications', array( &$this, 'display_settings_form' ) );
