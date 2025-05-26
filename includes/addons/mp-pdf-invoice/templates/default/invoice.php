@@ -55,11 +55,19 @@
 	}
 </style>
 <div class="container">
-	<div class="header">
-		{{logo}}
-
-		<h3><?php _e( "Invoice", "mp" ) ?> #{{order_id}}</h3>
-	</div>
+    <div class="header-flex" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+        <div style="flex: 1;">
+            {{logo}}
+        </div>
+        <div style="flex: 2; text-align: right;">
+            <h3 style="margin-top:0;"><?php _e( "Invoice", "mp" ) ?> #{{order_id}}</h3>
+            <strong><?php _e( "Seller", "mp" ) ?>:</strong> {{company_name}}<br>
+            <strong><?php _e( "Address", "mp" ) ?>:</strong> {{company_address}}<br>
+            <strong><?php _e( "VAT ID", "mp" ) ?>:</strong> {{vat_id}}<br>
+            <strong><?php _e( "Tax Number", "mp" ) ?>:</strong> {{tax_number}}<br>
+            {{custom_note}}
+        </div>
+    </div>
 	<table>
 		<tr>
 			<td>

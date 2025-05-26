@@ -70,6 +70,7 @@ class MP_Store_Settings_General {
 	 * @access public
 	 */
 	public function init_metaboxes() {
+		$this->init_legal_settings(); 
 		$this->init_location_settings();
 		$this->init_tax_settings();
 		if( ! is_multisite() || ! mp_cart()->is_global ) $this->init_currency_settings();
@@ -648,6 +649,42 @@ class MP_Store_Settings_General {
 		) );
 	}
 
+	public function init_legal_settings() {
+		$metabox = new WPMUDEV_Metabox( array(
+			'id'           => 'mp-settings-general-legal',
+			'page_slugs'   => array( 'store-settings', 'toplevel_page_store-settings' ),
+			'title'        => __( 'Legal Information', 'mp' ),
+			'option_name'  => 'mp_settings',
+		) );
+		$metabox->add_field( 'text', array(
+			'name'  => 'legal[company_name]',
+			'label' => array( 'text' => __( 'Company Name', 'mp' ) ),
+			'validation' => array( 'required' => true ),
+		) );
+		$metabox->add_field( 'textarea', array(
+			'name'  => 'legal[company_address]',
+			'label' => array( 'text' => __( 'Company Address', 'mp' ) ),
+			'validation' => array( 'required' => true ),
+		) );
+		$metabox->add_field( 'text', array(
+			'name'  => 'legal[vat_id]',
+			'label' => array( 'text' => __( 'VAT ID', 'mp' ) ),
+		) );
+		$metabox->add_field( 'text', array(
+			'name'  => 'legal[tax_number]',
+			'label' => array( 'text' => __( 'Tax Number', 'mp' ) ),
+		) );
+		$metabox->add_field( 'checkbox', array(
+			'name'    => 'legal[small_business]',
+			'label'   => array( 'text' => __( 'Small Business Regulation (§19 UStG)', 'mp' ) ),
+			'message' => __( 'I am a small business owner according to §19 UStG (no VAT shown)', 'mp' ),
+		) );
+		$metabox->add_field( 'textarea', array(
+			'name'  => 'legal[custom_note]',
+			'label' => array( 'text' => __( 'Custom Legal Note', 'mp' ) ),
+			'desc'  => __( 'Optional: Add a custom note for your invoices (e.g. Kleinunternehmerregelung)', 'mp' ),
+		) );
+	}
 }
 
 MP_Store_Settings_General::get_instance();
