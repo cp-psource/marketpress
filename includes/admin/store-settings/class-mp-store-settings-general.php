@@ -589,6 +589,7 @@ class MP_Store_Settings_General {
 			'label'			 => array( 'text' => __( 'Base Country', 'mp' ) ),
 			'options'		 => array( '' => __( 'Select A Country', 'mp' ) ) + mp_countries(),
 			'width'			 => 'element',
+			'default_value'  => 'DE', // Deutschland als Standard
 			'validation'	 => array(
 				'required' => true,
 			),

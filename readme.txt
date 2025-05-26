@@ -4,7 +4,7 @@ Tags: E-commerce, ecommerce, storefront, sell, store, shopping, cart, payment ga
 Requires at least: 3.7
 Requires PHP: 7.4
 Tested up to: 6.8.1
-Stable tag: 3.2.9
+Stable tag: 3.3.0
 
 Leistungsstarker E-Commerce-Marktplatz für WordPress und Multisite. 100 % kostenlos und keine Erweiterungen erforderlich.
 
@@ -147,6 +147,11 @@ Wir bieten umfassenden und garantierten Support in den <a href='https://github.c
 3. Beschreibungen und Bewertungen.
 
 == Changelog ==
+
+= 3.3.0 =
+
+* Update: PayPal Express -> PayPal SDK
+* Update: Stripe v2 -> Stripe v3
 
 = 3.2.9 =
 
