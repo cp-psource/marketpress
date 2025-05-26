@@ -250,15 +250,16 @@ private function __construct() {
 	 * @since 3.0
 	 * @access public
 	 */
-public function display_settings_form() {
-    // HARDCODED: Niemals auf der Addon-Seite irgendwas rendern!
-    if (
-        isset($_GET['page']) && $_GET['page'] === 'store-settings-addons'
-    ) {
-        return;
-    }
-    $updated = false;
-    $title   = __( 'Store Settings', 'mp' ) . ': ';
+	public function display_settings_form() {
+		// NICHTS rendern, wenn wir auf einer Addon-Detailseite sind!
+		if (
+			isset($_GET['page']) && $_GET['page'] === 'store-settings-addons'
+			&& !empty($_GET['addon'])
+		) {
+			return;
+		}
+		$updated = false;
+		$title   = __( 'Store Settings', 'mp' ) . ': ';
 
 		switch ( mp_get_current_screen()->id ) {
 			case 'store-settings_page_store-settings-presentation' :
