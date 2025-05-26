@@ -59,17 +59,25 @@ private function __construct() {
             add_filter( 'wpmudev_field/before_get_value', array( 'MP_Product_Attributes_Admin', 'get_product_attribute_value' ), 10, 4 );
         }
     } else {
-        // Dynamisch für alle relevanten Screens die Action registrieren
-        add_action( 'current_screen', function() {
-            $screen = get_current_screen();
-            if ( $screen && strpos( $screen->id, 'store-settings' ) !== false ) {
-                add_action( $screen->id, array( &$this, 'display_settings_form' ) );
-            }
-            if ( $screen && strpos( $screen->id, 'productattributes' ) !== false ) {
-                add_action( $screen->id, array( 'MP_Product_Attributes_Admin', 'display_product_attributes' ) );
-            }
-        });
-    }
+    // Dynamisch für alle relevanten Screens die Action registrieren
+    add_action( 'current_screen', function() {
+        $screen = get_current_screen();
+        // NICHT für Addon-Detailseite!
+        if (
+            $screen
+            && strpos( $screen->id, 'store-settings' ) !== false
+            && (
+                $screen->id !== 'store-settings_page_store-settings-addons'
+                || ( $screen->id === 'store-settings_page_store-settings-addons' && empty($_GET['addon']) )
+            )
+        ) {
+            add_action( $screen->id, array( &$this, 'display_settings_form' ) );
+        }
+        if ( $screen && strpos( $screen->id, 'productattributes' ) !== false ) {
+            add_action( $screen->id, array( 'MP_Product_Attributes_Admin', 'display_product_attributes' ) );
+        }
+    });
+}
 
     add_action( 'wpmudev_metabox/after_settings_metabox_saved/mp-settings-presentation-pages-slugs', array( $this, 'reset_store_pages_cache' ) );
 }
@@ -242,9 +250,15 @@ private function __construct() {
 	 * @since 3.0
 	 * @access public
 	 */
-	public function display_settings_form() {
-		$updated = false;
-		$title	 = __( 'Store Settings', 'mp' ) . ': ';
+public function display_settings_form() {
+    // HARDCODED: Niemals auf der Addon-Seite irgendwas rendern!
+    if (
+        isset($_GET['page']) && $_GET['page'] === 'store-settings-addons'
+    ) {
+        return;
+    }
+    $updated = false;
+    $title   = __( 'Store Settings', 'mp' ) . ': ';
 
 		switch ( mp_get_current_screen()->id ) {
 			case 'store-settings_page_store-settings-presentation' :
