@@ -683,6 +683,7 @@ class MP_Store_Settings_General {
 			'name'  => 'legal[custom_note]',
 			'label' => array( 'text' => __( 'Custom Legal Note', 'mp' ) ),
 			'desc'  => __( 'Optional: Add a custom note for your invoices (e.g. Kleinunternehmerregelung)', 'mp' ),
+			'default_value' => __( 'I am a small business owner according to §19 UStG (no VAT shown)', 'mp' ),
 		) );
 		$metabox->add_field( 'text', array(
 			'name'  => 'legal[invoice_prefix]',

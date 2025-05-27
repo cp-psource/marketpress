@@ -293,15 +293,26 @@ class MP_PDF_Invoice {
 		ob_start();
 		include $template;
 
-		$html = ob_get_clean();
-		$data = array(
-			'{{order_id}}'      => $order->get_id(),
-			'{{billing}}'       => $billing,
-			'{{shipping}}'      => $shipping,
-			'{{order_details}}' => $order_details,
-			'{{logo}}'          => $logo,
-			'{{email}}'         => $email
-		);
+        $html = ob_get_clean();
+        // Hole die Legal Settings
+        $legal_settings = mp_get_setting( 'legal' );
+        // Rechnungsnummer generieren
+        $invoice_number = MP_Orders_Admin::get_instance()->get_or_create_invoice_number( $order->ID );
+
+        $data = array(
+            '{{order_id}}'      => $order->get_id(),
+            '{{invoice_number}}'  => $invoice_number,
+            '{{billing}}'         => $billing,
+            '{{shipping}}'        => $shipping,
+            '{{order_details}}'   => $order_details,
+            '{{logo}}'            => $logo,
+            '{{email}}'           => $email,
+            '{{company_name}}'    => isset($legal_settings['company_name']) ? $legal_settings['company_name'] : '',
+            '{{company_address}}' => isset($legal_settings['company_address']) ? $legal_settings['company_address'] : '',
+            '{{vat_id}}'          => isset($legal_settings['vat_id']) ? $legal_settings['vat_id'] : '',
+            '{{tax_number}}'      => isset($legal_settings['tax_number']) ? $legal_settings['tax_number'] : '',
+            '{{custom_note}}'     => isset($legal_settings['custom_note']) ? $legal_settings['custom_note'] : '',
+        );
 		$data = apply_filters( 'mp_pdf_invoice_params', $data );
 
 		foreach ( $data as $key => $val ) {

@@ -38,7 +38,7 @@ class MP_Orders_Admin {
 	/**
      * Generiert eine fortlaufende Rechnungsnummer und speichert sie als Post-Meta.
      */
-    private function get_or_create_invoice_number( $order_id ) {
+    public function get_or_create_invoice_number( $order_id ) {
         $invoice_number = get_post_meta( $order_id, '_mp_invoice_number', true );
         if ( $invoice_number ) {
             return $invoice_number;

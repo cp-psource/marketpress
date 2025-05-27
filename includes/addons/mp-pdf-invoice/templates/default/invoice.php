@@ -72,9 +72,7 @@
             <?php if ( !empty($vars['tax_number']) ) : ?>
                 <strong><?php _e( "Tax Number", "mp" ) ?>:</strong> <?php echo esc_html($vars['tax_number']); ?><br>
             <?php endif; ?>
-            <?php if ( !empty($vars['custom_note']) ) : ?>
-                <?php echo wpautop( esc_html($vars['custom_note']) ); ?>
-            <?php endif; ?>
+            {{custom_note}}
         </div>
     </div>
 	<table>
