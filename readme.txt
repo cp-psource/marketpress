@@ -4,7 +4,7 @@ Tags: E-commerce, ecommerce, storefront, sell, store, shopping, cart, payment ga
 Requires at least: 3.7
 Requires PHP: 7.4
 Tested up to: 6.8.1
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 
 Leistungsstarker E-Commerce-Marktplatz für WordPress und Multisite. 100 % kostenlos und keine Erweiterungen erforderlich.
 
@@ -109,44 +109,13 @@ Falls Sie beim Einstieg auf Probleme stoßen, ist <a href="https://cp-psource.gi
 
 Also, worauf warten Sie noch? Starten Sie noch heute mit <a href="http://premium.wpmudev.org/project/e-commerce/">MarketPress eCommerce</a>. Alles, was Sie brauchen, um Ihren Online-Shop zu starten und auszubauen.
 
-
-== Installation ==
-= So installieren Sie MarketPress: =
-
-1.  Laden Sie die MarketPress-Plugin-Datei herunter.
-2.  Entpacken Sie die Datei in einen Ordner auf Ihrer Festplatte.
-3.  Laden Sie den Ordner `/wordpress-ecommerce/` in den Ordner `/wp-content/plugins/` auf Ihrer Website hoch.
-4.  Besuchen Sie Ihr Dashboard -> Plugins und aktivieren Sie es dort.
-
-= MarketPress einrichten und konfigurieren =
-* Sie finden <a href='http://premium.wpmudev.org/project/e-commerce/#usage'>detaillierte Anleitungen zur Einrichtung und Nutzung mit Screenshots hier &raquo;</a>
-
-= Produkte aus dem WP e-Commerce-Plugin importieren =
-Sie können Produkte direkt aus WP e-Commerce in MarketPress importieren.
-
-1.  Aktivieren Sie die WP e-Commerce- und MarketPress-Plugins.
-2.  Gehen Sie zu Site Admin > Produkte > Store-Settings und klicken Sie auf den Tab "WP e-Commerce Importer".
-3.  Wählen Sie "Jetzt importieren".
-4.  Sie sollten eine Erfolgsmeldung sehen, die Ihnen mitteilt, dass der Vorgang abgeschlossen wurde.
-
-== Häufig gestellte Fragen ==
-
-= Muss ich ein zahlendes Mitglied bei WPMU DEV sein? =
-Nein! Dieses Plugin wird kostenlos angeboten.
-
-= Ist dieses Plugin mit BuddyPress kompatibel? =
-Absolut. MarketPress funktioniert auf individuellen Seiten in BuddyPress.
-
-= Wie erhalte ich Unterstützung? =
-Wir bieten umfassenden und garantierten Support in den <a href='https://github.com/cp-psource/marketpress/discussions'>PSOURCE-Foren</a>.
-
-== Screenshots ==
-
-1. Wunderschöne Rasterlayouts für Produkte.
-2. Saubere und leicht lesbare Produktseiten.
-3. Beschreibungen und Bewertungen.
-
 == Changelog ==
+
+= 3.3.1 =
+
+* Fit für Deutsche Steuerpraxis
+* Fortlaufende Rechnungsnummmerierung
+* PDF Rechnungen um rechtliche Angaben ergänzt
 
 = 3.3.0 =
 
