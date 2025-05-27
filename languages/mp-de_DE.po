@@ -1,17 +1,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MarketPress\n"
-"POT-Creation-Date: 2025-05-07 12:19+0200\n"
-"PO-Revision-Date: 2025-05-07 12:22+0200\n"
+"POT-Creation-Date: 2025-05-27 13:45+0200\n"
+"PO-Revision-Date: 2025-05-27 13:47+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: de\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.6\n"
-"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: marketpress.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,10 +20,11 @@ msgstr ""
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: includes/addons/mp-pdf-invoice/vendors/dompdf/"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+"X-Poedit-SearchPathExcluded-2: includes/addons/mp-pdf-invoice/vendors/dompdf/"
 "vendor\n"
-"X-Poedit-SearchPathExcluded-2: tests\n"
-"X-Poedit-SearchPathExcluded-3: psource/psource-plugin-update/vendor\n"
+"X-Poedit-SearchPathExcluded-3: tests\n"
+"X-Poedit-SearchPathExcluded-4: psource/psource-plugin-update/vendor\n"
 
 #: includes/addons/class-mp-addons-list-table.php:20
 #: includes/admin/class-mp-product-attributes-admin.php:129
@@ -48,7 +49,7 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: includes/addons/class-mp-addons-list-table.php:22
-#: includes/admin/class-mp-orders-admin.php:1011
+#: includes/admin/class-mp-orders-admin.php:1040
 msgid "Status"
 msgstr "Status"
 
@@ -128,7 +129,7 @@ msgid "Coupon Discounts"
 msgstr "Coupon-Rabatte"
 
 #: includes/addons/mp-coupons/class-mp-coupons-addon.php:321
-#: includes/admin/class-mp-orders-admin.php:530
+#: includes/admin/class-mp-orders-admin.php:559
 #: includes/common/class-mp-cart.php:587
 msgid "Remove"
 msgstr "Entfernen"
@@ -269,22 +270,22 @@ msgstr "Nein"
 #: includes/admin/class-mp-setup-wizard.php:525
 #: includes/admin/class-mp-setup-wizard.php:531
 #: includes/admin/class-mp-setup-wizard.php:565
-#: includes/admin/store-settings/class-mp-store-settings-general.php:232
-#: includes/admin/store-settings/class-mp-store-settings-general.php:299
-#: includes/admin/store-settings/class-mp-store-settings-general.php:305
-#: includes/admin/store-settings/class-mp-store-settings-general.php:311
-#: includes/admin/store-settings/class-mp-store-settings-general.php:317
-#: includes/admin/store-settings/class-mp-store-settings-general.php:328
-#: includes/admin/store-settings/class-mp-store-settings-general.php:334
-#: includes/admin/store-settings/class-mp-store-settings-general.php:341
-#: includes/admin/store-settings/class-mp-store-settings-general.php:348
-#: includes/admin/store-settings/class-mp-store-settings-general.php:367
-#: includes/admin/store-settings/class-mp-store-settings-general.php:493
-#: includes/admin/store-settings/class-mp-store-settings-general.php:499
-#: includes/admin/store-settings/class-mp-store-settings-general.php:505
-#: includes/admin/store-settings/class-mp-store-settings-general.php:511
-#: includes/admin/store-settings/class-mp-store-settings-general.php:517
-#: includes/admin/store-settings/class-mp-store-settings-general.php:556
+#: includes/admin/store-settings/class-mp-store-settings-general.php:233
+#: includes/admin/store-settings/class-mp-store-settings-general.php:300
+#: includes/admin/store-settings/class-mp-store-settings-general.php:306
+#: includes/admin/store-settings/class-mp-store-settings-general.php:312
+#: includes/admin/store-settings/class-mp-store-settings-general.php:318
+#: includes/admin/store-settings/class-mp-store-settings-general.php:329
+#: includes/admin/store-settings/class-mp-store-settings-general.php:335
+#: includes/admin/store-settings/class-mp-store-settings-general.php:342
+#: includes/admin/store-settings/class-mp-store-settings-general.php:349
+#: includes/admin/store-settings/class-mp-store-settings-general.php:368
+#: includes/admin/store-settings/class-mp-store-settings-general.php:494
+#: includes/admin/store-settings/class-mp-store-settings-general.php:500
+#: includes/admin/store-settings/class-mp-store-settings-general.php:506
+#: includes/admin/store-settings/class-mp-store-settings-general.php:512
+#: includes/admin/store-settings/class-mp-store-settings-general.php:518
+#: includes/admin/store-settings/class-mp-store-settings-general.php:557
 #: includes/admin/store-settings/class-mp-store-settings-notifications.php:324
 #: includes/admin/store-settings/class-mp-store-settings-presentation.php:302
 #: includes/admin/store-settings/class-mp-store-settings-presentation.php:373
@@ -329,8 +330,6 @@ msgstr "Alle Produkte"
 #: includes/addons/mp-coupons/class-mp-coupons-addon.php:728
 #: includes/admin/class-mp-shortcode-builder.php:793
 #: includes/admin/widgets/product-list.php:227
-#: includes/common/template-functions.php:888
-#: includes/common/template-functions.php:2910
 msgid "Category"
 msgstr "Kategorie"
 
@@ -463,8 +462,8 @@ msgid "Code"
 msgstr "Code"
 
 #: includes/addons/mp-coupons/class-mp-coupons-addon.php:1185
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:211
-#: includes/admin/class-mp-orders-admin.php:1018
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:216
+#: includes/admin/class-mp-orders-admin.php:1048
 msgid "Discount"
 msgstr "Rabatt"
 
@@ -588,30 +587,30 @@ msgstr "Vorlage wählen"
 msgid "Shop header/logo"
 msgstr "Shop Kopfzeile/Logo"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:48
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:49
 msgid "PDF Invoice"
 msgstr "PDF Rechnung"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:48
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:49
 msgid "PDF Packing Slip"
 msgstr "PDF Lieferschein"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:80
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:83
 #, fuzzy, php-format
 msgid "The dir %s not exist or not writeable"
 msgstr "Das Verzeichnis %s existiert nicht oder ist nicht beschreibbar"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:206
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:211
 #, fuzzy
 msgid "Subtotal"
 msgstr "Zwischensumme"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:217
-#: includes/admin/class-mp-orders-admin.php:1016
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:222
+#: includes/admin/class-mp-orders-admin.php:1046
 #: includes/admin/class-mp-products-admin.php:1949
 #: includes/admin/class-mp-products-admin.php:2189
-#: includes/admin/class-mp-store-settings-admin.php:113
-#: includes/admin/class-mp-store-settings-admin.php:261
+#: includes/admin/class-mp-store-settings-admin.php:119
+#: includes/admin/class-mp-store-settings-admin.php:274
 #: includes/common/class-mp-cart.php:712 includes/common/helpers.php:168
 #: includes/common/payment-gateways/_ideal.php:137
 #: includes/common/payment-gateways/_payway.php:116
@@ -620,55 +619,78 @@ msgstr "Zwischensumme"
 msgid "Shipping"
 msgstr "Versand"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:222
-#: includes/admin/class-mp-orders-admin.php:1017
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:227
+#: includes/admin/class-mp-orders-admin.php:1047
 #: includes/common/payment-gateways/_ideal.php:148
 #: includes/common/payment-gateways/_payway.php:134
 #: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:108
 msgid "Tax"
 msgstr "Steuer"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:232
-#: includes/admin/class-mp-orders-admin.php:1019
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:237
+#: includes/admin/class-mp-orders-admin.php:1049
 #: includes/common/class-mp-order.php:1042 includes/common/helpers.php:97
 #, fuzzy
 msgid "Total"
 msgstr "Gesamt"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:236
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:241
 #, php-format
 msgid "Payment Method: %s"
 msgstr "Zahlungsart: %s"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:257
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:262
 #, php-format
 msgid "Email: %s"
 msgstr "E-Mail: %s"
 
-#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:259
+#: includes/addons/mp-pdf-invoice/class-mp-pdf-invoice.php:264
 #, fuzzy, php-format
 msgid "Shipping Email: %s"
 msgstr "Versand E-Mail: %s"
 
-#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:61
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:64
 msgid "Invoice"
 msgstr "Rechnung"
 
-#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:66
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:65
+#: includes/admin/class-mp-orders-admin.php:1041
+msgid "Order ID"
+msgstr "Bestellnummer"
+
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:67
+msgid "Seller"
+msgstr "Verkäufer"
+
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:68
+msgid "Address"
+msgstr "Adresse"
+
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:70
+#: includes/admin/store-settings/class-mp-store-settings-general.php:671
+msgid "VAT ID"
+msgstr "USt-IdNr."
+
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:73
+#: includes/admin/store-settings/class-mp-store-settings-general.php:675
+msgid "Tax Number"
+msgstr "Steuernummer"
+
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:81
 #: includes/addons/mp-pdf-invoice/templates/default/packing.php:66
 #: includes/common/class-mp-order.php:854 includes/common/helpers.php:163
 #: includes/public/class-mp-checkout.php:1366
 msgid "Billing Address"
 msgstr "Rechnungsadresse"
 
-#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:71
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:86
 #: includes/addons/mp-pdf-invoice/templates/default/packing.php:71
 #: includes/common/class-mp-order.php:862 includes/common/helpers.php:164
 #: includes/public/class-mp-checkout.php:1373
 msgid "Shipping Address"
 msgstr "Lieferadresse"
 
-#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:83
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:98
 #: includes/addons/mp-pdf-invoice/templates/default/packing.php:86
 #: includes/admin/class-mp-dashboard-widgets.php:134
 #: includes/admin/class-mp-products-admin.php:458
@@ -682,7 +704,7 @@ msgstr "Lieferadresse"
 msgid "Product Name"
 msgstr "Produktname"
 
-#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:84
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:99
 #: includes/addons/mp-pdf-invoice/templates/default/packing.php:87
 #: includes/admin/class-mp-products-admin.php:1728
 #: includes/common/class-mp-cart.php:1404
@@ -690,7 +712,7 @@ msgstr "Produktname"
 msgid "Quantity"
 msgstr "Menge"
 
-#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:85
+#: includes/addons/mp-pdf-invoice/templates/default/invoice.php:100
 #: includes/admin/class-mp-ajax.php:176 includes/admin/class-mp-ajax.php:253
 #: includes/admin/class-mp-products-admin.php:434
 #: includes/admin/class-mp-products-admin.php:462
@@ -830,48 +852,47 @@ msgid "All Statuses"
 msgstr "Alle Stati"
 
 #: includes/admin/class-mp-admin.php:213
-#: includes/admin/class-mp-orders-admin.php:382
-#: includes/admin/class-mp-orders-admin.php:1045
-#: includes/admin/class-mp-orders-admin.php:1066
+#: includes/admin/class-mp-orders-admin.php:411
+#: includes/admin/class-mp-orders-admin.php:1075
+#: includes/admin/class-mp-orders-admin.php:1096
 #: includes/common/class-mp-order.php:985
 #: includes/common/payment-gateways/payfast.php:244 marketpress.php:334
 msgid "Received"
 msgstr "Empfangen"
 
 #: includes/admin/class-mp-admin.php:214
-#: includes/admin/class-mp-orders-admin.php:381
-#: includes/admin/class-mp-orders-admin.php:953
-#: includes/admin/class-mp-orders-admin.php:1049
-#: includes/admin/class-mp-orders-admin.php:1067
+#: includes/admin/class-mp-orders-admin.php:410
+#: includes/admin/class-mp-orders-admin.php:982
+#: includes/admin/class-mp-orders-admin.php:1079
+#: includes/admin/class-mp-orders-admin.php:1097
 #: includes/common/payment-gateways/2checkout.php:294
 #: includes/common/payment-gateways/_cubepoints.php:130
 #: includes/common/payment-gateways/authorizenet-aim.php:193
 #: includes/common/payment-gateways/free_orders.php:91
 #: includes/common/payment-gateways/mijireh.php:250
 #: includes/common/payment-gateways/paymill.php:275
-#: includes/common/payment-gateways/paypal-express.php:931
-#: includes/common/payment-gateways/paypal-express.php:965
+#: includes/common/payment-gateways/paypal-express.php:125
 #: includes/common/payment-gateways/pin.php:260
 #: includes/common/payment-gateways/simplify.php:181
-#: includes/common/payment-gateways/stripe.php:368
+#: includes/common/payment-gateways/stripe.php:343
 #: includes/common/payment-gateways/wepay.php:275 marketpress.php:341
 msgid "Paid"
 msgstr "Bezahlt"
 
 #: includes/admin/class-mp-admin.php:215
-#: includes/admin/class-mp-orders-admin.php:380
-#: includes/admin/class-mp-orders-admin.php:954
-#: includes/admin/class-mp-orders-admin.php:1053
-#: includes/admin/class-mp-orders-admin.php:1068
+#: includes/admin/class-mp-orders-admin.php:409
+#: includes/admin/class-mp-orders-admin.php:983
+#: includes/admin/class-mp-orders-admin.php:1083
+#: includes/admin/class-mp-orders-admin.php:1098
 #: includes/common/class-mp-order.php:992 marketpress.php:348
 msgid "Shipped"
 msgstr "Versandt"
 
 #: includes/admin/class-mp-admin.php:216
-#: includes/admin/class-mp-orders-admin.php:379
-#: includes/admin/class-mp-orders-admin.php:955
-#: includes/admin/class-mp-orders-admin.php:1057
-#: includes/admin/class-mp-orders-admin.php:1069
+#: includes/admin/class-mp-orders-admin.php:408
+#: includes/admin/class-mp-orders-admin.php:984
+#: includes/admin/class-mp-orders-admin.php:1087
+#: includes/admin/class-mp-orders-admin.php:1099
 #: includes/common/class-mp-order.php:1009 marketpress.php:355
 msgid "Closed"
 msgstr "Geschlossen"
@@ -1120,7 +1141,7 @@ msgstr "Sondersteuersatz"
 
 #: includes/admin/class-mp-ajax.php:273
 #: includes/admin/class-mp-products-admin.php:1614
-#: includes/admin/store-settings/class-mp-store-settings-general.php:454
+#: includes/admin/store-settings/class-mp-store-settings-general.php:455
 msgid "Tax Rate"
 msgstr "Steuersatz"
 
@@ -1214,7 +1235,7 @@ msgstr ""
 "deine Bestell-ID und versuche es noch einmal."
 
 #: includes/admin/class-mp-ajax.php:579
-#: includes/admin/class-mp-orders-admin.php:524
+#: includes/admin/class-mp-orders-admin.php:553
 #: includes/common/payment-gateways/2checkout.php:370
 #: includes/common/payment-gateways/authorizenet-aim.php:264
 #: includes/common/payment-gateways/mollie.php:95
@@ -1258,7 +1279,7 @@ msgid "No products out of stock."
 msgstr "Keine Produkte nicht vorrätig."
 
 #: includes/admin/class-mp-dashboard-widgets.php:208
-#: includes/admin/store-settings/class-mp-store-settings-general.php:287
+#: includes/admin/store-settings/class-mp-store-settings-general.php:288
 #, fuzzy
 msgid "Inventory Warning Threshold"
 msgstr "Inventar-Warnschwelle"
@@ -1344,15 +1365,12 @@ msgid "Manage"
 msgstr "Verwalten"
 
 #: includes/admin/class-mp-dashboard-widgets.php:301
-#: includes/admin/class-mp-orders-admin.php:993 marketpress.php:291
+#: includes/admin/class-mp-orders-admin.php:1022 marketpress.php:291
 #, fuzzy
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: includes/admin/class-mp-dashboard-widgets.php:307
-#: includes/common/template-functions.php:173
-#: includes/common/template-functions.php:179
-#: includes/common/template-functions.php:904 marketpress.php:246
+#: includes/admin/class-mp-dashboard-widgets.php:307 marketpress.php:246
 #: marketpress.php:249
 msgid "Products"
 msgstr "Produkte"
@@ -1373,8 +1391,8 @@ msgid "Configure"
 msgstr "Konfigurieren"
 
 #: includes/admin/class-mp-dashboard-widgets.php:313
-#: includes/admin/class-mp-store-settings-admin.php:111
-#: includes/admin/class-mp-store-settings-admin.php:253
+#: includes/admin/class-mp-store-settings-admin.php:117
+#: includes/admin/class-mp-store-settings-admin.php:266
 msgid "Presentation"
 msgstr "Präsentation"
 
@@ -1393,7 +1411,7 @@ msgid "Payment Gateways"
 msgstr "Zahlungsarten"
 
 #: includes/admin/class-mp-dashboard-widgets.php:317
-#: includes/admin/class-mp-store-settings-admin.php:127
+#: includes/admin/class-mp-store-settings-admin.php:133
 msgid "User Capabilities"
 msgstr "Nutzerbefugnisse"
 
@@ -1412,7 +1430,7 @@ msgid "Cheatin&#8217; uh?"
 msgstr "Schummeln&#8217; was?"
 
 #: includes/admin/class-mp-exporter-orders.php:154
-#: includes/admin/class-mp-orders-admin.php:1013
+#: includes/admin/class-mp-orders-admin.php:1043
 #, fuzzy
 msgid "Order Date"
 msgstr "Bestelldatum"
@@ -1422,152 +1440,149 @@ msgid "All Dates"
 msgstr "Alle Termine"
 
 #: includes/admin/class-mp-exporter-orders.php:167
-#: includes/admin/class-mp-orders-admin.php:436
+#: includes/admin/class-mp-orders-admin.php:465
 #: includes/admin/class-mp-pages-admin.php:62
 #: includes/admin/store-settings/class-mp-store-settings-presentation.php:225
-#: includes/common/template-functions.php:175
-#: includes/common/template-functions.php:928
 msgid "Order Status"
 msgstr "Bestellstatus"
 
-#: includes/admin/class-mp-orders-admin.php:283
+#: includes/admin/class-mp-orders-admin.php:312
 msgid "Order Details"
 msgstr "Bestelldetails"
 
-#: includes/admin/class-mp-orders-admin.php:287
+#: includes/admin/class-mp-orders-admin.php:316
 msgid "Customer Info"
 msgstr "Kundeninfos"
 
-#: includes/admin/class-mp-orders-admin.php:291
+#: includes/admin/class-mp-orders-admin.php:320
 msgid "Order Notes"
 msgstr "Anmerkungen zur Bestellung"
 
-#: includes/admin/class-mp-orders-admin.php:295
+#: includes/admin/class-mp-orders-admin.php:324
 #, fuzzy
 msgid "IPN History"
 msgstr "IPN Geschichte"
 
-#: includes/admin/class-mp-orders-admin.php:301
+#: includes/admin/class-mp-orders-admin.php:330
 msgid "Order Actions"
 msgstr "Bestellaktionen"
 
-#: includes/admin/class-mp-orders-admin.php:305
-#: includes/common/template-functions.php:528
+#: includes/admin/class-mp-orders-admin.php:334
 msgid "Order History"
 msgstr "Bestellverlauf"
 
-#: includes/admin/class-mp-orders-admin.php:309
+#: includes/admin/class-mp-orders-admin.php:338
 #: includes/common/payment-gateways/free_orders.php:176
 msgid "Payment Information"
 msgstr "Zahlungsinformation"
 
-#: includes/admin/class-mp-orders-admin.php:318
+#: includes/admin/class-mp-orders-admin.php:347
 msgid "Shipping Info"
 msgstr "Versandinformation"
 
-#: includes/admin/class-mp-orders-admin.php:347
+#: includes/admin/class-mp-orders-admin.php:376
 msgid "Gateway"
 msgstr "Gateway"
 
-#: includes/admin/class-mp-orders-admin.php:349
+#: includes/admin/class-mp-orders-admin.php:378
 msgid "Type"
 msgstr "Typ"
 
-#: includes/admin/class-mp-orders-admin.php:351
+#: includes/admin/class-mp-orders-admin.php:380
 msgid "Transaction ID"
 msgstr "Transaktions-ID"
 
-#: includes/admin/class-mp-orders-admin.php:353
+#: includes/admin/class-mp-orders-admin.php:382
 #, fuzzy
 msgid "Products Total"
 msgstr "Produkte Insgesamt"
 
-#: includes/admin/class-mp-orders-admin.php:356
+#: includes/admin/class-mp-orders-admin.php:385
 #, fuzzy
 msgid "Taxes Total"
 msgstr "Steuern Gesamt"
 
-#: includes/admin/class-mp-orders-admin.php:360
+#: includes/admin/class-mp-orders-admin.php:389
 msgid "Shipping Total"
 msgstr "Versandkosten gesamt"
 
-#: includes/admin/class-mp-orders-admin.php:364
+#: includes/admin/class-mp-orders-admin.php:393
 msgid "Payment Total"
 msgstr "Gesamte Zahlung"
 
-#: includes/admin/class-mp-orders-admin.php:412
+#: includes/admin/class-mp-orders-admin.php:441
 #, fuzzy
 msgid "There is no IPN history to show at this time"
 msgstr "Zurzeit gibt es keine IPN-Historie zu sehen"
 
-#: includes/admin/class-mp-orders-admin.php:448
+#: includes/admin/class-mp-orders-admin.php:477
 #: includes/wpmudev-metaboxes/wpmudev-metabox.php:284
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
-#: includes/admin/class-mp-orders-admin.php:479
+#: includes/admin/class-mp-orders-admin.php:508
 #: includes/common/shipping-modules/mp-ups.php:43
 msgid "UPS"
 msgstr "UPS"
 
-#: includes/admin/class-mp-orders-admin.php:480
+#: includes/admin/class-mp-orders-admin.php:509
 #: includes/common/shipping-modules/mp-fedex.php:36
 msgid "FedEx"
 msgstr "FedEx"
 
-#: includes/admin/class-mp-orders-admin.php:481
+#: includes/admin/class-mp-orders-admin.php:510
 msgid "DHL"
 msgstr "DHL"
 
-#: includes/admin/class-mp-orders-admin.php:482
+#: includes/admin/class-mp-orders-admin.php:511
 msgid "Other"
 msgstr "Andere"
 
-#: includes/admin/class-mp-orders-admin.php:508
+#: includes/admin/class-mp-orders-admin.php:537
 msgid "Amount Collected"
 msgstr "Eingezogener Betrag"
 
-#: includes/admin/class-mp-orders-admin.php:512
+#: includes/admin/class-mp-orders-admin.php:541
 msgid "Shipping Tax"
 msgstr "Versandsteuer"
 
-#: includes/admin/class-mp-orders-admin.php:517
+#: includes/admin/class-mp-orders-admin.php:546
 #, fuzzy
 msgid "Method Paid For"
 msgstr "Methode Bezahlt für"
 
-#: includes/admin/class-mp-orders-admin.php:522
+#: includes/admin/class-mp-orders-admin.php:551
 #, fuzzy
 msgid "Actual Shipping Method"
 msgstr "Tatsächliche Versandmethode"
 
-#: includes/admin/class-mp-orders-admin.php:534
+#: includes/admin/class-mp-orders-admin.php:563
 msgid "Method"
 msgstr "Methode"
 
-#: includes/admin/class-mp-orders-admin.php:536
+#: includes/admin/class-mp-orders-admin.php:565
 #: includes/common/payment-gateways/_cubepoints.php:196
 #: includes/common/payment-gateways/free_orders.php:169
 #: includes/common/payment-gateways/manual-payments.php:138
 msgid "Method Name"
 msgstr "Methode Name"
 
-#: includes/admin/class-mp-orders-admin.php:540
-#: includes/admin/class-mp-orders-admin.php:542
+#: includes/admin/class-mp-orders-admin.php:569
+#: includes/admin/class-mp-orders-admin.php:571
 msgid "Tracking Link"
 msgstr "Sendeverfolgung Link"
 
-#: includes/admin/class-mp-orders-admin.php:545
-#: includes/admin/class-mp-orders-admin.php:547
+#: includes/admin/class-mp-orders-admin.php:574
+#: includes/admin/class-mp-orders-admin.php:576
 msgid "Tracking Number"
 msgstr "Sendungsnummer"
 
-#: includes/admin/class-mp-orders-admin.php:692
+#: includes/admin/class-mp-orders-admin.php:721
 #, fuzzy
 msgid "Order statuses successfully updated."
 msgstr "Bestellstatus erfolgreich aktualisiert."
 
-#: includes/admin/class-mp-orders-admin.php:696
+#: includes/admin/class-mp-orders-admin.php:725
 #, fuzzy, php-format
 msgid ""
 "The order status for order ID <strong>%1$s</strong> was updated successfully."
@@ -1575,14 +1590,14 @@ msgstr ""
 "Der Bestellstatus für die Bestell-ID <strong>%1$s</strong> wurde erfolgreich "
 "aktualisiert."
 
-#: includes/admin/class-mp-orders-admin.php:744
+#: includes/admin/class-mp-orders-admin.php:773
 #, fuzzy
 msgid "An invalid bulk action was requested. Please go back and try again."
 msgstr ""
 "Es wurde eine ungültige Massenaktion angefordert. Bitte gehe zurück und "
 "versuche es erneut."
 
-#: includes/admin/class-mp-orders-admin.php:816
+#: includes/admin/class-mp-orders-admin.php:845
 #, fuzzy
 msgid ""
 "The order status could not be updated due to unexpected error. Please try "
@@ -1591,57 +1606,57 @@ msgstr ""
 "Der Bestellstatus konnte aufgrund eines unerwarteten Fehlers nicht "
 "aktualisiert werden. Bitte versuche es erneut."
 
-#: includes/admin/class-mp-orders-admin.php:931
+#: includes/admin/class-mp-orders-admin.php:960
 #, fuzzy
 msgid "Enter coupon code here"
 msgstr "Gutscheincode hier eingeben"
 
-#: includes/admin/class-mp-orders-admin.php:951
+#: includes/admin/class-mp-orders-admin.php:980
 msgid "Change Status"
 msgstr "Status ändern"
 
-#: includes/admin/class-mp-orders-admin.php:952
+#: includes/admin/class-mp-orders-admin.php:981
 #, fuzzy
 msgid " Received"
 msgstr " Empfangen"
 
-#: includes/admin/class-mp-orders-admin.php:956
+#: includes/admin/class-mp-orders-admin.php:985
 msgid "Move To Trash"
 msgstr "In den Papierkorb verschieben"
 
-#: includes/admin/class-mp-orders-admin.php:1012
-#: includes/common/template-functions.php:2138
-msgid "Order ID"
-msgstr "Bestellnummer"
+#: includes/admin/class-mp-orders-admin.php:1042
+#, fuzzy
+msgid "Rechnungsnummer"
+msgstr "Rechnungsnummer"
 
-#: includes/admin/class-mp-orders-admin.php:1014
+#: includes/admin/class-mp-orders-admin.php:1044
 msgid "From"
 msgstr "Von"
 
-#: includes/admin/class-mp-orders-admin.php:1015
+#: includes/admin/class-mp-orders-admin.php:1045
 msgid "Items"
 msgstr "Artikel"
 
-#: includes/admin/class-mp-orders-admin.php:1061
+#: includes/admin/class-mp-orders-admin.php:1091
 msgid "Trashed"
 msgstr "Gelöscht"
 
-#: includes/admin/class-mp-orders-admin.php:1076
+#: includes/admin/class-mp-orders-admin.php:1106
 #, fuzzy
 msgid "Flag as:"
 msgstr "Kennzeichnen als:"
 
-#: includes/admin/class-mp-orders-admin.php:1101
+#: includes/admin/class-mp-orders-admin.php:1131
 #, fuzzy, php-format
 msgid "View order &#8220;%s&#8221;"
 msgstr "Bestellung anzeigen \"%s\""
 
-#: includes/admin/class-mp-orders-admin.php:1112
+#: includes/admin/class-mp-orders-admin.php:1148
 #, fuzzy
 msgid "Display billing/shipping info for this customer"
 msgstr "Rechnungs-/Versandinformationen für diesen Kunden anzeigen"
 
-#: includes/admin/class-mp-orders-admin.php:1159
+#: includes/admin/class-mp-orders-admin.php:1195
 msgid "N/A"
 msgstr "N/A"
 
@@ -1661,7 +1676,7 @@ msgstr "Store Page Einstellungen"
 #: includes/admin/class-mp-shortcode-builder.php:1003
 #: includes/admin/class-mp-shortcode-builder.php:1324
 #: includes/admin/class-mp-shortcode-builder.php:1335
-#: includes/admin/store-settings/class-mp-store-settings-general.php:357
+#: includes/admin/store-settings/class-mp-store-settings-general.php:358
 #: includes/admin/store-settings/class-mp-store-settings-presentation.php:268
 #: includes/admin/store-settings/class-mp-store-settings-shipping.php:108
 #: includes/admin/widgets/ms-global-product-list.php:172
@@ -1683,8 +1698,6 @@ msgstr "Produktliste"
 #: includes/admin/class-mp-pages-admin.php:60
 #: includes/admin/store-settings/class-mp-store-settings-presentation.php:207
 #: includes/admin/widgets/cart.php:8 includes/admin/widgets/cart.php:56
-#: includes/common/template-functions.php:174
-#: includes/common/template-functions.php:813
 msgid "Shopping Cart"
 msgstr "Warenkorb"
 
@@ -1704,17 +1717,17 @@ msgstr ""
 "Du kannst diese Seite zu einer der folgenden Kernseiten des Ladens machen."
 
 #: includes/admin/class-mp-product-attributes-admin.php:48
-#: includes/admin/class-mp-store-settings-admin.php:115
+#: includes/admin/class-mp-store-settings-admin.php:121
 msgid "Product Attributes"
 msgstr "Produkt-Attribute"
 
 #: includes/admin/class-mp-product-attributes-admin.php:48
-#: includes/admin/class-mp-store-settings-admin.php:281
+#: includes/admin/class-mp-store-settings-admin.php:294
 msgid "Add Attribute"
 msgstr "Eigenschaft hinzufügen"
 
 #: includes/admin/class-mp-product-attributes-admin.php:69
-#: includes/admin/class-mp-store-settings-admin.php:281
+#: includes/admin/class-mp-store-settings-admin.php:294
 #, fuzzy
 msgid "Add Product Attribute"
 msgstr "Produktattribut hinzufügen"
@@ -2052,8 +2065,8 @@ msgstr "Produktdetails"
 
 #: includes/admin/class-mp-products-admin.php:1936
 #: includes/admin/class-mp-products-admin.php:2176
-#: includes/admin/class-mp-store-settings-admin.php:110
-#: includes/admin/class-mp-store-settings-admin.php:297
+#: includes/admin/class-mp-store-settings-admin.php:116
+#: includes/admin/class-mp-store-settings-admin.php:310
 msgid "General"
 msgstr "Allgemein"
 
@@ -2191,8 +2204,8 @@ msgstr ""
 
 #: includes/admin/class-mp-setup-wizard.php:304
 #: includes/admin/class-mp-setup-wizard.php:312
-#: includes/admin/class-mp-store-settings-admin.php:140
-#: includes/admin/class-mp-store-settings-admin.php:293
+#: includes/admin/class-mp-store-settings-admin.php:146
+#: includes/admin/class-mp-store-settings-admin.php:306
 msgid "Quick Setup"
 msgstr "Schnelleinrichtung"
 
@@ -2202,41 +2215,41 @@ msgid "Location"
 msgstr "Standort"
 
 #: includes/admin/class-mp-setup-wizard.php:332
-#: includes/admin/store-settings/class-mp-store-settings-general.php:587
+#: includes/admin/store-settings/class-mp-store-settings-general.php:588
 msgid "Select a Country"
 msgstr "Wählen Sie ein Land"
 
 #: includes/admin/class-mp-setup-wizard.php:334
-#: includes/admin/store-settings/class-mp-store-settings-general.php:589
+#: includes/admin/store-settings/class-mp-store-settings-general.php:590
 msgid "Base Country"
 msgstr "Heimatland"
 
 #: includes/admin/class-mp-setup-wizard.php:335
-#: includes/admin/store-settings/class-mp-store-settings-general.php:590
+#: includes/admin/store-settings/class-mp-store-settings-general.php:591
 #, fuzzy
 msgid "Select A Country"
 msgstr "Ein Land auswählen"
 
 #: includes/admin/class-mp-setup-wizard.php:352
-#: includes/admin/store-settings/class-mp-store-settings-general.php:606
+#: includes/admin/store-settings/class-mp-store-settings-general.php:608
 #, fuzzy
 msgid "Select a State/Province/Region"
 msgstr "Wähle ein Bundesland/Provinz/Region"
 
 #: includes/admin/class-mp-setup-wizard.php:354
-#: includes/admin/store-settings/class-mp-store-settings-general.php:608
+#: includes/admin/store-settings/class-mp-store-settings-general.php:610
 #, fuzzy
 msgid "Base State/Province/Region"
 msgstr "Basisstaat/Provinz/Region"
 
 #: includes/admin/class-mp-setup-wizard.php:370
-#: includes/admin/store-settings/class-mp-store-settings-general.php:624
+#: includes/admin/store-settings/class-mp-store-settings-general.php:626
 #, fuzzy
 msgid "Base Zip/Postal Code"
 msgstr "Basis-Postleitzahl/Postleitzahl"
 
 #: includes/admin/class-mp-setup-wizard.php:387
-#: includes/admin/store-settings/class-mp-store-settings-general.php:640
+#: includes/admin/store-settings/class-mp-store-settings-general.php:642
 msgid "Zip/Postal Code Label"
 msgstr "PLZ / Postleitzahl Label"
 
@@ -2280,29 +2293,29 @@ msgid "EU"
 msgstr "EU"
 
 #: includes/admin/class-mp-setup-wizard.php:431
-#: includes/admin/store-settings/class-mp-store-settings-general.php:381
+#: includes/admin/store-settings/class-mp-store-settings-general.php:382
 msgid "Currency Settings"
 msgstr "Währungseinstellungen"
 
 #: includes/admin/class-mp-setup-wizard.php:436
 #: includes/admin/class-mp-setup-wizard.php:444
-#: includes/admin/store-settings/class-mp-store-settings-general.php:386
-#: includes/admin/store-settings/class-mp-store-settings-general.php:394
+#: includes/admin/store-settings/class-mp-store-settings-general.php:387
+#: includes/admin/store-settings/class-mp-store-settings-general.php:395
 msgid "Select a Currency"
 msgstr "Wählen Sie eine Währung"
 
 #: includes/admin/class-mp-setup-wizard.php:446
-#: includes/admin/store-settings/class-mp-store-settings-general.php:396
+#: includes/admin/store-settings/class-mp-store-settings-general.php:397
 msgid "Store Currency"
 msgstr "Währung speichern"
 
 #: includes/admin/class-mp-setup-wizard.php:452
-#: includes/admin/store-settings/class-mp-store-settings-general.php:403
+#: includes/admin/store-settings/class-mp-store-settings-general.php:404
 msgid "Currency Symbol Position"
 msgstr "Position des Währungssymbols"
 
 #: includes/admin/class-mp-setup-wizard.php:468
-#: includes/admin/store-settings/class-mp-store-settings-general.php:449
+#: includes/admin/store-settings/class-mp-store-settings-general.php:450
 msgid "Tax Settings"
 msgstr "Steuereinstellungen"
 
@@ -2311,19 +2324,19 @@ msgid "Default Tax Rate"
 msgstr "Standardsteuersatz"
 
 #: includes/admin/class-mp-setup-wizard.php:492
-#: includes/admin/store-settings/class-mp-store-settings-general.php:471
+#: includes/admin/store-settings/class-mp-store-settings-general.php:472
 #, fuzzy
 msgid "Current Rates"
 msgstr "Aktuelle Preise"
 
 #: includes/admin/class-mp-setup-wizard.php:493
-#: includes/admin/store-settings/class-mp-store-settings-general.php:472
+#: includes/admin/store-settings/class-mp-store-settings-general.php:473
 #, fuzzy, php-format
 msgid "%s Tax Rate"
 msgstr "%s Steuersatz"
 
 #: includes/admin/class-mp-setup-wizard.php:506
-#: includes/admin/store-settings/class-mp-store-settings-general.php:485
+#: includes/admin/store-settings/class-mp-store-settings-general.php:486
 msgid "Tax Label"
 msgstr "Steuer Label"
 
@@ -2333,19 +2346,19 @@ msgid "I.e. Taxes, VAT, GST, etc"
 msgstr "D.h. Steuern, Mehrwertsteuer, GST, etc"
 
 #: includes/admin/class-mp-setup-wizard.php:512
-#: includes/admin/store-settings/class-mp-store-settings-general.php:491
+#: includes/admin/store-settings/class-mp-store-settings-general.php:492
 #, fuzzy
 msgid "Apply Tax To Shipping Fees?"
 msgstr "Steuern auf Versandgebühren anwenden?"
 
 #: includes/admin/class-mp-setup-wizard.php:518
-#: includes/admin/store-settings/class-mp-store-settings-general.php:497
+#: includes/admin/store-settings/class-mp-store-settings-general.php:498
 #, fuzzy
 msgid "Enter Prices Inclusive of Tax?"
 msgstr "Preise inkl. MwSt. eingeben?"
 
 #: includes/admin/class-mp-setup-wizard.php:524
-#: includes/admin/store-settings/class-mp-store-settings-general.php:503
+#: includes/admin/store-settings/class-mp-store-settings-general.php:504
 #, fuzzy
 msgid "Show Price + Tax?"
 msgstr "Preis + Steuer anzeigen?"
@@ -3263,152 +3276,155 @@ msgstr "Auf Standard zurücksetzen"
 msgid "Select a Product"
 msgstr "Produkt auswählen"
 
-#: includes/admin/class-mp-store-settings-admin.php:109
-#: includes/admin/class-mp-store-settings-admin.php:249
-msgid "Store Settings"
-msgstr "Store Settings"
+#: includes/admin/class-mp-store-settings-admin.php:115
+msgid "Shop Settings"
+msgstr "Shop-Einstellungen"
 
-#: includes/admin/class-mp-store-settings-admin.php:110
+#: includes/admin/class-mp-store-settings-admin.php:116
 #, fuzzy
 msgid "Store Settings: General"
-msgstr "Store-Settings: Allgemein"
+msgstr "Store-Einstellungen: Allgemein"
 
-#: includes/admin/class-mp-store-settings-admin.php:111
+#: includes/admin/class-mp-store-settings-admin.php:117
 #, fuzzy
 msgid "Store Settings: Presentation"
 msgstr "Einstellungen speichern: Präsentation"
 
-#: includes/admin/class-mp-store-settings-admin.php:112
+#: includes/admin/class-mp-store-settings-admin.php:118
 #, fuzzy
 msgid "Store Settings: Notifications"
-msgstr "Store-Settings: Benachrichtigungen"
+msgstr "Store-Einstellungen: Benachrichtigungen"
 
-#: includes/admin/class-mp-store-settings-admin.php:112
-#: includes/admin/class-mp-store-settings-admin.php:257
+#: includes/admin/class-mp-store-settings-admin.php:118
+#: includes/admin/class-mp-store-settings-admin.php:270
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: includes/admin/class-mp-store-settings-admin.php:113
+#: includes/admin/class-mp-store-settings-admin.php:119
 #, fuzzy
 msgid "Store Settings: Shipping"
-msgstr "Store Settings: Versand"
+msgstr "Shop-Einstellungen: Versand"
 
-#: includes/admin/class-mp-store-settings-admin.php:114
+#: includes/admin/class-mp-store-settings-admin.php:120
 #, fuzzy
 msgid "Store Settings: Payments"
-msgstr "Store Settings: Zahlungen"
+msgstr "Shop-Einstellungen: Zahlungen"
 
-#: includes/admin/class-mp-store-settings-admin.php:114
-#: includes/admin/class-mp-store-settings-admin.php:265
+#: includes/admin/class-mp-store-settings-admin.php:120
+#: includes/admin/class-mp-store-settings-admin.php:278
 msgid "Payments"
 msgstr "Zahlungen"
 
-#: includes/admin/class-mp-store-settings-admin.php:115
+#: includes/admin/class-mp-store-settings-admin.php:121
 #, fuzzy
 msgid "Store Settings: Product Attributes"
-msgstr "Store Settings: Produktattribute"
+msgstr "Shop-Einstellungen: Produktattribute"
 
-#: includes/admin/class-mp-store-settings-admin.php:117
+#: includes/admin/class-mp-store-settings-admin.php:123
 #, fuzzy
 msgid "Store Settings: Product Categories"
-msgstr "Store Settings: Produktkategorien"
+msgstr "Shop-Einstellungen: Produktkategorien"
 
-#: includes/admin/class-mp-store-settings-admin.php:117
+#: includes/admin/class-mp-store-settings-admin.php:123
 #: includes/admin/widgets/categories.php:8
 #: includes/admin/widgets/categories.php:18
 msgid "Product Categories"
 msgstr "Produktkategorien"
 
-#: includes/admin/class-mp-store-settings-admin.php:122
+#: includes/admin/class-mp-store-settings-admin.php:128
 #, fuzzy
 msgid "Store Settings: Product Tags"
-msgstr "Store Settings: Produkt-Tags"
+msgstr "Shop-Einstellungen: Produkt-Tags"
 
-#: includes/admin/class-mp-store-settings-admin.php:122
+#: includes/admin/class-mp-store-settings-admin.php:128
 #: includes/admin/widgets/product-tag-cloud.php:46
 msgid "Product Tags"
 msgstr "Produkt-Schlagwörter"
 
-#: includes/admin/class-mp-store-settings-admin.php:127
+#: includes/admin/class-mp-store-settings-admin.php:133
 #, fuzzy
 msgid "Store Settings: Capabilities"
 msgstr "Einstellungen speichern: Fähigkeiten"
 
-#: includes/admin/class-mp-store-settings-admin.php:135
+#: includes/admin/class-mp-store-settings-admin.php:141
 #: includes/admin/store-settings/class-mp-store-settings-addons.php:121
 #, fuzzy
 msgid "Store Settings: Add Ons"
-msgstr "Store-Settings: Add Ons"
+msgstr "Store-Einstellungen: Add Ons"
 
-#: includes/admin/class-mp-store-settings-admin.php:135
+#: includes/admin/class-mp-store-settings-admin.php:141
 msgid "Add Ons"
 msgstr "Add Ons"
 
-#: includes/admin/class-mp-store-settings-admin.php:234
+#: includes/admin/class-mp-store-settings-admin.php:240
 #, fuzzy
 msgid "Product attribute added successfully."
 msgstr "Produktattribut erfolgreich hinzugefügt."
 
-#: includes/admin/class-mp-store-settings-admin.php:235
+#: includes/admin/class-mp-store-settings-admin.php:241
 #, fuzzy
 msgid "Product attribute updated successfully."
 msgstr "Produktattribut erfolgreich aktualisiert."
 
-#: includes/admin/class-mp-store-settings-admin.php:238
+#: includes/admin/class-mp-store-settings-admin.php:244
 #, fuzzy, php-format
 msgid "An appropriate message for key \"%s\" could not be found."
 msgstr ""
 "Eine passende Nachricht für den Schlüssel \"%s\" konnte nicht gefunden "
 "werden."
 
-#: includes/admin/class-mp-store-settings-admin.php:269
+#: includes/admin/class-mp-store-settings-admin.php:262
+msgid "Store Settings"
+msgstr "Shop-Einstellungen"
+
+#: includes/admin/class-mp-store-settings-admin.php:282
 msgid "Short Codes"
 msgstr "Shortcodes"
 
-#: includes/admin/class-mp-store-settings-admin.php:273
+#: includes/admin/class-mp-store-settings-admin.php:286
 msgid "Importers"
 msgstr "Importer"
 
-#: includes/admin/class-mp-store-settings-admin.php:277
+#: includes/admin/class-mp-store-settings-admin.php:290
 #, fuzzy
 msgid "Exporters"
 msgstr "Exporteure"
 
-#: includes/admin/class-mp-store-settings-admin.php:281
+#: includes/admin/class-mp-store-settings-admin.php:294
 #, fuzzy, php-format
 msgid "Edit Product Attribute %s"
 msgstr "Produktattribut bearbeiten %s"
 
-#: includes/admin/class-mp-store-settings-admin.php:285
+#: includes/admin/class-mp-store-settings-admin.php:298
 #: includes/admin/store-settings/class-mp-store-settings-capabilities.php:56
 msgid "Capabilities"
 msgstr "Berechtigungen"
 
-#: includes/admin/class-mp-store-settings-admin.php:289
+#: includes/admin/class-mp-store-settings-admin.php:302
 msgid "Import/Export"
 msgstr "Import/Export"
 
 #: includes/admin/store-settings/class-mp-store-settings-addons.php:47
 #, fuzzy, php-format
 msgid "Store Settings: Add Ons: %s"
-msgstr "Store Settings: Add Ons: %s"
+msgstr "Shop-Einstellungen: Add Ons: %s"
 
 #: includes/admin/store-settings/class-mp-store-settings-capabilities.php:51
 #, php-format
 msgid "%s Capabilities"
 msgstr "%s Funktionen"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:224
+#: includes/admin/store-settings/class-mp-store-settings-general.php:225
 #: includes/common/payment-gateways/authorizenet-aim.php:272
 msgid "Advanced Settings"
 msgstr "Erweiterte Einstellungen"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:230
+#: includes/admin/store-settings/class-mp-store-settings-general.php:231
 #, fuzzy
 msgid "Change product post type"
 msgstr "Produktposttyp ändern"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:231
+#: includes/admin/store-settings/class-mp-store-settings-general.php:232
 #, fuzzy
 msgid ""
 "If you are experiencing conflicts with other e-commerce plugins change this "
@@ -3421,21 +3437,21 @@ msgstr ""
 "geändert. <strong>Bitte beachte, dass die Änderung dieser Option Themes oder "
 "Plugins von Drittanbietern beeinträchtigen kann.</strong>"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:236
+#: includes/admin/store-settings/class-mp-store-settings-general.php:237
 #, fuzzy
 msgid "product (default)"
 msgstr "produkt (Standard)"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:252
+#: includes/admin/store-settings/class-mp-store-settings-general.php:253
 msgid "Download Settings"
 msgstr "Download-Einstellungen"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:257
+#: includes/admin/store-settings/class-mp-store-settings-general.php:258
 #, fuzzy
 msgid "Maximum Downloads"
 msgstr "Maximale Downloads"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:258
+#: includes/admin/store-settings/class-mp-store-settings-general.php:259
 #, fuzzy
 msgid ""
 "How many times may a customer download a file they have purchased? (It's "
@@ -3445,12 +3461,12 @@ msgstr ""
 "besten ist es, diesen Wert höher als eins zu setzen, falls es Probleme beim "
 "Herunterladen gibt)"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:267
+#: includes/admin/store-settings/class-mp-store-settings-general.php:268
 #, fuzzy
 msgid "Use Alternative Download Method?"
 msgstr "Alternative Download-Methode verwenden?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:268
+#: includes/admin/store-settings/class-mp-store-settings-general.php:269
 #, fuzzy
 msgid ""
 "If you're having issues downloading large files and have worked with your "
@@ -3461,12 +3477,12 @@ msgstr ""
 "Hosting-Provider die Speicherbegrenzung erhöht hast, kannst du diese "
 "Funktion aktivieren - bedenke aber, dass sie nicht so sicher ist!"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:282
+#: includes/admin/store-settings/class-mp-store-settings-general.php:283
 #: includes/admin/store-settings/class-mp-store-settings-presentation.php:540
 msgid "Miscellaneous Settings"
 msgstr "Verschiedene Einstellungen"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:288
+#: includes/admin/store-settings/class-mp-store-settings-general.php:289
 #, fuzzy
 msgid ""
 "At what low stock count do you want to be warned for products you have "
@@ -3475,12 +3491,12 @@ msgstr ""
 "Ab welchem Lagerbestand möchtest du bei Produkten, für die du die "
 "Bestandsverfolgung aktiviert hast, gewarnt werden?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:297
+#: includes/admin/store-settings/class-mp-store-settings-general.php:298
 #, fuzzy
 msgid "Hide Out of Stock Products?"
 msgstr "Nicht vorrätige Produkte ausblenden?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:298
+#: includes/admin/store-settings/class-mp-store-settings-general.php:299
 #, fuzzy
 msgid ""
 "This will set the product to draft if inventory of all variations is gone."
@@ -3488,12 +3504,12 @@ msgstr ""
 "Dadurch wird das Produkt auf Entwurf gesetzt, wenn der Bestand an allen "
 "Varianten aufgebraucht ist."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:303
+#: includes/admin/store-settings/class-mp-store-settings-general.php:304
 #, fuzzy
 msgid "Force Login?"
 msgstr "Anmeldung erzwingen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:304
+#: includes/admin/store-settings/class-mp-store-settings-general.php:305
 #, fuzzy
 msgid ""
 "Whether or not customers must be registered and logged in to checkout. (Not "
@@ -3503,12 +3519,12 @@ msgstr ""
 "(Nicht empfohlen: Die Aktivierung dieser Option kann die Konversionsrate "
 "senken)"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:309
+#: includes/admin/store-settings/class-mp-store-settings-general.php:310
 #, fuzzy
 msgid "Disable Cart?"
 msgstr "Warenkorb deaktivieren?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:310
+#: includes/admin/store-settings/class-mp-store-settings-general.php:311
 #, fuzzy
 msgid ""
 "This option turns MarketPress into more of a product listing plugin, "
@@ -3526,66 +3542,66 @@ msgstr ""
 "Autohaus, ein Link zu Songs/Alben in iTunes oder ein Link zu Produkten auf "
 "einer anderen Website mit deinen eigenen Partnerlinks."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:315
+#: includes/admin/store-settings/class-mp-store-settings-general.php:316
 #, fuzzy
 msgid "Show admin Orders page?"
 msgstr "Admin-Bestellseite anzeigen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:316
+#: includes/admin/store-settings/class-mp-store-settings-general.php:317
 #, fuzzy
 msgid "If unchecked your Orders admin page will be hidden"
 msgstr ""
 "Wenn du das Häkchen nicht setzt, wird deine Bestellungs-Administrationsseite "
 "ausgeblendet"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:326
+#: includes/admin/store-settings/class-mp-store-settings-general.php:327
 #, fuzzy
 msgid "Disable Mini Cart?"
 msgstr "Mini Cart deaktivieren?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:327
+#: includes/admin/store-settings/class-mp-store-settings-general.php:328
 #, fuzzy
 msgid "This option hide floating Mini Cart in top right corner."
 msgstr ""
 "Diese Option blendet den schwebenden Mini-Wagen in der oberen rechten Ecke "
 "aus."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:332
+#: includes/admin/store-settings/class-mp-store-settings-general.php:333
 #, fuzzy
 msgid "Show product image on Mini Cart?"
 msgstr "Produktbild auf Mini Cart anzeigen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:333
+#: includes/admin/store-settings/class-mp-store-settings-general.php:334
 #, fuzzy
 msgid "Do you want to display the product image on floating Mini Cart."
 msgstr "Möchtest du das Produktbild auf dem schwebenden Mini Cart anzeigen."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:339
+#: includes/admin/store-settings/class-mp-store-settings-general.php:340
 #, fuzzy
 msgid "Show product quantity on Mini Cart?"
 msgstr "Produktmenge im Mini-Wagen anzeigen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:340
+#: includes/admin/store-settings/class-mp-store-settings-general.php:341
 #, fuzzy
 msgid "Do you want to display the product quantity on floating Mini Cart."
 msgstr "Möchtest du die Produktmenge im schwebenden Mini-Wagen anzeigen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:346
+#: includes/admin/store-settings/class-mp-store-settings-general.php:347
 #, fuzzy
 msgid "Show product price on Mini Cart?"
 msgstr "Produktpreis im Mini-Wagen anzeigen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:347
+#: includes/admin/store-settings/class-mp-store-settings-general.php:348
 #, fuzzy
 msgid "Do you want to display the product price on floating Mini Cart."
 msgstr "Möchtest du den Produktpreis auf dem schwebenden Mini Cart anzeigen."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:352
+#: includes/admin/store-settings/class-mp-store-settings-general.php:353
 #, fuzzy
 msgid "Google Analytics Ecommerce Tracking"
 msgstr "Google Analytics Ecommerce Tracking"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:353
+#: includes/admin/store-settings/class-mp-store-settings-general.php:354
 #, fuzzy
 msgid ""
 "If you already use Google Analytics for your website, you can track detailed "
@@ -3611,24 +3627,24 @@ msgstr ""
 "target=\"_blank\" href=\"http://analytics.blogspot.com/2009/05/how-to-use-"
 "ecommerce-tracking-in-google.html\">Weitere Informationen \"</a>"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:358
+#: includes/admin/store-settings/class-mp-store-settings-general.php:359
 msgid "New"
 msgstr "Neu"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:359
+#: includes/admin/store-settings/class-mp-store-settings-general.php:360
 msgid "Old"
 msgstr "Alt"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:360
+#: includes/admin/store-settings/class-mp-store-settings-general.php:361
 msgid "Universal"
 msgstr "Universal"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:365
+#: includes/admin/store-settings/class-mp-store-settings-general.php:366
 #, fuzzy
 msgid "Show Special Instructions Field?"
 msgstr "Feld für besondere Anweisungen anzeigen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:366
+#: includes/admin/store-settings/class-mp-store-settings-general.php:367
 #, fuzzy
 msgid ""
 "Enabling this field will display a textbox on the shipping checkout page for "
@@ -3639,16 +3655,16 @@ msgstr ""
 "angezeigt, in das du besondere Anweisungen für deine Bestellung eingeben "
 "kannst. Nützlich für die Personalisierung von Produkten usw."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:416
+#: includes/admin/store-settings/class-mp-store-settings-general.php:417
 msgid "Price Format"
 msgstr "Preisformat"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:429
+#: includes/admin/store-settings/class-mp-store-settings-general.php:430
 #, fuzzy
 msgid "Show Decimal in Prices"
 msgstr "Dezimalstellen in Preisen anzeigen"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:487
+#: includes/admin/store-settings/class-mp-store-settings-general.php:488
 #, fuzzy
 msgid ""
 "The label shown for the tax line item in the cart. Taxes, VAT, GST, etc."
@@ -3656,14 +3672,14 @@ msgstr ""
 "Das Etikett, das für die Steuerposition im Warenkorb angezeigt wird. "
 "Steuern, Mehrwertsteuer, GST, etc."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:492
+#: includes/admin/store-settings/class-mp-store-settings-general.php:493
 #, fuzzy
 msgid "Please see your local tax laws. Most areas charge tax on shipping fees."
 msgstr ""
 "Bitte informiere dich über deine örtlichen Steuergesetze. In den meisten "
 "Regionen werden Steuern auf Versandgebühren erhoben."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:498
+#: includes/admin/store-settings/class-mp-store-settings-general.php:499
 #, fuzzy
 msgid ""
 "Enabling this option allows you to enter and show all prices inclusive of "
@@ -3675,7 +3691,7 @@ msgstr ""
 "als Einzelposten im Warenkorb aufgeführt wird. Bitte informiere dich über "
 "deine lokalen Steuergesetze."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:504
+#: includes/admin/store-settings/class-mp-store-settings-general.php:505
 #, fuzzy
 msgid ""
 "Enabling this option will show Price + Tax, eg. if your price is 100 and "
@@ -3684,12 +3700,12 @@ msgstr ""
 "Wenn du diese Option aktivierst, wird der Preis + Steuer angezeigt, z.B. "
 "wenn dein Preis 100 und die Steuer 20 beträgt, wird dein Preis 120 sein"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:509
+#: includes/admin/store-settings/class-mp-store-settings-general.php:510
 #, fuzzy
 msgid "Display tax label?"
 msgstr "Steueretikett anzeigen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:510
+#: includes/admin/store-settings/class-mp-store-settings-general.php:511
 #, fuzzy
 msgid ""
 "Enabling this option will display label `excl. tax` or `incl. tax` after "
@@ -3698,12 +3714,12 @@ msgstr ""
 "Wenn du diese Option aktivierst, wird hinter dem Preis der Hinweis \"excl. "
 "tax\" oder \"incl. tax\" angezeigt"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:515
+#: includes/admin/store-settings/class-mp-store-settings-general.php:516
 #, fuzzy
 msgid "Apply Tax to Digital Products?"
 msgstr "Steuern auf digitale Produkte anwenden?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:516
+#: includes/admin/store-settings/class-mp-store-settings-general.php:517
 #, fuzzy
 msgid ""
 "Please see your local tax laws. Note if this is enabled and a downloadable "
@@ -3713,17 +3729,17 @@ msgstr ""
 "aktiviert ist und es sich um einen reinen Download-Warenkorb handelt, gelten "
 "die Standardtarife für deinen Basisstandort."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:548
+#: includes/admin/store-settings/class-mp-store-settings-general.php:549
 #, fuzzy
 msgid "Digital Settings"
 msgstr "Digitale Einstellungen"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:554
+#: includes/admin/store-settings/class-mp-store-settings-general.php:555
 #, fuzzy
 msgid "Limit Digital Products Per-order?"
 msgstr "Digitale Produkte pro Bestellung begrenzen?"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:555
+#: includes/admin/store-settings/class-mp-store-settings-general.php:556
 #, fuzzy
 msgid ""
 "This will prevent multiples of the same downloadable product form being "
@@ -3732,24 +3748,109 @@ msgstr ""
 "Dadurch wird verhindert, dass mehrere Exemplare desselben herunterladbaren "
 "Produkts in den Warenkorb gelegt werden."
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:561
+#: includes/admin/store-settings/class-mp-store-settings-general.php:562
 #, fuzzy
 msgid "Details Collection"
 msgstr "Details Sammlung"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:565
+#: includes/admin/store-settings/class-mp-store-settings-general.php:566
 #, fuzzy
 msgid "Full billing info"
 msgstr "Vollständige Rechnungsinformationen"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:566
+#: includes/admin/store-settings/class-mp-store-settings-general.php:567
 #, fuzzy
 msgid "Only contact details"
 msgstr "Nur Kontaktinformationen"
 
-#: includes/admin/store-settings/class-mp-store-settings-general.php:582
+#: includes/admin/store-settings/class-mp-store-settings-general.php:583
 msgid "Location Settings"
 msgstr "Standort-Einstellungen"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:656
+msgid "Legal Information"
+msgstr "Rechtliche Informationen"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:661
+#: includes/common/payment-gateways/eway.php:419
+msgid "Company Name"
+msgstr "Firmenname"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:666
+msgid "Company Address"
+msgstr "Firmenadresse"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:679
+#, fuzzy
+msgid "Small Business Regulation (§19 UStG)"
+msgstr "Kleinunternehmerregelung (§19 UStG)"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:680
+#: includes/admin/store-settings/class-mp-store-settings-general.php:686
+#, fuzzy
+msgid "I am a small business owner according to §19 UStG (no VAT shown)"
+msgstr ""
+"Ich bin ein Kleinunternehmer nach §19 UStG (keine Umsatzsteuer ausgewiesen)"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:684
+#, fuzzy
+msgid "Custom Legal Note"
+msgstr "Individueller Rechtsvermerk"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:685
+#, fuzzy
+msgid ""
+"Optional: Add a custom note for your invoices (e.g. Kleinunternehmerregelung)"
+msgstr ""
+"Optional: Füge eine individuelle Notiz für deine Rechnungen hinzu (z.B. "
+"Kleinunternehmerregelung)"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:690
+#, fuzzy
+msgid "Rechnungsnummer Präfix"
+msgstr "Rechnungsnummer Präfix"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:691
+#, fuzzy
+msgid ""
+"Optional: Ein Präfix für alle Rechnungsnummern, z.B. \"RE-\" oder \"2025-\"."
+msgstr ""
+"Optional: Ein Präfix für alle Rechnungsnummern, z.B. \"RE-\" oder \"2025-\"."
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:695
+#, fuzzy
+msgid "Datumsformat in Rechnungsnummer"
+msgstr "Datumsformat in Rechnungsnummer"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:696
+#, fuzzy
+msgid "Wähle, ob und wie das Datum in der Rechnungsnummer erscheinen soll."
+msgstr "Wähle, ob und wie das Datum in der Rechnungsnummer erscheinen soll."
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:698
+#, fuzzy
+msgid "Kein Datum"
+msgstr "Kein Datum"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:699
+#, fuzzy
+msgid "Jahr (z.B. 2025)"
+msgstr "Jahr (z.B. 2025)"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:700
+#, fuzzy
+msgid "JahrMonat (z.B. 202505)"
+msgstr "JahrMonat (z.B. 202505)"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:701
+#, fuzzy
+msgid "JahrMonatTag (z.B. 20250527)"
+msgstr "JahrMonatTag (z.B. 20250527)"
+
+#: includes/admin/store-settings/class-mp-store-settings-general.php:702
+#, fuzzy
+msgid "TagMonatJahr (z.B. 27052025)"
+msgstr "TagMonatJahr (z.B. 27052025)"
 
 #. translators: %s: Importer name
 #: includes/admin/store-settings/class-mp-store-settings-import.php:239
@@ -3982,7 +4083,6 @@ msgstr "Eine Seite wählen"
 
 #: includes/admin/store-settings/class-mp-store-settings-presentation.php:216
 #: includes/common/class-mp-cart.php:969 includes/common/class-mp-cart.php:1349
-#: includes/common/template-functions.php:920
 msgid "Checkout"
 msgstr "Kasse"
 
@@ -4613,8 +4713,6 @@ msgid "Product List"
 msgstr "Produkt-Liste"
 
 #: includes/admin/widgets/product-list.php:144
-#: includes/common/template-functions.php:2074
-#: includes/common/template-functions.php:2351
 msgid "No Products"
 msgstr "Keine Produkte"
 
@@ -4632,7 +4730,6 @@ msgid "No Filter"
 msgstr "Kein Filter"
 
 #: includes/admin/widgets/product-list.php:228
-#: includes/common/template-functions.php:896
 msgid "Tag"
 msgstr "Schlagwort"
 
@@ -4958,31 +5055,26 @@ msgid "Address 2"
 msgstr "Adresse 2"
 
 #: includes/common/class-mp-order.php:774
-#: includes/common/payment-gateways/stripe.php:338
 #, fuzzy
 msgid "City"
 msgstr "Stadt"
 
 #: includes/common/class-mp-order.php:781
-#: includes/common/payment-gateways/stripe.php:337
 msgid "State"
 msgstr "Bundesland"
 
 #: includes/common/class-mp-order.php:795
-#: includes/common/payment-gateways/stripe.php:336
 #: includes/public/class-mp-checkout.php:439
 msgid "Country"
 msgstr "Land"
 
 #: includes/common/class-mp-order.php:803
-#: includes/common/payment-gateways/stripe.php:341
 #: includes/public/class-mp-checkout.php:339
 #: includes/public/class-mp-checkout.php:453
 msgid "Phone"
 msgstr "Telefon"
 
 #: includes/common/class-mp-order.php:807
-#: includes/common/payment-gateways/stripe.php:335
 msgid "Email"
 msgstr "E-Mail"
 
@@ -5285,11 +5377,10 @@ msgstr "Die Bestellung ist eingegangen"
 #: includes/common/payment-gateways/eway.php:306
 #: includes/common/payment-gateways/eway31.php:271
 #: includes/common/payment-gateways/paymill.php:48
-#: includes/common/payment-gateways/paypal-express.php:970
 #: includes/common/payment-gateways/paypal-payflow.php:60
 #: includes/common/payment-gateways/pin.php:48
 #: includes/common/payment-gateways/simplify.php:19
-#: includes/common/payment-gateways/stripe.php:46
+#: includes/common/payment-gateways/stripe.php:51
 #: includes/common/payment-gateways/wepay.php:43
 msgid "Credit Card"
 msgstr "Kreditkarte"
@@ -5312,7 +5403,7 @@ msgstr "Kreditkarte"
 #: includes/common/payment-gateways/pin.php:147
 #: includes/common/payment-gateways/simplify.php:69
 #: includes/common/payment-gateways/skrill.php:121
-#: includes/common/payment-gateways/stripe.php:249
+#: includes/common/payment-gateways/stripe.php:246
 #: includes/common/payment-gateways/wepay.php:125
 #: includes/common/shipping-modules/mp-fedex.php:248
 #: includes/common/shipping-modules/mp-flat-rate.php:63
@@ -5346,7 +5437,6 @@ msgstr ""
 #: includes/common/payment-gateways/_ideal.php:307
 #: includes/common/payment-gateways/authorizenet-aim.php:230
 #: includes/common/payment-gateways/paypal-chained-payments.php:365
-#: includes/common/payment-gateways/paypal-express.php:693
 #: includes/common/payment-gateways/paypal-payflow.php:387
 #: includes/common/payment-gateways/wepay.php:136
 #: includes/common/shipping-modules/mp-fedex.php:265
@@ -5357,7 +5447,6 @@ msgstr "Modus"
 #: includes/common/payment-gateways/authorizenet-aim.php:233
 #: includes/common/payment-gateways/eway.php:383
 #: includes/common/payment-gateways/paypal-chained-payments.php:367
-#: includes/common/payment-gateways/paypal-express.php:696
 #: includes/common/payment-gateways/paypal-payflow.php:390
 #: includes/common/shipping-modules/mp-fedex.php:268
 msgid "Sandbox"
@@ -5369,7 +5458,6 @@ msgstr "Sandbox"
 #: includes/common/payment-gateways/eway.php:384
 #: includes/common/payment-gateways/payfast.php:315
 #: includes/common/payment-gateways/paypal-chained-payments.php:368
-#: includes/common/payment-gateways/paypal-express.php:697
 #: includes/common/payment-gateways/paypal-payflow.php:391
 msgid "Live"
 msgstr "Live"
@@ -5377,9 +5465,8 @@ msgstr "Live"
 #: includes/common/payment-gateways/2checkout.php:345
 #: includes/common/payment-gateways/authorizenet-aim.php:239
 #: includes/common/payment-gateways/paymill.php:170
-#: includes/common/payment-gateways/paypal-express.php:702
 #: includes/common/payment-gateways/simplify.php:80
-#: includes/common/payment-gateways/stripe.php:265
+#: includes/common/payment-gateways/stripe.php:262
 #: includes/common/payment-gateways/wepay.php:164
 msgid "API Credentials"
 msgstr "API Zugangsdaten"
@@ -5412,11 +5499,10 @@ msgstr "Geheimes Wort"
 #: includes/common/payment-gateways/mollie.php:93
 #: includes/common/payment-gateways/paymill.php:195
 #: includes/common/payment-gateways/paypal-chained-payments.php:356
-#: includes/common/payment-gateways/paypal-express.php:686
 #: includes/common/payment-gateways/paypal-payflow.php:432
 #: includes/common/payment-gateways/pin.php:188
 #: includes/common/payment-gateways/skrill.php:152
-#: includes/common/payment-gateways/stripe.php:288
+#: includes/common/payment-gateways/stripe.php:285
 #: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:104
 msgid "Currency"
 msgstr "Währung"
@@ -5679,8 +5765,6 @@ msgstr "Deine Zahlung wird über das iDEAL-Netzwerk abgewickelt"
 #: includes/common/payment-gateways/_ideal.php:159
 #: includes/common/payment-gateways/eway.php:197
 #: includes/common/payment-gateways/paypal-chained-payments.php:634
-#: includes/common/payment-gateways/paypal-express.php:320
-#: includes/common/payment-gateways/paypal-express.php:471
 #, fuzzy, php-format
 msgid "%s Store Purchase - Order ID: %s"
 msgstr "%s Kauf im Geschäft - Bestell-ID: %s"
@@ -5743,7 +5827,7 @@ msgstr "Händler-ID"
 
 #: includes/common/payment-gateways/_ideal.php:300
 #: includes/common/payment-gateways/pin.php:172
-#: includes/common/payment-gateways/stripe.php:272
+#: includes/common/payment-gateways/stripe.php:269
 msgid "Secret Key"
 msgstr "Geheimer Schlüssel"
 
@@ -5788,7 +5872,6 @@ msgid "User Name"
 msgstr "Benutzername"
 
 #: includes/common/payment-gateways/_payway.php:291
-#: includes/common/payment-gateways/paypal-express.php:716
 #: includes/common/payment-gateways/paypal-payflow.php:423
 #: includes/common/shipping-modules/mp-ups.php:158
 #: includes/public/class-mp-checkout.php:1201
@@ -6003,19 +6086,16 @@ msgstr "Authorize.net AIM Checkout"
 
 #: includes/common/payment-gateways/class-mp-gateway-api.php:263
 #: includes/common/payment-gateways/paymill.php:124
-#: includes/common/payment-gateways/stripe.php:222
 msgid "Card Number"
 msgstr "Kartennummer"
 
 #: includes/common/payment-gateways/class-mp-gateway-api.php:268
 #: includes/common/payment-gateways/paymill.php:129
-#: includes/common/payment-gateways/stripe.php:227
 msgid "Expiration"
 msgstr "Ablauf"
 
 #: includes/common/payment-gateways/class-mp-gateway-api.php:268
 #: includes/common/payment-gateways/paymill.php:129
-#: includes/common/payment-gateways/stripe.php:227
 #, fuzzy
 msgid "Enter in <strong>MM/YYYY</strong> or <strong>MM/YY</strong> format"
 msgstr ""
@@ -6023,7 +6103,6 @@ msgstr ""
 
 #: includes/common/payment-gateways/class-mp-gateway-api.php:272
 #: includes/common/payment-gateways/paymill.php:133
-#: includes/common/payment-gateways/stripe.php:231
 #, fuzzy
 msgid "Security Code "
 msgstr "Sicherheitscode"
@@ -6116,7 +6195,6 @@ msgid "Live API Credentials"
 msgstr "Live-API-Anmeldeinformationen"
 
 #: includes/common/payment-gateways/eway.php:395
-#: includes/common/payment-gateways/paypal-express.php:709
 #: includes/common/shipping-modules/mp-usps.php:185
 #: includes/public/class-mp-checkout.php:1196
 msgid "Username"
@@ -6130,10 +6208,6 @@ msgstr "Kundennummer"
 #, fuzzy
 msgid "Hosted Payment Page Language"
 msgstr "Hosted Payment Page Sprache"
-
-#: includes/common/payment-gateways/eway.php:419
-msgid "Company Name"
-msgstr "Firmenname"
 
 #: includes/common/payment-gateways/eway.php:420
 #, fuzzy
@@ -6405,7 +6479,7 @@ msgstr "Zugangsschlüssel"
 #: includes/common/payment-gateways/paypal-chained-payments.php:72
 #: includes/common/payment-gateways/pin.php:62
 #: includes/common/payment-gateways/skrill.php:64
-#: includes/common/payment-gateways/stripe.php:92
+#: includes/common/payment-gateways/stripe.php:97
 msgid "EUR - Euro"
 msgstr "EUR - Euro"
 
@@ -6542,8 +6616,6 @@ msgstr ""
 #: includes/common/payment-gateways/payfast.php:519
 #: includes/common/payment-gateways/paypal-chained-payments.php:218
 #: includes/common/payment-gateways/paypal-chained-payments.php:498
-#: includes/common/payment-gateways/paypal-express.php:820
-#: includes/common/payment-gateways/paypal-express.php:1090
 #, fuzzy
 msgid ""
 "The payment has been completed, and the funds have been added successfully "
@@ -6553,8 +6625,6 @@ msgstr ""
 "gutgeschrieben."
 
 #: includes/common/payment-gateways/payfast.php:531
-#: includes/common/payment-gateways/paypal-express.php:808
-#: includes/common/payment-gateways/paypal-express.php:1075
 #, fuzzy
 msgid ""
 "The payment has failed. This happens only if the payment was made from your "
@@ -6565,7 +6635,6 @@ msgstr ""
 
 #: includes/common/payment-gateways/payfast.php:539
 #: includes/common/payment-gateways/paypal-chained-payments.php:254
-#: includes/common/payment-gateways/paypal-express.php:1137
 #, fuzzy
 msgid "The payment is pending."
 msgstr "Die Zahlung ist noch nicht erfolgt."
@@ -6596,21 +6665,21 @@ msgstr "﻿CZK - Tschechische Krone"
 
 #: includes/common/payment-gateways/paymill.php:61
 #: includes/common/payment-gateways/skrill.php:67
-#: includes/common/payment-gateways/stripe.php:104
+#: includes/common/payment-gateways/stripe.php:109
 msgid "HRK - Croatian Kuna"
 msgstr "HRK - kroatische Kuna"
 
 #: includes/common/payment-gateways/paymill.php:62
 #: includes/common/payment-gateways/paypal-chained-payments.php:71
 #: includes/common/payment-gateways/skrill.php:62
-#: includes/common/payment-gateways/stripe.php:86
+#: includes/common/payment-gateways/stripe.php:91
 msgid "DKK - Danish Krone"
 msgstr "DKK - Dänische Krone"
 
 #: includes/common/payment-gateways/paymill.php:63
 #: includes/common/payment-gateways/paypal-chained-payments.php:76
 #: includes/common/payment-gateways/skrill.php:68
-#: includes/common/payment-gateways/stripe.php:106
+#: includes/common/payment-gateways/stripe.php:111
 msgid "HUF - Hungarian Forint"
 msgstr "HUF - ungarische Forint"
 
@@ -6633,19 +6702,19 @@ msgstr "﻿LVL - Lettische Lat"
 #: includes/common/payment-gateways/paymill.php:67
 #: includes/common/payment-gateways/paypal-chained-payments.php:69
 #: includes/common/payment-gateways/skrill.php:60
-#: includes/common/payment-gateways/stripe.php:78
+#: includes/common/payment-gateways/stripe.php:83
 msgid "CHF - Swiss Franc"
 msgstr "CHF - Schweizer Franken"
 
 #: includes/common/payment-gateways/paymill.php:68
 #: includes/common/payment-gateways/skrill.php:75
-#: includes/common/payment-gateways/stripe.php:125
+#: includes/common/payment-gateways/stripe.php:130
 msgid "LTL - Lithuanian Litas"
 msgstr "LTL - Litauischer Litas"
 
 #: includes/common/payment-gateways/paymill.php:69
 #: includes/common/payment-gateways/paypal-chained-payments.php:80
-#: includes/common/payment-gateways/stripe.php:143
+#: includes/common/payment-gateways/stripe.php:148
 msgid "NOK - Norwegian Krone"
 msgstr "NOK - Norwegische Krone"
 
@@ -6664,19 +6733,19 @@ msgstr "RON - Rumänischer Leu Neu"
 #: includes/common/payment-gateways/paymill.php:72
 #: includes/common/payment-gateways/paypal-chained-payments.php:85
 #: includes/common/payment-gateways/skrill.php:87
-#: includes/common/payment-gateways/stripe.php:161
+#: includes/common/payment-gateways/stripe.php:166
 msgid "SEK - Swedish Krona"
 msgstr "SEK - Schwedische Kronen"
 
 #: includes/common/payment-gateways/paymill.php:73
-#: includes/common/payment-gateways/stripe.php:173
+#: includes/common/payment-gateways/stripe.php:178
 msgid "TRY - Turkish Lira"
 msgstr "TRY - Türkische Lira"
 
 #: includes/common/payment-gateways/paymill.php:74
 #: includes/common/payment-gateways/pin.php:63
 #: includes/common/payment-gateways/skrill.php:65
-#: includes/common/payment-gateways/stripe.php:95
+#: includes/common/payment-gateways/stripe.php:100
 msgid "GBP - British Pound"
 msgstr "GBP - Britishes Pfund"
 
@@ -6721,7 +6790,7 @@ msgstr ""
 #: includes/common/payment-gateways/paymill.php:163
 #: includes/common/payment-gateways/pin.php:159
 #: includes/common/payment-gateways/simplify.php:103
-#: includes/common/payment-gateways/stripe.php:260
+#: includes/common/payment-gateways/stripe.php:257
 #: includes/common/payment-gateways/wepay.php:159
 #, fuzzy
 msgid "Force SSL?"
@@ -6775,7 +6844,6 @@ msgstr "%s Shop Kauf - Order ID: %s, Email: %s"
 
 #: includes/common/payment-gateways/paymill.php:272
 #: includes/common/payment-gateways/simplify.php:179
-#: includes/common/payment-gateways/stripe.php:365
 #, php-format
 msgid "%1$s Card ending in %2$s - Expires %3$s"
 msgstr "%1$s Karte endet in %2$s - läuft ab %3$s"
@@ -6798,8 +6866,6 @@ msgstr "Verkettete PayPal-Zahlungen"
 #: includes/common/payment-gateways/paypal-chained-payments.php:50
 #: includes/common/payment-gateways/paypal-chained-payments.php:53
 #: includes/common/payment-gateways/paypal-chained-payments.php:732
-#: includes/common/payment-gateways/paypal-express.php:498
-#: includes/common/payment-gateways/paypal-express.php:936
 msgid "PayPal"
 msgstr "PayPal"
 
@@ -6826,14 +6892,14 @@ msgstr "GBP - Pound Sterling"
 #: includes/common/payment-gateways/paypal-chained-payments.php:75
 #: includes/common/payment-gateways/pin.php:65
 #: includes/common/payment-gateways/skrill.php:66
-#: includes/common/payment-gateways/stripe.php:102
+#: includes/common/payment-gateways/stripe.php:107
 msgid "HKD - Hong Kong Dollar"
 msgstr "HKD - Hong Kong Dollar"
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:77
 #: includes/common/payment-gateways/pin.php:66
 #: includes/common/payment-gateways/skrill.php:73
-#: includes/common/payment-gateways/stripe.php:112
+#: includes/common/payment-gateways/stripe.php:117
 msgid "JPY - Japanese Yen"
 msgstr "JPY - Japanischer Yen"
 
@@ -6848,7 +6914,7 @@ msgstr "MXN - Mexikanischer Peso"
 #: includes/common/payment-gateways/paypal-chained-payments.php:81
 #: includes/common/payment-gateways/pin.php:60
 #: includes/common/payment-gateways/skrill.php:79
-#: includes/common/payment-gateways/stripe.php:145
+#: includes/common/payment-gateways/stripe.php:150
 msgid "NZD - New Zealand Dollar"
 msgstr "NZD - Neuseeländischer Dollar"
 
@@ -6864,7 +6930,7 @@ msgstr "RUB - Russische Rubel"
 #: includes/common/payment-gateways/paypal-chained-payments.php:86
 #: includes/common/payment-gateways/pin.php:61
 #: includes/common/payment-gateways/skrill.php:88
-#: includes/common/payment-gateways/stripe.php:162
+#: includes/common/payment-gateways/stripe.php:167
 msgid "SGD - Singapore Dollar"
 msgstr "SGD - Singapur Dollar"
 
@@ -6873,7 +6939,7 @@ msgid "TWD - Taiwan New Dollars"
 msgstr "TWD - Taiwan Neue Dollars"
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:88
-#: includes/common/payment-gateways/stripe.php:170
+#: includes/common/payment-gateways/stripe.php:175
 msgid "THB - Thai Baht"
 msgstr "THB - Thailändische Bäht"
 
@@ -6892,7 +6958,6 @@ msgid "Your PayPal transaction has been canceled."
 msgstr "Deine PayPal-Transaktion wurde storniert."
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:126
-#: includes/common/payment-gateways/paypal-express.php:778
 #, fuzzy
 msgid "You will be redirected to the PayPal site to finalize your payment."
 msgstr ""
@@ -6915,8 +6980,6 @@ msgstr "PayPal-Guthaben, Kreditkarte oder Sofortüberweisung"
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:212
 #: includes/common/payment-gateways/paypal-chained-payments.php:491
-#: includes/common/payment-gateways/paypal-express.php:812
-#: includes/common/payment-gateways/paypal-express.php:1080
 #, fuzzy
 msgid "The payment has been partially refunded."
 msgstr "Die Zahlung wurde teilweise zurückerstattet."
@@ -6929,8 +6992,6 @@ msgstr "Die Transaktion ist im Gange."
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:230
 #: includes/common/payment-gateways/paypal-chained-payments.php:510
-#: includes/common/payment-gateways/paypal-express.php:841
-#: includes/common/payment-gateways/paypal-express.php:1113
 #, fuzzy
 msgid "You refunded the payment."
 msgstr "Du hast die Zahlung zurückerstattet."
@@ -6958,8 +7019,6 @@ msgstr ""
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:244
 #: includes/common/payment-gateways/paypal-chained-payments.php:524
-#: includes/common/payment-gateways/paypal-express.php:852
-#: includes/common/payment-gateways/paypal-express.php:1126
 msgid ""
 "The payment is pending because it was made by an eCheck that has not yet "
 "cleared."
@@ -6969,8 +7028,6 @@ msgstr ""
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:245
 #: includes/common/payment-gateways/paypal-chained-payments.php:525
-#: includes/common/payment-gateways/paypal-express.php:853
-#: includes/common/payment-gateways/paypal-express.php:1127
 msgid ""
 "The payment is pending because you hold a non-U.S. account and do not have a "
 "withdrawal mechanism. You must manually accept or deny this payment from "
@@ -6982,8 +7039,6 @@ msgstr ""
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:246
 #: includes/common/payment-gateways/paypal-chained-payments.php:526
-#: includes/common/payment-gateways/paypal-express.php:854
-#: includes/common/payment-gateways/paypal-express.php:1128
 msgid ""
 "You do not have a balance in the currency sent, and you do not have your "
 "Payment Receiving Preferences set to automatically convert and accept this "
@@ -6996,15 +7051,11 @@ msgstr ""
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:247
 #: includes/common/payment-gateways/paypal-chained-payments.php:527
-#: includes/common/payment-gateways/paypal-express.php:856
-#: includes/common/payment-gateways/paypal-express.php:1130
 msgid "The payment is pending while it is being reviewed by PayPal for risk."
 msgstr "Die Zahlung wird von PayPal einere Risikoprüfung unterzogen."
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:248
 #: includes/common/payment-gateways/paypal-chained-payments.php:528
-#: includes/common/payment-gateways/paypal-express.php:857
-#: includes/common/payment-gateways/paypal-express.php:1131
 msgid ""
 "The payment is pending because it was made to an email address that is not "
 "yet registered or confirmed."
@@ -7014,8 +7065,6 @@ msgstr ""
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:249
 #: includes/common/payment-gateways/paypal-chained-payments.php:529
-#: includes/common/payment-gateways/paypal-express.php:858
-#: includes/common/payment-gateways/paypal-express.php:1132
 msgid ""
 "The payment is pending because it was made via credit card and you must "
 "upgrade your account to Business or Premier status in order to receive the "
@@ -7029,8 +7078,6 @@ msgstr ""
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:250
 #: includes/common/payment-gateways/paypal-chained-payments.php:530
-#: includes/common/payment-gateways/paypal-express.php:859
-#: includes/common/payment-gateways/paypal-express.php:1133
 msgid ""
 "The payment is pending because you are not yet verified. You must verify "
 "your account before you can accept this payment."
@@ -7039,8 +7086,6 @@ msgstr ""
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:251
 #: includes/common/payment-gateways/paypal-chained-payments.php:531
-#: includes/common/payment-gateways/paypal-express.php:860
-#: includes/common/payment-gateways/paypal-express.php:1134
 msgid ""
 "The payment is pending for an unknown reason. For more information, contact "
 "PayPal customer service."
@@ -7087,7 +7132,6 @@ msgid "Email Address"
 msgstr "E-Mail Adresse"
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:470
-#: includes/common/payment-gateways/paypal-express.php:1051
 #, fuzzy
 msgid ""
 "There was a problem verifying the IPN string with PayPal. Please try again."
@@ -7096,13 +7140,11 @@ msgstr ""
 "versuche es erneut."
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:534
-#: includes/common/payment-gateways/paypal-express.php:863
 #, fuzzy
 msgid "The payment is pending"
 msgstr "Die Zahlung steht noch aus"
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:698
-#: includes/common/payment-gateways/paypal-express.php:147
 #, fuzzy
 msgid "There was a problem connecting to PayPal. Please try again."
 msgstr ""
@@ -7176,7 +7218,6 @@ msgstr "API-Benutzername (Sandbox)"
 
 #: includes/common/payment-gateways/paypal-chained-payments.php:818
 #: includes/common/payment-gateways/paypal-chained-payments.php:840
-#: includes/common/payment-gateways/paypal-express.php:703
 #, fuzzy
 msgid ""
 "You must login to PayPal and create an API signature to get your "
@@ -7242,251 +7283,83 @@ msgstr ""
 "href=\"https://developer.paypal.com/docs/classic/lifecycle/goingLive/"
 "#register\">Mehr Informationen \"</a>"
 
-#: includes/common/payment-gateways/paypal-express.php:497
-#: includes/common/payment-gateways/paypal-express.php:1161
-msgid "PayPal Express Checkout"
-msgstr "PayPal Express Checkout"
+#: includes/common/payment-gateways/paypal-express.php:17
+#: includes/common/payment-gateways/paypal-express.php:19
+#: includes/common/payment-gateways/paypal-express.php:20
+#: includes/common/payment-gateways/paypal-express.php:128
+#: includes/common/payment-gateways/paypal-express.php:231
+msgid "PayPal Express"
+msgstr "PayPal Express"
 
-#: includes/common/payment-gateways/paypal-express.php:601
+#: includes/common/payment-gateways/paypal-express.php:33
+#, fuzzy, php-format
+msgid "Einstellungen für %s"
+msgstr "Einstellungen für %s"
+
+#: includes/common/payment-gateways/paypal-express.php:35
 #, fuzzy
-msgid "Paypal Express Network Settings"
-msgstr "Paypal Express Netzwerk Einstellungen"
+msgid "PayPal Express API Einstellungen"
+msgstr "PayPal Express API Einstellungen"
 
-#: includes/common/payment-gateways/paypal-express.php:603
-#: includes/common/payment-gateways/paypal-express.php:645
+#: includes/common/payment-gateways/paypal-express.php:46
+#: includes/common/payment-gateways/wepay.php:171
+msgid "Client ID"
+msgstr "Client ID"
+
+#: includes/common/payment-gateways/paypal-express.php:47
 #, fuzzy
-msgid ""
-"Express Checkout is PayPal's premier checkout solution, which streamlines "
-"the checkout process for buyers and keeps them on your site after making a "
-"purchase. Unlike PayPal Pro, there are no additional fees to use Express "
-"Checkout, though you may need to do a free upgrade to a business account. <a "
-"target=\"_blank\" href=\"https://developer.paypal.com/webapps/developer/docs/"
-"classic/api/apiCredentials/\">More Info &raquo;</a>"
-msgstr ""
-"Die Express-Kaufabwicklung ist die erste Kassenlösung von PayPal, die den "
-"Kaufprozess für Käufer/innen vereinfacht und sie nach dem Kauf auf deiner "
-"Website hält. Im Gegensatz zu PayPal Pro fallen für die Nutzung von Express "
-"Checkout keine zusätzlichen Gebühren an, allerdings musst du eventuell ein "
-"kostenloses Upgrade auf ein Geschäftskonto vornehmen. <a target=\"_blank\" "
-"href=\"https://developer.paypal.com/webapps/developer/docs/classic/api/"
-"apiCredentials/\">Mehr Infos \"</a>"
+msgid "Deine PayPal API Client ID"
+msgstr "Deine PayPal API Client ID"
 
-#: includes/common/payment-gateways/paypal-express.php:622
-#: includes/common/payment-gateways/paypal-express.php:656
-msgid "Merchant Email"
-msgstr "Händler-E-Mail"
+#: includes/common/payment-gateways/paypal-express.php:53
+#: includes/common/payment-gateways/wepay.php:178
+msgid "Client Secret"
+msgstr "Client Secret"
 
-#: includes/common/payment-gateways/paypal-express.php:643
+#: includes/common/payment-gateways/paypal-express.php:54
 #, fuzzy
-msgid "Paypal Express Checkout Settings"
-msgstr "Paypal Express Checkout Einstellungen"
+msgid "Dein PayPal API Client Secret"
+msgstr "Dein PayPal API Client Geheimnis"
 
-#: includes/common/payment-gateways/paypal-express.php:678
-msgid "Locale"
-msgstr "Lokal"
-
-#: includes/common/payment-gateways/paypal-express.php:723
-msgid "Signature"
-msgstr "Unterschrift"
-
-#: includes/common/payment-gateways/paypal-express.php:732
-msgid "Header Image"
-msgstr "Headerbild"
-
-#: includes/common/payment-gateways/paypal-express.php:733
+#: includes/common/payment-gateways/paypal-express.php:59
 #, fuzzy
-msgid ""
-"URL for an image you want to appear at the top left of the payment page. The "
-"image has a maximum size of 750 pixels wide by 90 pixels high. PayPal "
-"recommends that you provide an image that is stored on a secure (https) "
-"server. If you do not specify an image, the business name is displayed."
-msgstr ""
-"URL für ein Bild, das oben links auf der Zahlungsseite erscheinen soll. Das "
-"Bild hat eine maximale Größe von 750 Pixel Breite und 90 Pixel Höhe. PayPal "
-"empfiehlt, dass du ein Bild angibst, das auf einem sicheren (https) Server "
-"gespeichert ist. Wenn du kein Bild angibst, wird der Unternehmensname "
-"angezeigt."
+msgid "Sandbox Modus aktivieren"
+msgstr "Sandbox Modus aktivieren"
 
-#: includes/common/payment-gateways/paypal-express.php:737
-msgid "Header Border Color"
-msgstr "Header Randfarbe"
-
-#: includes/common/payment-gateways/paypal-express.php:738
+#: includes/common/payment-gateways/paypal-express.php:60
 #, fuzzy
-msgid ""
-"Sets the border color around the header of the payment page. The border is a "
-"2-pixel perimeter around the header space, which is 750 pixels wide by 90 "
-"pixels high. By default, the color is black."
-msgstr ""
-"Legt die Farbe des Rahmens um die Kopfzeile der Zahlungsseite fest. Der "
-"Rahmen ist ein 2-Pixel-Rahmen um den Kopfbereich, der 750 Pixel breit und 90 "
-"Pixel hoch ist. Standardmäßig ist die Farbe schwarz."
+msgid "Zum Testen Sandbox Modus einschalten"
+msgstr "Zum Testen Sandbox Modus einschalten"
 
-#: includes/common/payment-gateways/paypal-express.php:742
-msgid "Header Background Color"
-msgstr "Header Hintergrundfarbe"
-
-#: includes/common/payment-gateways/paypal-express.php:743
+#: includes/common/payment-gateways/paypal-express.php:76
 #, fuzzy
-msgid ""
-"Sets the background color for the header of the payment page. By default, "
-"the color is white."
-msgstr ""
-"Legt die Hintergrundfarbe für die Kopfzeile der Zahlungsseite fest. "
-"Standardmäßig ist die Farbe weiß."
+msgid "Fehler beim Abrufen des PayPal Tokens."
+msgstr "Fehler beim Abrufen des PayPal Tokens."
 
-#: includes/common/payment-gateways/paypal-express.php:747
-msgid "Page Background Color"
-msgstr "Seitenhintergrundfarbe"
-
-#: includes/common/payment-gateways/paypal-express.php:748
+#: includes/common/payment-gateways/paypal-express.php:83
 #, fuzzy
-msgid ""
-"Sets the background color for the payment page. By default, the color is "
-"white."
-msgstr ""
-"Legt die Hintergrundfarbe für die Zahlungsseite fest. Standardmäßig ist die "
-"Farbe weiß."
+msgid "Fehler beim Erstellen der PayPal Bestellung."
+msgstr "Fehler beim Erstellen der PayPal Bestellung."
 
-#: includes/common/payment-gateways/paypal-express.php:796
-#: includes/common/payment-gateways/paypal-express.php:1060
+#: includes/common/payment-gateways/paypal-express.php:94
 #, fuzzy
-msgid ""
-"A reversal has been canceled; for example, when you win a dispute and the "
-"funds for the reversal have been returned to you."
-msgstr ""
-"Eine Rückbuchung wurde rückgängig gemacht, z. B. wenn du einen Rechtsstreit "
-"gewonnen hast und das Geld für die Rückbuchung an dich zurückgezahlt wurde."
+msgid "Keine Weiterleitungs-URL gefunden."
+msgstr "Keine Weiterleitungs-URL gefunden."
 
-#: includes/common/payment-gateways/paypal-express.php:800
-#: includes/common/payment-gateways/paypal-express.php:1065
+#: includes/common/payment-gateways/paypal-express.php:107
 #, fuzzy
-msgid "The authorization period for this payment has been reached."
-msgstr "Der Bewilligungszeitraum für diese Zahlung wurde erreicht."
+msgid "Zahlung konnte nicht bestätigt werden."
+msgstr "Die Zahlung konnte nicht bestätigt werden."
 
-#: includes/common/payment-gateways/paypal-express.php:804
-#: includes/common/payment-gateways/paypal-express.php:1070
+#: includes/common/payment-gateways/paypal-express.php:144
 #, fuzzy
-msgid "An authorization for this transaction has been voided."
-msgstr "Eine Genehmigung für diese Transaktion wurde für ungültig erklärt."
+msgid "Zahlung fehlgeschlagen."
+msgstr "Zahlung fehlgeschlagen."
 
-#: includes/common/payment-gateways/paypal-express.php:816
-#: includes/common/payment-gateways/paypal-express.php:1085
+#: includes/common/payment-gateways/paypal-express.php:218
 #, fuzzy
-msgid ""
-"The transaction has not terminated, e.g. an authorization may be awaiting "
-"completion."
-msgstr ""
-"Die Transaktion ist noch nicht beendet, z. B. kann eine Autorisierung noch "
-"auf ihren Abschluss warten."
-
-#: includes/common/payment-gateways/paypal-express.php:824
-#: includes/common/payment-gateways/paypal-express.php:1095
-#, fuzzy
-msgid "A payment has been accepted."
-msgstr "Eine Zahlung wurde angenommen."
-
-#: includes/common/payment-gateways/paypal-express.php:828
-#, fuzzy
-msgid ""
-"A payment was reversed due to a chargeback or other type of reversal. The "
-"funds have been removed from your account balance and returned to the buyer"
-msgstr ""
-"Eine Zahlung wurde aufgrund einer Rückbuchung oder einer anderen Art von "
-"Rückbuchung storniert. Das Geld wurde von deinem Kontostand abgezogen und an "
-"den Käufer zurückgegeben"
-
-#: includes/common/payment-gateways/paypal-express.php:831
-#: includes/common/payment-gateways/paypal-express.php:1102
-#, fuzzy
-msgid ""
-"A reversal has occurred on this transaction due to a chargeback by your "
-"customer."
-msgstr ""
-"Diese Transaktion wurde aufgrund einer Rückbuchung durch deinen Kunden "
-"storniert."
-
-#: includes/common/payment-gateways/paypal-express.php:832
-#: includes/common/payment-gateways/paypal-express.php:1103
-msgid ""
-"A reversal has occurred on this transaction due to your customer triggering "
-"a money-back guarantee."
-msgstr ""
-"Bei dieser Transaktion ist eine Stornierung erfolgt, da Ihr Kunde eine Geld-"
-"zurück-Garantie ausgelöst hat."
-
-#: includes/common/payment-gateways/paypal-express.php:833
-#: includes/common/payment-gateways/paypal-express.php:1104
-#, fuzzy
-msgid ""
-"A reversal has occurred on this transaction due to a complaint about the "
-"transaction from your customer."
-msgstr ""
-"Diese Transaktion wurde aufgrund einer Beschwerde deines Kunden storniert."
-
-#: includes/common/payment-gateways/paypal-express.php:834
-#: includes/common/payment-gateways/paypal-express.php:1105
-msgid ""
-"A reversal has occurred on this transaction because you have given the "
-"customer a refund."
-msgstr ""
-"Bei dieser Transaktion ist eine Stornierung erfolgt, weil Sie dem Kunden "
-"eine Rückerstattung gegeben haben."
-
-#: includes/common/payment-gateways/paypal-express.php:835
-#: includes/common/payment-gateways/paypal-express.php:1106
-#, fuzzy
-msgid "A reversal has occurred on this transaction due to an unknown reason."
-msgstr "Diese Transaktion wurde aus einem unbekannten Grund storniert."
-
-#: includes/common/payment-gateways/paypal-express.php:845
-#: includes/common/payment-gateways/paypal-express.php:1118
-#, fuzzy
-msgid "You denied the payment when it was marked as pending."
-msgstr "Du hast die Zahlung verweigert, als sie als ausstehend markiert war."
-
-#: includes/common/payment-gateways/paypal-express.php:850
-#: includes/common/payment-gateways/paypal-express.php:1124
-#, fuzzy
-msgid ""
-"The payment is pending because your customer did not include a confirmed "
-"shipping address and your Payment Receiving Preferences is set such that you "
-"want to manually accept or deny each of these payments. To change your "
-"preference, go to the Preferences\t section of your Profile."
-msgstr ""
-"Die Zahlung ist ausstehend, weil dein Kunde keine bestätigte Lieferadresse "
-"angegeben hat und du in deinen Einstellungen für den Zahlungseingang "
-"festgelegt hast, dass du jede dieser Zahlungen manuell annehmen oder "
-"ablehnen möchtest. Um deine Einstellung zu ändern, gehe zum Abschnitt "
-"Einstellungen in deinem Profil."
-
-#: includes/common/payment-gateways/paypal-express.php:851
-#: includes/common/payment-gateways/paypal-express.php:1125
-msgid ""
-"The payment is pending because it has been authorized but not settled. You "
-"must capture the funds first."
-msgstr ""
-"Die Zahlung ist ausstehend, weil sie genehmigt, aber nicht beglichen wurde. "
-"Sie müssen zuerst das Geld einziehen."
-
-#: includes/common/payment-gateways/paypal-express.php:855
-#: includes/common/payment-gateways/paypal-express.php:1129
-msgid ""
-"The payment is pending because it is part of an order that has been "
-"authorized but not settled."
-msgstr ""
-"Die Zahlung ist ausstehend, weil sie Teil einer Bestellung ist, der "
-"genehmigt, aber nicht abgerechnet wurde."
-
-#: includes/common/payment-gateways/paypal-express.php:1099
-#, fuzzy
-msgid ""
-"A payment was reversed due to a chargeback or other type of reversal. The "
-"funds have been removed from your account balance and returned to the buyer:"
-msgstr ""
-"Eine Zahlung wurde aufgrund einer Rückbuchung oder einer anderen Art von "
-"Rückbuchung storniert. Das Geld wurde von deinem Kontostand abgezogen und an "
-"den Käufer zurückgegeben:"
+msgid "Thank you for your order. Your payment was successful."
+msgstr "Vielen Dank für deine Bestellung. Deine Zahlung war erfolgreich."
 
 #: includes/common/payment-gateways/paypal-payflow.php:59
 #: includes/common/payment-gateways/paypal-payflow.php:467
@@ -7560,7 +7433,7 @@ msgid "PIN"
 msgstr "PIN"
 
 #: includes/common/payment-gateways/pin.php:59
-#: includes/common/payment-gateways/stripe.php:179
+#: includes/common/payment-gateways/stripe.php:184
 msgid "USD - United States Dollar"
 msgstr "USD - US-Dollar"
 
@@ -7604,7 +7477,7 @@ msgstr ""
 "soweit bist."
 
 #: includes/common/payment-gateways/pin.php:179
-#: includes/common/payment-gateways/stripe.php:279
+#: includes/common/payment-gateways/stripe.php:276
 msgid "Publishable Key"
 msgstr "Zur Veröffentlichung geeigneter Schlüssel"
 
@@ -7807,12 +7680,12 @@ msgid "KRW - South-Korean Won"
 msgstr "KRW - Südkoreanischer Won"
 
 #: includes/common/payment-gateways/skrill.php:77
-#: includes/common/payment-gateways/stripe.php:127
+#: includes/common/payment-gateways/stripe.php:132
 msgid "MAD - Moroccan Dirham"
 msgstr "MAD - Marokkanischer Dirham"
 
 #: includes/common/payment-gateways/skrill.php:78
-#: includes/common/payment-gateways/stripe.php:138
+#: includes/common/payment-gateways/stripe.php:143
 msgid "MYR - Malaysian Ringgit"
 msgstr "MYR - Malaysischer Ringgit"
 
@@ -7836,7 +7709,7 @@ msgid "RSD - Serbian dinar"
 msgstr "RSD - Serbischer Dinar"
 
 #: includes/common/payment-gateways/skrill.php:86
-#: includes/common/payment-gateways/stripe.php:158
+#: includes/common/payment-gateways/stripe.php:163
 msgid "SAR - Saudi Riyal"
 msgstr "SAR - Saudi-Rial"
 
@@ -7902,7 +7775,7 @@ msgstr ""
 "eingegeben hast."
 
 #: includes/common/payment-gateways/skrill.php:156
-#: includes/common/payment-gateways/stripe.php:293
+#: includes/common/payment-gateways/stripe.php:290
 msgid ""
 "Selecting a currency other than that used for your store may cause problems "
 "at checkout."
@@ -8020,529 +7893,529 @@ msgstr ""
 "Rückbuchung - Eine Zahlung wurde aufgrund einer Rückbuchung storniert. Das "
 "Geld wurde von deinem Kontostand abgezogen und an den Käufer zurückgegeben."
 
-#: includes/common/payment-gateways/stripe.php:45
-#: includes/common/payment-gateways/stripe.php:433
+#: includes/common/payment-gateways/stripe.php:50
+#: includes/common/payment-gateways/stripe.php:441
 msgid "Stripe"
 msgstr "Stripe"
 
-#: includes/common/payment-gateways/stripe.php:54
+#: includes/common/payment-gateways/stripe.php:59
 msgid "AED - United Arab Emirates Dirham"
 msgstr "AED - Vereinigte Arabische Emirate Dirham"
 
-#: includes/common/payment-gateways/stripe.php:55
+#: includes/common/payment-gateways/stripe.php:60
 #, fuzzy
 msgid "AFN - Afghan Afghani*"
 msgstr "AFN - Afghanisch Afghani*"
 
-#: includes/common/payment-gateways/stripe.php:56
+#: includes/common/payment-gateways/stripe.php:61
 msgid "ALL - Albanian Lek"
 msgstr "ALL - Albanischer Lek"
 
-#: includes/common/payment-gateways/stripe.php:57
+#: includes/common/payment-gateways/stripe.php:62
 msgid "AMD - Armenian Dram"
 msgstr "AMD - Armenischer dram"
 
-#: includes/common/payment-gateways/stripe.php:58
+#: includes/common/payment-gateways/stripe.php:63
 msgid "ANG - Netherlands Antillean Gulden"
 msgstr "ANG - Niederländische Antillen Gulden"
 
-#: includes/common/payment-gateways/stripe.php:59
+#: includes/common/payment-gateways/stripe.php:64
 #, fuzzy
 msgid "AOA - Angolan Kwanza*"
 msgstr "AOA - Angolanischer Kwanza*"
 
-#: includes/common/payment-gateways/stripe.php:60
+#: includes/common/payment-gateways/stripe.php:65
 #, fuzzy
 msgid "ARS - Argentine Peso*"
 msgstr "ARS - Argentinischer Peso*"
 
-#: includes/common/payment-gateways/stripe.php:61
+#: includes/common/payment-gateways/stripe.php:66
 #, fuzzy
 msgid "AUD - Australian Dollar*"
 msgstr "AUD - Australischer Dollar*"
 
-#: includes/common/payment-gateways/stripe.php:62
+#: includes/common/payment-gateways/stripe.php:67
 msgid "AWG - Aruban Florin"
 msgstr "AWG - Aruba-Florin"
 
-#: includes/common/payment-gateways/stripe.php:63
+#: includes/common/payment-gateways/stripe.php:68
 msgid "AZN - Azerbaijani Manat"
 msgstr "AZN - Aserbaidschanischer Manat"
 
-#: includes/common/payment-gateways/stripe.php:64
+#: includes/common/payment-gateways/stripe.php:69
 msgid "BAM - Bosnia & Herzegovina Convertible Mark"
 msgstr "BAM - Bosnien & Konvertible Mark"
 
-#: includes/common/payment-gateways/stripe.php:65
+#: includes/common/payment-gateways/stripe.php:70
 msgid "BBD - Barbadian Dollar"
 msgstr "BBD - Barbados Dollar"
 
-#: includes/common/payment-gateways/stripe.php:66
+#: includes/common/payment-gateways/stripe.php:71
 msgid "BDT - Bangladeshi Taka"
 msgstr "BDT - Bangladeschischer Taka"
 
-#: includes/common/payment-gateways/stripe.php:67
+#: includes/common/payment-gateways/stripe.php:72
 msgid "BGN - Bulgarian Lev"
 msgstr "BGN - Bulgarische Lew"
 
-#: includes/common/payment-gateways/stripe.php:68
+#: includes/common/payment-gateways/stripe.php:73
 msgid "BIF - Burundian Franc"
 msgstr "BIF - Burundi-Franc"
 
-#: includes/common/payment-gateways/stripe.php:69
+#: includes/common/payment-gateways/stripe.php:74
 msgid "BMD - Bermudian Dollar"
 msgstr "BMD - Bermuda-Dollar"
 
-#: includes/common/payment-gateways/stripe.php:70
+#: includes/common/payment-gateways/stripe.php:75
 msgid "BND - Brunei Dollar"
 msgstr "BND - Brunei-Dollar"
 
-#: includes/common/payment-gateways/stripe.php:71
+#: includes/common/payment-gateways/stripe.php:76
 #, fuzzy
 msgid "BOB - Bolivian Boliviano*"
 msgstr "BOB - Bolivianischer Bolivianer*"
 
-#: includes/common/payment-gateways/stripe.php:72
+#: includes/common/payment-gateways/stripe.php:77
 #, fuzzy
 msgid "BRL - Brazilian Real*"
 msgstr "BRL - Brasilianischer Real*"
 
-#: includes/common/payment-gateways/stripe.php:73
+#: includes/common/payment-gateways/stripe.php:78
 msgid "BSD - Bahamian Dollar"
 msgstr "BSD - Bahama-Dollar"
 
-#: includes/common/payment-gateways/stripe.php:74
+#: includes/common/payment-gateways/stripe.php:79
 msgid "BWP - Botswana Pula"
 msgstr "BWP - Botswana Pula"
 
-#: includes/common/payment-gateways/stripe.php:75
+#: includes/common/payment-gateways/stripe.php:80
 msgid "BZD - Belize Dollar"
 msgstr "BZD - Belize-Dollar"
 
-#: includes/common/payment-gateways/stripe.php:76
+#: includes/common/payment-gateways/stripe.php:81
 #, fuzzy
 msgid "CAD - Canadian Dollar*"
 msgstr "CAD - Kanadischer Dollar*"
 
-#: includes/common/payment-gateways/stripe.php:77
+#: includes/common/payment-gateways/stripe.php:82
 msgid "CDF - Congolese Franc"
 msgstr "CDF - kongolesischer Franc"
 
-#: includes/common/payment-gateways/stripe.php:79
+#: includes/common/payment-gateways/stripe.php:84
 #, fuzzy
 msgid "CLP - Chilean Peso*"
 msgstr "CLP - Chilenischer Peso*"
 
-#: includes/common/payment-gateways/stripe.php:80
+#: includes/common/payment-gateways/stripe.php:85
 msgid "CNY - Chinese Renminbi Yuan"
 msgstr "CNY - Remnibi Yuan"
 
-#: includes/common/payment-gateways/stripe.php:81
+#: includes/common/payment-gateways/stripe.php:86
 #, fuzzy
 msgid "COP - Colombian Peso*"
 msgstr "COP - Kolumbianischer Peso*"
 
-#: includes/common/payment-gateways/stripe.php:82
+#: includes/common/payment-gateways/stripe.php:87
 #, fuzzy
 msgid "CRC - Costa Rican Colón*"
 msgstr "CRC - Costa Rican Colón*"
 
-#: includes/common/payment-gateways/stripe.php:83
+#: includes/common/payment-gateways/stripe.php:88
 #, fuzzy
 msgid "CVE - Cape Verdean Escudo*"
 msgstr "CVE - Kapverdischer Escudo*"
 
-#: includes/common/payment-gateways/stripe.php:84
+#: includes/common/payment-gateways/stripe.php:89
 #, fuzzy
 msgid "CZK - Czech Koruna*"
 msgstr "CZK - Tschechische Krone*"
 
-#: includes/common/payment-gateways/stripe.php:85
+#: includes/common/payment-gateways/stripe.php:90
 #, fuzzy
 msgid "DJF - Djiboutian Franc*"
 msgstr "DJF - Dschibutischer Franc*"
 
-#: includes/common/payment-gateways/stripe.php:87
+#: includes/common/payment-gateways/stripe.php:92
 msgid "DOP - Dominican Peso"
 msgstr "DOP - Dominikanischer Peso"
 
-#: includes/common/payment-gateways/stripe.php:88
+#: includes/common/payment-gateways/stripe.php:93
 msgid "DZD - Algerian Dinar"
 msgstr "DZD - Algerischer Dinar"
 
-#: includes/common/payment-gateways/stripe.php:89
+#: includes/common/payment-gateways/stripe.php:94
 #, fuzzy
 msgid "EEK - Estonian Kroon*"
 msgstr "EEK - Estnische Kroon*"
 
-#: includes/common/payment-gateways/stripe.php:90
+#: includes/common/payment-gateways/stripe.php:95
 msgid "EGP - Egyptian Pound"
 msgstr "EGP - Ägyptisches Pfund"
 
-#: includes/common/payment-gateways/stripe.php:91
+#: includes/common/payment-gateways/stripe.php:96
 msgid "ETB - Ethiopian Birr"
 msgstr "ETB - Äthiopisches Birr"
 
-#: includes/common/payment-gateways/stripe.php:93
+#: includes/common/payment-gateways/stripe.php:98
 msgid "FJD - Fijian Dollar"
 msgstr "﻿FJD - Fidschi-Dollar"
 
-#: includes/common/payment-gateways/stripe.php:94
+#: includes/common/payment-gateways/stripe.php:99
 #, fuzzy
 msgid "FKP - Falkland Islands Pound*"
 msgstr "FKP - Falklandinseln Pfund*"
 
-#: includes/common/payment-gateways/stripe.php:96
+#: includes/common/payment-gateways/stripe.php:101
 msgid "GEL - Georgian Lari"
 msgstr "GEL - georgischer Lari"
 
-#: includes/common/payment-gateways/stripe.php:97
+#: includes/common/payment-gateways/stripe.php:102
 msgid "GIP - Gibraltar Pound"
 msgstr "GIP - Gibraltar-Pfund"
 
-#: includes/common/payment-gateways/stripe.php:98
+#: includes/common/payment-gateways/stripe.php:103
 msgid "GMD - Gambian Dalasi"
 msgstr "GMD - gambischer Dalasi"
 
-#: includes/common/payment-gateways/stripe.php:99
+#: includes/common/payment-gateways/stripe.php:104
 #, fuzzy
 msgid "GNF - Guinean Franc*"
 msgstr "GNF - Guineanischer Franc*"
 
-#: includes/common/payment-gateways/stripe.php:100
+#: includes/common/payment-gateways/stripe.php:105
 #, fuzzy
 msgid "GTQ - Guatemalan Quetzal*"
 msgstr "GTQ - Guatemaltekischer Quetzal*"
 
-#: includes/common/payment-gateways/stripe.php:101
+#: includes/common/payment-gateways/stripe.php:106
 msgid "GYD - Guyanese Dollar"
 msgstr "GYD - Guyana-Dollar"
 
-#: includes/common/payment-gateways/stripe.php:103
+#: includes/common/payment-gateways/stripe.php:108
 #, fuzzy
 msgid "HNL - Honduran Lempira*"
 msgstr "HNL - Honduranische Lempira*"
 
-#: includes/common/payment-gateways/stripe.php:105
+#: includes/common/payment-gateways/stripe.php:110
 msgid "HTG - Haitian Gourde"
 msgstr "HTG - Haitianische Gourde"
 
-#: includes/common/payment-gateways/stripe.php:107
+#: includes/common/payment-gateways/stripe.php:112
 msgid "IDR - Indonesian Rupiah"
 msgstr "IDR - Indonesische Rupiah"
 
-#: includes/common/payment-gateways/stripe.php:108
+#: includes/common/payment-gateways/stripe.php:113
 msgid "ILS - Israeli New Sheqel"
 msgstr "ILS - Israelischer Schekel"
 
-#: includes/common/payment-gateways/stripe.php:109
+#: includes/common/payment-gateways/stripe.php:114
 #, fuzzy
 msgid "INR - Indian Rupee*"
 msgstr "INR - Indische Rupie*"
 
-#: includes/common/payment-gateways/stripe.php:110
+#: includes/common/payment-gateways/stripe.php:115
 #, fuzzy
 msgid "ISK - Icelandic Króna"
 msgstr "ISK - Isländische Króna"
 
-#: includes/common/payment-gateways/stripe.php:111
+#: includes/common/payment-gateways/stripe.php:116
 msgid "JMD - Jamaican Dollar"
 msgstr "JMD - jamaikanischer Dollar"
 
-#: includes/common/payment-gateways/stripe.php:113
+#: includes/common/payment-gateways/stripe.php:118
 msgid "KES - Kenyan Shilling"
 msgstr "KES - Kenia-Schilling"
 
-#: includes/common/payment-gateways/stripe.php:114
+#: includes/common/payment-gateways/stripe.php:119
 msgid "KGS - Kyrgyzstani Som"
 msgstr "KGS - Kirgisistan Som"
 
-#: includes/common/payment-gateways/stripe.php:115
+#: includes/common/payment-gateways/stripe.php:120
 msgid "KHR - Cambodian Riel"
 msgstr "KHR - kambodschanischer Riel"
 
-#: includes/common/payment-gateways/stripe.php:116
+#: includes/common/payment-gateways/stripe.php:121
 msgid "KMF - Comorian Franc"
 msgstr "KMF - Komoren-Franc"
 
-#: includes/common/payment-gateways/stripe.php:117
+#: includes/common/payment-gateways/stripe.php:122
 msgid "KRW - South Korean Won"
 msgstr "KRW - Südkoreanische Won"
 
-#: includes/common/payment-gateways/stripe.php:118
+#: includes/common/payment-gateways/stripe.php:123
 msgid "KYD - Cayman Islands Dollar"
 msgstr "KYD - Cayman-Inseln Dollar"
 
-#: includes/common/payment-gateways/stripe.php:119
+#: includes/common/payment-gateways/stripe.php:124
 msgid "KZT - Kazakhstani Tenge"
 msgstr "KZT - Kasachischer Tenge"
 
-#: includes/common/payment-gateways/stripe.php:120
+#: includes/common/payment-gateways/stripe.php:125
 #, fuzzy
 msgid "LAK - Lao Kip*"
 msgstr "LAK - Lao Kip*"
 
-#: includes/common/payment-gateways/stripe.php:121
+#: includes/common/payment-gateways/stripe.php:126
 msgid "LBP - Lebanese Pound"
 msgstr "LBP - libanesisches Pfund"
 
-#: includes/common/payment-gateways/stripe.php:122
+#: includes/common/payment-gateways/stripe.php:127
 msgid "LKR - Sri Lankan Rupee"
 msgstr "LKR - Sri-Lanka-Rupie"
 
-#: includes/common/payment-gateways/stripe.php:123
+#: includes/common/payment-gateways/stripe.php:128
 msgid "LRD - Liberian Dollar"
 msgstr "LRD - Liberianischer Dollar"
 
-#: includes/common/payment-gateways/stripe.php:124
+#: includes/common/payment-gateways/stripe.php:129
 msgid "LSL - Lesotho Loti"
 msgstr "LSL - Lesotho Loti"
 
-#: includes/common/payment-gateways/stripe.php:126
+#: includes/common/payment-gateways/stripe.php:131
 msgid "LVL - Latvian Lats"
 msgstr "LVL - Lettischer Lats"
 
-#: includes/common/payment-gateways/stripe.php:128
+#: includes/common/payment-gateways/stripe.php:133
 msgid "MDL - Moldovan Leu"
 msgstr "MDL - Moldawischer Leu"
 
-#: includes/common/payment-gateways/stripe.php:129
+#: includes/common/payment-gateways/stripe.php:134
 msgid "MGA - Malagasy Ariary"
 msgstr "MGA - Malagasy Ariary"
 
-#: includes/common/payment-gateways/stripe.php:130
+#: includes/common/payment-gateways/stripe.php:135
 msgid "MKD - Macedonian Denar"
 msgstr "MKD - Mazedonischer Denar"
 
-#: includes/common/payment-gateways/stripe.php:131
+#: includes/common/payment-gateways/stripe.php:136
 msgid "MNT - Mongolian Tögrög"
 msgstr "MNT - mongolische Tögrög"
 
-#: includes/common/payment-gateways/stripe.php:132
+#: includes/common/payment-gateways/stripe.php:137
 msgid "MOP - Macanese Pataca"
 msgstr "MOP - Macauische Pataca"
 
-#: includes/common/payment-gateways/stripe.php:133
+#: includes/common/payment-gateways/stripe.php:138
 msgid "MRO - Mauritanian Ouguiya"
 msgstr "MRO - mauretanische Ouguiya"
 
-#: includes/common/payment-gateways/stripe.php:134
+#: includes/common/payment-gateways/stripe.php:139
 #, fuzzy
 msgid "MUR - Mauritian Rupee*"
 msgstr "MUR - Mauritische Rupie*"
 
-#: includes/common/payment-gateways/stripe.php:135
+#: includes/common/payment-gateways/stripe.php:140
 msgid "MVR - Maldivian Rufiyaa"
 msgstr "MVR - maledivische Rufiyaa"
 
-#: includes/common/payment-gateways/stripe.php:136
+#: includes/common/payment-gateways/stripe.php:141
 msgid "MWK - Malawian Kwacha"
 msgstr "MWK - Malawi-Kwacha"
 
-#: includes/common/payment-gateways/stripe.php:137
+#: includes/common/payment-gateways/stripe.php:142
 #, fuzzy
 msgid "MXN - Mexican Peso*"
 msgstr "MXN - Mexikanischer Peso*"
 
-#: includes/common/payment-gateways/stripe.php:139
+#: includes/common/payment-gateways/stripe.php:144
 msgid "MZN - Mozambican Metical"
 msgstr "MZN - mosambikanischer Metical"
 
-#: includes/common/payment-gateways/stripe.php:140
+#: includes/common/payment-gateways/stripe.php:145
 msgid "NAD - Namibian Dollar"
 msgstr "NAD - Namibischer Dollar"
 
-#: includes/common/payment-gateways/stripe.php:141
+#: includes/common/payment-gateways/stripe.php:146
 msgid "NGN - Nigerian Naira"
 msgstr "NGN - nigerianische Naira"
 
-#: includes/common/payment-gateways/stripe.php:142
+#: includes/common/payment-gateways/stripe.php:147
 #, fuzzy
 msgid "NIO - Nicaraguan Córdoba*"
 msgstr "NIO - Nicaraguanisches Córdoba*"
 
-#: includes/common/payment-gateways/stripe.php:144
+#: includes/common/payment-gateways/stripe.php:149
 msgid "NPR - Nepalese Rupee"
 msgstr "NPR - Nepalesische Rupie"
 
-#: includes/common/payment-gateways/stripe.php:146
+#: includes/common/payment-gateways/stripe.php:151
 #, fuzzy
 msgid "PAB - Panamanian Balboa*"
 msgstr "PAB - Panamanischer Balboa*"
 
-#: includes/common/payment-gateways/stripe.php:147
+#: includes/common/payment-gateways/stripe.php:152
 #, fuzzy
 msgid "PEN - Peruvian Nuevo Sol*"
 msgstr "PEN - Peruanischer Nuevo Sol*"
 
-#: includes/common/payment-gateways/stripe.php:148
+#: includes/common/payment-gateways/stripe.php:153
 msgid "PGK - Papua New Guinean Kina"
 msgstr "PGK - Kina"
 
-#: includes/common/payment-gateways/stripe.php:149
+#: includes/common/payment-gateways/stripe.php:154
 msgid "PHP - Philippine Peso"
 msgstr "PHP - Philippinischer Peso"
 
-#: includes/common/payment-gateways/stripe.php:150
+#: includes/common/payment-gateways/stripe.php:155
 msgid "PKR - Pakistani Rupee"
 msgstr "PKR - Pakistanische Rupie"
 
-#: includes/common/payment-gateways/stripe.php:151
+#: includes/common/payment-gateways/stripe.php:156
 #, fuzzy
 msgid "PLN - Polish Złoty"
 msgstr "PLN - Polnische Złoty"
 
-#: includes/common/payment-gateways/stripe.php:152
+#: includes/common/payment-gateways/stripe.php:157
 #, fuzzy
 msgid "PYG - Paraguayan Guaraní*"
 msgstr "PYG - Paraguayisches Guaraní*"
 
-#: includes/common/payment-gateways/stripe.php:153
+#: includes/common/payment-gateways/stripe.php:158
 msgid "QAR - Qatari Riyal"
 msgstr "QAR - Katar-Riyal"
 
-#: includes/common/payment-gateways/stripe.php:154
+#: includes/common/payment-gateways/stripe.php:159
 msgid "RON - Romanian Leu"
 msgstr "RON - Rumänischer Leu"
 
-#: includes/common/payment-gateways/stripe.php:155
+#: includes/common/payment-gateways/stripe.php:160
 msgid "RSD - Serbian Dinar"
 msgstr "RSD - Serbischer Dinar"
 
-#: includes/common/payment-gateways/stripe.php:156
+#: includes/common/payment-gateways/stripe.php:161
 msgid "RUB - Russian Ruble"
 msgstr "RUB - Russischer Rubel"
 
-#: includes/common/payment-gateways/stripe.php:157
+#: includes/common/payment-gateways/stripe.php:162
 msgid "RWF - Rwandan Franc"
 msgstr "RWF - Ruanda-Franc"
 
-#: includes/common/payment-gateways/stripe.php:159
+#: includes/common/payment-gateways/stripe.php:164
 msgid "SBD - Solomon Islands Dollar"
 msgstr "SBD - Salomonen-Dollar"
 
-#: includes/common/payment-gateways/stripe.php:160
+#: includes/common/payment-gateways/stripe.php:165
 msgid "SCR - Seychellois Rupee"
 msgstr "SCR - Seychellen-Rupie"
 
-#: includes/common/payment-gateways/stripe.php:163
+#: includes/common/payment-gateways/stripe.php:168
 #, fuzzy
 msgid "SHP - Saint Helenian Pound*"
 msgstr "SHP - Saint Helenian Pound*"
 
-#: includes/common/payment-gateways/stripe.php:164
+#: includes/common/payment-gateways/stripe.php:169
 msgid "SLL - Sierra Leonean Leone"
 msgstr "SLL - Sierra-leonischer Leone"
 
-#: includes/common/payment-gateways/stripe.php:165
+#: includes/common/payment-gateways/stripe.php:170
 msgid "SOS - Somali Shilling"
 msgstr "SOS - Somalia-Schilling"
 
-#: includes/common/payment-gateways/stripe.php:166
+#: includes/common/payment-gateways/stripe.php:171
 #, fuzzy
 msgid "SRD - Surinamese Dollar*"
 msgstr "SRD - Surinamischer Dollar*"
 
-#: includes/common/payment-gateways/stripe.php:167
+#: includes/common/payment-gateways/stripe.php:172
 msgid "STD - São Tomé and Príncipe Dobra"
 msgstr "STD - São Tomé und Príncipe-Dobra"
 
-#: includes/common/payment-gateways/stripe.php:168
+#: includes/common/payment-gateways/stripe.php:173
 #, fuzzy
 msgid "SVC - Salvadoran Colón*"
 msgstr "SVC - Salvadorianischer Colón*"
 
-#: includes/common/payment-gateways/stripe.php:169
+#: includes/common/payment-gateways/stripe.php:174
 msgid "SZL - Swazi Lilangeni"
 msgstr "SZL - Lilangeni"
 
-#: includes/common/payment-gateways/stripe.php:171
+#: includes/common/payment-gateways/stripe.php:176
 msgid "TJS - Tajikistani Somoni"
 msgstr "TJS - Tajikistani Somoni"
 
-#: includes/common/payment-gateways/stripe.php:172
+#: includes/common/payment-gateways/stripe.php:177
 #, fuzzy
 msgid "TOP - Tongan Paʻanga"
 msgstr "TOP - Tonganisches Paʻanga"
 
-#: includes/common/payment-gateways/stripe.php:174
+#: includes/common/payment-gateways/stripe.php:179
 msgid "TTD - Trinidad and Tobago Dollar"
 msgstr "TTD - Trinidad und Tobago Dollar"
 
-#: includes/common/payment-gateways/stripe.php:175
+#: includes/common/payment-gateways/stripe.php:180
 msgid "TWD - New Taiwan Dollar"
 msgstr "TWD - Neuer Taiwanischer Dollar"
 
-#: includes/common/payment-gateways/stripe.php:176
+#: includes/common/payment-gateways/stripe.php:181
 msgid "TZS - Tanzanian Shilling"
 msgstr "TZS - Tansania-Schilling"
 
-#: includes/common/payment-gateways/stripe.php:177
+#: includes/common/payment-gateways/stripe.php:182
 msgid "UAH - Ukrainian Hryvnia"
 msgstr "UAH - Ukrainische Griwna"
 
-#: includes/common/payment-gateways/stripe.php:178
+#: includes/common/payment-gateways/stripe.php:183
 msgid "UGX - Ugandan Shilling"
 msgstr "UGX - Uganda-Schilling"
 
-#: includes/common/payment-gateways/stripe.php:180
+#: includes/common/payment-gateways/stripe.php:185
 #, fuzzy
 msgid "UYI - Uruguayan Peso*"
 msgstr "UYI - Uruguayischer Peso*"
 
-#: includes/common/payment-gateways/stripe.php:181
+#: includes/common/payment-gateways/stripe.php:186
 msgid "UZS - Uzbekistani Som"
 msgstr "UZS - usbekischer Som"
 
-#: includes/common/payment-gateways/stripe.php:182
+#: includes/common/payment-gateways/stripe.php:187
 #, fuzzy
 msgid "VEF - Venezuelan Bolívar*"
 msgstr "VEF - Venezolanischer Bolívar*"
 
-#: includes/common/payment-gateways/stripe.php:183
+#: includes/common/payment-gateways/stripe.php:188
 #, fuzzy
 msgid "VND - Vietnamese Đồng"
 msgstr "VND - Vietnamesisch Đồng"
 
-#: includes/common/payment-gateways/stripe.php:184
+#: includes/common/payment-gateways/stripe.php:189
 msgid "VUV - Vanuatu Vatu"
 msgstr "VUV - Vanuatu Vatu"
 
-#: includes/common/payment-gateways/stripe.php:185
+#: includes/common/payment-gateways/stripe.php:190
 msgid "WST - Samoan Tala"
 msgstr "WST - samoanischer Tala"
 
-#: includes/common/payment-gateways/stripe.php:186
+#: includes/common/payment-gateways/stripe.php:191
 msgid "XAF - Central African Cfa Franc"
 msgstr "XAF - zentralen afrikanischen CFA-Franc"
 
-#: includes/common/payment-gateways/stripe.php:187
+#: includes/common/payment-gateways/stripe.php:192
 msgid "XCD - East Caribbean Dollar"
 msgstr "XCD - Ostkaribischer Dollar"
 
-#: includes/common/payment-gateways/stripe.php:188
+#: includes/common/payment-gateways/stripe.php:193
 #, fuzzy
 msgid "XOF - West African Cfa Franc*"
 msgstr "XOF - Westafrikanischer Cfa-Franc*"
 
-#: includes/common/payment-gateways/stripe.php:189
+#: includes/common/payment-gateways/stripe.php:194
 #, fuzzy
 msgid "XPF - Cfp Franc*"
 msgstr "XPF - Cfp Franc*"
 
-#: includes/common/payment-gateways/stripe.php:190
+#: includes/common/payment-gateways/stripe.php:195
 msgid "YER - Yemeni Rial"
 msgstr "YER - Jemen-Rial"
 
-#: includes/common/payment-gateways/stripe.php:191
+#: includes/common/payment-gateways/stripe.php:196
 msgid "ZAR - South African Rand"
 msgstr "ZAR - Südafrikanischer Rand"
 
-#: includes/common/payment-gateways/stripe.php:192
+#: includes/common/payment-gateways/stripe.php:197
 msgid "ZMW - Zambian Kwacha"
 msgstr "ZMW - Gambischer Kwacha"
 
-#: includes/common/payment-gateways/stripe.php:251
+#: includes/common/payment-gateways/stripe.php:248
 #, fuzzy
 msgid ""
 "Stripe makes it easy to start accepting credit cards directly on your site "
@@ -8563,7 +8436,7 @@ msgstr ""
 "nie auf deinen Servern, sodass du die meisten PCI-Anforderungen umgehen "
 "kannst."
 
-#: includes/common/payment-gateways/stripe.php:261
+#: includes/common/payment-gateways/stripe.php:258
 #, fuzzy
 msgid ""
 "When in live mode Stripe recommends you have an SSL certificate setup for "
@@ -8572,7 +8445,7 @@ msgstr ""
 "Im Live-Modus empfiehlt Stripe, dass du ein SSL-Zertifikat für die Website "
 "einrichtest, auf der das Kassenformular angezeigt werden soll."
 
-#: includes/common/payment-gateways/stripe.php:266
+#: includes/common/payment-gateways/stripe.php:263
 msgid ""
 "You must login to Stripe to <a target=\"_blank\" href=\"https://manage."
 "stripe.com/#account/apikeys\">get your API credentials</a>. You can enter "
@@ -8582,45 +8455,6 @@ msgstr ""
 "com/#account/apikeys“>die API Referenzen zu bekommen</a>. Du kannst erstmal "
 "Testreferenzen eingeben, danach die „richtigen“ Referenzen für den Live-"
 "Betrieb."
-
-#: includes/common/payment-gateways/stripe.php:311
-msgid ""
-"The Stripe Token was not generated correctly. Please go back and try again."
-msgstr ""
-"Der Stripe-Token wurde nicht korrekt generiert. Bitte wiederhole den Vorgang."
-
-#: includes/common/payment-gateways/stripe.php:332
-#: includes/common/template-functions.php:874 marketpress.php:248
-msgid "Store"
-msgstr "Shop"
-
-#: includes/common/payment-gateways/stripe.php:333
-msgid "First name"
-msgstr "Vorname"
-
-#: includes/common/payment-gateways/stripe.php:334
-msgid "Last name"
-msgstr "Nachname"
-
-#: includes/common/payment-gateways/stripe.php:339
-msgid "ZIP Code"
-msgstr "PLZ"
-
-#: includes/common/payment-gateways/stripe.php:340
-msgid "Address"
-msgstr "Adresse"
-
-#: includes/common/payment-gateways/stripe.php:356
-#, fuzzy, php-format
-msgid "%s Store Purchase - Order ID - %s, Email - %s"
-msgstr "%s Kauf im Geschäft - Bestell-ID - %s, E-Mail - %s"
-
-#: includes/common/payment-gateways/stripe.php:385
-#, fuzzy, php-format
-msgid "There was an error processing your card - \"%s\". Please try again."
-msgstr ""
-"Bei der Bearbeitung deiner Karte ist ein Fehler aufgetreten - \"%s\". Bitte "
-"versuche es noch einmal."
 
 #: includes/common/payment-gateways/wepay.php:42
 #: includes/common/payment-gateways/wepay.php:305
@@ -8712,14 +8546,6 @@ msgstr ""
 "wepay.com/\">deine API-Zugangsdaten zu erhalten</a>. Achte darauf, dass du "
 "die Option \"Tokenize credit cards\" im Abschnitt \"API Keys\" deiner WePay-"
 "App aktivierst."
-
-#: includes/common/payment-gateways/wepay.php:171
-msgid "Client ID"
-msgstr "Client ID"
-
-#: includes/common/payment-gateways/wepay.php:178
-msgid "Client Secret"
-msgstr "Client Secret"
 
 #: includes/common/payment-gateways/wepay.php:185
 msgid "Access Token"
@@ -9311,6 +9137,7 @@ msgid "(2-5 Days)"
 msgstr "(2-5 Tage)"
 
 #: includes/common/shipping-modules/mp-ups.php:56
+#: includes/common/template-functions.php:2883
 #: includes/multisite/template-functions.php:412
 msgid "Standard"
 msgstr "Standard"
@@ -9732,222 +9559,282 @@ msgstr ""
 "beim Bezahlen die Preise aus dieser Zeile verwendet."
 
 #: includes/common/template-functions.php:148
-msgid "Price: "
+msgid "Preis: "
 msgstr "Preis: "
+
+#: includes/common/template-functions.php:173
+#: includes/common/template-functions.php:179
+#: includes/common/template-functions.php:903
+msgid "Produkte"
+msgstr "Products"
+
+#: includes/common/template-functions.php:174
+#: includes/common/template-functions.php:812
+#: includes/common/template-functions.php:911
+msgid "Warenkorb"
+msgstr "Warenkorb"
+
+#: includes/common/template-functions.php:175
+#: includes/common/template-functions.php:927
+#, fuzzy
+msgid "Bestellstatus"
+msgstr "Bestellstatus"
 
 #: includes/common/template-functions.php:207
 #, fuzzy
-msgid "Check Order Status"
-msgstr "Bestellstatus prüfen"
+msgid "Bestellstatus überprüfen"
+msgstr "Bestellstatus überprüfen"
 
 #: includes/common/template-functions.php:235
-msgid "View Products"
-msgstr "Produkte anschauen"
+#, fuzzy
+msgid "Produkt ansehen"
+msgstr "Produkt ansehen"
 
 #: includes/common/template-functions.php:263
-msgid "Visit Store"
-msgstr "Zum Shop"
+#, fuzzy
+msgid "Shop besuchen"
+msgstr "Shop besuchen"
 
-#: includes/common/template-functions.php:875
+#: includes/common/template-functions.php:528
+msgid "Bestellungen"
+msgstr "Bestellungen"
+
+#: includes/common/template-functions.php:873
+msgid "Shop"
+msgstr "Shop"
+
+#: includes/common/template-functions.php:874
 #, fuzzy
 msgid ""
-"Welcome to our online store! Feel free to browse around:\n"
+"Willkommen im Onlineshop! Im Shopportal findest Du alle wichtigen Inhalte:\n"
 "\n"
 "[mp_store_navigation]\n"
 "\n"
-"Check out our most popular products:\n"
+"Am beliebtesten im Shop:\n"
 "\n"
 "[mp_popular_products]\n"
 "\n"
-"Browse by category:\n"
+"Durchsuche nach Kategorien:\n"
 "\n"
 "[mp_list_categories]\n"
 "\n"
-"Browse by tag:\n"
+"Lass Dich von den vorhandenen Produkttags inspirieren:\n"
 "\n"
-"[mp_tag_cloud]"
+"[mp_tag_cloud]\n"
+"\n"
 msgstr ""
-"Willkommen in unserem Online-Store! Sieh dich ruhig um:\n"
+"Willkommen im Onlineshop! Im Shopportal findest Du alle wichtigen Inhalte:\n"
 "\n"
 "[mp_store_navigation]\n"
 "\n"
-"Schau dir unsere beliebtesten Produkte an:\n"
+"Am beliebtesten im Shop:\n"
 "\n"
 "[mp_popular_products]\n"
 "\n"
-"Suche nach Kategorie:\n"
+"Durchsuche nach Kategorien:\n"
 "\n"
 "[mp_list_categories]\n"
 "\n"
-"Blättern nach Tag:\n"
+"Lass dich von den vorhandenen Produkttags inspirieren:\n"
 "\n"
-"[mp_tag_cloud]"
+"[mp_tag_cloud]\n"
+"\n"
+
+#: includes/common/template-functions.php:880
+#, fuzzy
+msgid "Netzwerk Marktplatz"
+msgstr "Netzwerk Marktplatz"
 
 #: includes/common/template-functions.php:881
 #, fuzzy
-msgid "Global Store"
-msgstr "Globaler Laden"
-
-#: includes/common/template-functions.php:882
-#, fuzzy
 msgid ""
-"Welcome to our market place!\n"
+"Willkommen auf unserem Marktplatz!\n"
 "\n"
-"Check out our network of products:\n"
+"Schaue Dir unser Produktnetzwerk an:\n"
 "\n"
 "[mp_list_global_products]\n"
 "\n"
-"Browse by category:\n"
+"Nach Kategorie durchsuchen:\n"
 "\n"
 "[mp_global_categories_list]\n"
 "\n"
-"Browse by tag:\n"
+"Nach Tag durchsuchen:\n"
 "\n"
 "[mp_global_tag_cloud]"
 msgstr ""
 "Willkommen auf unserem Marktplatz!\n"
 "\n"
-"Schau dir unser Netzwerk von Produkten an:\n"
+"Schaue Dir unser Produktnetzwerk an:\n"
 "\n"
 "[mp_list_global_products]\n"
 "\n"
-"Suche nach Kategorie:\n"
+"Nach Kategorie durchsuchen:\n"
 "\n"
 "[mp_global_categories_list]\n"
 "\n"
-"Blättern nach Tag:\n"
+"Nach Tag durchsuchen:\n"
 "\n"
 "[mp_global_tag_cloud]"
 
-#: includes/common/template-functions.php:889
+#: includes/common/template-functions.php:887
+#: includes/multisite/class-mp-admin-multisite.php:539
+#, fuzzy
+msgid "Netzwerkartikel Kategorien"
+msgstr "Netzwerkartikel Kategorien"
+
+#: includes/common/template-functions.php:888
 #, fuzzy
 msgid "[mp_global_categories_list]"
 msgstr "[mp_global_categories_list]"
 
-#: includes/common/template-functions.php:897
+#: includes/common/template-functions.php:895
+#: includes/multisite/class-mp-admin-multisite.php:548
+#, fuzzy
+msgid "Shopnetzwerk Tags"
+msgstr "Shopnetzwerk Tags"
+
+#: includes/common/template-functions.php:896
 #, fuzzy
 msgid "[mp_global_tag_cloud]"
 msgstr "[mp_global_tag_cloud]"
 
-#: includes/common/template-functions.php:912
-#: includes/public/class-mp-checkout.php:1379
-msgid "Cart"
-msgstr "Warenkorb"
+#: includes/common/template-functions.php:919
+#, fuzzy
+msgid "Kasse"
+msgstr "Kasse"
 
-#: includes/common/template-functions.php:929
+#: includes/common/template-functions.php:928
 #, fuzzy
 msgid "Order Search"
 msgstr "Suche bestellen"
 
-#: includes/common/template-functions.php:929
-#, fuzzy
-msgid "If you have your order ID you can look it up using the form below."
-msgstr ""
-"Wenn du deine Bestell-ID hast, kannst du sie mit dem Formular unten "
-"nachschauen."
-
-#: includes/common/template-functions.php:1425
-#, fuzzy
-msgid "Please choose a shipping method"
-msgstr "Bitte wähle eine Versandart"
-
-#: includes/common/template-functions.php:2130
-msgid "Guest Email"
-msgstr "Gast E-Mail"
-
-#: includes/common/template-functions.php:2142
-msgid "Look Up"
-msgstr "Umschauen"
-
-#: includes/common/template-functions.php:2200
-#: includes/common/template-functions.php:2206
-#: includes/common/template-functions.php:2218
-#: includes/common/template-functions.php:2221
+#: includes/common/template-functions.php:928
 #, fuzzy
 msgid ""
-"Oops! We couldn't locate any orders matching that order number. Please "
-"verify the order number and try again."
+"Wenn Du eine Bestellnummer hast, kannst Du diese über das unten stehende "
+"Formular nachschlagen."
 msgstr ""
-"Ups! Wir konnten keine Bestellungen finden, die dieser Bestellnummer "
+"Wenn Du eine Bestellnummer hast, kannst Du diese über das unten stehende "
+"Formular nachschlagen."
+
+#: includes/common/template-functions.php:1433
+#, fuzzy
+msgid "Wähle eine Versandart"
+msgstr "Wähle eine Versandart"
+
+#: includes/common/template-functions.php:2080
+#: includes/common/template-functions.php:2357
+#: includes/multisite/template-functions.php:637
+#, fuzzy
+msgid "Keine Produkte"
+msgstr "Keine Produkte"
+
+#: includes/common/template-functions.php:2136
+#, fuzzy
+msgid "Gast Email"
+msgstr "Gast E-Mail"
+
+#: includes/common/template-functions.php:2144
+msgid "Auftragsnummer"
+msgstr "Auftragsnummer"
+
+#: includes/common/template-functions.php:2148
+#, fuzzy
+msgid "Nachsehen"
+msgstr "Nachsehen"
+
+#: includes/common/template-functions.php:2206
+#: includes/common/template-functions.php:2212
+#: includes/common/template-functions.php:2224
+#: includes/common/template-functions.php:2227
+#, fuzzy
+msgid ""
+"Hoppla! Wir konnten keine Bestellungen finden, die dieser Bestellnummer "
+"entsprechen. Bitte überprüfe die Bestellnummer und versuche es erneut."
+msgstr ""
+"Hoppla! Wir konnten keine Bestellungen finden, die dieser Bestellnummer "
 "entsprechen. Bitte überprüfe die Bestellnummer und versuche es erneut."
 
-#: includes/common/template-functions.php:2579
+#: includes/common/template-functions.php:2589
 #, fuzzy
-msgid "Categorized in "
+msgid "Kategorisiert in "
 msgstr "Kategorisiert in"
 
-#: includes/common/template-functions.php:2600
-msgid "Tagged in "
-msgstr "Eingetragen in "
+#: includes/common/template-functions.php:2611
+#, fuzzy
+msgid "Markiert als "
+msgstr "Markiert als"
 
 #: includes/common/template-functions.php:2804
-#: includes/multisite/template-functions.php:365
-msgid "Prev"
+msgid "Zurück"
 msgstr "Zurück"
 
 #: includes/common/template-functions.php:2805
-#: includes/multisite/template-functions.php:366
-#: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:97
-#: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:114
-#: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:143
-msgid "Next"
+msgid "Weiter"
 msgstr "Weiter"
 
-#: includes/common/template-functions.php:2861
-msgid "Show All"
-msgstr "Alles anzeigen"
+#: includes/common/template-functions.php:2860
+msgid "Zeige alle"
+msgstr "Zeige alle"
 
 #: includes/common/template-functions.php:2884
-msgid "Default"
-msgstr "Standard"
+#: includes/multisite/template-functions.php:413
+#, fuzzy
+msgid "Erscheinungsdatum (Neueste bis Älteste)"
+msgstr "Erscheinungsdatum (Neueste bis Älteste)"
 
 #: includes/common/template-functions.php:2885
 #, fuzzy
-msgid "Release Date (Latest to Oldest)"
-msgstr "Erscheinungsdatum (jüngstes bis ältestes)"
+msgid "Veröffentlichungsdatum (Älteste bis Neueste)"
+msgstr "Veröffentlichungsdatum (Älteste bis Neueste)"
 
 #: includes/common/template-functions.php:2886
-#, fuzzy
-msgid "Release Date (Oldest to Latest)"
-msgstr "Erscheinungsdatum (Älteste bis Neueste)"
-
-#: includes/common/template-functions.php:2887
 #: includes/multisite/template-functions.php:415
 msgid "Name (A-Z)"
 msgstr "Name (A-Z)"
 
-#: includes/common/template-functions.php:2888
+#: includes/common/template-functions.php:2887
 #: includes/multisite/template-functions.php:416
 msgid "Name (Z-A)"
 msgstr "Name (Z-A)"
 
+#: includes/common/template-functions.php:2888
+#, fuzzy
+msgid "Preis (Niedrig bis Hoch)"
+msgstr "Preis (Niedrig bis Hoch)"
+
 #: includes/common/template-functions.php:2889
-msgid "Price (Low to High)"
-msgstr "Preis (Niedrig zu Hoch)"
+#, fuzzy
+msgid "Preis (Hoch bis Niedrig)"
+msgstr "Preis (Hoch bis Niedrig)"
 
 #: includes/common/template-functions.php:2890
-msgid "Price (High to Low)"
-msgstr "Preis (Hoch zu Niedrig)"
-
-#: includes/common/template-functions.php:2891
 #, fuzzy
-msgid "Popularity (Most Popular - Least Popular)"
+msgid "Popularität (am beliebtesten - am wenigsten beliebt)"
 msgstr "Beliebtheit (am beliebtesten - am wenigsten beliebt)"
 
-#: includes/common/template-functions.php:2892
+#: includes/common/template-functions.php:2891
+#: includes/multisite/template-functions.php:420
 #, fuzzy
-msgid "Popularity (Least Popular - Most Popular)"
-msgstr "Beliebtheit (am wenigsten beliebt - am meisten beliebt)"
+msgid "Popularität (am wenigsten beliebt - am beliebtesten)"
+msgstr "Beliebtheit (am wenigsten beliebt - am beliebtesten)"
 
-#: includes/common/template-functions.php:2909
-msgid "Product Category"
+#: includes/common/template-functions.php:2908
+#: includes/multisite/template-functions.php:462
+#, fuzzy
+msgid "Produktkategorie"
 msgstr "Produktkategorie"
 
-#: includes/common/template-functions.php:2915
-msgid "Order By"
+#: includes/common/template-functions.php:2909
+msgid "Kategorie"
+msgstr "Kategorie"
+
+#: includes/common/template-functions.php:2914
+#: includes/multisite/template-functions.php:461
+msgid "Sortieren nach"
 msgstr "Sortieren nach"
 
-#: includes/common/template-functions.php:3165
+#: includes/common/template-functions.php:3164
 msgid "Uncategorized"
 msgstr "Nicht kategorisiert"
 
@@ -10097,16 +9984,6 @@ msgstr "Marktplatz"
 msgid "Wähle eine Seite"
 msgstr "Wähle eine Seite"
 
-#: includes/multisite/class-mp-admin-multisite.php:539
-#, fuzzy
-msgid "Netzwerkartikel Kategorien"
-msgstr "Netzwerkartikel Kategorien"
-
-#: includes/multisite/class-mp-admin-multisite.php:548
-#, fuzzy
-msgid "Shopnetzwerk Tags"
-msgstr "Shopnetzwerk Tags"
-
 #: includes/multisite/class-mp-admin-multisite.php:584
 #, fuzzy
 msgid "Seite bearbeiten"
@@ -10131,10 +10008,16 @@ msgstr "Produkt"
 msgid "Keine Produkte vorhanden"
 msgstr "Keine Produkte vorhanden"
 
-#: includes/multisite/template-functions.php:413
-#, fuzzy
-msgid "Erscheinungsdatum (Neueste bis Älteste)"
-msgstr "Erscheinungsdatum (Neueste bis Älteste)"
+#: includes/multisite/template-functions.php:365
+msgid "Prev"
+msgstr "Zurück"
+
+#: includes/multisite/template-functions.php:366
+#: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:97
+#: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:114
+#: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:143
+msgid "Next"
+msgstr "Weiter"
 
 #: includes/multisite/template-functions.php:414
 #, fuzzy
@@ -10156,29 +10039,10 @@ msgstr "Preis (hoch bis niedrig)"
 msgid "Popularität (am beliebtesten - am wenigsten beliebt"
 msgstr "Beliebtheit (am beliebtesten - am wenigsten beliebt"
 
-#: includes/multisite/template-functions.php:420
-#, fuzzy
-msgid "Popularität (am wenigsten beliebt - am beliebtesten)"
-msgstr "Beliebtheit (am wenigsten beliebt - am beliebtesten)"
-
-#: includes/multisite/template-functions.php:461
-msgid "Sortieren nach"
-msgstr "Sortieren nach"
-
-#: includes/multisite/template-functions.php:462
-#, fuzzy
-msgid "Produktkategorie"
-msgstr "Produktkategorie"
-
 #: includes/multisite/template-functions.php:593
 #, fuzzy
 msgid "Mehr Details & Shoppen"
 msgstr "Mehr Details & Shoppen"
-
-#: includes/multisite/template-functions.php:637
-#, fuzzy
-msgid "Keine Produkte"
-msgstr "Keine Produkte"
 
 #: includes/multisite/template-functions.php:746
 #, fuzzy
@@ -10416,6 +10280,10 @@ msgstr "Fahre mit der Kasse fort und erstelle am Ende ein Konto."
 #: includes/wpmudev-metaboxes/fields/class-wpmudev-field-custom-quick-setup.php:58
 msgid "Continue"
 msgstr "Weiter"
+
+#: includes/public/class-mp-checkout.php:1379
+msgid "Cart"
+msgstr "Warenkorb"
 
 #: includes/public/class-mp-public.php:385
 #: includes/public/class-mp-short-codes.php:126
@@ -11089,6 +10957,10 @@ msgstr "Wähle aus den am häufigsten verwendeten Produkt-Tags"
 #, fuzzy
 msgid "No product tags found"
 msgstr "Keine Produkt-Tags gefunden"
+
+#: marketpress.php:248
+msgid "Store"
+msgstr "Shop"
 
 #: marketpress.php:250 marketpress.php:251
 msgid "Add New Product"
