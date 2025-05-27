@@ -47,17 +47,15 @@ class MP_PDF_Invoice_Addon {
 	 * @access public
 	 */
 	public function init() {
+		if ( mp_get_get_value( 'addon', null ) == 'MP_PDF_Invoice_Addon' ) {
+			//addon settings
+			$this->view_settings();
+		}
 		add_action( 'add_meta_boxes_mp_order', array( &$this, 'add_meta_box' ) );
 		add_action( 'wp_ajax_mp_invoice_pdf_generate', array( &$this, 'generate_pdf' ) );
 		add_action( 'wp_ajax_nopriv_mp_invoice_pdf_generate', array( &$this, 'generate_pdf' ) );
-		add_action( 'wp_ajax_mp_pdf_invoice_preview', array( $this, 'preview_pdf' ) );
 		add_filter( 'mp_order/details', array( &$this, 'pdf_buttons_order_status' ), 99, 2 );
 		add_filter( 'mp_order/sendmail_attachments', array( &$this, 'mp_order_sendmail_attachments' ), 20, 3 );
-
-		// Fallback: Metaboxen direkt ausgeben, wenn wir auf der Addon-Einstellungsseite sind
-		if ( mp_get_get_value( 'addon', null ) == 'MP_PDF_Invoice_Addon' ) {
-			$this->view_settings();
-		}
 	}
 
 	/**
@@ -191,65 +189,66 @@ class MP_PDF_Invoice_Addon {
 	/**
 	 * @since 3.0
 	 */
-public function view_settings() {
-    // General Settings Metabox
-    $metabox_general = new WPMUDEV_Metabox( array(
-        'id'          => 'mp-invoice-pdf-general-metabox',
-        'title'       => __( 'General Settings', 'mp' ),
-        'page_slugs'  => array( 'store-settings-addons' ),
-        'option_name' => 'mp_settings',
-    ) );
-    $metabox_general->add_field( 'select', array(
-        'name'          => 'pdf_invoice[download]',
-        'options'       => array(
-            'download' => __( "Download the PDF", 'mp' ),
-            'new_tab'  => __( "Open the PDF in a new browser tab/window", 'mp' )
-        ),
-        'label'         => array( 'text' => __( 'How do you want to view the PDF?', 'mp' ) ),
-        'default_value' => __( 'download', 'mp' ),
-    ) );
-    $metabox_general->add_field( 'checkbox_group', array(
-        'name'    => 'pdf_invoice[attach_to]',
-        'options' => array(
-            'admin_new_order'        => __( "Admin New Order email", "mp" ),
-            'customer_new_order'     => __( "Customer New Order email", "mp" ),
-            //'admin_shipped_order'    => __( "Admin Order Shipped email", "mp" ),
-            'customer_shipped_order' => __( "Customer Order Shipped email", "mp" )
-        ),
-        'label'   => array( 'text' => __( 'Attach invoice to', 'mp' ) )
-    ) );
-    $metabox_general->add_field( 'checkbox', array(
-        'name'    => 'pdf_invoice[quit_on_free]',
-        'label'   => array( 'text' => __( "Disable for free products", "mp" ) ),
-        'message' => __( "Disable automatic creation/attachment of invoices when only free products are ordered", "mp" )
-    ) );
+	public function view_settings() {
+		$metabox = new WPMUDEV_Metabox( array(
+			'id'          => 'mp-invoice-pdf-general-metabox',
+			'title'       => __( 'General Settings', 'mp' ),
+			'page_slugs'  => array( 'store-settings-addons' ),
+			'option_name' => 'mp_settings',
+		) );
+		$metabox->add_field( 'select', array(
+			'name'          => 'pdf_invoice[download]',
+			'options'       => array(
+				'download' => __( "Download the PDF", 'mp' ),
+				'new_tab'  => __( "Open the PDF in a new browser tab/window", 'mp' )
+			),
+			'label'         => array( 'text' => __( 'How do you want to view the PDF?', 'mp' ) ),
+			'default_value' => __( 'download', 'mp' ),
+		) );
+		$metabox->add_field( 'checkbox_group', array(
+			'name'    => 'pdf_invoice[attach_to]',
+			'options' => array(
+				'admin_new_order'        => __( "Admin New Order email", "mp" ),
+				'customer_new_order'     => __( "Customer New Order email", "mp" ),
+				//'admin_shipped_order'    => __( "Admin Order Shipped email", "mp" ),
+				'customer_shipped_order' => __( "Customer Order Shipped email", "mp" )
+			),
+			'label'   => array( 'text' => __( 'Attach invoice to', 'mp' ) )
+		) );
+		$metabox->add_field( 'checkbox', array(
+			'name'    => 'pdf_invoice[quit_on_free]',
+			'label'   => array( 'text' => __( "Disable for free products", "mp" ) ),
+			'message' => __( "Disable automatic creation/attachment of invoices when only free products are ordered", "mp" )
+		) );
 
-    // Template Settings Metabox
-    $metabox_template = new WPMUDEV_Metabox( array(
-        'id'          => 'mp-invoice-pdf-template-metabox',
-        'title'       => __( 'Template Settings', 'mp' ),
-        'page_slugs'  => array( 'store-settings-addons' ),
-        'option_name' => 'mp_settings',
-    ) );
-    $templates = $this->scan_templates();
-    $metabox_template->add_field( 'select', array(
-        'name'    => 'pdf_invoice[template]',
-        'label'   => array( 'text' => __( "Choose a template", 'mp' ) ),
-        'options' => $templates
-    ) );
-    $metabox_template->add_field( 'file', array(
-        'name'  => 'pdf_invoice[template_logo]',
-        'label' => array( 'text' => __( "Shop header/logo", "mp" ) ),
-    ) );
-	$preview_url = admin_url('admin-ajax.php?action=mp_pdf_invoice_preview');
-	$metabox_template->add_field( 'html', array(
-		'name'  => 'pdf_invoice_preview',
-		'label' => array( 'text' => __( "Vorschau", "mp" ) ),
-		'html'  => '<div style="margin-top:20px;">
-			<iframe src="' . esc_url($preview_url) . '" style="width:100%;min-height:600px;border:1px solid #ccc;"></iframe>
-			<p style="font-size:11px;color:#888;">' . __( 'Dies ist eine Live-Vorschau der PDF mit Beispieldaten.', 'mp' ) . '</p>
-		</div>',
-	) );
+		$metabox   = new WPMUDEV_Metabox( array(
+			'id'          => 'mp-invoice-pdf-template-metabox',
+			'title'       => __( 'Template Settings', 'mp' ),
+			'page_slugs'  => array( 'store-settings-addons' ),
+			'option_name' => 'mp_settings',
+		) );
+		$templates = $this->scan_templates();
+		$metabox->add_field( 'select', array(
+			'name'    => 'pdf_invoice[template]',
+			'label'   => array( 'text' => __( "Choose a template", 'mp' ) ),
+			'options' => $templates
+		) );
+		$metabox->add_field( 'file', array(
+			'name'  => 'pdf_invoice[template_logo]',
+			'label' => array( 'text' => __( "Shop header/logo", "mp" ) ),
+		) );
+		/*$metabox->add_field( 'text', array(
+			'name'  => 'pdf_invoice[shop_name]',
+			'label' => array( 'text' => __( "Shop name", "mp" ) )
+		) );
+		$metabox->add_field( 'textarea', array(
+			'name'  => 'pdf_invoice[shop_address]',
+			'label' => array( 'text' => __( "Shop Address", "mp" ) )
+		) );*/
+		$metabox->add_field( 'textarea', array(
+			'name'  => 'pdf_invoice[footer]',
+			'label' => array( 'text' => __( "Footer", "mp" ) )
+		) );
 	}
 
 	private function scan_templates() {
@@ -275,15 +274,6 @@ public function view_settings() {
 
 		return $templates;
 	}
-
-	public function preview_pdf() {
-		$order_id = 1; // Dummy-Order-ID oder dynamisch wählen
-		$gen      = new MP_PDF_Invoice();
-		$settings = mp_get_setting( 'pdf_invoice' );
-		$gen->generate_pdf( $order_id, MP_PDF_Invoice::PDF_INVOICE, false );
-		exit;
-	}
-	
 }
 
 if ( ! function_exists( 'mppdf' ) ) {

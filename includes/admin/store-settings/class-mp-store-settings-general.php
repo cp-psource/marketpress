@@ -684,6 +684,24 @@ class MP_Store_Settings_General {
 			'label' => array( 'text' => __( 'Custom Legal Note', 'mp' ) ),
 			'desc'  => __( 'Optional: Add a custom note for your invoices (e.g. Kleinunternehmerregelung)', 'mp' ),
 		) );
+		$metabox->add_field( 'text', array(
+			'name'  => 'legal[invoice_prefix]',
+			'label' => array( 'text' => __( 'Rechnungsnummer Präfix', 'mp' ) ),
+			'desc'  => __( 'Optional: Ein Präfix für alle Rechnungsnummern, z.B. "RE-" oder "2025-".', 'mp' ),
+		) );
+		$metabox->add_field( 'select', array(
+			'name'    => 'legal[invoice_date_format]',
+			'label'   => array( 'text' => __( 'Datumsformat in Rechnungsnummer', 'mp' ) ),
+			'desc'    => __( 'Wähle, ob und wie das Datum in der Rechnungsnummer erscheinen soll.', 'mp' ),
+			'options' => array(
+				''           => __( 'Kein Datum', 'mp' ),
+				'Y'          => __( 'Jahr (z.B. 2025)', 'mp' ),
+				'Ym'         => __( 'JahrMonat (z.B. 202505)', 'mp' ),
+				'Ymd'        => __( 'JahrMonatTag (z.B. 20250527)', 'mp' ),
+				'dmY'        => __( 'TagMonatJahr (z.B. 27052025)', 'mp' ),
+			),
+			'default_value' => '',
+		) );
 	}
 }
 

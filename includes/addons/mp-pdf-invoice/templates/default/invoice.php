@@ -60,12 +60,21 @@
             {{logo}}
         </div>
         <div style="flex: 2; text-align: right;">
-            <h3 style="margin-top:0;"><?php _e( "Invoice", "mp" ) ?> #{{order_id}}</h3>
+            <h3 style="margin-top:0;">
+                <?php _e( "Invoice", "mp" ) ?> #{{invoice_number}}<br>
+                <small style="font-weight:normal;"><?php _e( "Order ID", "mp" ) ?>: {{order_id}}</small>
+            </h3>
             <strong><?php _e( "Seller", "mp" ) ?>:</strong> {{company_name}}<br>
             <strong><?php _e( "Address", "mp" ) ?>:</strong> {{company_address}}<br>
-            <strong><?php _e( "VAT ID", "mp" ) ?>:</strong> {{vat_id}}<br>
-            <strong><?php _e( "Tax Number", "mp" ) ?>:</strong> {{tax_number}}<br>
-            {{custom_note}}
+            <?php if ( !empty($vars['vat_id']) ) : ?>
+                <strong><?php _e( "VAT ID", "mp" ) ?>:</strong> <?php echo esc_html($vars['vat_id']); ?><br>
+            <?php endif; ?>
+            <?php if ( !empty($vars['tax_number']) ) : ?>
+                <strong><?php _e( "Tax Number", "mp" ) ?>:</strong> <?php echo esc_html($vars['tax_number']); ?><br>
+            <?php endif; ?>
+            <?php if ( !empty($vars['custom_note']) ) : ?>
+                <?php echo wpautop( esc_html($vars['custom_note']) ); ?>
+            <?php endif; ?>
         </div>
     </div>
 	<table>

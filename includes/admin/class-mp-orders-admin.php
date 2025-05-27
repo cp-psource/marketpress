@@ -36,6 +36,35 @@ class MP_Orders_Admin {
 	}
 
 	/**
+     * Generiert eine fortlaufende Rechnungsnummer und speichert sie als Post-Meta.
+     */
+    private function get_or_create_invoice_number( $order_id ) {
+        $invoice_number = get_post_meta( $order_id, '_mp_invoice_number', true );
+        if ( $invoice_number ) {
+            return $invoice_number;
+        }
+
+        $settings = mp_get_setting( 'legal' );
+        $prefix   = isset( $settings['invoice_prefix'] ) ? $settings['invoice_prefix'] : '';
+        $date_fmt = isset( $settings['invoice_date_format'] ) ? $settings['invoice_date_format'] : '';
+        $date_part = $date_fmt ? date( $date_fmt ) : '';
+
+        // Hole letzte Nummer für das aktuelle Jahr/Monat/Tag, je nach Einstellung
+        $counter_key = 'mp_last_invoice_number_' . $date_part;
+        $last_number = get_option( $counter_key, 0 );
+        $new_number  = $last_number + 1;
+
+        // Rechnungsnummer zusammensetzen
+        $invoice_number = $prefix . $date_part . str_pad( $new_number, 5, '0', STR_PAD_LEFT );
+
+        // Speichern
+        update_post_meta( $order_id, '_mp_invoice_number', $invoice_number );
+        update_option( $counter_key, $new_number );
+
+        return $invoice_number;
+    }
+
+	/**
 	 * Constructor function
 	 *
 	 * @since 3.0
@@ -1010,6 +1039,7 @@ class MP_Orders_Admin {
 			'cb'                 => '<input type="checkbox" />',
 			'mp_orders_status'   => __( 'Status', 'mp' ),
 			'mp_orders_id'       => __( 'Order ID', 'mp' ),
+			'mp_invoice_number'  => __( 'Rechnungsnummer', 'mp' ), // <--- HIER eingefügt
 			'mp_orders_date'     => __( 'Order Date', 'mp' ),
 			'mp_orders_name'     => __( 'From', 'mp' ),
 			'mp_orders_items'    => __( 'Items', 'mp' ),
@@ -1099,6 +1129,12 @@ class MP_Orders_Admin {
 			case 'mp_orders_id' :
 				$title = _draft_or_post_title( $post_id );
 				$html .= '<strong><a class="row-title" href="' . get_edit_post_link( $post_id ) . '" title="' . esc_attr( sprintf( __( 'View order &#8220;%s&#8221;', 'mp' ), $title ) ) . '">' . $title . '</a></strong>';
+				break;
+
+			//! Invoice Number
+			case 'mp_invoice_number' :
+				$invoice_number = $this->get_or_create_invoice_number( $post_id );
+				$html .= esc_html( $invoice_number );
 				break;
 
 			//! Order Date
