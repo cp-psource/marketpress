@@ -244,11 +244,11 @@ class MP_PDF_Invoice_Addon {
 		$metabox->add_field( 'textarea', array(
 			'name'  => 'pdf_invoice[shop_address]',
 			'label' => array( 'text' => __( "Shop Address", "mp" ) )
-		) );*/
+		) );
 		$metabox->add_field( 'textarea', array(
 			'name'  => 'pdf_invoice[footer]',
 			'label' => array( 'text' => __( "Footer", "mp" ) )
-		) );
+		) );*/
 	}
 
 	private function scan_templates() {

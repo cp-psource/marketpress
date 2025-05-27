@@ -1,6 +1,7 @@
 <?php
 use Dompdf\Dompdf;
 use Dompdf\Options;
+require_once dirname( __DIR__, 2 ) . '/admin/class-mp-orders-admin.php';
 /**
  * @author: Hoang Ngo
  */
@@ -68,7 +69,9 @@ class MP_PDF_Invoice {
 		$html = $this->build_pdf_content( $order, $type );
 
 		//generate pdf generator
-		$dompdf = new DOMPDF();
+		$options = new \Dompdf\Options();
+		$options->set('isRemoteEnabled', true);
+		$dompdf = new \Dompdf\Dompdf($options);
 		$dompdf->load_html( $html );
 		$dompdf->set_paper( 'letter', 'portrait' );
 		$dompdf->render();
@@ -124,7 +127,9 @@ class MP_PDF_Invoice {
 		$html = $this->build_pdf_content( $order, $type );
 
 		//generate pdf generator
-		$dompdf = new DOMPDF();
+		$options = new \Dompdf\Options();
+		$options->set('isRemoteEnabled', true);
+		$dompdf = new \Dompdf\Dompdf($options);
 		$dompdf->load_html( $html );
 		$dompdf->set_paper( 'letter', 'portrait' );
 		$dompdf->render();
@@ -237,7 +242,7 @@ class MP_PDF_Invoice {
 
 			$order_details = apply_filters( 'mp_pdf_invoice/order_details/after_payment_method', $order_details, $order, $cart, $type );
 
-//billing & shipping no changes
+			//billing & shipping no changes
 			$billing  = implode( '<br/>', $billing );
 			$shipping = implode( '<br/>', $shipping );
 		} elseif ( $type == self::PDF_SLIP ) {
@@ -265,9 +270,10 @@ class MP_PDF_Invoice {
 
 		$order_details = implode( '', $order_details );
 		//prepare logo
+		$logo_url = $this->settings['template_logo'];
 		$logo = '';
-		if ( ! empty( $this->settings['template_logo'] ) && function_exists( 'gd_info' ) ) {
-			$logo = sprintf( '<img height="80" src="%s"/>', $this->settings['template_logo'] );
+		if ( ! empty( $logo_url ) ) {
+			$logo = '<img src="' . esc_url( $logo_url ) . '" height="80" />';
 		}
 
 		$template = $this->settings['template'];
