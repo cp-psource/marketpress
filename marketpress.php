@@ -516,8 +516,6 @@ class Marketpress {
 				require_once( $this->plugin_dir( 'includes/admin/widgets/ms-global-categories.php' ) );
 			}
 		}
-	
-
 	}
 
 	/**
@@ -1172,24 +1170,36 @@ function mp_plugin_activate() {
 }
 
 function mp_plugin_uninstall() {
-	global $wpdb;
+	if ( is_multisite() && is_network_admin() ) {
+		$settings = get_site_option('mp_network_settings');
+	} else {
+		$settings = get_option('mp_settings');
+	}
+	if (empty($settings['advanced']['delete_on_uninstall'])) {
+		return;
+	}
+    global $wpdb;
 
-	$table_attr = $wpdb->prefix . 'mp_product_attributes';
-	$sql_attr = "DROP TABLE IF EXISTS $table_attr;";
+    $table = $wpdb->prefix . 'mp_product_attributes';
+    if ( $wpdb->get_var( "SHOW TABLES LIKE '$table'" ) == $table ) {
+        // Tabelle existiert, Query ausführen
+        $results = $wpdb->get_results( "SELECT * FROM $table" );
+    }
+    $sql_attr = "DROP TABLE IF EXISTS $table;";
     $wpdb->query( $sql_attr );
 
-	$table_attr_terms = $wpdb->prefix . 'mp_product_attributes_terms';
-	$sql_attr_terms = "DROP TABLE IF EXISTS $table_attr_terms;";
+    $table_attr_terms = $wpdb->prefix . 'mp_product_attributes_terms';
+    $sql_attr_terms = "DROP TABLE IF EXISTS $table_attr_terms;";
     $wpdb->query( $sql_attr_terms );
 
     delete_site_option( 'mp_deprecated_gateway_notice_showed' );
-	delete_site_option( 'mp_flush_rewrites' );
-	delete_site_option( 'mp_flush_rewrites_30' );
-	delete_site_option( 'mp_needs_pages' );
-	delete_site_option( 'mp_needs_quick_setup' );
-	delete_site_option( 'mp_plugin_do_activation_redirect' );
-	delete_site_option( 'mp_settings' );
-	delete_site_option( 'mp_version' );
+    delete_site_option( 'mp_flush_rewrites' );
+    delete_site_option( 'mp_flush_rewrites_30' );
+    delete_site_option( 'mp_needs_pages' );
+    delete_site_option( 'mp_needs_quick_setup' );
+    delete_site_option( 'mp_plugin_do_activation_redirect' );
+    delete_site_option( 'mp_settings' );
+    delete_site_option( 'mp_version' );
 }
 
 function mp_plugin_redirect() {

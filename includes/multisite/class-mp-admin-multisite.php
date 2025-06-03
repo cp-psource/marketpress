@@ -181,6 +181,14 @@ class MP_Admin_Multisite {
 			'name'  => 'global_cart',
 			'label' => array( 'text' => __( 'Den Netzwerkwarenkorb aktivieren?', 'mp' ) ),
 		) );
+		// HIER die neue Option:
+		$metabox->add_field( 'checkbox', array(
+			'name'    => 'advanced[delete_on_uninstall]',
+			'label'   => array( 'text' => __( 'Daten beim Deinstallieren löschen?', 'mp' ) ),
+			'desc'    => __( 'Wenn aktiviert, werden beim Deinstallieren des Plugins alle MarketPress-Datenbanktabellen und Einstellungen unwiderruflich gelöscht.', 'mp' ),
+			'message' => __( 'Ja, alle Daten beim Deinstallieren entfernen', 'mp' ),
+			'default_value' => false,
+		) );
 	}
 
 	/**

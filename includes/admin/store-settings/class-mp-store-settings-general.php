@@ -238,6 +238,17 @@ class MP_Store_Settings_General {
 				'mp_product'	 => 'mp_product',
 			),
 		) );
+
+		// Uninstall
+		if ( ! is_multisite() || is_network_admin() ) {
+			$metabox->add_field( 'checkbox', array(
+				'name'    => 'advanced[delete_on_uninstall]',
+				'label'   => array( 'text' => __( 'Daten beim Deinstallieren löschen?', 'mp' ) ),
+				'desc'    => __( 'Wenn aktiviert, werden beim Deinstallieren des Plugins alle MarketPress-Datenbanktabellen und Einstellungen unwiderruflich gelöscht.', 'mp' ),
+				'message' => __( 'Ja, alle Daten beim Deinstallieren entfernen', 'mp' ),
+				'default_value' => false,
+			) );
+		}
 	}
 
 	/**
