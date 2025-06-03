@@ -123,8 +123,8 @@ class MP_Short_Codes {
 			'productsURL'  => mp_store_page_url( 'products', false ),
 			'productCats'  => $cats,
 			'validation'   => array(
-				'required'    => __( 'This field is required.', 'mp' ),
-				'remote'      => __( 'Please fix this field.', 'mp' ),
+				'required'    => __( 'Dieses Feld ist erforderlich.', 'mp' ),
+				'remote'      => __( 'Bitte korrigiere dieses Feld.', 'mp' ),
 				'email'       => __( 'Please enter a valid email address.', 'mp' ),
 				'url'         => __( 'Please enter a valid URL.', 'mp' ),
 				'date'        => __( 'Please enter a valid date.', 'mp' ),

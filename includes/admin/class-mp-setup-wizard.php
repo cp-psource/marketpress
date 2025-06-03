@@ -462,22 +462,16 @@ class MP_Setup_Wizard {
 
 
 			/* Tax options */
-			$metabox = new WPMUDEV_Metabox( array(
-				'id'          => 'mp-quick-setup-wizard-tax',
-				'page_slugs'  => array( 'store-setup-wizard' ),
-				'title'       => __( 'Tax Settings', 'mp' ),
-				'option_name' => 'mp_settings',
-			) );
-
 			$metabox->add_field( 'text', array(
 				'name'        => 'tax[rate]',
-				'label'       => array( 'text' => __( 'Default Tax Rate', 'mp' ) ),
+				'label'       => array( 'text' => __( 'Standardsteuersatz', 'mp' ) ),
 				'after_field' => '%',
 				'style'       => 'max-width:75px',
 				'validation'  => array(
 					'number' => true,
 				),
-				'placeholder' => '10',
+				'placeholder' => '19', // Optional: Platzhalter anpassen
+				'default_value' => 19, // <-- Hier Standardwert als Prozent (wird durch save_tax_rate_value korrekt gespeichert)
 				'conditional' => array(
 					'name'   => 'base_country',
 					'value'  => 'CA',
@@ -503,32 +497,32 @@ class MP_Setup_Wizard {
 
 			$metabox->add_field( 'text', array(
 				'name'        => 'tax[label]',
-				'label'       => array( 'text' => __( 'Tax Label', 'mp' ) ),
+				'label'       => array( 'text' => __( 'Steueretikett', 'mp' ) ),
 				'style'       => 'max-width: 300px',
-				'placeholder' => __( 'I.e. Taxes, VAT, GST, etc', 'mp' )
+				'placeholder' => __( 'D.h. Steuern, Mehrwertsteuer, GST usw.', 'mp' )
 			) );
 			$metabox->add_field( 'checkbox', array(
 				'name'    => 'tax[tax_shipping]',
-				'label'   => array( 'text' => __( 'Apply Tax To Shipping Fees?', 'mp' ) ),
-				'message' => __( 'Yes', 'mp' ),
+				'label'   => array( 'text' => __( 'Steuern auf Versandkosten anwenden?', 'mp' ) ),
+				'message' => __( 'Ja', 'mp' ),
 				'class'   => 'mp-quick-field-inline-block'
 			) );
 			$metabox->add_field( 'checkbox', array(
 				'name'    => 'tax[tax_inclusive]',
-				'label'   => array( 'text' => __( 'Enter Prices Inclusive of Tax?', 'mp' ) ),
-				'message' => __( 'Yes', 'mp' ),
+				'label'   => array( 'text' => __( 'Preise inklusive Steuern eingeben?', 'mp' ) ),
+				'message' => __( 'Ja', 'mp' ),
 				'class'   => 'mp-quick-field-inline-block'
 			) );
 			$metabox->add_field( 'checkbox', array(
 				'name'    => 'tax[include_tax]',
-				'label'   => array( 'text' => __( 'Show Price + Tax?', 'mp' ) ),
-				'message' => __( 'Yes', 'mp' ),
+				'label'   => array( 'text' => __( 'Preis + Steuer anzeigen?', 'mp' ) ),
+				'message' => __( 'Ja', 'mp' ),
 				'class'   => 'mp-quick-field-inline-block'
 			) );
 			$metabox->add_field( 'checkbox', array(
 				'name'    => 'tax[tax_digital]',
-				'label'   => array( 'text' => __( 'Apply Tax to Downloadable Products?', 'mp' ) ),
-				'message' => __( 'Yes', 'mp' ),
+				'label'   => array( 'text' => __( 'Auf herunterladbare Produkte Steuern anwenden?', 'mp' ) ),
+				'message' => __( 'Ja', 'mp' ),
 				'class'   => 'mp-quick-field-inline-block'
 			) );
 

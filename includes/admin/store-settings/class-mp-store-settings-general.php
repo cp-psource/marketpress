@@ -117,7 +117,12 @@ class MP_Store_Settings_General {
 	 * @return string
 	 */
 	public function format_tax_rate_value( $value, $field ) {
-		return ( (float)$value * 100 );
+		$value = (float) $value;
+		// Wenn der Wert größer als 1 ist, wurde vermutlich ein Prozentwert gespeichert (z.B. 19)
+		if ( $value > 1 ) {
+			$value = $value / 100;
+		}
+		return $value * 100;
 	}
 
 	/**
@@ -129,7 +134,12 @@ class MP_Store_Settings_General {
 	 * @return string
 	 */
 	public function save_tax_rate_value( $value, $post_id, $field ) {
-		return ( $value > 0 ) ? ($value / 100) : 0;
+		// Wenn der Wert größer als 1 ist, wurde vermutlich ein Prozentwert eingegeben (z.B. 19 für 19%)
+		if ( $value > 1 ) {
+			return $value / 100;
+		}
+		// Wenn der Wert zwischen 0 und 1 ist, ist es schon ein Dezimalwert (z.B. 0.19)
+		return (float) $value;
 	}
 
 	/**
@@ -390,12 +400,12 @@ class MP_Store_Settings_General {
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'			 => 'mp-settings-general-currency',
 			'page_slugs'	 => array( 'store-settings', 'toplevel_page_store-settings' ),
-			'title'			 => __( 'Currency Settings', 'mp' ),
+			'title'			 => __( 'Währungseinstellungen', 'mp' ),
 			'option_name'	 => 'mp_settings',
 		) );
 
 		$currencies	 = mp()->currencies;
-		$options	 = array( '' => __( 'Select a Currency', 'mp' ) );
+		$options	 = array( '' => __( 'Wähle eine Währung', 'mp' ) );
 
 		foreach ( $currencies as $key => $value ) {
 			$options[ $key ] = esc_attr( $value[ 0 ] ) . ' - ' . mp_format_currency( $key );
@@ -403,16 +413,16 @@ class MP_Store_Settings_General {
 
 		$metabox->add_field( 'advanced_select', array(
 			'name'			 => 'currency',
-			'placeholder'	 => __( 'Select a Currency', 'mp' ),
+			'placeholder'	 => __( 'Wähle eine Währung', 'mp' ),
 			'multiple'		 => false,
-			'label'			 => array( 'text' => __( 'Store Currency', 'mp' ) ),
+			'label'			 => array( 'text' => __( 'Ladenwährung', 'mp' ) ),
 			'options'		 => $options,
 			'width'			 => 'element',
 		) );
 		
 		$metabox->add_field( 'radio_group', array(
 			'name'			 => 'curr_symbol_position',
-			'label'			 => array( 'text' => __( 'Currency Symbol Position', 'mp' ) ),
+			'label'			 => array( 'text' => __( 'Position des Währungssymbols', 'mp' ) ),
 			'default_value'	 => '1',
 			'orientation'	 => 'horizontal',
 			'options'		 => array(
@@ -425,7 +435,7 @@ class MP_Store_Settings_General {
 		
 		$metabox->add_field( 'radio_group', array(
 			'name'			 => 'price_format',
-			'label'			 => array( 'text' => __( 'Price Format', 'mp' ) ),
+			'label'			 => array( 'text' => __( 'Preisformat', 'mp' ) ),
 			'default_value'	 => 'en',
 			'orientation'	 => 'horizontal',
 			'options'		 => array(
@@ -438,7 +448,7 @@ class MP_Store_Settings_General {
 		
 		$metabox->add_field( 'radio_group', array(
 			'name'			 => 'curr_decimal',
-			'label'			 => array( 'text' => __( 'Show Decimal in Prices', 'mp' ) ),
+			'label'			 => array( 'text' => __( 'Dezimalstellen in Preisen anzeigen', 'mp' ) ),
 			'default_value'	 => '1',
 			'orientation'	 => 'horizontal',
 			'options'		 => array(
@@ -458,14 +468,15 @@ class MP_Store_Settings_General {
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'			 => 'mp-settings-general-tax',
 			'page_slugs'	 => array( 'store-settings', 'toplevel_page_store-settings' ),
-			'title'			 => __( 'Tax Settings', 'mp' ),
+			'title'			 => __( 'Steuer-Einstellungen', 'mp' ),
 			'option_name'	 => 'mp_settings',
 		) );
 		$metabox->add_field( 'text', array(
 			'name'			 => 'tax[rate]',
-			'label'			 => array( 'text' => __( 'Tax Rate', 'mp' ) ),
+			'label'			 => array( 'text' => __( 'Steuersatz', 'mp' ) ),
 			'after_field'	 => '%',
 			'style'			 => 'width:75px',
+			'default_value'=> 0.19, // <-- Standardwert als Dezimalzahl (19%)
 			'validation'	 => array(
 				'number' => true,
 			),
