@@ -137,11 +137,11 @@ msgstr "Entfernen"
 #: includes/addons/mp-coupons/class-mp-coupons-addon.php:429
 #: includes/addons/mp-coupons/class-mp-coupons-addon.php:779
 msgid "Have a coupon code?"
-msgstr "Haben Sie einen Gutscheincode?"
+msgstr "Hast du einen Gutscheincode??"
 
 #: includes/addons/mp-coupons/class-mp-coupons-addon.php:436
 msgid "Apply Code"
-msgstr "Bestätigungscode"
+msgstr "Code hinzufügen"
 
 #: includes/addons/mp-coupons/class-mp-coupons-addon.php:439
 #: includes/addons/mp-coupons/class-mp-coupons-addon.php:784
@@ -4775,17 +4775,17 @@ msgid "Download"
 msgstr "Download"
 
 #: includes/common/class-mp-cart.php:661 includes/common/class-mp-cart.php:747
-msgid "Estimated Total"
-msgstr "Geschätzte Totalsumme"
+msgid "Geschätzter Gesamtbetrag"
+msgstr "Geschätzer Gesamtbetrag"
 
 #: includes/common/class-mp-cart.php:663
 #, fuzzy, php-format
-msgid "Estimated Total (%s)"
+msgid "Geschätzter Gesamtbetrag (%s)"
 msgstr "Geschätzte Summe (%s)"
 
 #: includes/common/class-mp-cart.php:665 includes/common/class-mp-cart.php:667
 #, fuzzy, php-format
-msgid "Estimated Total (%s, %s)"
+msgid "Geschätzter Gesamtbetrag (%s, %s)"
 msgstr "Geschätzte Summe (%s, %s)"
 
 #: includes/common/class-mp-cart.php:692
@@ -4846,7 +4846,7 @@ msgstr ""
 
 #: includes/common/class-mp-cart.php:1028
 #, fuzzy
-msgid "Continue Shopping?"
+msgid "Weiter einkaufen?"
 msgstr "Weiter einkaufen?"
 
 #: includes/common/class-mp-cart.php:1236
@@ -10231,7 +10231,7 @@ msgstr "Ein Konto mit diesem Benutzernamen existiert bereits"
 
 #: includes/public/class-mp-checkout.php:1233
 #, fuzzy
-msgid "Shipping address different than billing?"
+msgid "Lieferadresse weicht von der Rechnungsadresse ab?"
 msgstr "Die Lieferadresse weicht von der Rechnungsadresse ab?"
 
 #: includes/public/class-mp-checkout.php:1315

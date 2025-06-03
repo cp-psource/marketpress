@@ -426,17 +426,17 @@ class MP_Coupons_Addon {
 			$html .= '
 				<div id="mp-coupon-form-store-' . $cart->get_blog_id() . '" class="mp_form mp_coupon_form' . ( ( $cart->is_global ) ? ' mp_coupon_form-store' : '' ) . '">
 					<div class="mp_form_content">
-						<h3 class="mp_sub_title">' . mp_get_setting( 'coupons->form_title', __( 'Have a coupon code?', 'mp' ) ) . '</h3>
+						<h3 class="mp_sub_title">' . mp_get_setting( 'coupons->form_title', __( 'Hast du einen Gutscheincode?', 'mp' ) ) . '</h3>
 					</div>
 					<div class="mp_form_group">
 						<div class="mp_form_group_input">
 							<input type="text" name="mp_cart_coupon[' . $cart->get_blog_id() . ']" class="mp_form_input" value="">
 						</div>
 						<div class="mp_form_group_btn">
-					  		<button type="button" class="mp_button mp_button-check">' . __( 'Apply Code', 'mp' ) . '</button>
+					  		<button type="button" class="mp_button mp_button-check">' . __( 'Code hinzufügen', 'mp' ) . '</button>
 					  	</div>
 				    </div>' .
-			         do_shortcode( wpautop( mp_get_setting( 'coupons->help_text', __( 'More than one code? That\'s OK! Just be sure to enter one at a time.', 'mp' ) ) ) ) . '
+			         do_shortcode( wpautop( mp_get_setting( 'coupons->help_text', __( 'Mehr als ein Code? Kein Problem! Bitte immer nur einen Code gleichzeitig eingeben.', 'mp' ) ) ) ) . '
 				</div><!-- end mp-coupon-form-store-' . $cart->get_blog_id() . ' -->';
 		}
 
@@ -769,19 +769,19 @@ class MP_Coupons_Addon {
 	public function init_settings_metaboxes() {
 		$metabox = new WPMUDEV_Metabox( array(
 			'id'          => 'mp-coupons-settings-metabox',
-			'title'       => __( 'Coupons Settings', 'mp' ),
+			'title'       => __( 'Gutscheineinstellungen', 'mp' ),
 			'page_slugs'  => array( 'store-settings-addons' ),
 			'option_name' => 'mp_settings',
 		) );
 		$metabox->add_field( 'text', array(
 			'name'          => 'coupons[form_title]',
 			'label'         => array( 'text' => __( 'Form Title', 'mp' ) ),
-			'default_value' => __( 'Have a coupon code?', 'mp' ),
+			'default_value' => __( 'Hast du einen Gutscheincode?', 'mp' ),
 		) );
 		$metabox->add_field( 'wysiwyg', array(
 			'name'          => 'coupons[help_text]',
 			'label'         => array( 'text' => __( 'Help Text', 'mp' ) ),
-			'default_value' => __( 'More than one code? That\'s OK! Just be sure to enter one at a time.', 'mp' ),
+			'default_value' => __( 'Mehr als ein Code? Kein Problem! Bitte immer nur einen Code gleichzeitig eingeben.', 'mp' ),
 		) );
 	}
 
@@ -902,7 +902,7 @@ class MP_Coupons_Addon {
 	 */
 	public function add_menu_items() {
 		//manage coupons
-		add_submenu_page( 'edit.php?post_type=' . MP_Product::get_post_type(), __( 'Coupons', 'mp' ), __( 'Coupons', 'mp' ), apply_filters( 'mp_coupons_capability', 'edit_mp_coupons' ), 'edit.php?post_type=mp_coupon' );
+		add_submenu_page( 'edit.php?post_type=' . MP_Product::get_post_type(), __( 'Gutscheine', 'mp' ), __( 'Gutscheine', 'mp' ), apply_filters( 'mp_coupons_capability', 'edit_mp_coupons' ), 'edit.php?post_type=mp_coupon' );
 	}
 
 	/**
@@ -950,7 +950,7 @@ class MP_Coupons_Addon {
 
 		if ( ! $coupon->is_valid() ) {
 			wp_send_json_error( array(
-				'message' => __( 'Coupon can\'t be applied to this cart', 'mp' ),
+				'message' => __( 'Der Gutschein kann nicht auf diesen Warenkorb angewendet werden', 'mp' ),
 			) );
 		}
 
@@ -988,7 +988,7 @@ class MP_Coupons_Addon {
 		}
 
 		wp_send_json_error( array(
-			'message' => __( 'An error occurred while removing your coupon. Please try again.', 'mp' ),
+			'message' => __( 'Beim Entfernen des Gutscheins ist ein Fehler aufgetreten. Bitte versuche es erneut.', 'mp' ),
 		) );
 	}
 
@@ -1001,20 +1001,20 @@ class MP_Coupons_Addon {
 	public function register_post_type() {
 		register_post_type( 'mp_coupon', array(
 			'labels'             => array(
-				'name'               => __( 'Coupons', 'mp' ),
-				'singular_name'      => __( 'Coupon', 'mp' ),
-				'menu_name'          => __( 'Manage Coupons', 'mp' ),
-				'all_items'          => __( 'Coupons', 'mp' ),
-				'add_new'            => __( 'Create New', 'mp' ),
-				'add_new_item'       => __( 'Create New Coupon', 'mp' ),
-				'edit_item'          => __( 'Edit Coupon', 'mp' ),
-				'edit'               => __( 'Edit', 'mp' ),
-				'new_item'           => __( 'New Coupon', 'mp' ),
-				'view_item'          => __( 'View Coupon', 'mp' ),
-				'search_items'       => __( 'Search Coupons', 'mp' ),
-				'not_found'          => __( 'No Coupons Found', 'mp' ),
-				'not_found_in_trash' => __( 'No Coupons found in Trash', 'mp' ),
-				'view'               => __( 'View Coupon', 'mp' )
+				'name'               => __( 'Gutscheine', 'mp' ),
+				'singular_name'      => __( 'Gutschein', 'mp' ),
+				'menu_name'          => __( 'Gutscheine verwalten', 'mp' ),
+				'all_items'          => __( 'Gutscheine', 'mp' ),
+				'add_new'            => __( 'Gutschein erstellen', 'mp' ),
+				'add_new_item'       => __( 'Neuen Gutschein erstellen', 'mp' ),
+				'edit_item'          => __( 'Gutschein bearbeiten', 'mp' ),
+				'edit'               => __( 'Bearbeiten', 'mp' ),
+				'new_item'           => __( 'Neuer Gutschein', 'mp' ),
+				'view_item'          => __( 'Gutschein ansehen', 'mp' ),
+				'search_items'       => __( 'Gutscheine suchen', 'mp' ),
+				'not_found'          => __( 'Keine Gutscheine gefunden', 'mp' ),
+				'not_found_in_trash' => __( 'Keine Gutscheine im Papierkorb gefunden', 'mp' ),
+				'view'               => __( 'Gutschein ansehen', 'mp' )
 			),
 			'capability_type'    => array( 'mp_coupon', 'mp_coupons' ),
 			'capabilities'       => array(

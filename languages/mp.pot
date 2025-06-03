@@ -4086,17 +4086,17 @@ msgid "Download"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:661 includes/common/class-mp-cart.php:747
-msgid "Estimated Total"
+msgid "Geschätzter Gesamtbetrag"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:663
 #, php-format
-msgid "Estimated Total (%s)"
+msgid "Geschätzter Gesamtbetrag (%s)"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:665 includes/common/class-mp-cart.php:667
 #, php-format
-msgid "Estimated Total (%s, %s)"
+msgid "Geschätzter Gesamtbetrag (%s, %s)"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:692
@@ -4146,7 +4146,7 @@ msgid ""
 msgstr ""
 
 #: includes/common/class-mp-cart.php:1028
-msgid "Continue Shopping?"
+msgid "Weiter einkaufen?"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:1236
@@ -8537,7 +8537,7 @@ msgid "An account with this username already exists"
 msgstr ""
 
 #: includes/public/class-mp-checkout.php:1233
-msgid "Shipping address different than billing?"
+msgid "Lieferadresse weicht von der Rechnungsadresse ab?"
 msgstr ""
 
 #: includes/public/class-mp-checkout.php:1315

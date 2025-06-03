@@ -77,10 +77,10 @@ class MP_Checkout {
 		$cart				 = mp_cart();
 		$is_download_only	 = $cart->is_download_only();
 		$this->_sections	 = apply_filters( 'mp_checkout/sections_array', array(
-			'login-register'			 => __( 'Login/Register', 'mp' ),
-			'billing-shipping-address'	 => ( !mp()->download_only_cart( mp_cart() ) ) ? __( 'Billing/Shipping Address', 'mp' ) : __( 'Billing Information', 'mp' ),
-			'shipping'					 => __( 'Shipping Method', 'mp' ),
-			'order-review-payment'		 => __( 'Review Order/Payment', 'mp' ),
+			'login-register'			 => __( 'Anmelden/Registrieren', 'mp' ),
+			'billing-shipping-address'	 => ( !mp()->download_only_cart( mp_cart() ) ) ? __( 'Rechnungs-/Lieferadresse', 'mp' ) : __( 'Abrechnungsdaten', 'mp' ),
+			'shipping'					 => __( 'Versandart', 'mp' ),
+			'order-review-payment'		 => __( 'Bestellung/Zahlung überprüfen', 'mp' ),
 		) );
 
 		if ( !$this->_need_shipping_step() ) {
@@ -1230,7 +1230,7 @@ class MP_Checkout {
 		if ( !mp()->download_only_cart( mp_cart() ) ) {
 			$html .= '
 					<div class="mp_checkout_field mp_checkout_checkbox">
-						<label class="mp_form_label"><input type="checkbox" class="mp_form_checkbox" name="enable_shipping_address" value="1" autocomplete="off" ' . checked( true, $enable_shipping_address, false ) . '> <span>' . __( 'Shipping address different than billing?', 'mp' ) . '</span></label>
+						<label class="mp_form_label"><input type="checkbox" class="mp_form_checkbox" name="enable_shipping_address" value="1" autocomplete="off" ' . checked( true, $enable_shipping_address, false ) . '> <span>' . __( 'Lieferadresse weicht von der Rechnungsadresse ab?', 'mp' ) . '</span></label>
 					</div><!-- end mp_checkout_field/mp_checkout_checkbox -->
 				';
 

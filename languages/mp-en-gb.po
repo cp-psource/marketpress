@@ -1459,7 +1459,7 @@ msgid "Have an account?"
 msgstr ""
 
 #: includes/public/class-mp-checkout.php:1297
-msgid "Shipping address different than billing?"
+msgid "Lieferadresse weicht von der Rechnungsadresse ab?"
 msgstr ""
 
 #: includes/public/class-mp-checkout.php:1184
@@ -3463,7 +3463,7 @@ msgid "Adding..."
 msgstr ""
 
 #: includes/common/class-mp-cart.php:1033
-msgid "Continue Shopping?"
+msgid "Weiter einkaufen?"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:961
@@ -3503,15 +3503,15 @@ msgid "Product Total"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:670 includes/common/class-mp-cart.php:672
-msgid "Estimated Total (%s, %s)"
+msgid "Geschätzter Gesamtbetrag (%s, %s)"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:668
-msgid "Estimated Total (%s)"
+msgid "Geschätzter Gesamtbetrag (%s)"
 msgstr ""
 
 #: includes/common/class-mp-cart.php:666 includes/common/class-mp-cart.php:752
-msgid "Estimated Total"
+msgid "Geschätzter Gesamtbetrag"
 msgstr ""
 
 #: includes/admin/widgets/product-list.php:247

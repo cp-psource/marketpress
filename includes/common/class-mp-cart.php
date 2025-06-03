@@ -658,13 +658,13 @@ class MP_Cart {
 			$city    = mp_get_current_user_city();
 
 			if ( empty( $zipcode ) && empty( $city ) ) {
-				$header = __( 'Estimated Total', 'mp' );
+				$header = __( 'Geschätzter Gesamtbetrag', 'mp' );
 			} elseif ( empty( $zipcode ) && ! empty( $city ) ) {
-				$header = sprintf( __( 'Estimated Total (%s)', 'mp' ), $city );
+				$header = sprintf( __( 'Geschätzter Gesamtbetrag (%s)', 'mp' ), $city );
 			} elseif ( ! empty( $zipcode ) && empty( $city ) ) {
-				$header = sprintf( __( 'Estimated Total (%s, %s)', 'mp' ), $zipcode );
+				$header = sprintf( __( 'Geschätzter Gesamtbetrag (%s, %s)', 'mp' ), $zipcode );
 			} else {
-				$header = sprintf( __( 'Estimated Total (%s, %s)', 'mp' ), $city, $zipcode );
+				$header = sprintf( __( 'Geschätzter Gesamtbetrag (%s, %s)', 'mp' ), $city, $zipcode );
 			}
 
 			/**
@@ -744,7 +744,7 @@ class MP_Cart {
 
 		$line = '
 				<div class="mp_cart_resume_item mp_cart_resume_item-order-total">
-					<span class="mp_cart_resume_item_label">' . ( ( $this->is_editable ) ? __( 'Estimated Total', 'mp' ) : __( 'Order Total', 'mp' ) ) . '</span>
+					<span class="mp_cart_resume_item_label">' . ( ( $this->is_editable ) ? __( 'Geschätzter Gesamtbetrag', 'mp' ) : __( 'Order Total', 'mp' ) ) . '</span>
 					<span class="mp_cart_resume_item_amount">' . $this->total( true ) . '</span>
 				</div><!-- end mp_cart_resume_item-order-total -->
 			</div><!-- end mp_cart-resume -->';
@@ -1025,7 +1025,7 @@ class MP_Cart {
 
 			// Continue shopping button
 			$html .= '
-					<a href="' . mp_store_page_url( 'products', false ) . '" class="' . implode( ' ', $continue_shopping_button_classes ) . '">' . __( 'Continue Shopping?', 'mp'  ) . '</a>';
+					<a href="' . mp_store_page_url( 'products', false ) . '" class="' . implode( ' ', $continue_shopping_button_classes ) . '">' . __( 'Weiter einkaufen?', 'mp'  ) . '</a>';
 
 			if ( $editable ) {
 				$html .= '
