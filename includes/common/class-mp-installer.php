@@ -324,7 +324,7 @@ class MP_Installer {
 			} else {
 				update_post_meta( $post_id, 'charge_tax', '0' );
 			}
-			$old_value = $old_value * 100; //20% was marked as 0.2 in the previous version
+			//$old_value = $old_value * 100; //20% was marked as 0.2 in the previous version
 		}
 
 		if ( 'mp_shipping' == $old_post_meta_name ) {

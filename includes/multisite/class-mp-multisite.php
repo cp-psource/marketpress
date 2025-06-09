@@ -467,7 +467,7 @@ class MP_Multisite {
 			$blog_deleted  = get_blog_status( $wpdb->blogid, 'deleted' );
 			if ( $tmp->post_count > 0 ) {
 				foreach ( $tmp->posts as $post ) {
-					if ( $post->post_status != 'published' || $blog_archived || $blog_deleted || $blog_mature || $blog_spam ) {
+					if ( $post->post_status != 'publish' || $blog_archived || $blog_deleted || $blog_mature || $blog_spam ) {
 						//todo delete index
 					}
 
