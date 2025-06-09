@@ -469,13 +469,14 @@ class MP_Multisite {
 				foreach ( $tmp->posts as $post ) {
 					if ( $post->post_status != 'publish' || $blog_archived || $blog_deleted || $blog_mature || $blog_spam ) {
 						//todo delete index
+						continue; // Diese Produkte überspringen!
 					}
 
-					if ( $index = $this->find_index( $blog['blog_id'], $post->ID ) ) {
-						$index_id = $this->update_index( $blog['blog_id'], $post );
-					} else {
-						$index_id = $this->add_index( $blog['blog_id'], $post );
-					}
+					// ALTEN INDEX-EINTRAG LÖSCHEN!
+					$this->delete_index( $blog['blog_id'], $post->ID );
+
+					// Immer neu anlegen:
+					$index_id = $this->add_index( $blog['blog_id'], $post );
 
 					//product indexed, now taxonomies & terms
 					$this->index_product_terms( $blog['blog_id'], $post );
