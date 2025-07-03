@@ -301,14 +301,22 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 	}
 	
 	/**
-	 * Use this to do the final payment. Create the order then process the payment. If
-	 * you know the payment is successful right away go ahead and change the order status
-	 * as well.
+	 * MODERNISIERUNG: eWay Rapid REST-API Integration vorbereiten
 	 *
-	 * @param MP_Cart $cart. Contains the MP_Cart object.
-	 * @param array $billing_info. Contains billing info and email in case you need it.
-	 * @param array $shipping_info. Contains shipping info and email in case you need it
+	 * Die bisherige SOAP/XML-Logik ist veraltet. eWay empfiehlt die REST-API (Rapid v3).
+	 *
+	 * ToDo:
+	 * - Neue Felder für API Key, Password
+	 * - REST-API-Calls (https://api.ewaypayments.com/)
+	 * - Tokenisierung/Kartendaten-Handling (PCI-konform)
+	 * - Webhook-Handling für Status-Updates
+	 * - 3D Secure/Strong Customer Authentication prüfen
+	 *
+	 * Die alte process_payment-Logik ist als Legacy auskommentiert und kann nach Migration entfernt werden.
 	 */
+
+	// LEGACY: Alte eWay31-Logik (wird entfernt, sobald REST aktiv ist)
+	/*
 	function process_payment( $cart, $billing_info, $shipping_info ) {
 		$timestamp = time();
 		
@@ -415,7 +423,148 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
 			wp_redirect( $order->tracking_url( false ) );
 			exit;
 		}
-	}
+		*/
+
+		// NEU: Produktive REST-API-Integration für eWay Rapid 3.1
+		public function process_payment( $cart, $billing_info, $shipping_info ) {
+			$timestamp = time();
+			$order = new MP_Order();
+			$order_id = $order->get_id();
+			$total = $cart->total( false );
+			$amount = number_format( round( $total, 2 ), 2, '.', '' );
+
+			// Kartendaten aus dem Formular holen
+			$exp = explode( '/', mp_get_post_value( 'mp_cc_exp', '' ) );
+			$card_name = mp_arr_get_value( 'first_name', $billing_info ) . ' ' . mp_arr_get_value( 'last_name', $billing_info );
+			$card_number = mp_get_post_value( 'mp_cc_num' );
+			$card_exp_month = trim( $exp[0] );
+			$card_exp_year = trim( $exp[1] );
+			$card_cvc = mp_get_post_value( 'mp_cc_cvc' );
+
+			// API-URL und Auth
+			$mode = $this->get_setting('mode');
+			if ( $mode == 'rapid30live' ) {
+				$api_url = 'https://api.ewaypayments.com/Transaction';
+				$api_key = $this->UserAPIKey;
+				$api_pass = $this->UserPassword;
+			} else {
+				$api_url = 'https://api.sandbox.ewaypayments.com/Transaction';
+				$api_key = $this->UserAPIKey;
+				$api_pass = $this->UserPassword;
+			}
+
+			// 3D Secure aktiv? (Optional: Einstellung in Admin-UI)
+			$enable_3ds = $this->get_setting('enable_3ds');
+			$return_url = add_query_arg( array( 'mp-gateway' => 'eway31', 'order_id' => $order_id, 'mp_3ds_return' => 1 ), $this->returnURL );
+
+			// Request-Body zusammenbauen
+			$body = array(
+				'Customer' => array(
+					'FirstName' => mp_arr_get_value( 'first_name', $billing_info ),
+					'LastName' => mp_arr_get_value( 'last_name', $billing_info ),
+					'Email' => mp_arr_get_value( 'email', $shipping_info ),
+					'Phone' => mp_arr_get_value( 'phone', $billing_info ),
+					'Country' => mp_arr_get_value( 'country', $billing_info ),
+				),
+				'Payment' => array(
+					'TotalAmount' => (int)($total * 100),
+					'CurrencyCode' => $this->get_setting( 'Currency' ),
+					'InvoiceNumber' => $order_id,
+				),
+				'Method' => 'ProcessPayment',
+				'TransactionType' => 'Purchase',
+				'Capture' => true,
+				'CardDetails' => array(
+					'Name' => $card_name,
+					'Number' => $card_number,
+					'ExpiryMonth' => $card_exp_month,
+					'ExpiryYear' => $card_exp_year,
+					'CVN' => $card_cvc,
+				),
+			);
+
+			// 3D Secure-Parameter ergänzen, falls aktiviert
+			if ( $enable_3ds ) {
+				$body['ThreeDSecure'] = array(
+					'Enable3DSecure' => true,
+					'MerchantUrl' => home_url(),
+					'RedirectUrl' => $return_url,
+				);
+			}
+
+			$args = array(
+				'headers' => array(
+					'Authorization' => 'Basic ' . base64_encode( $api_key . ':' . $api_pass ),
+					'Content-Type' => 'application/json',
+					'Accept' => 'application/json',
+				),
+				'body' => json_encode( $body ),
+				'timeout' => 30,
+			);
+
+			$response = wp_remote_post( $api_url, $args );
+
+			if ( is_wp_error( $response ) ) {
+				mp_checkout()->add_error( __( 'Verbindungsfehler zur eWay API: ', 'mp' ) . $response->get_error_message(), 'order-review-payment' );
+				return;
+			}
+
+			$code = wp_remote_retrieve_response_code( $response );
+			$body = json_decode( wp_remote_retrieve_body( $response ) );
+
+			// 3D Secure Flow: Redirect falls erforderlich
+			if ( $enable_3ds && isset($body->Options) && is_array($body->Options) ) {
+				foreach ( $body->Options as $option ) {
+					if ( isset($option->Key) && $option->Key === '3DSecureUrl' && !empty($option->Value) ) {
+						// Redirect zur 3DS-Authentifizierung
+						wp_redirect( $option->Value );
+						exit;
+					}
+				}
+			}
+
+			if ( $code != 200 || empty($body) || !isset($body->TransactionStatus) ) {
+				$error_msg = isset($body->Errors) ? $body->Errors : __( 'Unbekannter Fehler bei der eWay-Transaktion.', 'mp' );
+				mp_checkout()->add_error( $error_msg, 'order-review-payment' );
+				return;
+			}
+
+			if ( $body->TransactionStatus ) {
+				$payment_info = array();
+				$payment_info['gateway_public_name'] = $this->public_name;
+				$payment_info['gateway_private_name'] = $this->admin_name;
+				$payment_info['method'] = 'eWay payment';
+				$payment_info['status'][ $timestamp ] = 'paid';
+				$payment_info['total'] = $amount;
+				$payment_info['currency'] = $this->get_setting( 'Currency' );
+				$payment_info['transaction_id'] = isset($body->TransactionID) ? $body->TransactionID : '';
+
+				$order->save( array(
+					'cart' => $cart,
+					'payment_info' => $payment_info,
+					'paid' => true,
+				) );
+				wp_redirect( $order->tracking_url( false ) );
+				exit;
+			} else {
+				// Fehlerbehandlung: Fehlercodes aufschlüsseln
+				$error_msg = '';
+				if ( isset($body->Errors) ) {
+					$ErrorArray = explode(',', trim($body->Errors));
+					foreach ( $ErrorArray as $error ) {
+						$error = trim($error);
+						if ( isset( $this->error_map[ $error ] ) ) {
+							$error_msg .= '<li>' . $error . ' ' . $this->error_map[ $error ] . '</li>';
+						} else {
+							$error_msg .= '<li>' . $error . '</li>';
+						}
+					}
+				} else {
+					$error_msg = __( 'Zahlung fehlgeschlagen. Bitte überprüfen Sie Ihre Angaben.', 'mp' );
+				}
+				mp_checkout()->add_error( $error_msg, 'order-review-payment' );
+			}
+		}
 	
   /**
    * Updates the gateway settings
@@ -458,89 +607,80 @@ class MP_Gateway_eWay31 extends MP_Gateway_API {
    * @access public
    */
   public function init_settings_metabox() {
-  	$metabox = new WPMUDEV_Metabox(array(
-			'id' => $this->generate_metabox_id(),
-			'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
-			'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
-			'option_name' => 'mp_settings',
-			'desc' => __('eWay Rapid 3.0 Payments lets merchants recieve credit card payments through eWay without need for users to leave the shop. Note this gateway requires a valid SSL certificate configured for this site.', 'mp'),
-			'conditional' => array(
-				'name' => 'gateways[allowed][' . $this->plugin_name . ']',
-				'value' => 1,
-				'action' => 'show',
-			),
-		));
-		$metabox->add_field('advanced_select', array(
-			'name' => $this->get_field_name('Currency'),
-			'label' => array('text' => __('Currency', 'mp')),
-			'default_value' => mp_get_setting('currency'),
-			'multiple' => false,
-			'width' => 'element',
-			'options' => $this->currencies,
-		));
-		$metabox->add_field('radio_group', array(
-			'name' => $this->get_field_name('mode'),
-			'label' => array('text' => __('Gateway Mode', 'mp')),
-			'default_value' => 'rapid30sandbox',
-			'options' => array(
-				'rapid30sandbox' => 'Sandbox',
-				'rapid30live' => 'Live',
-			),
-		));
-		$api_creds = $metabox->add_field('complex', array(
-			'name' => $this->get_field_name('api_credentials->live'),
-			'label' => array('text' => __('Live API Credentials', 'mp')),
-			'conditional' => array(
-				'name' => $this->get_field_name('mode'),
-				'value' => 'rapid30live',
-				'action' => 'show',
-			),
-		));
-		
-		if ( $api_creds instanceof WPMUDEV_Field ) {
-			$api_creds->add_field('text', array(
-				'name' => 'api_key',
-				'label' => array('text' => __('API Key', 'mp')),
-				'validation' => array(
-					'required' => true,
-				),
-			));
-			$api_creds->add_field('text', array(
-				'name' => 'api_password',
-				'label' => array('text' => __('API Password', 'mp')),
-				'validation' => array(
-					'required' => true,
-				),
-			));
-		}
-		
-		$api_creds = $metabox->add_field('complex', array(
-			'name' => $this->get_field_name('api_credentials->sandbox'),
-			'label' => array('text' => __('Sandbox API Credentials', 'mp')),
-			'conditional' => array(
-				'name' => $this->get_field_name('mode'),
-				'value' => 'rapid30sandbox',
-				'action' => 'show',
-			),
-		));
-		
-		if ( $api_creds instanceof WPMUDEV_Field ) {
-			$api_creds->add_field('text', array(
-				'name' => 'api_key',
-				'label' => array('text' => __('API Key', 'mp')),
-				'validation' => array(
-					'required' => true,
-				),
-			));
-			$api_creds->add_field('text', array(
-				'name' => 'api_pass',
-				'label' => array('text' => __('API Password', 'mp')),
-				'validation' => array(
-					'required' => true,
-				),
-			));
-		}
-	}
+        $metabox = new WPMUDEV_Metabox(array(
+            'id' => $this->generate_metabox_id(),
+            'page_slugs' => array('store-settings-payments', 'store-settings_page_store-settings-payments'),
+            'title' => sprintf(__('%s Settings', 'mp'), $this->admin_name),
+            'option_name' => 'mp_settings',
+            'desc' => __('eWay Rapid 3.1 Payments ermöglicht Kreditkartenzahlungen direkt im Shop. Ein gültiges SSL-Zertifikat ist erforderlich.', 'mp'),
+            'conditional' => array(
+                'name' => 'gateways[allowed][' . $this->plugin_name . ']',
+                'value' => 1,
+                'action' => 'show',
+            ),
+        ));
+        $metabox->add_field('advanced_select', array(
+            'name' => $this->get_field_name('Currency'),
+            'label' => array('text' => __('Währung', 'mp')),
+            'default_value' => mp_get_setting('currency'),
+            'multiple' => false,
+            'width' => 'element',
+            'options' => $this->currencies,
+        ));
+        $metabox->add_field('radio_group', array(
+            'name' => $this->get_field_name('mode'),
+            'label' => array('text' => __('Gateway-Modus', 'mp')),
+            'default_value' => 'rapid30sandbox',
+            'options' => array(
+                'rapid30sandbox' => 'Sandbox',
+                'rapid30live' => 'Live',
+            ),
+        ));
+        // Live API Credentials
+        $api_creds_live = $metabox->add_field('complex', array(
+            'name' => $this->get_field_name('api_credentials->live'),
+            'label' => array('text' => __('Live API-Zugangsdaten', 'mp')),
+            'conditional' => array(
+                'name' => $this->get_field_name('mode'),
+                'value' => 'rapid30live',
+                'action' => 'show',
+            ),
+        ));
+        if ( $api_creds_live instanceof WPMUDEV_Field ) {
+            $api_creds_live->add_field('text', array(
+                'name' => 'api_key',
+                'label' => array('text' => __('API Key', 'mp')),
+                'validation' => array('required' => true),
+            ));
+            $api_creds_live->add_field('text', array(
+                'name' => 'api_pass',
+                'label' => array('text' => __('API Passwort', 'mp')),
+                'validation' => array('required' => true),
+            ));
+        }
+        // Sandbox API Credentials
+        $api_creds_sandbox = $metabox->add_field('complex', array(
+            'name' => $this->get_field_name('api_credentials->sandbox'),
+            'label' => array('text' => __('Sandbox API-Zugangsdaten', 'mp')),
+            'conditional' => array(
+                'name' => $this->get_field_name('mode'),
+                'value' => 'rapid30sandbox',
+                'action' => 'show',
+            ),
+        ));
+        if ( $api_creds_sandbox instanceof WPMUDEV_Field ) {
+            $api_creds_sandbox->add_field('text', array(
+                'name' => 'api_key',
+                'label' => array('text' => __('API Key', 'mp')),
+                'validation' => array('required' => true),
+            ));
+            $api_creds_sandbox->add_field('text', array(
+                'name' => 'api_pass',
+                'label' => array('text' => __('API Passwort', 'mp')),
+                'validation' => array('required' => true),
+            ));
+        }
+    }
 }
 
 mp_register_gateway_plugin( 'MP_Gateway_eWay31', 'eway31', __('eWay Rapid 3.1 Payments (beta)', 'mp') );

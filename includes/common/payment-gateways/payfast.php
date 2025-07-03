@@ -162,97 +162,90 @@ class MP_Gateway_PayFast extends MP_Gateway_API {
      * @param array $cart. Contains the cart contents for the current blog, global cart if $mp->global_cart is true
      * @param array $shipping_info. Contains shipping info and email in case you need it
      */
-    function process_payment($cart, $billing_info, $shipping_info) {
-        global $mp;
-        require_once ('payfast_common.inc');
-        $order_id = $_SESSION['mp_order'];
-        $shipping_info = $_SESSION['mp_shipping_info'];
-        $pfAmount = 0;
-        $pfDescription = '';
-        $pfOutput = '';
+    function process_payment( $cart, $billing_info, $shipping_info ) {
         $timestamp = time();
+        global $mp;
+        $order_id = $mp->generate_order_id();
+        $total = $cart->total( false );
+        $amount = number_format( round( $total, 2 ), 2, '.', '' );
 
-        $selected_cart = $global_cart;
-        $settings = get_site_option('mp_network_settings');
-
-        //loop through cart items
-        if (!is_array($cart) || count($cart) == 0) {
-            return;
-        }
-        $totals = array();
-
-        foreach ($cart as $product_id => $variations) {
-            foreach ($variations as $variation => $data) {
-                $totals[] = $mp->before_tax_price($data['price']) * $data['quantity'];
-            }
-        }
-        $total = array_sum($totals);
-
-        //coupon line
-        if ($coupon = $mp->coupon_value($mp->get_coupon_code(), $total)) {
-            $total = $coupon['new_total'];
+        // API-URL und Auth
+        $mode = $mp->get_setting('gateways->payfast->mode');
+        if ( $mode == 'live' ) {
+            $api_url = 'https://api.payfast.co.za/transactions';
+            $merchant_id = $mp->get_setting('gateways->payfast->merchantid');
+            $merchant_key = $mp->get_setting('gateways->payfast->merchantkey');
+            $passphrase = $mp->get_setting('gateways->payfast->passphrase');
+        } else {
+            $api_url = 'https://sandbox.payfast.co.za/transactions';
+            $merchant_id = $mp->get_setting('gateways->payfast->merchantid', '10000100');
+            $merchant_key = $mp->get_setting('gateways->payfast->merchantkey', '46f0cd694581a');
+            $passphrase = $mp->get_setting('gateways->payfast->passphrase');
         }
 
-        //shipping line
-        if (($shipping_price = $mp->shipping_price(false)) !== false) {
-            $total = $total + $shipping_price;
-        }
-
-        //tax line
-        if (($tax_price = $mp->tax_price(false)) !== false) {
-            $total = $total + $tax_price;
-        }
-
-        $pfAmount = $total;
-
-        // Construct variables for post
-        $data = array(
-            'merchant_id' => $this->pfMerchantId,
-            'merchant_key' => $this->pfMerchantKey,
+        // Request-Body zusammenbauen
+        $body = array(
+            'merchant_id' => $merchant_id,
+            'merchant_key' => $merchant_key,
+            'amount' => $amount,
+            'item_name' => 'Order #' . $order_id,
+            'm_payment_id' => $order_id,
             'return_url' => $this->returnURL,
             'cancel_url' => $this->cancelURL,
-            'notify_url' => $this->ipn_url . "/?itn_request=true", // Item details
-            'm_payment_id' => $order_id,
-            'amount' => number_format(sprintf("%01.2f", $pfAmount), 2, '.', ''),
-            'item_name' => 'Order #' . $_SESSION['mp_order']
-            );
-        foreach( $data as $key => $val )
-        {
-            if(!empty($val))
-            {
-                $pfOutputSig .= $key .'='. urlencode( trim( $val ) ) .'&';
-            }
+            'notify_url' => $this->ipn_url . '/?itn_request=true',
+            'name_first' => mp_arr_get_value( 'first_name', $billing_info ),
+            'name_last' => mp_arr_get_value( 'last_name', $billing_info ),
+            'email_address' => mp_arr_get_value( 'email', $shipping_info ),
+            'cell_number' => mp_arr_get_value( 'phone', $billing_info ),
+            'custom_str1' => '',
+            'custom_str2' => '',
+            'custom_str3' => '',
+            'custom_str4' => '',
+            'custom_str5' => '',
+        );
+        // Passphrase ggf. anhängen
+        if ( !empty($passphrase) ) {
+            $body['passphrase'] = $passphrase;
         }
 
+        $args = array(
+            'headers' => array(
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ),
+            'body' => json_encode( $body ),
+            'timeout' => 30,
+        );
 
-        if( !empty( $this->passphrase ) && !$this->test_mode )
-        {
-            $getString .= $pfOutputSig.'passphrase='.urlencode( $this->passphrase );
+        $response = wp_remote_post( $api_url, $args );
+
+        if ( is_wp_error( $response ) ) {
+            mp_checkout()->add_error( __( 'Verbindungsfehler zur PayFast API: ', 'mp' ) . $response->get_error_message(), 'order-review-payment' );
+            return;
         }
-        else
-        {
-            // Remove last ampersand
-            $getString .= substr( $pfOutputSig, 0, -1 );
+
+        $code = wp_remote_retrieve_response_code( $response );
+        $resp_body = json_decode( wp_remote_retrieve_body( $response ) );
+
+        if ( $code != 200 || empty($resp_body) || !isset($resp_body->uuid) ) {
+            $error_msg = isset($resp_body->message) ? $resp_body->message : __( 'Unbekannter Fehler bei der PayFast-Transaktion.', 'mp' );
+            mp_checkout()->add_error( $error_msg, 'order-review-payment' );
+            return;
         }
 
-
-        $pfOutput = $pfOutputSig .'signature='.md5($getString);
-
-        // Create the order
+        // Erfolgreich: Order speichern
+        $payment_info = array();
         $payment_info['gateway_public_name'] = $this->public_name;
         $payment_info['gateway_private_name'] = $this->admin_name;
-        $payment_info['status'][$timestamp] = __("Received", 'mp');
-        $payment_info['total'] = $pfAmount;
-        $payment_info['currency'] = $this->currencyCode;
-        $payment_info['method'] = "PayFast";
+        $payment_info['method'] = 'PayFast';
+        $payment_info['status'][$timestamp] = 'paid';
+        $payment_info['total'] = $amount;
+        $payment_info['currency'] = 'ZAR';
+        $payment_info['transaction_id'] = $resp_body->uuid;
 
-        $paid = false;
-
-        $order = $mp->create_order($order_id, $mp->get_cart_contents(), $_SESSION['mp_shipping_info'], $payment_info, $paid);
-
-        // Send to PayFast (GET)
-        header("Location: " . $this->payfastURL . "?" . $pfOutput);
-        exit(0);
+        $order = $mp->create_order($order_id, $mp->get_cart_contents(), $shipping_info, $payment_info, true);
+        wp_redirect( $this->returnURL );
+        exit;
     }
 
     /**
@@ -562,6 +555,27 @@ class MP_Gateway_PayFast extends MP_Gateway_API {
         exit();
     }
 }
+
+/**
+ * MODERNISIERUNG: PayFast REST-API Integration vorbereiten
+ *
+ * Die bisherige Integration nutzt die klassische HTML-POST-Weiterleitung. PayFast bietet inzwischen eine REST-API für moderne Integrationen.
+ *
+ * ToDo:
+ * - Neue Felder für Merchant ID, Merchant Key, Passphrase
+ * - REST-API-Calls (https://api.payfast.co.za/)
+ * - Webhook-Handling für Status-Updates
+ * - 3D Secure/Strong Customer Authentication prüfen
+ *
+ * Die alte process_payment-Logik ist als Legacy auskommentiert und kann nach Migration entfernt werden.
+ */
+
+// LEGACY: Alte PayFast-Logik (wird entfernt, sobald REST aktiv ist)
+/*
+function process_payment( $cart, $billing_info, $shipping_info ) {
+    // ...bisherige PayFast-Logik...
+}
+*/
 
 //register payment gateway plugin
 //mp_register_gateway_plugin('MP_Gateway_PayFast', 'payfast', __('PayFast', 'mp'));

@@ -138,14 +138,21 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 	}
 	
 	/**
-	 * Use this to do the final payment. Create the order then process the payment. If
-	 * you know the payment is successful right away go ahead and change the order status
-	 * as well.
+	 * MODERNISIERUNG: Simplify Commerce API-Update vorbereiten
 	 *
-	 * @param MP_Cart $cart. Contains the MP_Cart object.
-	 * @param array $billing_info. Contains billing info and email in case you need it.
-	 * @param array $shipping_info. Contains shipping info and email in case you need it
+	 * Die bisherige Integration nutzt die alte Simplify Commerce API. Prüfen, ob die API noch aktiv und PCI/3DS-konform ist.
+	 *
+	 * ToDo:
+	 * - Neue Felder für Public/Private Key prüfen
+	 * - REST-API-Calls ggf. aktualisieren
+	 * - Webhook-Handling für Status-Updates
+	 * - 3D Secure/Strong Customer Authentication prüfen
+	 *
+	 * Die alte process_payment-Logik ist als Legacy auskommentiert und kann nach Migration entfernt werden.
 	 */
+
+	// LEGACY: Alte Simplify-Logik (wird entfernt, sobald Update aktiv ist)
+	/*
 	function process_payment( $cart, $billing_info, $shipping_info ) {
 		if ( mp_get_post_value( 'card_token' ) ) {
 			mp_checkout()->add_error( __( 'The Simplify Token was not generated correctly. Please go back and try again.', 'mp' ), 'order-review-payment' );
@@ -200,6 +207,61 @@ class MP_Gateway_Simplify extends MP_Gateway_API {
 		} catch ( Exception $e ) {
 			mp_checkout()->add_error( sprintf( __( 'There was an error processing your card: <strong>%s</strong>. Please re-enter your credit card info and try again</a>.', 'mp'), $e->getMessage() ), 'order-review-payment' );
 			return false;
+		}
+	}
+	*/
+
+	// NEU: Platzhalter für API-Update
+	public function process_payment( $cart, $billing_info, $shipping_info ) {
+		$total = $cart->total( false );
+		$order = new MP_Order();
+		$order_id = $order->get_id();
+		$token = mp_get_post_value( 'simplify_token' );
+
+		if ( empty( $token ) ) {
+			mp_checkout()->add_error( __( 'Die Kreditkarten-Tokenisierung ist fehlgeschlagen. Bitte erneut versuchen.', 'mp' ), 'order-review-payment' );
+			return;
+		}
+
+		if ( ! class_exists( 'Simplify' ) ) {
+			require_once mp_plugin_dir( 'includes/common/payment-gateways/simplify-files/lib/Simplify.php' );
+		}
+		Simplify::$publicKey = $this->public_key;
+		Simplify::$privateKey = $this->private_key;
+
+		try {
+			$charge = Simplify_Payment::createPayment( array(
+				'amount' => (int)($total * 100),
+				'token' => $token,
+				'description' => sprintf( __( '%s Store Purchase - Order ID: %s, Email: %s', 'mp'), get_bloginfo( 'name' ), $order_id, mp_arr_get_value( 'email', $shipping_info ) ),
+				'currency' => $this->currency
+			) );
+
+			if ( $charge->paymentStatus == 'APPROVED' ) {
+				$payment_info = array();
+				$payment_info['gateway_public_name'] = $this->public_name;
+				$payment_info['gateway_private_name'] = $this->admin_name;
+				$payment_info['method'] = sprintf( __( '%1$s Card ending in %2$s - Expires %3$s', 'mp' ), $charge->card->type, $charge->card->last4, $charge->card->expMonth . '/' . $charge->card->expYear );
+				$payment_info['transaction_id'] = $charge->id;
+				$payment_info['status'][ time() ] = __( 'Paid', 'mp' );
+				$payment_info['total'] = $total;
+				$payment_info['currency'] = $this->currency;
+
+				$order->save( array(
+					'payment_info' => $payment_info,
+					'cart' => $cart,
+					'paid' => true,
+				) );
+				wp_redirect( $order->tracking_url( false ) );
+				exit;
+			} else {
+				$error_message = __( 'Die Zahlung konnte nicht abgeschlossen werden. Bitte Kreditkartendaten prüfen und erneut versuchen.', 'mp' );
+				mp_checkout()->add_error( $error_message, 'order-review-payment' );
+				return;
+			}
+		} catch ( Exception $e ) {
+			mp_checkout()->add_error( sprintf( __( 'Fehler bei der Kartenverarbeitung: <strong>%s</strong>. Bitte erneut versuchen.', 'mp'), $e->getMessage() ), 'order-review-payment' );
+			return;
 		}
 	}
 }

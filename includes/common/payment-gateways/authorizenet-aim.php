@@ -100,14 +100,23 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 	}
 
 	/**
-	 * Use this to do the final payment. Create the order then process the payment. If
-	 * you know the payment is successful right away go ahead and change the order status
-	 * as well.
+	 * MODERNISIERUNG: Authorize.Net Accept.js/REST-API Integration vorbereiten
 	 *
-	 * @param MP_Cart $cart. Contains the MP_Cart object.
-	 * @param array $billing_info. Contains billing info and email in case you need it.
-	 * @param array $shipping_info. Contains shipping info and email in case you need it
+	 * Die bisherige AIM-API ist veraltet und wird von Authorize.Net nicht mehr empfohlen.
+	 * Die neue Integration sollte Accept.js (PCI-konform, Tokenisierung) oder die REST-API nutzen.
+	 *
+	 * ToDo:
+	 * - Neue Felder für API Login ID, Transaction Key, Public Client Key (Accept.js)
+	 * - JS-Integration für Accept.js (Tokenisierung der Kreditkartendaten im Browser)
+	 * - REST-API-Calls für Zahlungsabwicklung
+	 * - Webhook-Handling für Status-Updates
+	 * - 3D Secure/Strong Customer Authentication prüfen
+	 *
+	 * Die alte process_payment-Logik ist als Legacy auskommentiert und kann nach Migration entfernt werden.
 	 */
+
+	// LEGACY: Alte AIM-API-Logik (wird entfernt, sobald Accept.js/REST aktiv ist)
+	/*
 	function process_payment( $cart, $billing_info, $shipping_info ) {
 		if ( ! class_exists( 'MP_Gateway_Worker_AuthorizeNet_AIM' ) ) {
 			require_once mp_plugin_dir( 'includes/common/payment-gateways/authorizenet-aim/class-mp-gateway-worker-authorizenet-aim.php' );
@@ -204,7 +213,107 @@ class MP_Gateway_AuthorizeNet_AIM extends MP_Gateway_API {
 			$error = $payment->getResponseText();
 			mp_checkout()->add_error( sprintf( __( 'There was a problem finalizing your purchase. %s Please <a href="%s">go back and try again</a>.', 'mp'), $error, mp_store_page_url( 'checkout', false ) ), 'order-review-payment' , false );
 		}
-	}
+		*/
+
+		// NEU: Platzhalter für Accept.js/REST-Integration
+		public function process_payment( $cart, $billing_info, $shipping_info ) {
+			$timestamp = time();
+			$order = new MP_Order();
+			$order_id = $order->get_id();
+			$total = $cart->total( false );
+			$amount = number_format( round( $total, 2 ), 2, '.', '' );
+
+			// Accept.js-Token aus dem POST holen
+			$opaqueData = mp_get_post_value('dataValue');
+			if ( empty($opaqueData) ) {
+				mp_checkout()->add_error( __( 'Zahlung fehlgeschlagen: Kein Token von Authorize.Net erhalten.', 'mp' ), 'order-review-payment', false );
+				return;
+			}
+
+			$api_login_id = $this->get_setting('api_credentials->api_user');
+			$transaction_key = $this->get_setting('api_credentials->api_key');
+			$api_url = ($this->get_setting('mode') == 'sandbox')
+				? 'https://apitest.authorize.net/xml/v1/request.api'
+				: 'https://api.authorize.net/xml/v1/request.api';
+
+			// Request-Body für createTransactionRequest
+			$body = array(
+				'createTransactionRequest' => array(
+					'merchantAuthentication' => array(
+						'name' => $api_login_id,
+						'transactionKey' => $transaction_key,
+					),
+					'transactionRequest' => array(
+						'transactionType' => 'authCaptureTransaction',
+						'amount' => $amount,
+						'payment' => array(
+							'opaqueData' => array(
+								'dataDescriptor' => 'COMMON.ACCEPT.INAPP.PAYMENT',
+								'dataValue' => $opaqueData,
+							),
+						),
+						'order' => array(
+							'invoiceNumber' => $order_id,
+							'description' => 'Order #' . $order_id,
+						),
+						'billTo' => array(
+							'firstName' => mp_arr_get_value( 'first_name', $billing_info ),
+							'lastName' => mp_arr_get_value( 'last_name', $billing_info ),
+							'address' => mp_arr_get_value( 'address1', $billing_info ),
+							'city' => mp_arr_get_value( 'city', $billing_info ),
+							'state' => mp_arr_get_value( 'state', $billing_info ),
+							'zip' => mp_arr_get_value( 'zip', $billing_info ),
+							'country' => mp_arr_get_value( 'country', $billing_info ),
+							'email' => mp_arr_get_value( 'email', $billing_info ),
+						),
+					),
+				),
+			);
+
+			$args = array(
+				'headers' => array(
+					'Content-Type' => 'application/json',
+					'Accept' => 'application/json',
+				),
+				'body' => json_encode( $body ),
+				'timeout' => 30,
+			);
+
+			$response = wp_remote_post( $api_url, $args );
+
+			if ( is_wp_error( $response ) ) {
+				mp_checkout()->add_error( __( 'Verbindungsfehler zur Authorize.Net API: ', 'mp' ) . $response->get_error_message(), 'order-review-payment' );
+				return;
+			}
+
+			$code = wp_remote_retrieve_response_code( $response );
+			$resp_body = json_decode( wp_remote_retrieve_body( $response ) );
+
+			$trans = $resp_body->transactionResponse ?? null;
+			if ( $code != 200 || empty($trans) || $trans->responseCode != '1' ) {
+				$error_msg = isset($trans->errors[0]->errorText) ? $trans->errors[0]->errorText : __( 'Unbekannter Fehler bei der Authorize.Net-Transaktion.', 'mp' );
+				mp_checkout()->add_error( $error_msg, 'order-review-payment' );
+				return;
+			}
+
+			// Erfolgreich: Order speichern
+			$payment_info = array();
+			$payment_info['gateway_public_name'] = $this->public_name;
+			$payment_info['gateway_private_name'] = $this->admin_name;
+			$payment_info['method'] = 'Authorize.Net';
+			$payment_info['status'][$timestamp] = 'paid';
+			$payment_info['total'] = $amount;
+			$payment_info['currency'] = $this->currencyCode;
+			$payment_info['transaction_id'] = $trans->transId ?? '';
+
+			$order->save( array(
+				'cart' => $cart,
+				'payment_info' => $payment_info,
+				'paid' => true,
+			) );
+			wp_redirect( $order->tracking_url( false ) );
+			exit;
+		}
 
 	/**
 	 * Init settings metaboxes
