@@ -35,6 +35,7 @@ class MP_Store_Settings_Payments {
 	private function __construct() {
 		add_action( 'init', array( &$this, 'add_metaboxes' ) );
 		add_action( 'admin_head', array( &$this, 'print_styles' ) );
+		add_action( 'admin_init', array( $this, 'maybe_handle_paypal_disconnect' ) );
 	}
 
 	/**
@@ -67,6 +68,42 @@ class MP_Store_Settings_Payments {
 			'options' => $options,
 			'width'   => '50%',
 		) );
+
+		// PayPal Marketplace Onboarding-Metabox für Shop-Admins
+		if ( isset( $options['paypal_marketplace'] ) && in_array( 'paypal_marketplace', array_keys( $options ) ) ) {
+			$merchant_id = get_option( 'mp_paypal_marketplace_merchant_id_' . get_current_blog_id() );
+			$error_msg = get_option( 'mp_paypal_marketplace_onboard_error_' . get_current_blog_id() );
+			$onboard_html = '';
+			$onboard_html .= '<p>' . __( 'Verbinde dein PayPal-Konto, um Auszahlungen und Split Payments über den Marktplatz zu ermöglichen. Du wirst zu PayPal weitergeleitet und kannst den Vorgang jederzeit abbrechen.', 'mp' ) . '</p>';
+			if ( $merchant_id ) {
+				$onboard_html .= '<p style="color:green;"><strong>' . __( 'PayPal-Konto verbunden!', 'mp' ) . '</strong></p>';
+				$onboard_html .= '<form method="post" style="margin-top:10px;">';
+				$onboard_html .= '<input type="hidden" name="mp_paypal_disconnect" value="1">';
+				$onboard_html .= '<button type="submit" class="button">' . __( 'Verbindung trennen', 'mp' ) . '</button>';
+				$onboard_html .= wp_nonce_field( 'mp_paypal_disconnect', 'mp_paypal_disconnect_nonce', true, false );
+				$onboard_html .= '</form>';
+			} else {
+				$onboard_url = esc_url( add_query_arg( array( 'mp_paypal_onboard' => 1 ), admin_url() ) );
+				$onboard_html .= '<a href="' . $onboard_url . '" class="button button-primary">' . __( 'PayPal-Konto verbinden', 'mp' ) . '</a>';
+			}
+			if ( $error_msg ) {
+				$onboard_html .= '<p style="color:red;">' . esc_html( $error_msg ) . '</p>';
+				delete_option( 'mp_paypal_marketplace_onboard_error_' . get_current_blog_id() );
+			}
+			$onboard_metabox = new WPMUDEV_Metabox( array(
+				'id'          => 'mp-settings-paypal-marketplace-onboarding',
+				'page_slugs'  => array( 'store-settings-payments', 'store-settings_page_store-settings-payments' ),
+				'title'       => __( 'PayPal Marketplace Onboarding', 'mp' ),
+				'option_name' => '',
+				'order'       => 2,
+			) );
+			$onboard_metabox->add_field( 'text', array(
+				'name'  => 'paypal_marketplace_onboarding_dummy',
+				'label' => array( 'text' => '' ),
+				'desc'  => $onboard_html,
+				'custom' => array('style' => 'display:none'), // Feld selbst verstecken, nur Beschreibung anzeigen
+			) );
+		}
 	}
 
 	/**
@@ -85,6 +122,19 @@ class MP_Store_Settings_Payments {
 		echo '<style type="text/css">
 			#mp-settings-payments, #mp-settings-payments + p.submit { display: none; }
 			</style>';
+	}
+
+	/**
+	 * Handle PayPal disconnect action
+	 */
+	public function maybe_handle_paypal_disconnect() {
+		if ( isset( $_POST['mp_paypal_disconnect'] ) && check_admin_referer( 'mp_paypal_disconnect', 'mp_paypal_disconnect_nonce' ) ) {
+			delete_option( 'mp_paypal_marketplace_merchant_id_' . get_current_blog_id() );
+			// Optional: Feedback für den User
+			add_action( 'admin_notices', function() {
+				echo '<div class="notice notice-success is-dismissible"><p>' . __( 'PayPal-Verbindung wurde getrennt.', 'mp' ) . '</p></div>';
+			} );
+		}
 	}
 
 }

@@ -82,7 +82,6 @@ Akzeptieren Sie Zahlungen mit einem der 15 integrierten beliebten Zahlungs-Gatew
 * Mijireh
 * Mollie
 * Paymill
-* PayPal Chained Payments
 * PayPal Express Checkout
 * PayPal PayFlow Pro
 * PIN
@@ -545,51 +544,6 @@ Also, worauf warten Sie noch? Starten Sie noch heute mit <a href="http://premium
 * Fix fatal conflict with SEO features of Genesis/Catalyst themes on category pages
 * Change text of last checkout breadcrumb to "Order Complete"
 * Sanitize price fields in various shipping modules
-* Add New Zealand locale to paypal gateways
-* Fix broken new order emails if % is included in product title
-* Fix paypal express documentation links
-* Add setting for "Collect Address on Downloadable Only Cart"
-* SQL injection hardening
-* Allow styling of global products by site (blogid in classname)
-* Fix sort by price in product list widget http://wp.mu/1r5
-* Fix popular products shortcode ordering
-* Change Shipping form label when shipping is turned off
-* Add CAD to stripe gateway
-* Add Israel locale to PayPal gateway
-* Fix function name conflict with WP-Client plugin
-* Fix mp_product_list shortcode list_view argument
-* Added eWay Rapid Payments 3.0 gateway (beta)
-* Fixed FedEx no results problem. Shipment in non US countries were treated as International even though the destination was the same country.
-* Added "Disable Large Image Display" to Presentatio, which prevents clicking on a product image from displaying a large image. Requested to prevent poaching large gallery images.
-* Changed class if Lightbox is disabled so that if another plugin loads lightbox the product images won't use it.
-* Fix a fatal error that slipped through when sending emails. Important!
-* Add mp_product_sku() template function and shortcode
-* Add setting to disable sales tax on digital products if desired
-* Add option to set products to draft when out of stock
-* Show all gateways to super admins in multisite (avoid confusion)
-* Fix rounding errors with tax inclusive pricing (big one!)
-* Fix problems with ajax paging with grid on taxonomy archive pages
-* Fix css class on product images
-* Fix being unable to overwrite shipping information fields with a blank value
-* Fix grid bug when no styles are loaded http://wp.mu/h7
-* Pass messages settings through wpautop()
-* Added check for US country before trimming zip code to 5 characters in calculated shipping modules
-* Disabled continue button on shipping form while shipping rates are being updated
-* Fix up some notices and warnings on profile page: http://wp.mu/kl
-* Reformat various template functions and their documentation
-* Fix bug in PayPal/Moneybookers/eWay gateways with shipping method set to none
-* Fix iDeal gateway tax inclusive pricing bug by dropping extra tax line item
-* Add very beta Fedex shipping module
-* Fix php warning when marking as shipped
-* Fix missing orders export box on All orders page: http://wp.mu/ee
-* Small fixes to css styles for external links
-* Added UPS Shipping plugin!
-* Added built in grid views!
-* Add in AJAX dropdown category and order filters to listings pages
-* Add optional breadcrumbs to checkout process steps
-* Add default product images
-* Added ability to trash/delete orders and adjusts stock counts accordingly
-* Add featured image import support to the CSV importer
 * Add a "clone product" functionality
 * Add hooks for custom shipping methods and tracking links
 * Major refresh of css styles

@@ -366,10 +366,20 @@ class MP_Admin_Multisite {
 		) );
 
 		$all_gateways = MP_Gateway_API::get_gateways();
+		// Debug-Logging: Alle Gateways und deren Global-Status ausgeben
+		if ( defined('WP_DEBUG') && WP_DEBUG ) {
+			$debug_gateways = array();
+			foreach ( $all_gateways as $code => $gateway ) {
+				$debug_gateways[$code] = array(
+					'name' => $gateway[1],
+					'is_global' => $gateway[2],
+				);
+			}
+			
+		}
 		$gateways     = array( '' => __( 'Wähle ein Gateway', 'mp' ) );
 
 		foreach ( $all_gateways as $code => $gateway ) {
-
 			if ( ! $gateway[2] ) {
 				// Skip non-global gateways
 				continue;
