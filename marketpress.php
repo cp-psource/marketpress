@@ -3,7 +3,7 @@
 Plugin Name: MarketPress
 Plugin URI:  https://cp-psource.github.io/marketpress/
 Description: The complete WordPress ecommerce plugin - works perfectly with BuddyPress and Multisite too to create a social marketplace, where you can take a percentage! Activate the plugin, adjust your settings then add some products to your store.
-Version:     3.3.3
+Version:     3.3.4
 Author:      PSOURCE
 Author URI:  https://github.com/cp-psource
 Text Domain: mp
@@ -48,7 +48,292 @@ $myUpdateChecker->setBranch('main');
 /**
  * @@@@@@@@@@@@@@@@@ ENDE PS UPDATER 1.3 @@@@@@@@@@@
  **/
-define( 'MP_VERSION', '3.3.3' );
+
+/**
+ * Modern UI System for MarketPress - replaces jQuery UI with modern alternatives
+ * 
+ * @since 3.3.4
+ */
+function mp_init_modern_ui_system() {
+    // Load modern UI components on admin pages and frontend
+    add_action('admin_enqueue_scripts', 'mp_enqueue_modern_ui_scripts', 5);
+    add_action('wp_enqueue_scripts', 'mp_enqueue_modern_ui_scripts', 5);
+    
+    // Replace jQuery UI completely - run early to prevent other code from loading it
+    add_action('wp_enqueue_scripts', 'mp_dequeue_jquery_ui', 1);
+    add_action('admin_enqueue_scripts', 'mp_dequeue_jquery_ui', 1);
+    
+    // Hook into script registration to replace jQuery UI immediately
+    add_action('wp_default_scripts', 'mp_override_jquery_ui_scripts');
+    
+    // Disable ClassicPress warnings completely
+    if (function_exists('classicpress_version')) {
+        remove_action('admin_enqueue_scripts', '_cp_deprecate_wp_enqueue_scripts');
+        remove_action('wp_enqueue_scripts', '_cp_deprecate_wp_enqueue_scripts');
+    }
+}
+
+/**
+ * Enqueue modern UI scripts and styles
+ * 
+ * @since 3.3.4
+ */
+function mp_enqueue_modern_ui_scripts() {
+    // Always load the modern UI system on relevant pages
+    
+    // Load modern alternatives
+    
+    // 1. Flatpickr for date pickers (replaces jQuery UI datepicker)
+    wp_enqueue_script(
+        'mp-flatpickr',
+        'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js',
+        array('jquery'),
+        '4.6.13',
+        true
+    );
+    wp_enqueue_style(
+        'mp-flatpickr-css',
+        'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css',
+        array(),
+        '4.6.13'
+    );
+    
+    // 2. SortableJS for drag & drop (replaces jQuery UI sortable)
+    wp_enqueue_script(
+        'mp-sortablejs',
+        'https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js',
+        array(),
+        '1.15.0',
+        true
+    );
+    
+    // 3. Tippy.js for tooltips (replaces jQuery UI tooltip)
+    wp_enqueue_script(
+        'mp-tippy',
+        'https://unpkg.com/@popperjs/core@2',
+        array(),
+        '2.11.8',
+        true
+    );
+    wp_enqueue_script(
+        'mp-tippy-main',
+        'https://unpkg.com/tippy.js@6',
+        array('mp-tippy'),
+        '6.3.7',
+        true
+    );
+    
+    // 4. Our custom compatibility layer
+    wp_enqueue_script(
+        'mp-modern-ui',
+        mp_plugin_url('ui/js/mp-modern-ui.js'),
+        array('jquery', 'mp-flatpickr', 'mp-sortablejs', 'mp-tippy-main'),
+        MP_VERSION,
+        true
+    );
+    
+    // 5. Modern UI styles
+    wp_enqueue_style(
+        'mp-modern-ui-css',
+        mp_plugin_url('ui/css/mp-modern-ui.css'),
+        array('mp-flatpickr-css'),
+        MP_VERSION
+    );
+    
+    // Pass configuration to JavaScript
+    wp_localize_script('mp-modern-ui', 'mpModernUI', array(
+        'debug' => WP_DEBUG,
+        'adminUrl' => admin_url(),
+        'nonce' => wp_create_nonce('mp_modern_ui'),
+        'strings' => array(
+            'loading' => __('Laden...', 'mp'),
+            'error' => __('Fehler aufgetreten', 'mp'),
+            'confirm' => __('Sind Sie sicher?', 'mp'),
+            'cancel' => __('Abbrechen', 'mp'),
+            'save' => __('Speichern', 'mp'),
+        )
+    ));
+}
+
+/**
+ * Override jQuery UI scripts to prevent them from loading
+ * 
+ * @since 3.3.4
+ */
+function mp_override_jquery_ui_scripts($scripts) {
+    // List of jQuery UI scripts to disable (but keep essential ones for WordPress core)
+    $jquery_ui_scripts = array(
+        'jquery-ui-datepicker',
+        'jquery-ui-dialog',
+        'jquery-ui-menu',
+        'jquery-ui-progressbar',
+        'jquery-ui-slider',
+        'jquery-ui-spinner',
+        'jquery-ui-tabs',
+        'jquery-ui-tooltip',
+        'jquery-ui-accordion',
+        'jquery-ui-button',
+        'jquery-effects-blind',
+        'jquery-effects-bounce',
+        'jquery-effects-clip',
+        'jquery-effects-drop',
+        'jquery-effects-explode',
+        'jquery-effects-fade',
+        'jquery-effects-fold',
+        'jquery-effects-highlight',
+        'jquery-effects-pulsate',
+        'jquery-effects-scale',
+        'jquery-effects-shake',
+        'jquery-effects-slide',
+        'jquery-effects-transfer',
+    );
+    
+    // Replace problematic jQuery UI scripts with empty stub
+    foreach ($jquery_ui_scripts as $script) {
+        $scripts->add($script, false, array('jquery'), MP_VERSION);
+    }
+}
+
+/**
+ * Remove jQuery UI scripts to prevent conflicts
+ * 
+ * @since 3.3.4
+ */
+function mp_dequeue_jquery_ui() {
+    // List of jQuery UI scripts to remove (but keep essential ones for WordPress core)
+    $jquery_ui_scripts = array(
+        'jquery-ui-datepicker',
+        'jquery-ui-dialog',
+        'jquery-ui-menu',
+        'jquery-ui-progressbar',
+        'jquery-ui-slider',
+        'jquery-ui-spinner',
+        'jquery-ui-tabs',
+        'jquery-ui-tooltip',
+        'jquery-ui-accordion',
+        'jquery-ui-button',
+        'jquery-effects-blind',
+        'jquery-effects-bounce',
+        'jquery-effects-clip',
+        'jquery-effects-drop',
+        'jquery-effects-explode',
+        'jquery-effects-fade',
+        'jquery-effects-fold',
+        'jquery-effects-highlight',
+        'jquery-effects-pulsate',
+        'jquery-effects-scale',
+        'jquery-effects-shake',
+        'jquery-effects-slide',
+        'jquery-effects-transfer',
+    );
+    
+    // Remove problematic jQuery UI scripts
+    foreach ($jquery_ui_scripts as $script) {
+        wp_dequeue_script($script);
+        wp_deregister_script($script);
+    }
+    
+    // Remove jQuery UI styles
+    wp_dequeue_style('jquery-ui-core');
+    wp_dequeue_style('jquery-ui-theme');
+    wp_dequeue_style('jquery-ui-datepicker');
+    wp_dequeue_style('jquery-ui-dialog');
+    wp_dequeue_style('jquery-ui');
+    wp_dequeue_style('jquery-smoothness');
+    wp_dequeue_style('jquery-ui-smoothness-theme');
+}
+
+/**
+ * Check if we're on a MarketPress page
+ * 
+ * @return bool
+ * @since 3.3.4
+ */
+function mp_is_marketpress_page() {
+    global $pagenow;
+    
+    // Admin pages
+    if (is_admin()) {
+        // MarketPress admin pages
+        if (isset($_GET['page']) && strpos($_GET['page'], 'store-') === 0) {
+            return true;
+        }
+        
+        // Product pages
+        if (isset($_GET['post_type']) && $_GET['post_type'] === 'product') {
+            return true;
+        }
+        
+        // Product taxonomy pages (edit-tags.php for categories/tags)
+        if (isset($_GET['taxonomy']) && in_array($_GET['taxonomy'], ['product_category', 'product_tag'])) {
+            return true;
+        }
+        
+        // Edit taxonomy pages specifically
+        if ($pagenow === 'edit-tags.php' && isset($_GET['taxonomy'])) {
+            if (in_array($_GET['taxonomy'], ['product_category', 'product_tag'])) {
+                return true;
+            }
+        }
+        
+        // Term edit pages
+        if ($pagenow === 'term.php' && isset($_GET['taxonomy'])) {
+            if (in_array($_GET['taxonomy'], ['product_category', 'product_tag'])) {
+                return true;
+            }
+        }
+        
+        // Order pages
+        if (isset($_GET['post_type']) && $_GET['post_type'] === 'mp_order') {
+            return true;
+        }
+        
+        // Edit product pages
+        if ($pagenow === 'post.php' && isset($_GET['post'])) {
+            $post_type = get_post_type($_GET['post']);
+            if ($post_type === 'product' || $post_type === 'mp_order') {
+                return true;
+            }
+        }
+        
+        // Post-new pages for products
+        if ($pagenow === 'post-new.php' && isset($_GET['post_type']) && $_GET['post_type'] === 'product') {
+            return true;
+        }
+    }
+    
+    // Frontend pages
+    if (!is_admin() && function_exists('mp_get_setting')) {
+        $shop_pages = array(
+            mp_get_setting('pages->store'),
+            mp_get_setting('pages->products'),
+            mp_get_setting('pages->cart'),
+            mp_get_setting('pages->checkout'),
+            mp_get_setting('pages->order_status'),
+        );
+        
+        if (is_page($shop_pages)) {
+            return true;
+        }
+        
+        // Product single pages
+        if (is_singular('product')) {
+            return true;
+        }
+        
+        // Product category/tag pages
+        if (is_tax('product_category') || is_tax('product_tag')) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+// Initialize the modern UI system very early
+add_action('plugins_loaded', 'mp_init_modern_ui_system', 1);
+
+define( 'MP_VERSION', '3.3.4' );
 
 /**
  * Main class Marketpress.

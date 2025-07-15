@@ -640,8 +640,7 @@ class WPMUDEV_Metabox {
 				wp_register_script( 'jquery-validate-methods', $this->class_url( 'ui/js/jquery.validate.methods.min.js' ), array( 'jquery-validate' ), '1.12' );
 				wp_enqueue_script( 'wpmudev-metaboxes-admin', $this->class_url( 'ui/js/admin.js' ), array(
 					'jquery-validate-methods',
-					'jquery-ui-position',
-					'jquery-effects-highlight'
+					'mp-modern-ui'
 				), WPMUDEV_METABOX_VERSION, true );
 		}
 

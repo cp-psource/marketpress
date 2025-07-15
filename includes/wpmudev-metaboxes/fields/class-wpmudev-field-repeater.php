@@ -354,8 +354,8 @@ class WPMUDEV_Field_Repeater extends WPMUDEV_Field {
 	 * @access public
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script('jquery-ui-core');
+		// Use modern UI instead of jQuery UI sortable
+		wp_enqueue_script('mp-modern-ui');
 	}
 	
 	/**

@@ -62,7 +62,8 @@ class WPMUDEV_Field_WYSIWYG extends WPMUDEV_Field {
 	 * @access public
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script('jquery-ui-core');	//required to use uniqueId() function
+		// Use modern UI instead of jQuery UI core
+		wp_enqueue_script('mp-modern-ui');
 	}
 	
 	/**

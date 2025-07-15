@@ -1,0 +1,440 @@
+/**
+ * MarketPress Modern UI Styles
+ * 
+ * Modern replacement for jQuery UI styles
+ * 
+ * @since 3.3.4
+ */
+
+/* ==========================================================================
+   Base Variables
+   ========================================================================== */
+:root {
+    --mp-primary-color: #0073aa;
+    --mp-secondary-color: #005177;
+    --mp-success-color: #46b450;
+    --mp-warning-color: #ffb900;
+    --mp-error-color: #dc3232;
+    --mp-border-color: #ddd;
+    --mp-border-radius: 4px;
+    --mp-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --mp-transition: all 0.2s ease;
+}
+
+/* ==========================================================================
+   Sortable Components
+   ========================================================================== */
+.mp-sortable {
+    min-height: 20px;
+}
+
+.mp-sortable-ghost {
+    opacity: 0.4;
+    background: #f0f0f0;
+    border: 2px dashed var(--mp-border-color);
+}
+
+.mp-sortable-chosen {
+    background: var(--mp-primary-color);
+    color: white;
+    transform: scale(1.02);
+    box-shadow: var(--mp-box-shadow);
+}
+
+.mp-sortable-drag {
+    opacity: 0.8;
+    transform: rotate(2deg);
+}
+
+/* ==========================================================================
+   Tabs
+   ========================================================================== */
+.mp-tabs,
+.ui-tabs {
+    border: 1px solid var(--mp-border-color);
+    border-radius: var(--mp-border-radius);
+    background: white;
+    overflow: hidden;
+}
+
+.mp-tabs-nav,
+.ui-tabs-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 1px solid var(--mp-border-color);
+}
+
+.mp-tabs-nav li,
+.ui-tabs-nav li {
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.mp-tabs-nav li a,
+.ui-tabs-nav li a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #555;
+    border-right: 1px solid var(--mp-border-color);
+    transition: var(--mp-transition);
+    background: transparent;
+}
+
+.mp-tabs-nav li:last-child a,
+.ui-tabs-nav li:last-child a {
+    border-right: none;
+}
+
+.mp-tabs-nav li a:hover,
+.ui-tabs-nav li a:hover {
+    background: #e9ecef;
+    color: var(--mp-primary-color);
+}
+
+.mp-tabs-nav li.mp-tabs-active a,
+.ui-tabs-nav li.mp-tabs-active a {
+    background: white;
+    color: var(--mp-primary-color);
+    border-bottom: 2px solid var(--mp-primary-color);
+    font-weight: 600;
+}
+
+.mp-tabs-panel,
+.ui-tabs-panel {
+    padding: 20px;
+    background: white;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.mp-button-modern,
+.ui-button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 2px;
+    border: 1px solid var(--mp-border-color);
+    border-radius: var(--mp-border-radius);
+    background: white;
+    color: #555;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--mp-transition);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.mp-button-modern:hover,
+.ui-button:hover {
+    background: #f8f9fa;
+    border-color: var(--mp-primary-color);
+    color: var(--mp-primary-color);
+}
+
+.mp-button-modern:active,
+.ui-button:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mp-button-modern.mp-button-primary,
+.ui-button.ui-button-primary {
+    background: var(--mp-primary-color);
+    color: white;
+    border-color: var(--mp-secondary-color);
+}
+
+.mp-button-modern.mp-button-primary:hover,
+.ui-button.ui-button-primary:hover {
+    background: var(--mp-secondary-color);
+}
+
+.mp-button-modern.mp-button-success,
+.ui-button.ui-button-success {
+    background: var(--mp-success-color);
+    color: white;
+    border-color: #3e8e41;
+}
+
+.mp-button-modern.mp-button-warning,
+.ui-button.ui-button-warning {
+    background: var(--mp-warning-color);
+    color: white;
+    border-color: #e6a500;
+}
+
+.mp-button-modern.mp-button-error,
+.ui-button.ui-button-error {
+    background: var(--mp-error-color);
+    color: white;
+    border-color: #c32d2d;
+}
+
+/* ==========================================================================
+   Progress Bars
+   ========================================================================== */
+.mp-progressbar,
+.ui-progressbar {
+    width: 100%;
+    height: 20px;
+    background: #f0f0f0;
+    border: 1px solid var(--mp-border-color);
+    border-radius: var(--mp-border-radius);
+    overflow: hidden;
+    position: relative;
+}
+
+.mp-progressbar-fill,
+.ui-progressbar-value {
+    height: 100%;
+    background: linear-gradient(90deg, var(--mp-primary-color), var(--mp-secondary-color));
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.mp-progressbar-fill::after,
+.ui-progressbar-value::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
+    animation: progress-animation 1s linear infinite;
+}
+
+@keyframes progress-animation {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 0; }
+}
+
+/* ==========================================================================
+   Modal Dialogs
+   ========================================================================== */
+.mp-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.2s ease;
+}
+
+.mp-modal-dialog {
+    background: white;
+    border-radius: var(--mp-border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    max-height: 80vh;
+    width: 90%;
+    position: relative;
+    animation: slideIn 0.3s ease;
+    overflow: hidden;
+}
+
+.mp-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    z-index: 10001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--mp-transition);
+}
+
+.mp-modal-close:hover {
+    background: #f0f0f0;
+    color: var(--mp-error-color);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* ==========================================================================
+   Tooltips (Tippy.js theme override)
+   ========================================================================== */
+.tippy-box[data-theme~='mp-theme'] {
+    background-color: #333;
+    color: white;
+    border-radius: var(--mp-border-radius);
+    font-size: 13px;
+    padding: 8px 12px;
+    box-shadow: var(--mp-box-shadow);
+}
+
+.tippy-box[data-theme~='mp-theme'][data-placement^='top'] > .tippy-arrow::before {
+    border-top-color: #333;
+}
+
+.tippy-box[data-theme~='mp-theme'][data-placement^='bottom'] > .tippy-arrow::before {
+    border-bottom-color: #333;
+}
+
+.tippy-box[data-theme~='mp-theme'][data-placement^='left'] > .tippy-arrow::before {
+    border-left-color: #333;
+}
+
+.tippy-box[data-theme~='mp-theme'][data-placement^='right'] > .tippy-arrow::before {
+    border-right-color: #333;
+}
+
+/* ==========================================================================
+   Form Elements
+   ========================================================================== */
+.mp-form-field {
+    margin-bottom: 15px;
+}
+
+.mp-form-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+.mp-form-field input,
+.mp-form-field select,
+.mp-form-field textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--mp-border-color);
+    border-radius: var(--mp-border-radius);
+    transition: var(--mp-transition);
+    font-size: 14px;
+}
+
+.mp-form-field input:focus,
+.mp-form-field select:focus,
+.mp-form-field textarea:focus {
+    outline: none;
+    border-color: var(--mp-primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.1);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 768px) {
+    .mp-tabs-nav,
+    .ui-tabs-nav {
+        flex-direction: column;
+    }
+    
+    .mp-tabs-nav li a,
+    .ui-tabs-nav li a {
+        border-right: none;
+        border-bottom: 1px solid var(--mp-border-color);
+    }
+    
+    .mp-tabs-nav li:last-child a,
+    .ui-tabs-nav li:last-child a {
+        border-bottom: none;
+    }
+    
+    .mp-modal-dialog {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .mp-button-modern,
+    .ui-button {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+.mp-button-modern:focus,
+.ui-button:focus,
+.mp-tabs-nav li a:focus,
+.ui-tabs-nav li a:focus {
+    outline: 2px solid var(--mp-primary-color);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --mp-border-color: #000;
+        --mp-primary-color: #0000ff;
+        --mp-secondary-color: #000080;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==========================================================================
+   Metabox Fixes
+   ========================================================================== */
+
+/* Fix for Metabox clicking issues - prevent blue background */
+.postbox .handlediv,
+.postbox .handlediv:hover,
+.postbox .handlediv:focus {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.postbox .hndle {
+    cursor: pointer;
+}
+
+/* Prevent blue background on metabox interactions */
+.postbox:active,
+.postbox:focus,
+.postbox.ui-sortable-helper {
+    background: transparent !important;
+}
+
+/* Fix metabox field focus issues */
+.postbox .inside input:focus,
+.postbox .inside select:focus,
+.postbox .inside textarea:focus {
+    outline: 2px solid var(--mp-primary-color);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Flatpickr Styles
+   ========================================================================== */

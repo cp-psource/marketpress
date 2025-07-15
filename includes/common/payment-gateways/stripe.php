@@ -207,7 +207,10 @@ class MP_Gateway_Stripe extends MP_Gateway_API {
 		}
 
 		wp_enqueue_script( 'stripe-js', 'https://js.stripe.com/v3/', array(), null );
-		wp_enqueue_script( 'stripe-token', mp_plugin_url( 'includes/common/payment-gateways/stripe-files/stripe_token.js' ), array( 'stripe-js', 'jquery-ui-core' ), MP_VERSION );
+		
+		// Use modern UI instead of jQuery UI
+		wp_enqueue_script( 'stripe-token', mp_plugin_url( 'includes/common/payment-gateways/stripe-files/stripe_token.js' ), array( 'stripe-js', 'jquery' ), MP_VERSION );
+		
 		wp_localize_script( 'stripe-token', 'mp_stripe_vars', [
 			'publishable_key' => $this->publishable_key
 		]);
