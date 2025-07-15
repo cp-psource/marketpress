@@ -159,4 +159,34 @@ remove_filter('http_request_host_is_external', array($this, 'allowMetadataHost')
 remove_action('puc_api_error', array($this, 'collectApiErrors'), 10);
 remove_action('init', array($this, 'loadTextDomain'));
 ...weitere im Quellcode...
-```
+````
+
+## Detaillierte Übersicht: Hooks, Actions und Filter
+
+Die folgende Liste enthält alle gefundenen WordPress-Hooks, Actions und Filter im Plugin, jeweils mit Dateipfad und Funktionsname. So kannst du gezielt nach Einsatzstellen und Erweiterungspunkten suchen.
+
+| Typ         | Hook/Filter                | Funktion/Methode                  | Datei/Zeile |
+|-------------|----------------------------|-----------------------------------|-------------|
+| add_action  | admin_menu                 | mp_st_admin_menu                  | includes/addons/mp-statistics/mp-stats.php:25 |
+| add_action  | admin_enqueue_scripts      | mp_st_enqueue_scripts             | includes/addons/mp-statistics/mp-stats.php:37 |
+| add_action  | wp_ajax_mp_get_sales_data  | mp_st_get_sales_data              | includes/addons/mp-statistics/mp-stats.php:57 |
+| add_filter  | mp_product_file_url_type   | file_type                         | includes/addons/mp-multi-file-download/class-mp-multi-file-download-addon.php:48 |
+| add_action  | mp_addons/enable/MP_Prosites_Addon | on_enable                | includes/addons/mp-prosites/class-mp-prosites-addon.php:142 |
+| add_filter  | mp_admin_multisite/theme_permissions_options | permissions_options | includes/addons/mp-prosites/class-mp-prosites-addon.php:143 |
+| add_filter  | mp_admin_multisite/gateway_permissions_options | permissions_options | includes/addons/mp-prosites/class-mp-prosites-addon.php:144 |
+| add_filter  | mp_gateway_api/get_gateways | get_gateways                      | includes/addons/mp-prosites/class-mp-prosites-addon.php:145 |
+| add_filter  | mp_get_theme_list          | get_theme_list                    | includes/addons/mp-prosites/class-mp-prosites-addon.php:146 |
+| add_filter  | mp_addon_status_column_data| disable_active_deactive_ability   | includes/addons/mp-prosites/class-mp-prosites-addon.php:147 |
+| add_action  | init                      | register_post_type                | includes/addons/mp-coupons/class-mp-coupons-addon.php:76 |
+| add_action  | switch_blog                | get_applied                       | includes/addons/mp-coupons/class-mp-coupons-addon.php:77 |
+| add_filter  | mp_cart/after_cart_store_html | coupon_form_cart              | includes/addons/mp-coupons/class-mp-coupons-addon.php:83 |
+| add_filter  | mp_cart/after_cart_html    | coupon_form_cart                  | includes/addons/mp-coupons/class-mp-coupons-addon.php:85 |
+| add_filter  | mp_product/get_price       | product_price                     | includes/addons/mp-coupons/class-mp-coupons-addon.php:88 |
+| add_filter  | mp_cart/product_total      | product_total                     | includes/addons/mp-coupons/class-mp-coupons-addon.php:89 |
+| add_filter  | mp_cart/total              | cart_total                        | includes/addons/mp-coupons/class-mp-coupons-addon.php:90 |
+| add_filter  | mp_cart/tax_total          | tax_total                         | includes/addons/mp-coupons/class-mp-coupons-addon.php:92 |
+| add_filter  | mp_cart/cart_meta/product_total | cart_meta_product_total       | includes/addons/mp-coupons/class-mp-coupons-addon.php:94 |
+| apply_filters| mp_coupon/is_valid        | (Rückgabe)                        | includes/addons/mp-coupons/class-mp-coupon.php:503 |
+| ...         | ...                        | ...                               | ...         |
+
+*Hinweis: Die Tabelle ist ein Auszug. Für die vollständige Übersicht bitte den Quellcode durchsuchen oder automatisiert extrahieren.*
