@@ -34,6 +34,8 @@ class MP_Store_Settings_Admin {
 private function __construct() {
     mp_include_dir( mp_plugin_dir( 'includes/admin/store-settings/' ) );
 
+    // Handle redirects early to avoid header issues
+    add_action( 'admin_init', array( &$this, 'handle_redirects' ) );
     // Add menu items
     add_action( 'admin_menu', array( &$this, 'add_menu_items' ) );
     // Print scripts for setting the active admin menu item when on the product tag page
@@ -120,15 +122,15 @@ private function __construct() {
 		add_submenu_page( 'store-settings', __( 'Store Settings: Payments', 'mp' ), __( 'Payments', 'mp' ), $cap, 'store-settings-payments', array( &$this, 'display_settings_form' ) );
 		add_submenu_page( 'store-settings', __( 'Store Settings: Product Attributes', 'mp' ), __( 'Product Attributes', 'mp' ), $cap, 'store-settings-productattributes', array( 'MP_Product_Attributes_Admin', 'display_product_attributes' ) );
 	
-		add_submenu_page( 'store-settings', __( 'Store Settings: Product Categories', 'mp' ), __( 'Product Categories', 'mp' ),
-			apply_filters( 'mp_manage_product_categories_cap', 'manage_product_categories' ),
-			'store-settings-productcategories', array( $this, 'redirect_to_product_categories' )
-		);
-	
-		add_submenu_page( 'store-settings', __( 'Store Settings: Product Tags', 'mp' ), __( 'Product Tags', 'mp' ),
-			apply_filters( 'mp_manage_product_tags_cap', 'manage_product_tags' ),
-			'store-settings-producttags', array( $this, 'redirect_to_product_tags' )
-		);
+	add_submenu_page( 'store-settings', __( 'Store Settings: Product Categories', 'mp' ), __( 'Product Categories', 'mp' ),
+		apply_filters( 'mp_manage_product_categories_cap', 'manage_product_categories' ),
+		'store-settings-productcategories', '__return_empty_string'
+	);
+
+	add_submenu_page( 'store-settings', __( 'Store Settings: Product Tags', 'mp' ), __( 'Product Tags', 'mp' ),
+		apply_filters( 'mp_manage_product_tags_cap', 'manage_product_tags' ),
+		'store-settings-producttags', '__return_empty_string'
+	);
 	
 		add_submenu_page( 'store-settings', __( 'Store Settings: Capabilities', 'mp' ), __( 'User Capabilities', 'mp' ), $cap, 'store-settings-capabilities', array( &$this, 'display_settings_form' ) );
 	
@@ -159,26 +161,6 @@ private function __construct() {
 			add_action( 'store-settings_page_store-setup-wizard', array( &$this, 'add_help_tab' ) );
 			add_action( 'store-settings_page_store-settings-addons', array( &$this, 'add_help_tab' ) );
 		}
-	}
-	
-	public function redirect_to_product_categories() {
-		wp_redirect( admin_url( 'edit-tags.php?taxonomy=product_category&post_type=' . MP_Product::get_post_type() ) );
-		exit;
-	}
-	
-	public function redirect_to_product_tags() {
-		wp_redirect( admin_url( 'edit-tags.php?taxonomy=product_tag&post_type=' . MP_Product::get_post_type() ) );
-		exit;
-	}
-	
-	public function redirect_to_importers() {
-		wp_redirect( admin_url( 'tools.php?page=store-settings-import' ) );
-		exit;
-	}
-	
-	public function redirect_to_exporters() {
-		wp_redirect( admin_url( 'tools.php?page=store-settings-export' ) );
-		exit;
 	}
 
 	/**
@@ -364,6 +346,41 @@ private function __construct() {
 
 		wp_cache_set( 'store_pages_ids', $store_pages_ids, 'marketpress' );
 
+	}
+
+	/**
+	 * Handle redirects early to avoid header issues
+	 *
+	 * @since 3.0
+	 * @access public
+	 */
+	public function handle_redirects() {
+		// Only handle redirects in admin area
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		// Check if we're on one of the redirect pages
+		$page = mp_get_get_value( 'page' );
+		
+		switch ( $page ) {
+			case 'store-settings-productcategories':
+				wp_redirect( admin_url( 'edit-tags.php?taxonomy=product_category&post_type=' . MP_Product::get_post_type() ) );
+				exit;
+				break;
+			case 'store-settings-producttags':
+				wp_redirect( admin_url( 'edit-tags.php?taxonomy=product_tag&post_type=' . MP_Product::get_post_type() ) );
+				exit;
+				break;
+			case 'store-settings-importers':
+				wp_redirect( admin_url( 'tools.php?page=store-settings-import' ) );
+				exit;
+				break;
+			case 'store-settings-exporters':
+				wp_redirect( admin_url( 'tools.php?page=store-settings-export' ) );
+				exit;
+				break;
+		}
 	}
 
 }
