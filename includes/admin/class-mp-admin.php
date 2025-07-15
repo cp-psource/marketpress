@@ -85,7 +85,7 @@ class MP_Admin {
 		<?php
 	}
 
-	public function deprecated_gateway_notice(){
+	/*public function deprecated_gateway_notice(){
 	if(!current_user_can('manage_options')){
 	return;
 	}
@@ -97,7 +97,7 @@ class MP_Admin {
 		<a href="#" class="mp-dismissed-deprecated-notice"><i class="dashicons dashicons-no-alt"></i></a>
 		</div>
 		<?php
-	}
+	}*/
 
 	public function print_deprecated_notice_scripts(){
 	if(!current_user_can('manage_options')){
