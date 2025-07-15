@@ -4,7 +4,7 @@ Tags: E-commerce, ecommerce, storefront, sell, store, shopping, cart, payment ga
 Requires at least: 3.7
 Requires PHP: 7.4
 Tested up to: 6.8.1
-Stable tag: 3.3.3
+Stable tag: 3.3.4
 
 Leistungsstarker E-Commerce-Marktplatz für WordPress und Multisite. 100 % kostenlos und keine Erweiterungen erforderlich.
 
@@ -109,6 +109,11 @@ Falls Sie beim Einstieg auf Probleme stoßen, ist <a href="https://cp-psource.gi
 Also, worauf warten Sie noch? Starten Sie noch heute mit <a href="http://premium.wpmudev.org/project/e-commerce/">MarketPress eCommerce</a>. Alles, was Sie brauchen, um Ihren Online-Shop zu starten und auszubauen.
 
 == Changelog ==
+
+= 3.3.4 =
+
+* Fix Error Produkt Kategorien
+* Veraltetes jQuery durch moderne Alternativen ersetzt
 
 = 3.3.3 =
 
