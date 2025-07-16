@@ -76,12 +76,21 @@ class MP_Product_Attributes_Admin {
 					   <input type="hidden" name="page" value="<?php echo $_REQUEST[ 'page' ]; ?>" />
 					   <?php $list_table->display(); ?>
 				   </form>
-			   <?php elseif ($_GET['action'] === 'mp_add_product_attribute' || $_GET['action'] === 'mp_edit_product_attribute') : ?>
+		   <?php elseif ($_GET['action'] === 'mp_add_product_attribute' || $_GET['action'] === 'mp_edit_product_attribute') : ?>
+			   <form method="post" class="wpmudev-metabox-form" id="wpmudev-metabox-form-product-attribute">
 				   <?php
-				   // Metaboxen IMMER rendern, unabhängig vom Titel
+				   // Wichtige Hidden-Felder für das Framework
+				   wp_nonce_field('wpmudev_metabox_save', 'wpmudev_metabox_nonce');
+				   echo '<input type="hidden" name="action" value="mp_save_product_attribute">';
+				   echo '<input type="hidden" name="metabox_id" value="mp-store-settings-product-attributes-add">';
+				   // Metaboxen rendern
 				   do_action('wpmudev_metabox/render_settings_metaboxes');
 				   ?>
-			   <?php endif; ?>
+				   <div class="submit" style="margin-top:20px; display:flex; gap:10px; align-items:center;">
+					   <a href="admin.php?page=store-settings-productattributes" class="button-secondary" style="margin-left:10px; white-space:nowrap;">Zurück zur Übersicht</a>
+				   </div>
+			   </form>
+		   <?php endif; ?>
 		   </div>
 		</div>
 		<?php
