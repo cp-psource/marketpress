@@ -165,6 +165,9 @@ class MP_MARKETPRESS_COMMENTS_Addon {
         // Entferne die standard WordPress Comments-Metabox für Produkte und füge eine Bewertungs-Metabox hinzu
         add_action('add_meta_boxes', array($this, 'replace_comments_metabox'), 10);
         
+        // Entferne die Diskussions-Metabox für Produkte (nicht benötigt)
+        add_action('admin_menu', array($this, 'remove_discussion_metabox'));
+        
         // Für die Korrektur des 404-Fehlers der Schriftarten
         add_action('admin_enqueue_scripts', array($this, 'load_admin_fonts'));
     }
@@ -684,6 +687,16 @@ class MP_MARKETPRESS_COMMENTS_Addon {
                 }
             ');
         }
+    }
+    
+    /**
+     * Entferne die Diskussions-Metabox für Produkte
+     * Diese Box ist für unser Bewertungssystem nicht notwendig
+     */
+    public function remove_discussion_metabox() {
+        // Entferne die Diskussions-Metabox für Produkte
+        remove_meta_box('commentstatusdiv', 'product', 'normal');
+        remove_meta_box('commentstatusdiv', 'product', 'side');
     }
 }
 
