@@ -161,6 +161,12 @@ class MP_MARKETPRESS_COMMENTS_Addon {
         
         // Sicherstellen, dass Kommentare für Produkte aktiviert sind mit höherer Priorität als die MarketPress-Kernfunktion (die 10 hat)
         add_filter('comments_open', array($this, 'enable_comments_for_products'), 20, 2);
+        
+        // Entferne die standard WordPress Comments-Metabox für Produkte und füge eine Bewertungs-Metabox hinzu
+        add_action('add_meta_boxes', array($this, 'replace_comments_metabox'), 10);
+        
+        // Für die Korrektur des 404-Fehlers der Schriftarten
+        add_action('admin_enqueue_scripts', array($this, 'load_admin_fonts'));
     }
     
     /**
@@ -521,6 +527,162 @@ class MP_MARKETPRESS_COMMENTS_Addon {
                 'find_your_review' => __('Zu deiner Bewertung', 'mp'),
                 'already_rated' => __('Du hast dieses Produkt bereits bewertet.', 'mp')
             ));
+        }
+    }
+    
+    /**
+     * Ersetze die standard WordPress Comments-Metabox für Produkte
+     */
+    public function replace_comments_metabox() {
+        // Entferne die Standard-Metabox für Kommentare bei Produkten
+        remove_meta_box('commentsdiv', 'product', 'normal');
+        
+        // Füge unsere eigene Metabox für Produktbewertungen hinzu
+        add_meta_box(
+            'mp_product_ratings',
+            __('Produktbewertungen', 'mp'),
+            array($this, 'display_product_ratings_metabox'),
+            'product',
+            'normal',
+            'default'
+        );
+    }
+    
+    /**
+     * Anzeige der eigenen Bewertungs-Metabox für Produkte im Admin-Bereich
+     */
+    public function display_product_ratings_metabox($post) {
+        // Lade die Bewertungen
+        $args = array(
+            'post_id' => $post->ID,
+            'status' => 'approve',
+            'meta_key' => 'rating',
+        );
+        $reviews = get_comments($args);
+        $reviews_count = count($reviews);
+        
+        echo '<div class="mp-product-ratings-admin">';
+        
+        if ($reviews_count > 0) {
+            // Berechne Durchschnittsbewertung
+            $total_rating = 0;
+            foreach ($reviews as $review) {
+                $rating = get_comment_meta($review->comment_ID, 'rating', true);
+                if ($rating) {
+                    $total_rating += $rating;
+                }
+            }
+            $average_rating = $total_rating / $reviews_count;
+            $stars = str_repeat('★', round($average_rating)) . str_repeat('☆', 5 - round($average_rating));
+            
+            // Zeige Zusammenfassung
+            echo '<div class="mp-ratings-summary">';
+            echo '<p class="mp-ratings-average">';
+            echo sprintf(
+                __('Durchschnittliche Bewertung: <span style="color: #FFD700; font-size: 1.2em;">%s</span> (%s/5) aus %s Bewertungen', 'mp'),
+                $stars,
+                number_format($average_rating, 1),
+                $reviews_count
+            );
+            echo '</p>';
+            echo '</div>';
+            
+            // Zeige Liste der Bewertungen
+            echo '<div class="mp-ratings-list">';
+            echo '<h4>' . __('Alle Bewertungen', 'mp') . '</h4>';
+            
+            echo '<table class="wp-list-table widefat fixed striped">';
+            echo '<thead><tr>';
+            echo '<th>' . __('Benutzer', 'mp') . '</th>';
+            echo '<th>' . __('Bewertung', 'mp') . '</th>';
+            echo '<th>' . __('Datum', 'mp') . '</th>';
+            echo '<th>' . __('Kommentar', 'mp') . '</th>';
+            echo '<th>' . __('Aktionen', 'mp') . '</th>';
+            echo '</tr></thead>';
+            echo '<tbody>';
+            
+            foreach ($reviews as $review) {
+                $rating = get_comment_meta($review->comment_ID, 'rating', true);
+                $rating_stars = $rating ? str_repeat('★', $rating) . str_repeat('☆', 5 - $rating) : '–';
+                
+                echo '<tr>';
+                echo '<td>' . esc_html($review->comment_author) . '</td>';
+                echo '<td><span style="color: #FFD700;">' . $rating_stars . '</span> (' . $rating . '/5)</td>';
+                echo '<td>' . get_comment_date('d.m.Y H:i', $review->comment_ID) . '</td>';
+                echo '<td>' . wp_trim_words(strip_tags($review->comment_content), 15) . '</td>';
+                echo '<td>';
+                echo '<a href="' . esc_url(admin_url('comment.php?action=editcomment&c=' . $review->comment_ID)) . '" class="button button-small">' . __('Bearbeiten', 'mp') . '</a> ';
+                echo '<a href="' . esc_url(admin_url('comment.php?action=cdc&c=' . $review->comment_ID)) . '" class="button button-small">' . __('Löschen', 'mp') . '</a>';
+                echo '</td>';
+                echo '</tr>';
+            }
+            
+            echo '</tbody></table>';
+            
+            // Link zu allen Kommentaren
+            echo '<p class="mp-view-all-ratings">';
+            echo '<a href="' . admin_url('edit-comments.php?p=' . $post->ID) . '" class="button">' . __('Alle Bewertungen verwalten', 'mp') . '</a>';
+            echo '</p>';
+            
+            echo '</div>';
+        } else {
+            echo '<p>' . __('Dieses Produkt hat noch keine Bewertungen.', 'mp') . '</p>';
+        }
+        
+        echo '</div>';
+        
+        // Füge etwas CSS für die Darstellung hinzu
+        echo '<style>
+            .mp-product-ratings-admin {
+                padding: 10px 0;
+            }
+            .mp-ratings-summary {
+                margin-bottom: 20px;
+                padding: 15px;
+                background: #f9f9f9;
+                border-left: 4px solid #4CAF50;
+            }
+            .mp-ratings-average {
+                font-size: 16px;
+                margin: 0;
+            }
+            .mp-ratings-list h4 {
+                margin-top: 0;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            .mp-view-all-ratings {
+                margin-top: 15px;
+                text-align: right;
+            }
+        </style>';
+    }
+    
+    /**
+     * Lade notwendige Schriftarten im Admin-Bereich
+     */
+    public function load_admin_fonts() {
+        global $post;
+        
+        // Nur auf der Produkt-Bearbeitungsseite laden
+        if (is_admin() && isset($post) && $post && get_post_type($post->ID) === 'product') {
+            // Füge einen CSS-Fix für die fehlenden Schriftarten hinzu
+            wp_add_inline_style('wp-admin', '
+                /* Fallback für fehlende Source Sans Pro Schriftart */
+                @font-face {
+                    font-family: "Source Sans Pro";
+                    src: local("Segoe UI"), local("Helvetica Neue"), local("Roboto"), local("Arial"), sans-serif;
+                    font-weight: normal;
+                    font-style: normal;
+                }
+                
+                @font-face {
+                    font-family: "Source Sans Pro";
+                    src: local("Segoe UI Bold"), local("Helvetica Neue Bold"), local("Roboto Bold"), local("Arial Bold"), sans-serif;
+                    font-weight: bold;
+                    font-style: normal;
+                }
+            ');
         }
     }
 }
