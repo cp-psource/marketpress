@@ -879,24 +879,6 @@ if ( ! function_exists( 'array_replace_recursive' ) ) :
 
 endif;
 
-if ( ! function_exists( 'debug_to_console' ) ) :
-
-	/**
-	 * Send a log to the browser console
-	 *
-	 * @since 3.0
-	 * @access public
-	 */
-	function debug_to_console( $data ) {
-		if ( is_array( $data ) || is_object( $data ) ) {
-			echo "<script>if ( typeof(window.console) !== 'undefined' ) console.log('PHP: " . json_encode( $data ) . "');</script>";
-		} else {
-			echo "<script>if ( typeof(window.console) !== 'undefined' ) console.log('PHP: " . $data . "');</script>";
-		}
-	}
-
-endif;
-
 if ( ! function_exists( 'mp_arr_get_value' ) ) :
 
 	/**

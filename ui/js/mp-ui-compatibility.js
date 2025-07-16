@@ -16,21 +16,11 @@
     // Configuration from PHP
     var config = window.mpUIConfig || {};
     
-    // Debug logging
-    function log(message) {
-        if (config.debug) {
-            console.log('[MarketPress UI Compatibility]', message);
-        }
-    }
-    
     // Initialize compatibility layer
     function initCompatibility() {
         if (hasJQueryUI) {
-            log('jQuery UI is available, using native implementation');
             return;
         }
-        
-        log('jQuery UI not available, loading compatibility shims');
         
         // Load compatibility shims
         initDatepicker();
@@ -45,7 +35,6 @@
      */
     function initDatepicker() {
         if (typeof flatpickr === 'undefined') {
-            log('Flatpickr not available for datepicker compatibility');
             return;
         }
         
@@ -77,8 +66,6 @@
                 $input.data('flatpickr', picker);
             });
         };
-        
-        log('Datepicker compatibility loaded');
     }
     
     /**
@@ -86,7 +73,6 @@
      */
     function initSortable() {
         if (typeof Sortable === 'undefined') {
-            log('SortableJS not available for sortable compatibility');
             return;
         }
         
@@ -120,8 +106,6 @@
                 $container.data('sortable', sortable);
             });
         };
-        
-        log('Sortable compatibility loaded');
     }
     
     /**
@@ -129,7 +113,6 @@
      */
     function initTooltip() {
         if (typeof tippy === 'undefined') {
-            log('Tippy.js not available for tooltip compatibility');
             return;
         }
         
@@ -154,8 +137,6 @@
                 $element.data('tippy', instance);
             });
         };
-        
-        log('Tooltip compatibility loaded');
     }
     
     /**
@@ -206,8 +187,6 @@
                 });
             });
         };
-        
-        log('Tabs compatibility loaded');
     }
     
     /**
@@ -240,8 +219,6 @@
             
             return this;
         };
-        
-        log('Effects compatibility loaded');
     }
     
     /**
