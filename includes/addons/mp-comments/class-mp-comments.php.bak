@@ -2,7 +2,10 @@
 /**
  * MarketPress Erlaube Bewertungen Addon
  */
-class MP_MARKETPRESS_COMMENTS_Addon {
+/**
+ * MarketPress Erlaube Bewertungen Addon
+ */
+class MP_Comments_Addon {
     /**
      * Pfad zum Addon-Verzeichnis
      *
@@ -35,7 +38,7 @@ class MP_MARKETPRESS_COMMENTS_Addon {
      */
     public static function get_instance() {
         if (is_null(self::$_instance)) {
-            self::$_instance = new MP_MARKETPRESS_COMMENTS_Addon();
+            self::$_instance = new MP_Comments_Addon();
         }
         return self::$_instance;
     }
@@ -59,14 +62,10 @@ class MP_MARKETPRESS_COMMENTS_Addon {
         // Erforderliche Dateien einbinden
         require_once $this->plugin_dir . 'templates/comment-template.php';
         require_once $this->plugin_dir . 'includes/functions.php';
-        
-        // Hooks für Admin und Einstellungen
+
+        // Admin-Dateien einbinden, wenn im Admin-Bereich
         if (is_admin()) {
-            // Initialisiere die Settings-Metaboxen nur wenn wir auf der Einstellungsseite dieses Addons sind
-            if (isset($_GET['page']) && $_GET['page'] == 'store-settings-addons' && 
-                isset($_GET['addon']) && $_GET['addon'] == 'MP_MARKETPRESS_COMMENTS_Addon') {
-                add_action('init', array($this, 'init_settings_metaboxes'));
-            }
+            require_once $this->plugin_dir . 'admin/settings.php';
         }
         
         // Hooks initialisieren
@@ -77,50 +76,21 @@ class MP_MARKETPRESS_COMMENTS_Addon {
      * Initialisiere die Addon-Funktionalität
      */
     public function init() {
+        // Überprüfen, ob wir die Einstellungsseite anzeigen sollen
+        if (mp_get_get_value('addon', null) == 'MP_Comments_Addon') {
+            $this->view_settings();
+        }
+        
         // Hooks für die Integration der Produktbewertungen initialisieren
         $this->init_hooks();
     }
     
     /**
-     * Initialisiere Settings Metaboxes
-     * 
-     * @since 1.0
-     * @access public
-     * @action init
+     * Einstellungsansicht für das Addon
      */
-    public function init_settings_metaboxes() {
-        $metabox = new WPMUDEV_Metabox(array(
-            'id'          => 'mp-comments-settings-metabox',
-            'title'       => __('Bewertungseinstellungen', 'mp'),
-            'page_slugs'  => array('store-settings-addons'),
-            'option_name' => 'mp_settings',
-        ));
-        
-        // Wer darf Bewertungen abgeben?
-        $metabox->add_field('checkbox_group', array(
-            'name'          => 'comments[allowed_users]',
-            'label'         => array('text' => __('Wer darf Bewertungen abgeben?', 'mp')),
-            'options'       => array(
-                'registered' => __('Registrierte Benutzer', 'mp'),
-                'guests'     => __('Gäste', 'mp'),
-            ),
-            'default_value' => array('registered', 'guests'),
-        ));
-        
-        // Müssen Käufer das Produkt gekauft haben?
-        $metabox->add_field('radio_group', array(
-            'name'          => 'comments[require_purchase]',
-            'label'         => array('text' => __('Nur Käufer können bewerten', 'mp')),
-            'desc'          => __('Wenn aktiviert, können nur Benutzer, die das Produkt gekauft haben, eine Bewertung abgeben.', 'mp'),
-            'default_value' => 'no',
-            'options'       => array(
-                'no'  => __('Nein', 'mp'),
-                'yes' => __('Ja', 'mp'),
-            ),
-        ));
+    public function view_settings() {
+        // Die Einstellungen werden durch die settings.php-Datei gehandhabt
     }
-
-
     
     /**
      * Deaktiviere Addon
@@ -143,17 +113,6 @@ class MP_MARKETPRESS_COMMENTS_Addon {
         
         // Bewertung speichern
         add_action('comment_post', array($this, 'save_comment_rating'), 10, 3);
-        
-        // Assets und UI-Verbesserungen laden
-        add_action('wp_enqueue_scripts', array($this, 'load_rating_assets'));
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_rating_scripts'));
-        
-        // Admin-Kommentarspalte für Bewertungen
-        add_filter('manage_edit-comments_columns', array($this, 'add_comment_rating_column'));
-        add_action('manage_comments_custom_column', array($this, 'comment_rating_column_content'), 10, 2);
-        
-        // Kommentar-Template überschreiben
-        add_filter('comments_template', array($this, 'override_comments_template'));
         
         // Kommentarformular in die Produktseite einfügen
         add_action('mp_product_description_end', array($this, 'display_comments_template'), 20);
@@ -303,90 +262,89 @@ class MP_MARKETPRESS_COMMENTS_Addon {
      * Lade Bewertungssystem-Assets und UI-Fixes
      */
     public function load_rating_assets() {
-        // UI-Fixes für MarketPress-Produkte
-        if (function_exists('mp_product') || is_singular('product') || is_post_type_archive('product') || is_tax('product_category') || is_tax('product_tag')) {
-            // Inline CSS für globale MarketPress UI-Fixes
-            wp_add_inline_style('mp-style', '
-                /* Verhindere unerwünschte Cursor-Positionierung und Textauswahl */
-                .mp_product_content, 
-                .mp_product_price,
-                .mp_product_meta,
-                .mp_product_details,
-                .mp_product_categories,
-                .mp_product_tags,
-                .mp-product {
-                    user-select: none;
-                }
-                
-                /* Erlaube Textauswahl für wichtige Inhalte */
-                .mp_product_content .entry-content,
-                .mp_product_content .entry-summary,
-                .mp_product_description {
-                    user-select: text;
-                }
-                
-                /* Verbessere Input-Elemente und Links */
-                .mp_product input, 
-                .mp_product textarea,
-                .mp_product select,
-                .mp_product button,
-                .mp_product a {
-                    user-select: text;
-                    outline: 2px solid transparent;
-                }
-            ');
+    // UI-Fixes für MarketPress-Produkte
+    if (function_exists('mp_product') || is_singular('product') || is_post_type_archive('product') || is_tax('product_category') || is_tax('product_tag')) {
+        // Inline CSS für globale MarketPress UI-Fixes
+        wp_add_inline_style('mp-style', '
+            /* Verhindere unerwünschte Cursor-Positionierung und Textauswahl */
+            .mp_product_content, 
+            .mp_product_price,
+            .mp_product_meta,
+            .mp_product_details,
+            .mp_product_categories,
+            .mp_product_tags,
+            .mp-product {
+                user-select: none;
+            }
             
-            // Inline JavaScript für globale MarketPress UI-Fixes
-            wp_add_inline_script('mp-global', '
-                jQuery(document).ready(function($) {
-                    // Verhindere Cursor-Probleme in MarketPress-Elementen
-                    $("body").on("mousedown", ".mp_product_content, .mp_product_price, .mp_product_meta, .mp_product_details, .mp-product", function(e) {
-                        if (!$(e.target).is("input, textarea, select, button, a") && 
-                            !$(e.target).closest(".mp_product_description").length) {
-                            e.preventDefault();
-                        }
-                    });
-                });
-            ', 'after');
-        }
+            /* Erlaube Textauswahl für wichtige Inhalte */
+            .mp_product_content .entry-content,
+            .mp_product_content .entry-summary,
+            .mp_product_description {
+                user-select: text;
+            }
+            
+            /* Verbessere Input-Elemente und Links */
+            .mp_product input, 
+            .mp_product textarea,
+            .mp_product select,
+            .mp_product button,
+            .mp_product a {
+                user-select: text;
+                outline: 2px solid transparent;
+            }
+        ');
         
-        // Bewertungssystem-Assets nur auf Produktseiten laden
-        if (is_singular('product')) {
-            wp_enqueue_style('mp-ratings-style', MP_COMMENTS_PLUGIN_URL . 'assets/css/ratings.css', array(), '1.0.0');
-            wp_enqueue_script('mp-ratings-script', MP_COMMENTS_PLUGIN_URL . 'assets/js/ratings.js', array('jquery'), '1.0.0', true);
-            
-            // Lokalisierung für JavaScript
-            wp_localize_script('mp-ratings-script', 'mp_ratings_i18n', array(
-                'rating_1' => __('Schlecht (1 Stern)', 'mp'),
-                'rating_2' => __('Ausreichend (2 Sterne)', 'mp'),
-                'rating_3' => __('Gut (3 Sterne)', 'mp'),
-                'rating_4' => __('Sehr gut (4 Sterne)', 'mp'),
-                'rating_5' => __('Ausgezeichnet (5 Sterne)', 'mp'),
-                'select_rating' => __('Bitte wähle eine Bewertung aus.', 'mp'),
-            ));
-            
-            // Lokalisierung für das Bearbeitungsformular
-            wp_localize_script('mp-edit-rating', 'mp_edit_rating', array(
-                'ajaxurl' => admin_url('admin-ajax.php'),
-                'rating_label' => __('Deine Sternebewertung', 'mp'),
-                'rating_text' => array(
-                    1 => __('Schlecht (1 Stern)', 'mp'),
-                    2 => __('Ausreichend (2 Sterne)', 'mp'),
-                    3 => __('Gut (3 Sterne)', 'mp'),
-                    4 => __('Sehr gut (4 Sterne)', 'mp'),
-                    5 => __('Ausgezeichnet (5 Sterne)', 'mp')
-                ),
-                'rating_label_1' => __('Schlecht', 'mp'),
-                'rating_label_2' => __('Ausreichend', 'mp'),
-                'rating_label_3' => __('Gut', 'mp'),
-                'rating_label_4' => __('Sehr gut', 'mp'),
-                'rating_label_5' => __('Ausgezeichnet', 'mp'),
-                'save_button' => __('Bewertung speichern', 'mp'),
-                'cancel_button' => __('Abbrechen', 'mp'),
-                'saving' => __('Wird gespeichert...', 'mp'),
-                'error_message' => __('Ein Fehler ist aufgetreten. Bitte versuche es erneut.', 'mp')
-            ));
-        }
+        // Inline JavaScript für globale MarketPress UI-Fixes
+        wp_add_inline_script('mp-global', '
+            jQuery(document).ready(function($) {
+                // Verhindere Cursor-Probleme in MarketPress-Elementen
+                $("body").on("mousedown", ".mp_product_content, .mp_product_price, .mp_product_meta, .mp_product_details, .mp-product", function(e) {
+                    if (!$(e.target).is("input, textarea, select, button, a") && 
+                        !$(e.target).closest(".mp_product_description").length) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        ', 'after');
+    }
+    
+    // Bewertungssystem-Assets nur auf Produktseiten laden
+    if (is_singular('product')) {
+        wp_enqueue_style('mp-ratings-style', MP_COMMENTS_PLUGIN_URL . 'assets/css/ratings.css', array(), '1.0.0');
+        wp_enqueue_script('mp-ratings-script', MP_COMMENTS_PLUGIN_URL . 'assets/js/ratings.js', array('jquery'), '1.0.0', true);
+        
+        // Lokalisierung für JavaScript
+        wp_localize_script('mp-ratings-script', 'mp_ratings_i18n', array(
+            'rating_1' => __('Schlecht (1 Stern)', 'mp'),
+            'rating_2' => __('Ausreichend (2 Sterne)', 'mp'),
+            'rating_3' => __('Gut (3 Sterne)', 'mp'),
+            'rating_4' => __('Sehr gut (4 Sterne)', 'mp'),
+            'rating_5' => __('Ausgezeichnet (5 Sterne)', 'mp'),
+            'select_rating' => __('Bitte wähle eine Bewertung aus.', 'mp'),
+        ));
+        
+        // Lokalisierung für das Bearbeitungsformular
+        wp_localize_script('mp-edit-rating', 'mp_edit_rating', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'rating_label' => __('Deine Sternebewertung', 'mp'),
+            'rating_text' => array(
+                1 => __('Schlecht (1 Stern)', 'mp'),
+                2 => __('Ausreichend (2 Sterne)', 'mp'),
+                3 => __('Gut (3 Sterne)', 'mp'),
+                4 => __('Sehr gut (4 Sterne)', 'mp'),
+                5 => __('Ausgezeichnet (5 Sterne)', 'mp')
+            ),
+            'rating_label_1' => __('Schlecht', 'mp'),
+            'rating_label_2' => __('Ausreichend', 'mp'),
+            'rating_label_3' => __('Gut', 'mp'),
+            'rating_label_4' => __('Sehr gut', 'mp'),
+            'rating_label_5' => __('Ausgezeichnet', 'mp'),
+            'save_button' => __('Bewertung speichern', 'mp'),
+            'cancel_button' => __('Abbrechen', 'mp'),
+            'saving' => __('Wird gespeichert...', 'mp'),
+            'error_message' => __('Ein Fehler ist aufgetreten. Bitte versuche es erneut.', 'mp')
+        ));
     }
 }
 
@@ -395,10 +353,10 @@ class MP_MARKETPRESS_COMMENTS_Addon {
  *
  * @since 3.0
  * @access public
- * @return MP_MARKETPRESS_COMMENTS_Addon
+ * @return MP_Comments_Addon
  */
 function mp_comments() {
-    return MP_MARKETPRESS_COMMENTS_Addon::get_instance();
+    return MP_Comments_Addon::get_instance();
 }
 
 // Initialisieren des Addons

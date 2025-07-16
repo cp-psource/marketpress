@@ -1,0 +1,361 @@
+/**
+ * MarketPress Bewertungssystem
+ * CSS für Produktbewertungen
+ */
+
+/* Bewertungssystem Container */
+.mp-product-reviews {
+    margin: 40px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    user-select: none; /* Verhindert Textauswahl */
+}
+
+/* Ermögliche Textauswahl nur in bestimmten Elementen */
+.mp-product-reviews input,
+.mp-product-reviews textarea,
+.mp-review-content,
+.mp-author-name,
+.mp-review-date {
+    user-select: text;
+}
+
+/* Bewertungsüberschriften */
+.mp-reviews-title,
+.mp-review-form-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+/* Durchschnittliche Bewertung Box */
+.mp-average-rating {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+}
+
+.mp-rating-summary {
+    margin-right: 15px;
+}
+
+.mp-rating-number {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1;
+}
+
+.mp-rating-max {
+    font-size: 16px;
+    color: #666;
+}
+
+.mp-rating-stars {
+    flex-grow: 1;
+}
+
+.mp-stars-display {
+    font-size: 22px;
+    color: #FFD700;
+    letter-spacing: 2px;
+    pointer-events: none; /* Verhindert Mausinteraktion */
+}
+
+.mp-rating-count {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Bewertungsliste */
+.mp-review-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mp-review-list li {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    outline: none; /* Entfernt den Fokusrahmen */
+    -webkit-tap-highlight-color: transparent; /* Entfernt mobile tap highlight */
+}
+
+.mp-review-list li:last-child {
+    border-bottom: none;
+}
+
+/* Einzelne Bewertung */
+.mp-review {
+    padding: 10px 0;
+}
+
+.mp-review-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.mp-review-author {
+    display: flex;
+    align-items: center;
+}
+
+.mp-review-author img {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.mp-author-name {
+    font-weight: bold;
+}
+
+.mp-review-date {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.mp-review-rating {
+    text-align: right;
+}
+
+.mp-review-stars {
+    color: #FFD700;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.mp-review-rating-text {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Bewertungsformular */
+.mp-comment-form-rating {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+}
+
+.mp-star-rating-container {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    text-align: left;
+    display: inline-block;
+    margin: 15px 0;
+}
+
+.mp-star-rating-container > input {
+    display: none;
+}
+
+.mp-star-rating-container > label {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+    font-size: 32px;
+    color: #ccc;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: color 0.2s ease;
+}
+
+.mp-star-rating-container > label:hover,
+.mp-star-rating-container > label:hover ~ label,
+.mp-star-rating-container > input:checked ~ label {
+    color: #FFD700;
+}
+
+.mp-rating-selection-text {
+    margin-top: 10px;
+    font-weight: bold;
+    min-height: 20px;
+    color: #555;
+}
+
+/* "Keine Bewertungen" Text */
+.mp-no-reviews {
+    font-style: italic;
+    color: #666;
+    margin: 30px 0;
+}
+
+/* Formular-Felder */
+.comment-form-author,
+.comment-form-email,
+.comment-form-comment {
+    margin-bottom: 15px;
+}
+
+.comment-form-author label,
+.comment-form-email label,
+.comment-form-comment label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.comment-form-author input,
+.comment-form-email input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.comment-form-comment textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-height: 120px;
+}
+
+/* Submit Button */
+.form-submit input[type="submit"] {
+    background-color: #0073aa;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.form-submit input[type="submit"]:hover {
+    background-color: #005177;
+}
+
+/* Bewertungsbearbeitung */
+.mp-edit-rating-form {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.mp-edit-rating-stars {
+    margin-bottom: 15px;
+}
+
+.mp-edit-rating-stars label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.mp-star-rating-edit {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    text-align: left;
+    display: inline-block;
+}
+
+.mp-star-rating-edit > input {
+    display: none;
+}
+
+.mp-star-rating-edit > label {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.mp-star-rating-edit > label:hover,
+.mp-star-rating-edit > label:hover ~ label,
+.mp-star-rating-edit > input:checked ~ label {
+    color: #FFD700;
+}
+
+.mp-edit-rating-text {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #666;
+}
+
+.mp-edit-comment-text textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.mp-edit-buttons {
+    text-align: right;
+}
+
+.mp-edit-buttons button {
+    margin-left: 10px;
+}
+
+.mp-edit-success {
+    background: #e7f7e3;
+    border: 1px solid #c3e6b9;
+    color: #3d773d;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 3px;
+    text-align: center;
+}
+
+/* Allgemeine Fokuskontrolle - macht Elemente unfokussierbar */
+.mp-rating-stars,
+.mp-rating-number,
+.mp-rating-max,
+.mp-rating-count,
+.mp-reviews-title,
+.mp-review-form-title,
+.mp-review-stars,
+.mp-review-rating-text,
+.mp-average-rating,
+.mp-stars-display,
+.rating-selection-text,
+.rating-stars-description {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Stellt sicher, dass nur interaktive Elemente fokussierbar sind */
+input, textarea, select, button, a, 
+.mp-star-rating-container label, 
+.form-submit input[type="submit"] {
+    outline: 2px solid transparent;
+}
+
+input:focus, textarea:focus, select:focus, button:focus, a:focus, 
+.mp-star-rating-container label:focus, 
+.form-submit input[type="submit"]:focus {
+    outline: 2px solid #0073aa;
+}
+
+/* Verhindert Textauswahl für rein dekorative Elemente */
+.mp-star-rating-container label,
+.mp-stars-display,
+.mp-review-stars {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Beseitigt zusätzliche Fokus-Styles in Firefox */
+::-moz-focus-inner {
+    border: 0;
+}

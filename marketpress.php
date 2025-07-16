@@ -1023,7 +1023,7 @@ class Marketpress {
 
 		mp_register_addon( array(
 			'label'        => __( 'Invoice PDF', 'mp' ),
-			'desc'         => '',
+			'desc'         => 'Erstelle PDF Rechnungen für deine Bestellungen',
 			'class'        => 'MP_PDF_Invoice_Addon',
 			'path'         => mp_plugin_dir( 'includes/addons/mp-pdf-invoice/class-mp-pdf-invoice-addon.php' ),
 			'has_settings' => true,
@@ -1041,10 +1041,10 @@ class Marketpress {
 		// Allow Produkt Comments.
 		mp_register_addon( array(
 			'label'        => __( 'Erlaube Produktkommentare', 'mp' ),
-			'desc'         => __( 'Erlaube das kommentieren von Produkten', 'mp' ),
+			'desc'         => __( 'Ein Add-On, mit dem Bewertungen (1-5 Sterne) zu Produkten hinzugefügt werden können.', 'mp' ),
 			'class'        => 'MP_MARKETPRESS_COMMENTS_Addon',
 			'path'         => mp_plugin_dir( 'includes/addons/mp-comments/class-mp-comments.php' ),
-			'has_settings' => false,
+			'has_settings' => true,
 		) );
 		
 		// Frontend Produkteditor
