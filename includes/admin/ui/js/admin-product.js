@@ -42,7 +42,7 @@ jQuery( document ).ready( function( $ ) {
         }
     } );
 
-    /* $( '.mp_variations_select' ).live( 'change', function() {
+    /* $( document ).on( 'change', '.mp_variations_select', function() {
      var has_variations = $( this );
      
      
@@ -89,11 +89,11 @@ jQuery( document ).ready( function( $ ) {
         } );
     }
 
-    $( window ).resize( function( ) {
+    $( window ).on('resize', function( ) {
         mp_variation_message();
     } );
 
-    $( window ).resize( );
+    $( window ).trigger('resize');
     /* Variations product name set */
     $( '.mp_variations_product_name' ).html( $( '#title' ).val( ) );
     $( '#title' ).keyup( function( ) {
@@ -105,45 +105,45 @@ jQuery( document ).ready( function( $ ) {
     } );
 
     $( document ).on( 'click', '.mp-variation-add-all', function( e ) {
-		e.preventDefault();
-		var $variation_tags_textarea = $( this ).parents( '.variation-row' ).find( 'textarea.variation_values' ),
-		variation_tags = $( this ).parents( '.variation-row' ).find( '.mp_product_attributes_select option:selected' ).attr( 'data-tags' ),
-		variation_tags_array = variation_tags.split( ',' ),
-		existing_tags = $variation_tags_textarea.textext()[0].tags()._formData,
-		all_tags = jQuery.grep(variation_tags_array, function( n, i ) {
-			return $.inArray(n, existing_tags) === -1;
-		});
+        e.preventDefault();
+        var $variation_tags_textarea = $( this ).parents( '.variation-row' ).find( 'textarea.variation_values' ),
+        variation_tags = $( this ).parents( '.variation-row' ).find( '.mp_product_attributes_select option:selected' ).attr( 'data-tags' ),
+        variation_tags_array = variation_tags.split( ',' ),
+        existing_tags = $variation_tags_textarea.textext()[0].tags()._formData,
+        all_tags = jQuery.grep(variation_tags_array, function( n, i ) {
+            return $.inArray(n, existing_tags) === -1;
+        });
 
-		$variation_tags_textarea.textext()[0].tags().addTags( all_tags );
-	} );
+        $variation_tags_textarea.textext()[0].tags().addTags( all_tags );
+    } );
 
     $( document ).on( 'change', '.mp_product_attributes_select', function( ) {
-		var $variation_tags_textarea = $( this ).parents( '.variation-row' ).find( 'textarea.variation_values' );
-		$variation_tags_textarea.textext()[0].input().unbind('getSuggestions');
-		if ( $( this ).val( ) == '-1' ) {
-			$( this ).parent( ).find( '.mp-variation-attribute-name' ).show( );
-			$( this ).parent( ).find( '.mp-variation-add-all' ).hide( );
-		} else {
-			var variation_tags = $( this ).find( ':selected' ).attr( 'data-tags' );			
-			$( this ).parent( ).find( '.mp-variation-attribute-name' ).hide( );
-			if( variation_tags !== "" ) {
-				$( this ).parent( ).find( '.mp-variation-add-all' ).show( );				
-				var variation_tags_array = variation_tags.split( ',' );
-				$variation_tags_textarea.textext()[0].input().bind('getSuggestions', function(e, data) {
-				    var textext = $(e.target).textext()[0],
-				        query = (data ? data.query : '') || '',
-						existing_tags =textext.tags()._formData,
-				        suggestions = jQuery.grep(variation_tags_array, function( n, i ) {
-							return $.inArray(n, existing_tags) === -1;
-						});
-				    $(this).trigger(
-				        'setSuggestions',
-				        { result : textext.itemManager().filter(suggestions, query) }
-				    );
-				});
-			}
-		}
-	} );
+        var $variation_tags_textarea = $( this ).parents( '.variation-row' ).find( 'textarea.variation_values' );
+        $variation_tags_textarea.textext()[0].input().off('getSuggestions');
+        if ( $( this ).val( ) == '-1' ) {
+            $( this ).parent( ).find( '.mp-variation-attribute-name' ).show( );
+            $( this ).parent( ).find( '.mp-variation-add-all' ).hide( );
+        } else {
+            var variation_tags = $( this ).find( ':selected' ).attr( 'data-tags' );			
+            $( this ).parent( ).find( '.mp-variation-attribute-name' ).hide( );
+            if( variation_tags !== "" ) {
+                $( this ).parent( ).find( '.mp-variation-add-all' ).show( );				
+                var variation_tags_array = variation_tags.split( ',' );
+                $variation_tags_textarea.textext()[0].input().on('getSuggestions', function(e, data) {
+                    var textext = $(e.target).textext()[0],
+                        query = (data ? data.query : '') || '',
+                        existing_tags =textext.tags()._formData,
+                        suggestions = jQuery.grep(variation_tags_array, function( n, i ) {
+                            return $.inArray(n, existing_tags) === -1;
+                        });
+                    $(this).trigger(
+                        'setSuggestions',
+                        { result : textext.itemManager().filter(suggestions, query) }
+                    );
+                });
+            }
+        }
+    } );
 
     $( document ).on( 'click', '.select_attributes_filter a', function( event ) {
         $( '.select_attributes_filter a' ).removeClass( 'selected' );
@@ -323,26 +323,26 @@ jQuery( document ).ready( function( $ ) {
 
                         numeric_value = numeric_value.replace( /[^\d.-]/g, '' ); //remove any non numeric value
 
-                        if ( $.isNumeric( numeric_value ) ) {
+                        if ( !isNaN( numeric_value ) ) {
                             elem.text( numeric_value );
                         } else {
                             if(numeric_value === '-' || numeric_value === '∞') {
-								if( numeric_value === '∞' ) { 
-									elem.text( '∞' )
-								} else {
-									elem.text( '-' )
-								}
-								numeric_value = '';
-							} else {
-								elem.text( 0 );
-							}
+                                if( numeric_value === '∞' ) { 
+                                    elem.text( '∞' )
+                                } else {
+                                    elem.text( '-' )
+                                }
+                                numeric_value = '';
+                            } else {
+                                elem.text( 0 );
+                            }
                         }
-						
-						if ( $( this ).parent().hasClass( 'field_editable' ) && $( this ).parent().hasClass( 'field_editable_sale_price_amount' ) ) {
+                        
+                        if ( $( this ).parent().hasClass( 'field_editable' ) && $( this ).parent().hasClass( 'field_editable_sale_price_amount' ) ) {
                             if( numeric_value !== '' ) {
-								var reg_price = $( this ).parent().parent();
-								reg_price.find( '.field_editable.field_editable_price' ).addClass( 'mp_strikethrough' );
-							}
+                                var reg_price = $( this ).parent().parent();
+                                reg_price.find( '.field_editable.field_editable_price' ).addClass( 'mp_strikethrough' );
+                            }
                         }
 
                         save_inline_post_data( post_id, data_meta, numeric_value, data_sub_meta );
@@ -378,26 +378,26 @@ jQuery( document ).ready( function( $ ) {
         e.preventDefault( );
     } );
     $( document ).on('keydown', '.mp_variations_table_box [name="selected_variation[]"]', function( e ) {
-		if ( e.keyCode == 9 ) {
-			e.preventDefault( );
-			var parentContainer = $( this ).parent( 'th' );
-			var nextContainer = $( this ).parent( 'th' ).next().next( 'td.field_editable' );
-			nextContainer.find( '.original_value' ).trigger( 'click' );
-			
+        if ( e.keyCode == 9 ) {
+            e.preventDefault( );
+            var parentContainer = $( this ).parent( 'th' );
+            var nextContainer = $( this ).parent( 'th' ).next().next( 'td.field_editable' );
+            nextContainer.find( '.original_value' ).trigger( 'click' );
+            
            $( this ).blur( );
         }
     });
     $( document ).on( 'keydown', ".mp_inline_temp_value", function( e ) {
-		if ( e.keyCode == 9 ) {
-			e.preventDefault( );
-			
-			var parentContainer = $( this ).parent( );
-			var nextContainer = $( this ).parent( ).next( 'td' );
-			nextContainer.find( '.original_value' ).trigger( 'click' );
-			
+        if ( e.keyCode == 9 ) {
+            e.preventDefault( );
+            
+            var parentContainer = $( this ).parent( );
+            var nextContainer = $( this ).parent( ).next( 'td' );
+            nextContainer.find( '.original_value' ).trigger( 'click' );
+            
             $( this ).blur( );
         }
-	});
+    });
     $( '#mp-product-price-inventory-variants-metabox' ).on( 'keydown', function( event ) {
         if ( event.key === 'Enter' ) {
             event.preventDefault();
@@ -641,8 +641,8 @@ jQuery( document ).ready( function( $ ) {
     } );
     //Delete controls
     jQuery( '.mp_popup_controls.mp_delete_controls a.delete-bulk-form' ).on( 'click', function( e ) {
-		e.preventDefault( );
-		
+        e.preventDefault( );
+        
         parent.jQuery.colorbox.close( );
         $( '.check-column-box:checked' ).each( function( ) {
             $( this ).closest( 'tr' ).remove( );
@@ -650,10 +650,10 @@ jQuery( document ).ready( function( $ ) {
         } );
         if ( $( '.check-column-box' ).length == 0 ) {
             save_inline_post_data( $( '[name="post_ID"]' ).val( ), 'delete_variations', '', '' );
-			setInterval(function(){ 
-				$( '#publish' ).removeAttr( 'disabled' );
-				$( '#publish' ).click( );
-			}, 500);
+            setInterval(function(){ 
+                $( '#publish' ).removeAttr( 'disabled' );
+                $( '#publish' ).click( );
+            }, 500);
         }
         return false;
        
@@ -985,12 +985,12 @@ jQuery( document ).ready( function( $ ) {
 
     // Set default variant action
     $('#mp-product-price-inventory-variants-metabox').on('click', 'tr:not(".default") a.set-default', function(event) {
-    	event.preventDefault();
-    	$this = $( this );
-    	post_id = $this.attr('data-post-id');
-    	meta_name = 'default_variation';
-    	meta_value = $this.attr('data-child-id');
-    	var data = {
+        event.preventDefault();
+        $this = $( this );
+        post_id = $this.attr('data-post-id');
+        meta_name = 'default_variation';
+        meta_value = $this.attr('data-child-id');
+        var data = {
             action: 'save_inline_post_data',
             post_id: post_id,
             meta_name: meta_name,
@@ -998,16 +998,16 @@ jQuery( document ).ready( function( $ ) {
             ajax_nonce: mp_product_admin_i18n.ajax_nonce
         }
 
-		$this.children('.fa').addClass('fa-pulse');
-		$.post(
-			mp_product_admin_i18n.ajaxurl, 
-			data
-		).done( function( data, status ) {
-			$this.children('.fa').removeClass('fa-pulse');
-			if ( status == 'success' ) {
-				$this.parents('tr').addClass('default').siblings('tr').removeClass('default');
-			}
-		});
+        $this.children('.fa').addClass('fa-pulse');
+        $.post(
+            mp_product_admin_i18n.ajaxurl, 
+            data
+        ).done( function( data, status ) {
+            $this.children('.fa').removeClass('fa-pulse');
+            if ( status == 'success' ) {
+                $this.parents('tr').addClass('default').siblings('tr').removeClass('default');
+            }
+        });
     });
 
 } );

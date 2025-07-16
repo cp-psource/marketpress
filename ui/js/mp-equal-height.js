@@ -9,13 +9,13 @@
         } );
     }
 
-	function equal_height( obj ) {
+    function equal_height( obj ) {
         var $this = $( obj );
         $this.equalHeights();
     }
-	
+    
 
-    $( window ).resize( function( ) {
+    $( window ).on('resize', function( ) {
         $( '#mp-products.mp_products-grid' ).each( function( ) {
             var $this = $( this );
             $this.find( '.mp_product_meta' ).equalHeights();
@@ -28,17 +28,17 @@
         } );
 
     } );
-	
-	$( window ).load(function() {
-		$( '#mp-products.mp_products-grid' ).each( function( ) {
-			var $this = $( this );
-			$this.find( '.mp_product_meta' ).equalHeights();
-		} );
+    
+    $( window ).on('load', function() {
+        $( '#mp-products.mp_products-grid' ).each( function( ) {
+            var $this = $( this );
+            $this.find( '.mp_product_meta' ).equalHeights();
+        } );
 
-		$( '#mp-related-products .mp_products-grid' ).each( function( ) {
-			var $this = $( this );
-			$this.find( '.mp_product_meta' ).equalHeights();
-			//$this.equalHeights();
-		} );
-	} );
+        $( '#mp-related-products .mp_products-grid' ).each( function( ) {
+            var $this = $( this );
+            $this.find( '.mp_product_meta' ).equalHeights();
+            //$this.equalHeights();
+        } );
+    } );
 }( jQuery ) );

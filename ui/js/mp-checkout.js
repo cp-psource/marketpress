@@ -2,13 +2,13 @@ var mp_checkout;
 
 ( function( $ ) {
 
-	/**
-	 * Fix jqueryui * bootstrap tooltip conflict
-	 * @since 3.0
-	 */
-	 
-	$.widget.bridge('mptooltip', $.ui.tooltip);
-	
+    /**
+     * Fix jqueryui * bootstrap tooltip conflict
+     * @since 3.0
+     */
+     
+    $.widget.bridge('mptooltip', $.ui.tooltip);
+    
     mp_checkout = {
         /**
          * Initialize event listeners
@@ -17,7 +17,7 @@ var mp_checkout;
          */
         initListeners: function() {
             this.initShippingAddressListeners();
-			this.initAccountRegistrationListeners();
+            this.initAccountRegistrationListeners();
             this.initPaymentOptionListeners();
             this.initUpdateStateFieldListeners();
             this.initCardValidation();
@@ -260,7 +260,7 @@ var mp_checkout;
 
                     if ( $form.valid() ) {
                         var checkout_as_guest = false;
-                        if ($form.find('#is_checkout_as_guest').size() > 0) {
+                        if ($form.find('#is_checkout_as_guest').length > 0) {
                             checkout_as_guest = true;
                         }
 
@@ -496,7 +496,7 @@ var mp_checkout;
                 } );
             }
         },
-		/**
+        /**
          * Enable/disable registration fields
          *
          * @since 3.0
@@ -510,8 +510,8 @@ var mp_checkout;
             } else {
                 $account_container.fadeOut( 500 );
             }
-		},
-		/**
+        },
+        /**
          * Initialize events related to registration fields
          *
          * @since 3.0
@@ -583,7 +583,7 @@ var mp_checkout;
                 $( 'input[name="mp_login_email"]' ).rules( 'remove' );
                 $( 'input[name="mp_login_password"]' ).rules( 'remove' );
                 var form = $(this).closest('form');
-                if (form.find('#is_checkout_as_guest').size() == 0) {
+                if (form.find('#is_checkout_as_guest').length == 0) {
                     form.append($('<input id="is_checkout_as_guest"/>'));
                 }
                 //$( '.mp_checkout_section_errors' ).hide();
@@ -605,6 +605,6 @@ jQuery( document ).ready( function( $ ) {
     mp_checkout.showForm();
     mp_checkout.initListeners();
     mp_checkout.toggleShippingAddressFields();
-	mp_checkout.toggleRegistrationFields();
+    mp_checkout.toggleRegistrationFields();
     mp_checkout.triggerStepChange();
 } );
