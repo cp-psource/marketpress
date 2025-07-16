@@ -52,6 +52,12 @@ class MP_Public {
 		add_action( 'wp_enqueue_scripts', array( &$this, 'frontend_styles' ) );
 		add_filter( 'comments_open', array( &$this, 'disable_comments_on_store_pages' ), 10, 2 );
 		add_action( 'wp', array( &$this, 'maybe_start_session' ) );
+		
+		// Bestehende Kommentare für Produkte ausblenden, wenn das Addon nicht aktiviert ist
+		add_filter( 'comments_array', array( &$this, 'maybe_hide_product_comments' ), 20, 2 );
+		
+		// "Comments are closed" Text für Produkte ausblenden
+		add_filter( 'get_comments_number', array( &$this, 'maybe_zero_comments_number' ), 20, 2 );
 
 		// Template Stuff
 		add_filter( 'taxonomy_template', array( &$this, 'load_taxonomy_template' ) );
@@ -135,10 +141,37 @@ class MP_Public {
 		if( $this->page_in_store_pages( $post_id ) ){
 			$open = false;
 		}
+		
+		// Wenn es sich um ein Produkt handelt und das Kommentar-Addon nicht aktiv ist,
+		// deaktiviere Kommentare
+		if (get_post_type($post_id) === 'product') {
+			// Prüfen ob das Addon aktiviert ist
+			if (!class_exists('MP_MARKETPRESS_COMMENTS_Addon') || !function_exists('mp_comments')) {
+				$open = false;
+			}
+		}
 
 		return $open;
 	}
-
+	
+	/**
+	 * Bestehende Kommentare für Produkte ausblenden, wenn das Addon nicht aktiviert ist
+	 * 
+	 * @since 3.3.4
+	 * @access public
+	 */
+	public function maybe_hide_product_comments($comments, $post_id) {
+		// Wenn es sich um ein Produkt handelt und das Addon nicht aktiviert ist
+		if (get_post_type($post_id) === 'product') {
+			if (!class_exists('MP_MARKETPRESS_COMMENTS_Addon') || !function_exists('mp_comments')) {
+				// Leeres Array zurückgeben, um alle Kommentare zu verstecken
+				return array();
+			}
+		}
+		
+		return $comments;
+	}
+	
 	/**
 	 * Hide the single product title
 	 *
