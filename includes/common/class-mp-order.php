@@ -9,7 +9,7 @@ class MP_Order {
 	 * @access public
 	 * @var int
 	 */
-	var $ID = null;
+public $ID = null;
 
 	/**
 	 * Refers to the order ID
@@ -599,9 +599,9 @@ class MP_Order {
 						<!-- end mp_cart_item_content -->
 						<div class="mp_cart_item_content mp_cart_item_content-price"><!-- MP Product Price -->
 							<div class="mp_product_price" itemtype="http://schema.org/Offer" itemscope=""
-							     itemprop="offers">
+								 itemprop="offers">
 									<span class="mp_product_price-normal"
-									      itemprop="price"><?php echo mp_format_currency( '', $item['price'] ) ?></span>
+										  itemprop="price"><?php echo mp_format_currency( '', $item['price'] ) ?></span>
 							</div>
 							<!-- end mp_product_price -->
 						</div>
@@ -630,21 +630,21 @@ class MP_Order {
 			<section id="mp-single-order-details" class="mp_orders">
 				<div class="mp_order_details">
 					<div class="mp_order">' .
-		        $this->header( false ) .
-		        '</div><!-- end mp_order -->';
+				$this->header( false ) .
+				'</div><!-- end mp_order -->';
 		if( ! empty( $confirmation_text ) ){
 			$html .= '
 				<div class="mp_order_confirmation_text">' .
-		        	$confirmation_text .
-		        '</div><!-- end mp_order_confirmation_text -->';
+					$confirmation_text .
+				'</div><!-- end mp_order_confirmation_text -->';
 		}
 
 		$html .= '
 				<div class="mp_order_cart">' .
-		        $cart_contents . '
+				$cart_contents . '
 					</div><!-- end mp_order_cart -->
 					<div class="mp_order_address">' .
-		        $this->get_addresses() . '
+				$this->get_addresses() . '
 					</div><!-- end mp_order_address -->
 				</div><!-- end mp_order_details -->
 			</section><!-- end mp-single-order-details -->';
@@ -696,24 +696,24 @@ class MP_Order {
 
 			if( $product_type == 'digital' ) {
 				$html = '' .
-			        $this->get_name( $type ) . '<br />' .
+					$this->get_name( $type ) . '<br />' .
 					( ( $company_name = $this->get_meta( "mp_{$type}_info->company_name", '' ) ) ? $company_name . '<br />' : '' ) .
-			        ( ( $phone = $this->get_meta( "mp_{$type}_info->phone", '' ) ) ? $phone . '<br />' : '' ) .
-			        ( ( $email = $this->get_meta( "mp_{$type}_info->email", '' ) ) ? '<a href="mailto:' . antispambot( $email ) . '">' . antispambot( $email ) . '</a><br />' : '' );
+					( ( $phone = $this->get_meta( "mp_{$type}_info->phone", '' ) ) ? $phone . '<br />' : '' ) .
+					( ( $email = $this->get_meta( "mp_{$type}_info->email", '' ) ) ? '<a href="mailto:' . antispambot( $email ) . '">' . antispambot( $email ) . '</a><br />' : '' );
 			} else {
 				$html = '' .
-			        $this->get_name( $type ) . '<br />' .
+					$this->get_name( $type ) . '<br />' .
 					( ( $company_name = $this->get_meta( "mp_{$type}_info->company_name", '' ) ) ? $company_name . '<br />' : '' ) .
-			        $this->get_meta( "mp_{$type}_info->address1", '' ) . '<br />' .
-			        ( ( $address2 = $this->get_meta( "mp_{$type}_info->address2", '' ) ) ? $address2 . '<br />' : '' ) .
-			        ( ( $city = $this->get_meta( "mp_{$type}_info->city", '' ) ) ? $city : '' ) .
-			        ( ( ( $state = $this->get_meta( "mp_{$type}_info->state", '' ) ) && is_array( $states ) && isset( $states[$state] ) ) ? ', ' . $states[$state] . ' ' : ', ' ) .
-			        ( ( $zip = $this->get_meta( "mp_{$type}_info->zip", '' ) ) ? $zip . '<br />' : '' ) .
+					$this->get_meta( "mp_{$type}_info->address1", '' ) . '<br />' .
+					( ( $address2 = $this->get_meta( "mp_{$type}_info->address2", '' ) ) ? $address2 . '<br />' : '' ) .
+					( ( $city = $this->get_meta( "mp_{$type}_info->city", '' ) ) ? $city : '' ) .
+					( ( ( $state = $this->get_meta( "mp_{$type}_info->state", '' ) ) && is_array( $states ) && isset( $states[$state] ) ) ? ', ' . $states[$state] . ' ' : ', ' ) .
+					( ( $zip = $this->get_meta( "mp_{$type}_info->zip", '' ) ) ? $zip . '<br />' : '' ) .
 					( ( ( $country = $this->get_meta( "mp_{$type}_info->country", '' ) ) && is_array( $all_countries ) && isset( $all_countries[$country] ) ) ? $all_countries[$country] . '<br />' : '' ) .
-			        ( ( $phone = $this->get_meta( "mp_{$type}_info->phone", '' ) ) ? $phone . '<br />' : '' ) .
-			        ( ( $email = $this->get_meta( "mp_{$type}_info->email", '' ) ) ? '<a href="mailto:' . antispambot( $email ) . '">' . antispambot( $email ) . '</a><br />' : '' );
+					( ( $phone = $this->get_meta( "mp_{$type}_info->phone", '' ) ) ? $phone . '<br />' : '' ) .
+					( ( $email = $this->get_meta( "mp_{$type}_info->email", '' ) ) ? '<a href="mailto:' . antispambot( $email ) . '">' . antispambot( $email ) . '</a><br />' : '' );
 			}
-                        if ( $this->get_meta( 'mp_' . $type . '_info->special_instructions' ) ) {
+						if ( $this->get_meta( 'mp_' . $type . '_info->special_instructions' ) ) {
 				$html .= wordwrap( $this->get_meta( "mp_{$type}_info->special_instructions" ) ) . '<br />';
 			}
 		} else {
@@ -860,7 +860,7 @@ class MP_Order {
 			$html .= '
 				<div class="mp_content_col mp_content_col-one-half">
 					<h4 class="mp_sub_title">' . __( 'Shipping Address', 'mp' ) . '</h4>' .
-			         $this->get_address( 'shipping', $editable ) . '';
+					 $this->get_address( 'shipping', $editable ) . '';
 
 			$html .= '
 				</div>';

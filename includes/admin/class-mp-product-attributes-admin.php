@@ -1,6 +1,19 @@
 <?php
 
 class MP_Product_Attributes_Admin {
+	/**
+	 * Gibt den aktuellen dynamischen Screen-Slug für die Produktattribute-Seite zurück
+	 *
+	 * @return string
+	 */
+	public static function get_product_attributes_screen_id() {
+		$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+		if (!$screen) return 'store-settings-productattributes';
+		if (strpos($screen->id, 'productattributes') !== false) {
+			return $screen->id;
+		}
+		return 'store-settings-productattributes';
+	}
 
 	/**
 	 * Refers to a single instance of the class
@@ -45,14 +58,31 @@ class MP_Product_Attributes_Admin {
 			$list_table->prepare_items();
 			?>
 			<div class="icon32"><img src="<?php echo mp_plugin_url( 'ui/images/settings.png' ); ?>" /></div>
-			<h2 class="mp-settings-title"><?php _e( 'Product Attributes', 'mp' ); ?> <a class="add-new-h2" href="<?php echo add_query_arg( array( 'action' => 'mp_add_product_attribute' ) ); ?>"><?php _e( 'Add Attribute', 'mp' ); ?></a></h2>
+			   <?php
+			   // Titel nur anzeigen, wenn gewünscht (z.B. per Parameter oder Konstante)
+			   $show_title = apply_filters('mp_product_attributes_show_title', true);
+			   if ($show_title) : ?>
+				   <h2 class="mp-settings-title">
+					   <?php _e( 'Product Attributes', 'mp' ); ?>
+					   <?php if (!isset($_GET['action']) || $_GET['action'] === '') : ?>
+						   <a class="add-new-h2" href="<?php echo add_query_arg( array( 'action' => 'mp_add_product_attribute' ) ); ?>"><?php _e( 'Add Attribute', 'mp' ); ?></a>
+					   <?php endif; ?>
+				   </h2>
+			   <?php endif; ?>
 			<div class="clear"></div>
-			<div class="mp-settings">
-				<form method="get">
-					<input type="hidden" name="page" value="<?php echo $_REQUEST[ 'page' ]; ?>" />
-					<?php $list_table->display(); ?>
-				</form>
-			</div>
+		   <div class="mp-settings">
+			   <?php if (!isset($_GET['action']) || $_GET['action'] === '') : ?>
+				   <form method="get">
+					   <input type="hidden" name="page" value="<?php echo $_REQUEST[ 'page' ]; ?>" />
+					   <?php $list_table->display(); ?>
+				   </form>
+			   <?php elseif ($_GET['action'] === 'mp_add_product_attribute' || $_GET['action'] === 'mp_edit_product_attribute') : ?>
+				   <?php
+				   // Metaboxen IMMER rendern, unabhängig vom Titel
+				   do_action('wpmudev_metabox/render_settings_metaboxes');
+				   ?>
+			   <?php endif; ?>
+		   </div>
 		</div>
 		<?php
 	}
@@ -65,9 +95,9 @@ class MP_Product_Attributes_Admin {
 	 */
 	public static function add_product_attribute_metaboxes() {
 		$metabox	 = new WPMUDEV_Metabox( array(
-			'id'		 => 'mp-store-settings-product-attributes-add',
-			'title'		 => __( 'Add Product Attribute', 'mp' ),
-			'page_slugs' => array( 'store-settings-productattributes' ),
+			'id'         => 'mp-store-settings-product-attributes-add',
+			'title'      => __( 'Add Product Attribute', 'mp' ),
+			'page_slugs' => array_unique(array('store-settings-productattributes', self::get_product_attributes_screen_id())),
 		) );
 		$metabox->add_field( 'text', array(
 			'name'		 => 'product_attribute_name',

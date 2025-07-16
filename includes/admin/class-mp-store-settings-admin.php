@@ -1,7 +1,8 @@
+
+
 <?php
 
 class MP_Store_Settings_Admin {
-
 	/**
 	 * Refers to a single instance of the class
 	 *
@@ -10,7 +11,6 @@ class MP_Store_Settings_Admin {
 	 * @var object
 	 */
 	private static $_instance = null;
-
 	/**
 	 * Gets the single instance of the class
 	 *
@@ -32,56 +32,68 @@ class MP_Store_Settings_Admin {
 	 * @access private
 	 */
 private function __construct() {
-    mp_include_dir( mp_plugin_dir( 'includes/admin/store-settings/' ) );
+	mp_include_dir( mp_plugin_dir( 'includes/admin/store-settings/' ) );
 
-    // Handle redirects early to avoid header issues
-    add_action( 'admin_init', array( &$this, 'handle_redirects' ) );
-    // Add menu items
-    add_action( 'admin_menu', array( &$this, 'add_menu_items' ) );
-    // Print scripts for setting the active admin menu item when on the product tag page
-    add_action( 'admin_footer', array( &$this, 'print_product_tag_scripts' ) );
-    // Print scripts for setting the active admin menu item when on the product category page
-    add_action( 'admin_footer', array( &$this, 'print_product_category_scripts' ) );
-    // Move product categories and tags to store settings menu
-    add_action( 'parent_file', array( &$this, 'set_menu_item_parent' ) );
+	   // jQuery UI für Produktattribute-Seite sicherstellen
+	   add_action('admin_enqueue_scripts', function($hook) {
+		   $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+		   if ($screen && strpos($screen->id, 'productattributes') !== false) {
+			   // uniqueId ist Teil von jQuery UI Core ab 1.12, aber in WP oft einzeln
+			   wp_enqueue_script('jquery-ui-core');
+			   wp_enqueue_script('jquery-ui-widget');
+			   wp_enqueue_script('jquery-ui-mouse');
+			   wp_enqueue_script('jquery-ui-sortable');
+			   // uniqueId explizit, falls als eigenes Script vorhanden
+			   if (wp_script_is('jquery-ui-unique-id', 'registered')) {
+				   wp_enqueue_script('jquery-ui-unique-id');
+			   }
+		   }
+	   });
 
-    if ( mp_get_get_value( 'action' ) == 'mp_add_product_attribute' || mp_get_get_value( 'action' ) == 'mp_edit_product_attribute' ) {
-        MP_Product_Attributes_Admin::add_product_attribute_metaboxes();
-        add_action( 'wpmudev_metabox/before_save_fields/mp-store-settings-product-attributes-add', array( 'MP_Product_Attributes_Admin', 'save_product_attribute' ) );
+	// Handle redirects early to avoid header issues
+	add_action( 'admin_init', array( &$this, 'handle_redirects' ) );
+	// Add menu items
+	add_action( 'admin_menu', array( &$this, 'add_menu_items' ) );
+	// Print scripts for setting the active admin menu item when on the product tag page
+	add_action( 'admin_footer', array( &$this, 'print_product_tag_scripts' ) );
+	// Print scripts for setting the active admin menu item when on the product category page
+	add_action( 'admin_footer', array( &$this, 'print_product_category_scripts' ) );
+	// Move product categories and tags to store settings menu
+	add_action( 'parent_file', array( &$this, 'set_menu_item_parent' ) );
 
-        // Dynamisch die aktuelle Screen-ID holen und Action registrieren
-        add_action( 'current_screen', function() {
-            $screen = get_current_screen();
-            if ( $screen && strpos( $screen->id, 'productattributes' ) !== false ) {
-                add_action( $screen->id, array( &$this, 'display_settings_form' ) );
-            }
-        });
+	   if ( mp_get_get_value( 'action' ) == 'mp_add_product_attribute' || mp_get_get_value( 'action' ) == 'mp_edit_product_attribute' ) {
+			   MP_Product_Attributes_Admin::add_product_attribute_metaboxes();
+			   add_action( 'wpmudev_metabox/before_save_fields/mp-store-settings-product-attributes-add', array( 'MP_Product_Attributes_Admin', 'save_product_attribute' ) );
 
-        if ( mp_get_get_value( 'action' ) == 'mp_edit_product_attribute' ) {
-            add_filter( 'wpmudev_field/before_get_value', array( 'MP_Product_Attributes_Admin', 'get_product_attribute_value' ), 10, 4 );
-        }
-    } else {
-    // Dynamisch für alle relevanten Screens die Action registrieren
-    add_action( 'current_screen', function() {
-        $screen = get_current_screen();
-        // NICHT für Addon-Detailseite!
-        if (
-            $screen
-            && strpos( $screen->id, 'store-settings' ) !== false
-            && (
-                $screen->id !== 'store-settings_page_store-settings-addons'
-                || ( $screen->id === 'store-settings_page_store-settings-addons' && empty($_GET['addon']) )
-            )
-        ) {
-            add_action( $screen->id, array( &$this, 'display_settings_form' ) );
-        }
-        if ( $screen && strpos( $screen->id, 'productattributes' ) !== false ) {
-            add_action( $screen->id, array( 'MP_Product_Attributes_Admin', 'display_product_attributes' ) );
-        }
-    });
+			   // Keine dynamische Registrierung von display_settings_form für Produktattribute!
+
+			   if ( mp_get_get_value( 'action' ) == 'mp_edit_product_attribute' ) {
+					   add_filter( 'wpmudev_field/before_get_value', array( 'MP_Product_Attributes_Admin', 'get_product_attribute_value' ), 10, 4 );
+			   }
+	   } else {
+	   // Dynamisch für alle relevanten Screens die Action registrieren
+	   add_action( 'current_screen', function() {
+			   $screen = get_current_screen();
+			   // NICHT für Addon-Detailseite und NICHT für Produktattribute!
+		  if (
+			  $screen
+			  && strpos( $screen->id, 'store-settings' ) !== false
+			  && (
+				  $screen->id !== 'store-settings_page_store-settings-addons'
+				  || ( $screen->id === 'store-settings_page_store-settings-addons' && empty($_GET['addon']) )
+			  )
+			  && $screen->id !== 'store-settings_page_store-settings-productattributes'
+			  && $screen->id !== 'marketpress_page_store-settings-productattributes'
+		  ) {
+			  add_action( $screen->id, array( &$this, 'display_settings_form' ) );
+		  }
+		  if ( $screen && strpos( $screen->id, 'productattributes' ) !== false ) {
+			  add_action( $screen->id, array( 'MP_Product_Attributes_Admin', 'display_product_attributes' ) );
+		  }
+	   });
 }
 
-    add_action( 'wpmudev_metabox/after_settings_metabox_saved/mp-settings-presentation-pages-slugs', array( $this, 'reset_store_pages_cache' ) );
+	add_action( 'wpmudev_metabox/after_settings_metabox_saved/mp-settings-presentation-pages-slugs', array( $this, 'reset_store_pages_cache' ) );
 }
 
 	/**
@@ -233,69 +245,115 @@ private function __construct() {
 	 * @access public
 	 */
 	public function display_settings_form() {
-		// NICHTS rendern, wenn wir auf einer Addon-Detailseite sind!
-		if (
-			isset($_GET['page']) && $_GET['page'] === 'store-settings-addons'
-			&& !empty($_GET['addon'])
-		) {
-			return;
-		}
+	   // NICHTS rendern, wenn wir auf einer Addon-Detailseite sind!
+	   if (
+			   isset($_GET['page']) && $_GET['page'] === 'store-settings-addons'
+			   && !empty($_GET['addon'])
+	   ) {
+			   return;
+	   }
+	   // GAR NICHTS rendern, wenn wir auf der Produktattribute-Seite sind!
+	   $screen_id = mp_get_current_screen()->id;
+	   if (
+			   $screen_id === 'store-settings_page_store-settings-productattributes'
+			   || $screen_id === 'marketpress_page_store-settings-productattributes'
+	   ) {
+			   return;
+	   }
 		$updated = false;
 		$title   = __( 'Store Settings', 'mp' ) . ': ';
 
 		switch ( mp_get_current_screen()->id ) {
-			case 'store-settings_page_store-settings-presentation' :
+			// Präsentation
+			case 'store-settings_page_store-settings-presentation':
+			case 'marketpress_page_store-settings-presentation':
 				$title .= __( 'Presentation', 'mp' );
 				break;
 
-			case 'store-settings_page_store-settings-notifications' :
+			// Benachrichtigungen
+			case 'store-settings_page_store-settings-notifications':
+			case 'marketpress_page_store-settings-notifications':
 				$title .= __( 'Notifications', 'mp' );
 				break;
 
-			case 'store-settings_page_store-settings-shipping' :
+			// Versand
+			case 'store-settings_page_store-settings-shipping':
+			case 'marketpress_page_store-settings-shipping':
 				$title .= __( 'Shipping', 'mp' );
 				break;
 
-			case 'store-settings_page_store-settings-payments' :
-				$title .= __( 'Payments', 'mp' );
+			// Gateways
+			case 'store-settings_page_store-settings-payments':
+			case 'marketpress_page_store-settings-payments':
+				$title .= __( 'Gateways', 'mp' );
 				break;
 
-			case 'store-settings_page_store-settings-shortcodes' :
+			// Shortcodes
+			case 'store-settings_page_store-settings-shortcodes':
+			case 'marketpress_page_store-settings-shortcodes':
 				$title .= __( 'Short Codes', 'mp' );
 				break;
 
-			case 'store-settings_page_store-settings-importers' :
+			// Importer
+			case 'store-settings_page_store-settings-importers':
+			case 'marketpress_page_store-settings-importers':
 				$title .= __( 'Importers', 'mp' );
 				break;
 
-			case 'store-settings_page_store-settings-exporters' :
+			// Exporter
+			case 'store-settings_page_store-settings-exporters':
+			case 'marketpress_page_store-settings-exporters':
 				$title .= __( 'Exporters', 'mp' );
 				break;
 
-			case 'store-settings_page_store-settings-productattributes' :
+			// Produktattribute
+			case 'store-settings_page_store-settings-productattributes':
+			case 'marketpress_page_store-settings-productattributes':
 				$title = ( mp_get_get_value( 'action' ) == 'mp_add_product_attribute' ) ? __( 'Add Product Attribute', 'mp' ) : sprintf( __( 'Edit Product Attribute %s', 'mp' ), '<a class="add-new-h2" href="' . admin_url( 'admin.php?page=store-settings-productattributes&amp;action=mp_add_product_attribute' ) . '">' . __( 'Add Attribute', 'mp' ) . '</a>' );
 				break;
 
-			case 'store-settings_page_store-settings-capabilities' :
+			// Fähigkeiten
+			case 'store-settings_page_store-settings-capabilities':
+			case 'marketpress_page_store-settings-capabilities':
 				$title .= __( 'Capabilities', 'mp' );
 				break;
 
-			case 'store-settings_page_store-settings-import' :
-	            $title .= __( 'Import/Export', 'mp' );
-	            break;
+			// Import/Export
+			case 'store-settings_page_store-settings-import':
+			case 'marketpress_page_store-settings-import':
+				$title .= __( 'Import/Export', 'mp' );
+				break;
 
-			case 'store-settings_page_store-setup-wizard' :
+			// Quick Setup
+			case 'store-settings_page_store-setup-wizard':
+			case 'marketpress_page_store-setup-wizard':
 				$title = __( 'Quick Setup', 'mp' );
 				break;
 
-			default :
-				$title .= __( 'General', 'mp' );
+			default:
+				// Versuche, den aktuellen Submenu-Titel zu holen
+				global $submenu, $plugin_page, $pagenow;
+				$page_slug = isset($_GET['page']) ? $_GET['page'] : '';
+				$menu_title = '';
+				if ( isset( $submenu['store-settings'] ) && $page_slug ) {
+					foreach ( $submenu['store-settings'] as $submenu_item ) {
+						if ( isset($submenu_item[2]) && $submenu_item[2] === $page_slug ) {
+							$menu_title = $submenu_item[0];
+							break;
+						}
+					}
+				}
+				if ( $menu_title ) {
+					$title .= wp_strip_all_tags( $menu_title );
+				} else {
+					$title .= __( 'General', 'mp' );
+				}
 				break;
 		}
 		?>
 		<div class="wrap mp-wrap">
 			<div class="icon32"><img src="<?php echo mp_plugin_url( 'ui/images/settings.png' ); ?>" /></div>
-			<h2 class="mp-settings-title"><?php echo $title; ?></h2>
+			   <?php // Kein Titel auf der Produktattribute-Seite, nur in display_product_attributes() ?>
 			<div class="clear"></div>
 			<?php if ( $message_key = mp_get_get_value( 'mp_message' ) ) : ?>
 				<div class="updated"><p><?php echo $this->get_message_by_key( $message_key ); ?></p></div>
@@ -323,14 +381,14 @@ private function __construct() {
 		</div>
 		<?php
 	}
-    
-    /**
+	
+	/**
 	 * Resets the store pages ids in wp cache
 	 *
 	 * @since 3.2.5
 	 * @access public
 	 */
-    public function reset_store_pages_cache( $metabox ){
+	public function reset_store_pages_cache( $metabox ){
 
 		if( ! $metabox instanceof WPMUDEV_Metabox ){
 			return;
