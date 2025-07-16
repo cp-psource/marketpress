@@ -100,6 +100,11 @@ jQuery(document).ready(function($) {
                         $commentField.hide();
                         $submitButton.hide();
                         
+                        // Nach 2 Sekunden die Seite neu laden, damit der Link zur eigenen Bewertung angezeigt wird
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 2000);
+                        
                         // Nach kurzer Verzögerung die Seite neu laden, um die Bewertung anzuzeigen
                         setTimeout(function() {
                             location.reload();

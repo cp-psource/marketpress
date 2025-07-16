@@ -75,56 +75,156 @@ if (!defined('ABSPATH')) exit;
     <?php endif; ?>
 
     <?php if (comments_open()) : ?>
-        <div id="mp-review-form">
-            <h3 class="mp-review-form-title"><?php _e('Schreibe eine Bewertung', 'mp'); ?></h3>
-            
-            <?php
-            $commenter = wp_get_current_commenter();
-            $req = get_option('require_name_email');
-            $aria_req = ($req ? " aria-required='true'" : '');
-            
-            $fields = array(
-                'author' => '<p class="comment-form-author"><label for="author">' . __('Name', 'mp') . ($req ? ' <span class="required">*</span>' : '') . '</label>' .
-                    '<input id="author" name="author" type="text" value="' . esc_attr($commenter['comment_author']) . '" size="30"' . $aria_req . ' /></p>',
-                'email'  => '<p class="comment-form-email"><label for="email">' . __('E-Mail', 'mp') . ($req ? ' <span class="required">*</span>' : '') . '</label>' .
-                    '<input id="email" name="email" type="email" value="' . esc_attr($commenter['comment_author_email']) . '" size="30"' . $aria_req . ' /></p>',
+        <?php
+        $current_user_id = get_current_user_id();
+        $post_id = get_the_ID();
+        $has_already_rated = false;
+        $user_rating_comment_id = 0;
+        
+        // Prüfen, ob der Benutzer bereits eine Bewertung abgegeben hat
+        if ($current_user_id > 0) {
+            $args = array(
+                'user_id' => $current_user_id,
+                'post_id' => $post_id,
+                'meta_key' => 'rating',
+                'count' => false
             );
+            $existing_ratings = get_comments($args);
             
-            $comment_field = '<div class="mp-comment-form-rating">
-                <label for="rating">' . __('Deine Bewertung', 'mp') . ' <span class="required">*</span></label>
-                <div class="mp-rating-stars-select">
-                    <p class="mp-rating-stars-description">' . __('Klicke auf einen Stern:', 'mp') . '</p>
-                    <div class="mp-star-rating-container">
-                        <input type="radio" id="mp-star5" name="rating" value="5" required />
-                        <label for="mp-star5" title="5 Sterne">★</label>
-                        <input type="radio" id="mp-star4" name="rating" value="4" />
-                        <label for="mp-star4" title="4 Sterne">★</label>
-                        <input type="radio" id="mp-star3" name="rating" value="3" />
-                        <label for="mp-star3" title="3 Sterne">★</label>
-                        <input type="radio" id="mp-star2" name="rating" value="2" />
-                        <label for="mp-star2" title="2 Sterne">★</label>
-                        <input type="radio" id="mp-star1" name="rating" value="1" />
-                        <label for="mp-star1" title="1 Stern">★</label>
-                    </div>
-                    <div class="mp-rating-selection-text">' . __('Keine Bewertung ausgewählt', 'mp') . '</div>
-                </div>
-            </div>
-            <p class="comment-form-comment">
-                <label for="comment">' . __('Dein Kommentar', 'mp') . ' <span class="optional">(' . __('optional', 'mp') . ')</span></label>
-                <textarea id="comment" name="comment" cols="45" rows="8" aria-required="false"></textarea>
-            </p>';
+            if (!empty($existing_ratings)) {
+                $has_already_rated = true;
+                $user_rating_comment_id = $existing_ratings[0]->comment_ID;
+            }
+        } elseif (!empty($commenter['comment_author_email'])) {
+            // Für nicht angemeldete Benutzer (Gäste) nach E-Mail-Adresse prüfen
+            $args = array(
+                'author_email' => $commenter['comment_author_email'],
+                'post_id' => $post_id,
+                'meta_key' => 'rating',
+                'count' => false
+            );
+            $existing_ratings = get_comments($args);
             
-            comment_form(array(
-                'fields'               => $fields,
-                'comment_field'        => $comment_field,
-                'title_reply'          => '',
-                'title_reply_to'       => __('Auf Bewertung antworten', 'mp'),
-                'comment_notes_before' => '<p class="comment-notes">' . __('Deine E-Mail-Adresse wird nicht veröffentlicht. Erforderliche Felder sind mit * markiert.', 'mp') . '</p>',
-                'comment_notes_after'  => '',
-                'label_submit'         => __('Bewertung abschicken', 'mp')
-            ));
+            if (!empty($existing_ratings)) {
+                $has_already_rated = true;
+                $user_rating_comment_id = $existing_ratings[0]->comment_ID;
+            }
+        }
+        
+        if ($has_already_rated && $user_rating_comment_id > 0) :
+            // Zeige einen Link zur Bewertung des Benutzers
             ?>
-        </div>
+            <div class="mp-user-has-rated">
+                <p><?php _e('Du hast dieses Produkt bereits bewertet.', 'mp'); ?></p>
+                <a href="#comment-<?php echo $user_rating_comment_id; ?>" class="button mp-find-your-review">
+                    <?php _e('Zu deiner Bewertung', 'mp'); ?>
+                </a>
+            </div>
+            <script>
+            jQuery(document).ready(function($) {
+                // Scrolle zur Bewertung des Benutzers, wenn auf den Link geklickt wird
+                $('.mp-find-your-review').on('click', function(e) {
+                    e.preventDefault();
+                    var target = $(this).attr('href');
+                    var $target = $(target);
+                    
+                    if ($target.length) {
+                        // Hebe die Bewertung des Benutzers kurz hervor
+                        $('html, body').animate({
+                            scrollTop: $target.offset().top - 100
+                        }, 500, function() {
+                            $target.addClass('mp-highlight-review');
+                            setTimeout(function() {
+                                $target.removeClass('mp-highlight-review');
+                            }, 2000);
+                        });
+                    }
+                });
+            });
+            </script>
+            <style>
+                .mp-user-has-rated {
+                    margin: 20px 0;
+                    padding: 15px;
+                    background-color: #f0f0f0;
+                    border-left: 4px solid #4CAF50;
+                    border-radius: 4px;
+                }
+                .mp-find-your-review {
+                    display: inline-block;
+                    margin-top: 10px;
+                    padding: 8px 15px;
+                    background: #4CAF50;
+                    color: white !important;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-weight: 600;
+                }
+                .mp-find-your-review:hover {
+                    background: #3e8e41;
+                    text-decoration: none;
+                }
+                .mp-highlight-review {
+                    animation: highlight-pulse 1.5s ease;
+                }
+                @keyframes highlight-pulse {
+                    0% { background-color: transparent; }
+                    30% { background-color: rgba(76, 175, 80, 0.2); }
+                    100% { background-color: transparent; }
+                }
+            </style>
+        <?php else : ?>
+            <div id="mp-review-form">
+                <h3 class="mp-review-form-title"><?php _e('Schreibe eine Bewertung', 'mp'); ?></h3>
+                
+                <?php
+                $commenter = wp_get_current_commenter();
+                $req = get_option('require_name_email');
+                $aria_req = ($req ? " aria-required='true'" : '');
+                
+                $fields = array(
+                    'author' => '<p class="comment-form-author"><label for="author">' . __('Name', 'mp') . ($req ? ' <span class="required">*</span>' : '') . '</label>' .
+                        '<input id="author" name="author" type="text" value="' . esc_attr($commenter['comment_author']) . '" size="30"' . $aria_req . ' /></p>',
+                    'email'  => '<p class="comment-form-email"><label for="email">' . __('E-Mail', 'mp') . ($req ? ' <span class="required">*</span>' : '') . '</label>' .
+                        '<input id="email" name="email" type="email" value="' . esc_attr($commenter['comment_author_email']) . '" size="30"' . $aria_req . ' /></p>',
+                );
+                
+                $comment_field = '<div class="mp-comment-form-rating">
+                    <label for="rating">' . __('Deine Bewertung', 'mp') . ' <span class="required">*</span></label>
+                    <div class="mp-rating-stars-select">
+                        <p class="mp-rating-stars-description">' . __('Klicke auf einen Stern:', 'mp') . '</p>
+                        <div class="mp-star-rating-container">
+                            <input type="radio" id="mp-star5" name="rating" value="5" required />
+                            <label for="mp-star5" title="5 Sterne">★</label>
+                            <input type="radio" id="mp-star4" name="rating" value="4" />
+                            <label for="mp-star4" title="4 Sterne">★</label>
+                            <input type="radio" id="mp-star3" name="rating" value="3" />
+                            <label for="mp-star3" title="3 Sterne">★</label>
+                            <input type="radio" id="mp-star2" name="rating" value="2" />
+                            <label for="mp-star2" title="2 Sterne">★</label>
+                            <input type="radio" id="mp-star1" name="rating" value="1" />
+                            <label for="mp-star1" title="1 Stern">★</label>
+                        </div>
+                        <div class="mp-rating-selection-text">' . __('Keine Bewertung ausgewählt', 'mp') . '</div>
+                    </div>
+                </div>
+                <p class="comment-form-comment">
+                    <label for="comment">' . __('Dein Kommentar', 'mp') . ' <span class="optional">(' . __('optional', 'mp') . ')</span></label>
+                    <textarea id="comment" name="comment" cols="45" rows="8" aria-required="false"></textarea>
+                </p>';
+                
+                comment_form(array(
+                    'fields'               => $fields,
+                    'comment_field'        => $comment_field,
+                    'title_reply'          => '',
+                    'title_reply_to'       => __('Auf Bewertung antworten', 'mp'),
+                    'comment_notes_before' => '<p class="comment-notes">' . __('Deine E-Mail-Adresse wird nicht veröffentlicht. Erforderliche Felder sind mit * markiert.', 'mp') . '</p>',
+                    'comment_notes_after'  => '',
+                    'label_submit'         => __('Bewertung abschicken', 'mp')
+                ));
+                ?>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 

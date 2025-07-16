@@ -517,7 +517,9 @@ class MP_MARKETPRESS_COMMENTS_Addon {
                 'comment_label' => __('Dein Kommentar', 'mp'),
                 'optional_text' => __('optional', 'mp'),
                 'select_rating' => __('Bitte wähle eine Bewertung aus.', 'mp'),
-                'success_message' => __('Deine Bewertung wurde aktualisiert.', 'mp')
+                'success_message' => __('Deine Bewertung wurde aktualisiert.', 'mp'),
+                'find_your_review' => __('Zu deiner Bewertung', 'mp'),
+                'already_rated' => __('Du hast dieses Produkt bereits bewertet.', 'mp')
             ));
         }
     }
