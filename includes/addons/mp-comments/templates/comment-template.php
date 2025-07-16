@@ -52,6 +52,33 @@ function mp_custom_comment_template($comment, $args, $depth) {
             <div class="mp-review-content">
                 <?php comment_text(); ?>
             </div>
+            
+            <div class="mp-review-actions">
+                <?php 
+                // Nur den Bearbeitungslink anzeigen - kein Antwort-Link
+                $rating = get_comment_meta($comment->comment_ID, 'rating', true);
+                $can_edit = false;
+                
+                // Prüfe, ob der Benutzer die Bewertung bearbeiten darf
+                if (is_user_logged_in()) {
+                    $current_user = wp_get_current_user();
+                    if ($comment->user_id == $current_user->ID || current_user_can('moderate_comments')) {
+                        $can_edit = true;
+                    }
+                } else {
+                    // Für Gäste: Prüfe die E-Mail-Adresse im Cookie
+                    $comment_author_email_cookie = isset($_COOKIE['comment_author_email_' . COOKIEHASH]) ? sanitize_email($_COOKIE['comment_author_email_' . COOKIEHASH]) : '';
+                    if ($comment_author_email_cookie === $comment->comment_author_email) {
+                        $can_edit = true;
+                    }
+                }
+                
+                if ($can_edit && $rating) {
+                    $nonce = wp_create_nonce('edit_rating_' . $comment->comment_ID);
+                    echo '<a class="comment-edit-rating" href="#" data-comment-id="' . $comment->comment_ID . '" data-nonce="' . $nonce . '" data-rating="' . $rating . '">' . __('Bewertung bearbeiten', 'mp') . '</a>';
+                }
+                ?>
+            </div>
         </article>
     
     <style>
@@ -107,6 +134,24 @@ function mp_custom_comment_template($comment, $args, $depth) {
     
     .mp-review-content {
         margin-left: 70px;
+    }
+    
+    /* Bewertungsaktionen Styling */
+    .mp-review-actions {
+        text-align: right;
+        font-size: 0.9em;
+        margin-top: 10px;
+    }
+    
+    .mp-review-actions a {
+        margin-left: 10px;
+        text-decoration: none;
+        color: #0073aa;
+    }
+    
+    .mp-review-actions a:hover {
+        color: #00a0d2;
+        text-decoration: underline;
     }
     </style>
     <?php

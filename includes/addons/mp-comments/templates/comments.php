@@ -110,8 +110,8 @@ if (!defined('ABSPATH')) exit;
                 </div>
             </div>
             <p class="comment-form-comment">
-                <label for="comment">' . __('Dein Kommentar', 'mp') . ' <span class="required">*</span></label>
-                <textarea id="comment" name="comment" cols="45" rows="8" required></textarea>
+                <label for="comment">' . __('Dein Kommentar', 'mp') . ' <span class="optional">(' . __('optional', 'mp') . ')</span></label>
+                <textarea id="comment" name="comment" cols="45" rows="8" aria-required="false"></textarea>
             </p>';
             
             comment_form(array(

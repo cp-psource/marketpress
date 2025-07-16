@@ -159,8 +159,8 @@ class MP_MARKETPRESS_COMMENTS_Addon {
         add_action('mp_product_description_end', array($this, 'display_comments_template'), 20);
         add_action('mp_single_product_end', array($this, 'display_comments_template'), 20);
         
-        // Sicherstellen, dass Kommentare für Produkte aktiviert sind
-        add_filter('comments_open', array($this, 'enable_comments_for_products'), 10, 2);
+        // Sicherstellen, dass Kommentare für Produkte aktiviert sind mit höherer Priorität als die MarketPress-Kernfunktion (die 10 hat)
+        add_filter('comments_open', array($this, 'enable_comments_for_products'), 20, 2);
     }
     
     /**
@@ -171,17 +171,57 @@ class MP_MARKETPRESS_COMMENTS_Addon {
     }
     
     /**
-     * Prüfe, ob eine Bewertung abgegeben wurde
+     * Prüfe, ob eine Bewertung abgegeben wurde und ob bereits eine Bewertung existiert
      */
     public function verify_comment_rating($commentdata) {
-        // Nur für Produkte prüfen
-        if (get_post_type($commentdata['comment_post_ID']) === 'product') {
-            // Wenn keine Bewertung abgegeben wurde und es kein Admin ist
-            if (!isset($_POST['rating']) || empty($_POST['rating'])) {
-                // Fehler ausgeben und Script beenden
+        // Nur für Produkte prüfen und nur wenn ein Rating-Feld im Formular vorhanden war
+        if (get_post_type($commentdata['comment_post_ID']) === 'product' && isset($_POST['rating'])) {
+            // Prüfe auf doppelte Bewertungen (nur wenn eine Bewertung abgegeben wurde)
+            $args = array(
+                'post_id' => $commentdata['comment_post_ID'],
+                'meta_key' => 'rating',
+                'count' => true
+            );
+            
+            // Wenn der Benutzer angemeldet ist, nach Benutzer-ID filtern
+            if (is_user_logged_in()) {
+                $args['user_id'] = get_current_user_id();
+            } else {
+                // Für Gäste nach E-Mail filtern
+                $args['author_email'] = $commentdata['comment_author_email'];
+            }
+            
+            // Zähle die vorhandenen Bewertungen des Benutzers für dieses Produkt
+            $existing_ratings = get_comments($args);
+            
+            if ($existing_ratings > 0) {
+                wp_die(
+                    __('Du hast dieses Produkt bereits bewertet. Du kannst deine bestehende Bewertung bearbeiten, aber keine neue hinzufügen.', 'mp'),
+                    __('Doppelte Bewertung', 'mp'),
+                    array('back_link' => true)
+                );
+            }
+            
+            // Stelle sicher, dass eine Bewertung abgegeben wurde, wenn das Feld vorhanden ist
+            if (empty($_POST['rating'])) {
                 wp_die(__('Fehler: Bitte wähle eine Bewertung aus.', 'mp'), __('Bewertung fehlt', 'mp'), array('back_link' => true));
             }
+            
+            // Wenn kein Kommentartext eingegeben wurde, erstellen wir einen Standardtext basierend auf der Bewertung
+            if (empty($commentdata['comment_content'])) {
+                $rating = intval($_POST['rating']);
+                $rating_text = '';
+                switch ($rating) {
+                    case 1: $rating_text = __('Schlecht (1 Stern)', 'mp'); break;
+                    case 2: $rating_text = __('Ausreichend (2 Sterne)', 'mp'); break;
+                    case 3: $rating_text = __('Gut (3 Sterne)', 'mp'); break;
+                    case 4: $rating_text = __('Sehr gut (4 Sterne)', 'mp'); break;
+                    case 5: $rating_text = __('Ausgezeichnet (5 Sterne)', 'mp'); break;
+                }
+                $commentdata['comment_content'] = sprintf(__('Bewertung: %s', 'mp'), $rating_text);
+            }
         }
+        
         return $commentdata;
     }
     
@@ -210,10 +250,13 @@ class MP_MARKETPRESS_COMMENTS_Addon {
     
     /**
      * Sicherstellen, dass Kommentare für Produkte aktiviert sind
+     * Dies ist ein wichtiger Hook, der sicherstellt, dass Kommentare für Produkte immer aktiviert sind,
+     * unabhängig von den WordPress-Einstellungen
      */
     public function enable_comments_for_products($open, $post_id) {
         $post_type = get_post_type($post_id);
         if ($post_type === 'product') {
+            // Aktiviere Kommentare für alle Produkte, unabhängig von den WordPress-Einstellungen
             return true;
         }
         return $open;
@@ -285,7 +328,88 @@ class MP_MARKETPRESS_COMMENTS_Addon {
                     margin-left: 10px;
                     color: #666;
                 }
+                
+                /* Schnellbewertungs-Button Styling */
+                .mp-quick-rating-button {
+                    display: inline-block;
+                    margin-top: 15px;
+                    padding: 8px 15px;
+                    background: #4CAF50;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    transition: background-color 0.2s ease;
+                }
+                .mp-quick-rating-button:hover {
+                    background: #3e8e41;
+                }
+                .mp-quick-rating-button:disabled {
+                    background: #cccccc;
+                    cursor: not-allowed;
+                }
+                .comment-form-comment .optional {
+                    color: #666;
+                    font-size: 0.9em;
+                    font-style: italic;
+                    font-weight: normal;
+                }
+                .mp-rating-success {
+                    padding: 15px;
+                    background-color: #dff0d8;
+                    border: 1px solid #d6e9c6;
+                    color: #3c763d;
+                    border-radius: 4px;
+                    text-align: center;
+                    font-weight: bold;
+                }
+                
+                /* Live-Vorschau Styling */
+                .preview-stars, .preview-rating {
+                    animation: rating-preview-pulse 1s infinite alternate;
+                    font-weight: bold;
+                }
+                
+                @keyframes rating-preview-pulse {
+                    from { opacity: 0.8; }
+                    to { opacity: 1; }
+                }
+                
+                .mp-edit-success {
+                    padding: 10px;
+                    background-color: #dff0d8;
+                    border: 1px solid #d6e9c6;
+                    color: #3c763d;
+                    border-radius: 4px;
+                    margin: 10px 0;
+                    text-align: center;
+                }
             ');
+            
+            // Lade das Script für Schnellbewertungen
+            wp_enqueue_script('mp-quick-ratings', MP_COMMENTS_PLUGIN_URL . 'assets/js/quick-ratings.js', array('jquery'), '1.0', true);
+            
+            // Nonce für AJAX-Sicherheit
+            $post_id = get_the_ID();
+            wp_localize_script('mp-quick-ratings', 'mp_ratings_i18n', array(
+                'ajaxurl' => admin_url('admin-ajax.php'),
+                'post_id' => $post_id,
+                'nonce' => wp_create_nonce('mp_quick_rating_nonce'),
+                'rating_1' => __('Schlecht (1 Stern)', 'mp'),
+                'rating_2' => __('Ausreichend (2 Sterne)', 'mp'),
+                'rating_3' => __('Gut (3 Sterne)', 'mp'),
+                'rating_4' => __('Sehr gut (4 Sterne)', 'mp'),
+                'rating_5' => __('Ausgezeichnet (5 Sterne)', 'mp'),
+                'select_rating' => __('Bitte wähle eine Bewertung aus.', 'mp'),
+                'quick_rating_button' => __('Nur Sterne bewerten', 'mp'),
+                'processing' => __('Wird gespeichert...', 'mp'),
+                'error' => __('Ein Fehler ist aufgetreten.', 'mp'),
+                'required_name' => __('Bitte gib deinen Namen ein.', 'mp'),
+                'required_email' => __('Bitte gib deine E-Mail-Adresse ein.', 'mp'),
+                'optional' => __('optional', 'mp'),
+                'your_rating' => __('Deine Bewertung', 'mp'),
+            ));
         }
     }
 
@@ -303,6 +427,11 @@ class MP_MARKETPRESS_COMMENTS_Addon {
      * Lade Bewertungssystem-Assets und UI-Fixes
      */
     public function load_rating_assets() {
+        // Bewertungsbearbeitung-Skript laden
+        if (is_singular('product')) {
+            wp_enqueue_script('mp-edit-rating', MP_COMMENTS_PLUGIN_URL . 'assets/js/edit-rating.js', array('jquery'), '1.0.0', true);
+        }
+        
         // UI-Fixes für MarketPress-Produkte
         if (function_exists('mp_product') || is_singular('product') || is_post_type_archive('product') || is_tax('product_category') || is_tax('product_tag')) {
             // Inline CSS für globale MarketPress UI-Fixes
@@ -384,7 +513,11 @@ class MP_MARKETPRESS_COMMENTS_Addon {
                 'save_button' => __('Bewertung speichern', 'mp'),
                 'cancel_button' => __('Abbrechen', 'mp'),
                 'saving' => __('Wird gespeichert...', 'mp'),
-                'error_message' => __('Ein Fehler ist aufgetreten. Bitte versuche es erneut.', 'mp')
+                'error_message' => __('Ein Fehler ist aufgetreten. Bitte versuche es erneut.', 'mp'),
+                'comment_label' => __('Dein Kommentar', 'mp'),
+                'optional_text' => __('optional', 'mp'),
+                'select_rating' => __('Bitte wähle eine Bewertung aus.', 'mp'),
+                'success_message' => __('Deine Bewertung wurde aktualisiert.', 'mp')
             ));
         }
     }

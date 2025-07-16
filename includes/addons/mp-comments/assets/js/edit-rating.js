@@ -38,7 +38,8 @@ jQuery(document).ready(function($) {
         
         // Textfeld erstellen
         var $textContainer = $('<div class="mp-edit-comment-text"></div>');
-        $textContainer.append('<textarea rows="5">' + originalText + '</textarea>');
+        $textContainer.append('<label for="edit-comment-' + commentId + '">' + mp_edit_rating.comment_label + ' <span class="optional">(' + mp_edit_rating.optional_text + ')</span></label>');
+        $textContainer.append('<textarea id="edit-comment-' + commentId + '" rows="5">' + originalText + '</textarea>');
         
         // Buttons erstellen
         var $buttons = $('<div class="mp-edit-buttons"></div>');
@@ -54,14 +55,65 @@ jQuery(document).ready(function($) {
         $commentContent.after($editForm);
         $commentContent.hide();
         
-        // Event-Handler für Sternauswahl
+        // Event-Handler für Sternauswahl mit Live-Update
         $editForm.find('input[name="edit-rating"]').on('change', function() {
             var value = $(this).val();
-            $editForm.find('.mp-edit-rating-text').text(mp_edit_rating.rating_text[value]);
+            var ratingText = mp_edit_rating.rating_text[value];
+            
+            // Text im Formular aktualisieren
+            $editForm.find('.mp-edit-rating-text').text(ratingText);
+            
+            // Live-Vorschau der neuen Bewertung
+            var $stars = $comment.find('.mp-review-stars');
+            var $ratingText = $comment.find('.mp-review-rating-text');
+            
+            // Stern-Anzeige aktualisieren
+            if ($stars.length) {
+                var filledStars = '★'.repeat(value);
+                var emptyStars = '☆'.repeat(5 - value);
+                $stars.html('<span class="preview-stars">' + filledStars + emptyStars + '</span>');
+            }
+            
+            // Rating-Text aktualisieren
+            if ($ratingText.length) {
+                var ratingLabel = '';
+                switch (parseInt(value)) {
+                    case 1: ratingLabel = mp_edit_rating.rating_label_1; break;
+                    case 2: ratingLabel = mp_edit_rating.rating_label_2; break;
+                    case 3: ratingLabel = mp_edit_rating.rating_label_3; break;
+                    case 4: ratingLabel = mp_edit_rating.rating_label_4; break;
+                    case 5: ratingLabel = mp_edit_rating.rating_label_5; break;
+                }
+                $ratingText.html('<span class="preview-rating">' + ratingLabel + ' (' + value + '/5)</span>');
+            }
         });
         
         // Event-Handler für Abbrechen-Button
         $editForm.find('.cancel-edit').on('click', function() {
+            // Stelle die ursprüngliche Bewertungsanzeige wieder her
+            var $stars = $comment.find('.mp-review-stars');
+            var $ratingText = $comment.find('.mp-review-rating-text');
+            
+            // Stern-Anzeige zurücksetzen
+            if ($stars.length) {
+                var filledStars = '★'.repeat(currentRating);
+                var emptyStars = '☆'.repeat(5 - currentRating);
+                $stars.html(filledStars + emptyStars);
+            }
+            
+            // Rating-Text zurücksetzen
+            if ($ratingText.length) {
+                var ratingLabel = '';
+                switch (parseInt(currentRating)) {
+                    case 1: ratingLabel = mp_edit_rating.rating_label_1; break;
+                    case 2: ratingLabel = mp_edit_rating.rating_label_2; break;
+                    case 3: ratingLabel = mp_edit_rating.rating_label_3; break;
+                    case 4: ratingLabel = mp_edit_rating.rating_label_4; break;
+                    case 5: ratingLabel = mp_edit_rating.rating_label_5; break;
+                }
+                $ratingText.html(ratingLabel + ' (' + currentRating + '/5)');
+            }
+            
             $editForm.remove();
             $commentContent.show();
         });

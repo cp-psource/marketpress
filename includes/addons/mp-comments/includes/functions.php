@@ -14,18 +14,19 @@ class MP_Ratings_Functions {
         // Prüfe, ob der Benutzer bewerten darf
         add_filter('comments_open', array($this, 'check_if_user_can_rate'), 20, 2);
         
-        // Prüfe auf doppelte Bewertungen
-        add_filter('preprocess_comment', array($this, 'check_for_duplicate_ratings'), 1);
-        
         // Füge eine Bearbeitungsfunktion hinzu
         add_action('wp_ajax_mp_edit_rating', array($this, 'edit_rating_ajax'));
         add_action('wp_ajax_nopriv_mp_edit_rating', array($this, 'edit_rating_ajax'));
         
+        // Füge Schnellbewertungs-AJAX-Handler hinzu
+        add_action('wp_ajax_mp_quick_rating', array($this, 'quick_rating_ajax'));
+        add_action('wp_ajax_nopriv_mp_quick_rating', array($this, 'quick_rating_ajax'));
+        
         // Füge Skripte für die Bearbeitungsfunktion hinzu
         add_action('wp_enqueue_scripts', array($this, 'enqueue_edit_scripts'));
         
-        // Füge "Bearbeiten"-Link zu eigenen Bewertungen hinzu
-        add_filter('comment_reply_link', array($this, 'add_edit_link'), 10, 4);
+        // Wir verwenden jetzt den Bearbeitungslink direkt im Template
+        // add_filter('comment_reply_link', array($this, 'add_edit_link'), 10, 4);
     }
     
     /**
@@ -185,10 +186,21 @@ class MP_Ratings_Functions {
         // Aktualisiere die Bewertung
         if ($rating >= 1 && $rating <= 5) {
             update_comment_meta($comment_id, 'rating', $rating);
-        }
-        
-        // Aktualisiere den Kommentartext
-        if (!empty($comment_text)) {
+            
+            // Aktualisiere den Kommentartext
+            if (empty($comment_text)) {
+                // Wenn kein Kommentar eingegeben wurde, erstelle einen Standardtext basierend auf der Bewertung
+                $rating_text = '';
+                switch ($rating) {
+                    case 1: $rating_text = __('Schlecht (1 Stern)', 'mp'); break;
+                    case 2: $rating_text = __('Ausreichend (2 Sterne)', 'mp'); break;
+                    case 3: $rating_text = __('Gut (3 Sterne)', 'mp'); break;
+                    case 4: $rating_text = __('Sehr gut (4 Sterne)', 'mp'); break;
+                    case 5: $rating_text = __('Ausgezeichnet (5 Sterne)', 'mp'); break;
+                }
+                $comment_text = sprintf(__('Bewertung: %s', 'mp'), $rating_text);
+            }
+            
             wp_update_comment(array(
                 'comment_ID' => $comment_id,
                 'comment_content' => $comment_text
@@ -200,6 +212,114 @@ class MP_Ratings_Functions {
             'rating' => $rating,
             'comment_text' => $comment_text
         ));
+        
+        exit;
+    }
+    
+    /**
+     * AJAX-Handler für die Schnellbewertungsfunktion
+     * Ermöglicht Bewertungen ohne Kommentar
+     */
+    public function quick_rating_ajax() {
+        // Sicherheitscheck
+        if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'mp_quick_rating_nonce')) {
+            wp_send_json_error(array('message' => __('Sicherheitsprüfung fehlgeschlagen', 'mp')));
+            exit;
+        }
+        
+        $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+        $rating = isset($_POST['rating']) ? intval($_POST['rating']) : 0;
+        $is_quick_rating = isset($_POST['is_quick_rating']) && $_POST['is_quick_rating'] == 'true';
+        
+        // Prüfe, ob es ein gültiges Produkt ist
+        if (!$post_id || get_post_type($post_id) !== 'product') {
+            wp_send_json_error(array('message' => __('Ungültiges Produkt', 'mp')));
+            exit;
+        }
+        
+        // Prüfe, ob die Bewertung gültig ist
+        if ($rating < 1 || $rating > 5) {
+            wp_send_json_error(array('message' => __('Ungültige Bewertung', 'mp')));
+            exit;
+        }
+        
+        // Sammle Autorendaten
+        $user = wp_get_current_user();
+        
+        if ($user->exists()) {
+            $comment_author = $user->display_name;
+            $comment_author_email = $user->user_email;
+            $user_id = $user->ID;
+        } else {
+            $comment_author = isset($_POST['author']) ? sanitize_text_field($_POST['author']) : __('Anonym', 'mp');
+            $comment_author_email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+            $user_id = 0;
+        }
+        
+        // Prüfe auf doppelte Bewertungen
+        $args = array(
+            'post_id' => $post_id,
+            'meta_key' => 'rating',
+            'count' => true
+        );
+        
+        if ($user_id) {
+            $args['user_id'] = $user_id;
+        } else if (!empty($comment_author_email)) {
+            $args['author_email'] = $comment_author_email;
+        }
+        
+        $existing_ratings = get_comments($args);
+        
+        if ($existing_ratings > 0) {
+            wp_send_json_error(array('message' => __('Du hast dieses Produkt bereits bewertet', 'mp')));
+            exit;
+        }
+        
+        // Erstelle einen kurzen Standardkommentartext basierend auf der Bewertung
+        $rating_text = '';
+        switch ($rating) {
+            case 1: $rating_text = __('Schlecht (1 Stern)', 'mp'); break;
+            case 2: $rating_text = __('Ausreichend (2 Sterne)', 'mp'); break;
+            case 3: $rating_text = __('Gut (3 Sterne)', 'mp'); break;
+            case 4: $rating_text = __('Sehr gut (4 Sterne)', 'mp'); break;
+            case 5: $rating_text = __('Ausgezeichnet (5 Sterne)', 'mp'); break;
+        }
+        
+        $comment_content = isset($_POST['comment']) && !empty($_POST['comment']) 
+            ? sanitize_textarea_field($_POST['comment']) 
+            : sprintf(__('Bewertung: %s', 'mp'), $rating_text);
+        
+        // Kommentar-Daten vorbereiten
+        $comment_data = array(
+            'comment_post_ID' => $post_id,
+            'comment_author' => $comment_author,
+            'comment_author_email' => $comment_author_email,
+            'comment_content' => $comment_content,
+            'comment_type' => 'comment',
+            'comment_parent' => 0,
+            'user_id' => $user_id,
+            'comment_author_IP' => $_SERVER['REMOTE_ADDR'],
+            'comment_agent' => $_SERVER['HTTP_USER_AGENT'],
+            'comment_date' => current_time('mysql'),
+            'comment_approved' => 1,
+        );
+        
+        // Kommentar einfügen
+        $comment_id = wp_insert_comment($comment_data);
+        
+        if ($comment_id) {
+            // Bewertung als Metadaten speichern
+            add_comment_meta($comment_id, 'rating', $rating, true);
+            
+            // Erfolgsantwort senden
+            wp_send_json_success(array(
+                'message' => __('Bewertung erfolgreich gespeichert', 'mp'),
+                'rating' => $rating
+            ));
+        } else {
+            wp_send_json_error(array('message' => __('Fehler beim Speichern der Bewertung', 'mp')));
+        }
         
         exit;
     }
