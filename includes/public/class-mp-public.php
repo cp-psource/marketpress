@@ -53,6 +53,9 @@ class MP_Public {
 		add_filter( 'comments_open', array( &$this, 'disable_comments_on_store_pages' ), 10, 2 );
 		add_action( 'wp', array( &$this, 'maybe_start_session' ) );
 		
+		// Kommentare-Metabox für Produkte entfernen, wenn das Addon nicht aktiviert ist
+		add_action( 'add_meta_boxes', array( &$this, 'maybe_remove_comments_metabox' ), 20 );
+		
 		// Bestehende Kommentare für Produkte ausblenden, wenn das Addon nicht aktiviert ist
 		add_filter( 'comments_array', array( &$this, 'maybe_hide_product_comments' ), 20, 2 );
 		
@@ -920,6 +923,27 @@ class MP_Public {
 		return mp_list_products();
 	}
 
+	/**
+	 * Entfernt die Kommentare-Metabox für Produkte im Admin-Bereich,
+	 * wenn das Kommentar-Addon nicht aktiviert ist
+	 *
+	 * @since 3.3.4
+	 * @access public
+	 */
+	public function maybe_remove_comments_metabox() {
+		// Prüfen, ob das Kommentar-Addon aktiviert ist
+		if (!class_exists('MP_MARKETPRESS_COMMENTS_Addon') || !function_exists('mp_comments')) {
+			// Kommentare-Metabox entfernen (normal position)
+			remove_meta_box('commentsdiv', 'product', 'normal');
+			
+			// Kommentare-Metabox entfernen (side position)
+			remove_meta_box('commentsdiv', 'product', 'side');
+			
+			// Diskussions-Metabox entfernen (enthält Kommentar-Einstellungen)
+			remove_meta_box('commentstatusdiv', 'product', 'normal');
+			remove_meta_box('commentstatusdiv', 'product', 'side');
+		}
+	}
 }
 
 MP_Public::get_instance();

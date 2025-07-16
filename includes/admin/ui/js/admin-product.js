@@ -96,7 +96,7 @@ jQuery( document ).ready( function( $ ) {
     $( window ).trigger('resize');
     /* Variations product name set */
     $( '.mp_variations_product_name' ).html( $( '#title' ).val( ) );
-    $( '#title' ).keyup( function( ) {
+    $( '#title' ).on('keyup', function( ) {
         $( '.mp_variations_product_name' ).html( $( '#title' ).val( ) );
     } );
 
@@ -792,7 +792,7 @@ jQuery( document ).ready( function( $ ) {
             var $this = $( this );
             $this.datepicker( {
                 "dateFormat": "yy-mm-dd", //mp_product_admin_i18n.date_format,
-            } ).keyup( function( e ) {
+            } ).on('keyup', function( e ) {
                 if ( e.keyCode == 8 || e.keyCode == 46 ) {
                     $.datepicker._clearDate( this );
                 }
