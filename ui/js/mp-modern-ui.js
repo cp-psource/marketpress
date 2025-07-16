@@ -12,16 +12,8 @@
     // Configuration
     var config = window.mpModernUI || {};
     
-    // Debug logging
-    function log(message) {
-        if (config.debug) {
-            console.log('[MarketPress Modern UI]', message);
-        }
-    }
-    
     // Initialize modern UI components
     function initModernUI() {
-        log('Initializing modern UI system');
         
         // Preserve WordPress native metabox functionality
         if (typeof postboxes !== 'undefined') {
@@ -37,8 +29,6 @@
         initDialogs();
         initProgressBars();
         initButtons();
-        
-        log('Modern UI system initialized');
     }
     
     /**
@@ -46,7 +36,6 @@
      */
     function initDatepickers() {
         if (typeof flatpickr === 'undefined') {
-            log('Flatpickr not available');
             return;
         }
         
@@ -89,7 +78,6 @@
         // Create jQuery UI compatibility layer
         $.fn.datepicker = function(options) {
             if (typeof flatpickr === 'undefined') {
-                log('Flatpickr not available for datepicker compatibility');
                 return this;
             }
             
@@ -128,8 +116,6 @@
                 $input.addClass('mp-datepicker-initialized');
             });
         };
-        
-        log('Datepickers initialized');
     }
     
     /**
@@ -137,7 +123,6 @@
      */
     function initSortables() {
         if (typeof Sortable === 'undefined') {
-            log('SortableJS not available');
             return;
         }
         
@@ -172,7 +157,6 @@
         // Create jQuery UI compatibility layer
         $.fn.sortable = function(options) {
             if (typeof Sortable === 'undefined') {
-                log('SortableJS not available for sortable compatibility');
                 return this;
             }
             
@@ -208,8 +192,6 @@
                 $container.addClass('mp-sortable-initialized');
             });
         };
-        
-        log('Sortables initialized');
     }
     
     /**
@@ -217,7 +199,6 @@
      */
     function initTooltips() {
         if (typeof tippy === 'undefined') {
-            log('Tippy.js not available');
             return;
         }
         
@@ -255,7 +236,6 @@
         // Create jQuery UI compatibility layer
         $.fn.tooltip = function(options) {
             if (typeof tippy === 'undefined') {
-                log('Tippy.js not available for tooltip compatibility');
                 return this;
             }
             
@@ -291,9 +271,7 @@
                     $element.removeAttr('title');
                 }
             });
-        };
-        
-        log('Tooltips initialized');
+        }
     }
     
     /**
@@ -383,8 +361,6 @@
                 $container.addClass('mp-tabs-initialized');
             });
         };
-        
-        log('Tabs initialized');
     }
     
     /**
@@ -427,8 +403,6 @@
                 }
             });
         };
-        
-        log('Dialogs initialized');
     }
     
     /**
@@ -464,8 +438,6 @@
                 }
             });
         };
-        
-        log('Progress bars initialized');
     }
     
     /**
@@ -491,8 +463,6 @@
                 }
             });
         };
-        
-        log('Buttons initialized');
     }
     
     // Initialize when document is ready
