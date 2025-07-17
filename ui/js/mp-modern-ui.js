@@ -290,7 +290,7 @@
             var $panels = $container.find('.mp-tabs-panel, .ui-tabs-panel');
             
             // Hide all panels except the first
-            $panels.removeClass('active').first().addClass('active');
+            $panels.hide().first().show();
             
             // Mark first tab as active
             $tabs.first().addClass('mp-tabs-active');
@@ -309,11 +309,11 @@
                 // Add active class to clicked tab
                 $tab.addClass('mp-tabs-active');
                 
-                // Hide all panels by removing active class
-                $panels.removeClass('active');
+                // Hide all panels
+                $panels.hide();
                 
-                // Show target panel by adding active class
-                $(panelId).addClass('active');
+                // Show target panel
+                $(panelId).show();
                 
                 // Trigger custom event
                 $container.trigger('tabsactivate', [{ newTab: $tab, newPanel: $(panelId) }]);
@@ -334,7 +334,7 @@
                 var $tabs = $container.find('.ui-tabs-nav li, .mp-tabs-nav li');
                 var $panels = $container.find('.ui-tabs-panel, .mp-tabs-panel');
                 
-                $panels.removeClass('active').first().addClass('active');
+                $panels.hide().first().show();
                 $tabs.first().addClass('mp-tabs-active');
                 
                 $tabs.on('click', 'a', function(e) {
@@ -347,8 +347,7 @@
                     $tabs.removeClass('mp-tabs-active');
                     $tab.addClass('mp-tabs-active');
                     
-                    $panels.removeClass('active');
-                    $(panelId).addClass('active');
+                    $panels.hide();
                     $(panelId).show();
                     
                     if (options && options.activate) {
@@ -468,15 +467,12 @@
     
     // Initialize when document is ready
     $(document).ready(function() {
-        // Nur auf MarketPress-Seiten initialisieren
-        var isMarketPressPage = $('body').hasClass('marketpress-page') || $('body').hasClass('mp-admin') || $('#mp-main').length > 0;
-        if (isMarketPressPage) {
+        initModernUI();
+        
+        // Re-initialize on dynamic content
+        $(document).on('mp-reinit-ui', function() {
             initModernUI();
-            // Re-initialize on dynamic content
-            $(document).on('mp-reinit-ui', function() {
-                initModernUI();
-            });
-        }
+        });
     });
     
     // Global reinit function

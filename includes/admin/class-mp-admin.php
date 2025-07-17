@@ -294,11 +294,10 @@ class MP_Admin {
 
 		$quick_setup = mp_get_get_value( 'quick_setup_step' );
 		if ( isset( $quick_setup ) ) {
-			// PSource UI Spezifisches CSS für Quick Setup
-			wp_enqueue_style( 'mp-quick-setup-psource', mp_plugin_url( 'includes/admin/ui/css/quick-setup-psource.css' ), array('psource-ui-css'), MP_VERSION );
+			//wp_enqueue_style( 'mp-quick-setup', mp_plugin_url( 'includes/admin/ui/css/quick-setup.css' ), array(), MP_VERSION );
 			
-			// Use PSource UI instead of jQuery UI tabs
-			wp_enqueue_script( 'mp-quick-setup', mp_plugin_url( 'includes/admin/ui/js/quick-setup.js' ), array( 'jquery', 'psource-ui' ), MP_VERSION );
+			// Use modern UI instead of jQuery UI tabs
+			wp_enqueue_script( 'mp-quick-setup', mp_plugin_url( 'includes/admin/ui/js/quick-setup.js' ), array( 'jquery', 'mp-modern-ui' ), MP_VERSION );
 		}
 
 		wp_enqueue_style( 'mp-admin', mp_plugin_url( 'includes/admin/ui/css/admin.css' ), array(), MP_VERSION );
