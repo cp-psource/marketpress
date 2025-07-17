@@ -467,12 +467,15 @@
     
     // Initialize when document is ready
     $(document).ready(function() {
-        initModernUI();
-        
-        // Re-initialize on dynamic content
-        $(document).on('mp-reinit-ui', function() {
+        // Nur auf MarketPress-Seiten initialisieren
+        var isMarketPressPage = $('body').hasClass('marketpress-page') || $('body').hasClass('mp-admin') || $('#mp-main').length > 0;
+        if (isMarketPressPage) {
             initModernUI();
-        });
+            // Re-initialize on dynamic content
+            $(document).on('mp-reinit-ui', function() {
+                initModernUI();
+            });
+        }
     });
     
     // Global reinit function
