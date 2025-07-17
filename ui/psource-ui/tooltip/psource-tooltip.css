@@ -1,0 +1,24 @@
+.psource-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+.psource-tooltip .psource-tooltip-text {
+    visibility: hidden;
+    background: #23282d;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 6px 10px;
+    position: absolute;
+    z-index: 100;
+    bottom: 125%; left: 50%; transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-size: 13px;
+    min-width: 120px;
+}
+.psource-tooltip:hover .psource-tooltip-text,
+.psource-tooltip:focus .psource-tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

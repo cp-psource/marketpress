@@ -786,7 +786,7 @@ class WPMUDEV_Metabox {
 			$current_screen_id = $current_screen->parent_base . '_page_' . end( $current_screen_id_part );
 			?>
 			<div id="poststuff">
-			<div class="meta-box-sortables <?php echo esc_attr( $current_screen_id ); ?>">
+			<div class="meta-box <?php echo esc_attr( $current_screen_id ); ?>">
 		<?php endif;
 			?>
 			<?php $this->before_settings_metabox(); ?>

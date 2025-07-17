@@ -1,0 +1,120 @@
+.psource-draggable {
+    cursor: move;
+    position: relative;
+}
+
+.psource-draggable[data-psource-draggable-disabled="true"] {
+    cursor: default;
+}
+
+.psource-draggable-handle {
+    cursor: move;
+}
+
+.psource-draggable-helper {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.psource-dragging {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.psource-draggable-reverting {
+    transition: all 0.3s ease;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .psource-draggable {
+        touch-action: none;
+    }
+}
+
+/* Basis Draggable Styles */
+.psource-draggable {
+    cursor: move;
+    position: relative;
+}
+
+.psource-draggable[data-psource-draggable-disabled="true"] {
+    cursor: default;
+}
+
+.psource-draggable-handle {
+    cursor: move;
+}
+
+.psource-draggable-helper {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.psource-dragging {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Drop-Indicator für Sortable */
+.psource-drop-indicator {
+    height: 3px;
+    background: #3498db;
+    margin: 5px 0;
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.psource-drop-indicator.active {
+    opacity: 1;
+}
+
+/* Newsletter-spezifische Styles */
+.tnpc-drop-here {
+    padding: 40px;
+    border: 2px dashed #ddd;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    margin: 20px 0;
+    background: #f9f9f9;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.tnpc-drop-here:hover {
+    border-color: #3498db;
+    background: #f0f8ff;
+    color: #3498db;
+}
+
+.tnpb-block-icon {
+    cursor: grab;
+    transition: transform 0.2s ease;
+}
+
+.tnpb-block-icon:hover {
+    transform: scale(1.05);
+}
+
+.tnpb-block-icon:active {
+    cursor: grabbing;
+}
+
+/* Touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .psource-draggable {
+        touch-action: none;
+    }
+    
+    .tnpb-block-icon {
+        padding: 10px;
+    }
+}

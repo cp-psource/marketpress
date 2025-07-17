@@ -290,7 +290,7 @@
             var $panels = $container.find('.mp-tabs-panel, .ui-tabs-panel');
             
             // Hide all panels except the first
-            $panels.hide().first().show();
+            $panels.removeClass('active').first().addClass('active');
             
             // Mark first tab as active
             $tabs.first().addClass('mp-tabs-active');
@@ -309,11 +309,11 @@
                 // Add active class to clicked tab
                 $tab.addClass('mp-tabs-active');
                 
-                // Hide all panels
-                $panels.hide();
+                // Hide all panels by removing active class
+                $panels.removeClass('active');
                 
-                // Show target panel
-                $(panelId).show();
+                // Show target panel by adding active class
+                $(panelId).addClass('active');
                 
                 // Trigger custom event
                 $container.trigger('tabsactivate', [{ newTab: $tab, newPanel: $(panelId) }]);
@@ -334,7 +334,7 @@
                 var $tabs = $container.find('.ui-tabs-nav li, .mp-tabs-nav li');
                 var $panels = $container.find('.ui-tabs-panel, .mp-tabs-panel');
                 
-                $panels.hide().first().show();
+                $panels.removeClass('active').first().addClass('active');
                 $tabs.first().addClass('mp-tabs-active');
                 
                 $tabs.on('click', 'a', function(e) {
@@ -347,7 +347,8 @@
                     $tabs.removeClass('mp-tabs-active');
                     $tab.addClass('mp-tabs-active');
                     
-                    $panels.hide();
+                    $panels.removeClass('active');
+                    $(panelId).addClass('active');
                     $(panelId).show();
                     
                     if (options && options.activate) {

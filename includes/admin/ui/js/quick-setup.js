@@ -1,35 +1,40 @@
 jQuery(document).ready(function ($) {
 
     // Tabs
-    $('#mp-quick-setup-tabs').tabs();
+    if ($.fn.psource_tabs) {
+        $('#mp-quick-setup-tabs').psource_tabs();
+    } else {
+        console.warn('PSource Tabs-Funktion ist nicht verfügbar. Die PSource-UI wurde möglicherweise nicht geladen.');
+    }
 
+    // Navigation zwischen den Tabs
     $('#mp-quick-setup-tab-locations .mp_tab_navigation .mp_button_tab_nav-next').on('click', function (e) {
-        $('#mp-quick-setup-tabs').tabs({active: 1});
+        $('.psource-tab[data-tab="mp-quick-setup-tab-currency-and-tax"]').click();
         e.preventDefault();
     });
 
     $('#mp-quick-setup-tab-currency-and-tax .mp_tab_navigation .mp_button_tab_nav-next').on('click', function (e) {
-        $('#mp-quick-setup-tabs').tabs({active: 2});
+        $('.psource-tab[data-tab="mp-quick-setup-tab-metric-system"]').click();
         e.preventDefault();
     });
 
     $('#mp-quick-setup-tab-metric-system .mp_tab_navigation .mp_button_tab_nav-next').on('click', function (e) {
-        $('#mp-quick-setup-tabs').tabs({active: 3});
+        $('.psource-tab[data-tab="mp-quick-setup-tab-payment-gateway"]').click();
         e.preventDefault();
     });
 
     $('#mp-quick-setup-tab-currency-and-tax .mp_tab_navigation .mp_button_tab_nav-prev').on('click', function (e) {
-        $('#mp-quick-setup-tabs').tabs({active: 0});
+        $('.psource-tab[data-tab="mp-quick-setup-tab-locations"]').click();
         e.preventDefault();
     });
 
     $('#mp-quick-setup-tab-metric-system .mp_tab_navigation .mp_button_tab_nav-prev').on('click', function (e) {
-        $('#mp-quick-setup-tabs').tabs({active: 1});
+        $('.psource-tab[data-tab="mp-quick-setup-tab-currency-and-tax"]').click();
         e.preventDefault();
     });
 
     $('#mp-quick-setup-tab-payment-gateway .mp_tab_navigation .mp_button_tab_nav-prev').on('click', function (e) {
-        $('#mp-quick-setup-tabs').tabs({active: 2});
+        $('.psource-tab[data-tab="mp-quick-setup-tab-metric-system"]').click();
         e.preventDefault();
     });
 
@@ -59,8 +64,8 @@ jQuery(document).ready(function ($) {
                 country: data
             },
             success: function (data) {
-				// Reload page to update shipping methods
-				location.reload();
+                // Reload page to update shipping methods
+                location.reload();
             }
         })
         //we also need to reload the shipping tab

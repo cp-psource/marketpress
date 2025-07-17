@@ -1,0 +1,92 @@
+/**
+ * MarketPress Kompatibilitäts-CSS für die PSource UI
+ * 
+ * Diese Datei stellt sicher, dass alte MP-UI-Klassen mit der neuen PSource UI-Struktur
+ * funktionieren, indem sie passende Stile bereitstellt.
+ * 
+ * @since 3.4.0
+ */
+
+/* Tabs Kompatibilität */
+.mp-tabs {
+  margin-bottom: 20px; /* Kompatibilität mit psource-tabs */
+}
+
+.mp-tabs .mp-tabs-nav {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+}
+
+.mp-tabs .mp_tab_label {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mp-tabs .mp_tab_label_link {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #444;
+  border-bottom: 2px solid transparent;
+}
+
+.mp-tabs .mp_tab_label_link:hover,
+.mp-tabs .mp_tab_label_link:active,
+.mp-tabs .mp_tab_label_link:focus {
+  color: #0073aa;
+  box-shadow: none;
+}
+
+.mp-tabs .ui-tabs-active .mp_tab_label_link,
+.mp-tabs .mp-tabs-active .mp_tab_label_link {
+  border-bottom: 2px solid #0073aa;
+  color: #0073aa;
+  font-weight: bold;
+}
+
+.mp-tabs .mp-tabs-panel {
+  padding: 15px 0;
+}
+
+/* Quick Setup Wizard spezifische Styles */
+.mp_quick_setup_step-has-tabs .mp_content-tabs {
+  margin-top: 20px;
+}
+
+#mp-quick-setup-tabs.psource-tabs .psource-tab {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  border-bottom: 2px solid transparent;
+  font-size: 14px;
+  cursor: pointer;
+  color: #444;
+  font-weight: normal;
+}
+
+#mp-quick-setup-tabs.psource-tabs .psource-tab.active {
+  border-bottom: 2px solid #0073aa;
+  color: #0073aa;
+  font-weight: bold;
+}
+
+#mp-quick-setup-tabs.psource-tabs .psource-tab:hover {
+  color: #0073aa;
+}
+
+#mp-quick-setup-tabs.psource-tabs .psource-tab-panel {
+  padding: 15px 0;
+}
+
+/* Sonstiges */
+.mp_tab_content {
+  margin-bottom: 20px;
+}
+
+.mp_tab_navigation {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}

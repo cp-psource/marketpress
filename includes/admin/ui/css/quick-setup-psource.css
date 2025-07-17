@@ -1,0 +1,61 @@
+/**
+ * Spezielles CSS für den Quick Setup Wizard mit PSource UI
+ * 
+ * Diese Datei enthält spezifische Stile für den Quick Setup Wizard,
+ * angepasst für die neue PSource UI-Struktur.
+ * 
+ * @since 3.4.0
+ */
+
+.store-settings_page_store-setup-wizard #mp-quick-setup-tabs.psource-tabs {
+	border: none;
+	padding: 0;
+}
+
+.store-settings_page_store-setup-wizard .psource-tabs-nav {
+	background: none;
+	border: none;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 0;
+	padding: 0;
+	display: flex;
+}
+
+.store-settings_page_store-setup-wizard .psource-tab {
+	background: none;
+	border: none;
+	margin: 0 1em 0 0;
+	padding: 1em 0;
+	color: #999;
+	font-weight: 400;
+	cursor: pointer;
+	border-bottom: 4px solid transparent;
+}
+
+.store-settings_page_store-setup-wizard .psource-tab:hover {
+	color: #444;
+}
+
+.store-settings_page_store-setup-wizard .psource-tab.active {
+	color: #444;
+	border-bottom: 4px solid #444;
+	margin-bottom: -1px;
+}
+
+.store-settings_page_store-setup-wizard .psource-tab-panel {
+	padding: 2em 0;
+}
+
+/* Spezielle Anpassungen für den Quick Setup Wizard */
+.store-settings_page_store-setup-wizard #mp-quick-setup-tabs.psource-tabs .psource-tab .dashicons-before {
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+/* Vorübergehende Fix für Legacy-UI-Elemente */
+.store-settings_page_store-setup-wizard .ui-tabs-nav,
+.store-settings_page_store-setup-wizard .ui-tabs-panel,
+.store-settings_page_store-setup-wizard .mp-tabs-nav,
+.store-settings_page_store-setup-wizard .mp-tabs-panel {
+	display: none !important; /* Alte UI-Elemente ausblenden */
+}

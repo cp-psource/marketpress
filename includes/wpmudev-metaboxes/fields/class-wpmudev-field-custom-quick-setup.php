@@ -64,25 +64,25 @@ class WPMUDEV_Field_Quick_Setup extends WPMUDEV_Field {
 			<?php
 		} else if ( $quick_setup_step == '2' ) {//Second step with tabs and settings
 			?>
-			<div class="mp_quick_setup_step mp_quick_setup_step-2 mp_quick_setup_step-has-tabs">
-				<div class="mp_content">
-					<h3 class="mp_title"><?php _e( 'Welcome to MarketPress - Quick Setup', 'mp' ); ?></h3>
-					<p><?php _e( 'Choose where you want to sell your stuff and what currency. Easy!', 'mp' ); ?></p>
-				</div><!-- end mp_content -->
+			   <div class="mp_quick_setup_step mp_quick_setup_step-2 mp_quick_setup_step-has-tabs">
+				   <div class="mp_content">
+					   <h3 class="mp_title"><?php _e( 'Welcome to MarketPress - Quick Setup', 'mp' ); ?></h3>
+					   <p><?php _e( 'Choose where you want to sell your stuff and what currency. Easy!', 'mp' ); ?></p>
+				   </div><!-- end mp_content -->
 
-				<div class="mp_content-tabs">
-					<div id="mp-quick-setup-tabs" class="mp_quick_setup_tabs">
+				   <div class="mp_content-tabs">
+					   <div id="mp-quick-setup-tabs" class="psource-tabs">
 
-						<ul class="mp_tabs_labels">
-							<li class="mp_tab_label"><a class="mp_tab_label_link" href="#mp-quick-setup-tab-locations"><span class="dashicons-before dashicons-admin-site mp_icon mp_icon-inline mp_icon-rounded"></span> <?php _e( 'Locations', 'mp' ); ?></a></li>
-							<li class="mp_tab_label"><a class="mp_tab_label_link" href="#mp-quick-setup-tab-currency-and-tax"><span class="dashicons-before dashicons-tag mp_icon mp_icon-inline mp_icon-rounded"></span> <?php _e( 'Currency & Tax', 'mp' ); ?></a></li>
-							<li class="mp_tab_label"><a class="mp_tab_label_link" href="#mp-quick-setup-tab-metric-system"><span class="dashicons-before dashicons-cart mp_icon mp_icon-inline mp_icon-rounded"></span> <?php _e( 'Metric System', 'mp' ); ?></a></li>
-							<li class="mp_tab_label"><a class="mp_tab_label_link" href="#mp-quick-setup-tab-payment-gateway"><span class="dashicons-before dashicons-feedback mp_icon mp_icon-inline mp_icon-rounded"></span> <?php _e( 'Payment Gateway', 'mp' ); ?></a></li>
-						</ul><!-- end mp_tabs_labels -->
+						   <div class="psource-tabs-nav">
+							<button class="psource-tab active" data-tab="mp-quick-setup-tab-locations"><span class="dashicons-before dashicons-admin-site mp_icon mp_icon-inline mp_icon-rounded"></span> <?php _e( 'Locations', 'mp' ); ?></button>
+							<button class="psource-tab" data-tab="mp-quick-setup-tab-currency-and-tax"><span class="dashicons-before dashicons-tag mp_icon mp_icon-inline mp_icon-rounded"></span> <?php _e( 'Currency & Tax', 'mp' ); ?></button>
+							<button class="psource-tab" data-tab="mp-quick-setup-tab-metric-system"><span class="dashicons-before dashicons-cart mp_icon mp_icon-inline mp_icon-rounded"></span> <?php _e( 'Metric System', 'mp' ); ?></button>
+							<button class="psource-tab" data-tab="mp-quick-setup-tab-payment-gateway"><span class="dashicons-before dashicons-feedback mp_icon mp_icon-inline mp_icon-rounded"></span> <?php _e( 'Payment Gateway', 'mp' ); ?></button>
+						   </div><!-- end psource-tabs-nav -->
 
-						<div class="mp_tabs_content">
+						   <div class="psource-tabs-content">
 
-							<div id="mp-quick-setup-tab-locations" class="mp_tab">
+							   <div id="mp-quick-setup-tab-locations" class="psource-tab-panel active">
 								<div class="mp_tab_content">
 									<div id="mp-content-locations" class="mp_tab_content_locations mp_content_col mp_content_col-one-third">
 										<p class="mp_tab_content_label"><strong><?php _e( 'Locations', 'mp' ); ?></strong></p>
@@ -98,7 +98,7 @@ class WPMUDEV_Field_Quick_Setup extends WPMUDEV_Field {
 								</div><!-- end mp_tab_navigation -->
 							</div><!-- end mp-quick-setup-tab-locations -->
 
-							<div id="mp-quick-setup-tab-currency-and-tax" class="mp_tab">
+							   <div id="mp-quick-setup-tab-currency-and-tax" class="psource-tab-panel">
 								<div class="mp_tab_content">
 									<div id="mp-content-currency" class="mp_tab_content_currency mp_content_col mp_content_col-one-half">
 										<p class="mp_tab_content_label"><?php _e( 'Currency', 'mp' ); ?></p>
@@ -115,7 +115,7 @@ class WPMUDEV_Field_Quick_Setup extends WPMUDEV_Field {
 								</div><!-- end mp_tab_navigation -->
 							</div><!-- end mp-quick-setup-tab-currency-and-tax -->
 
-							<div id="mp-quick-setup-tab-metric-system" class="mp_tab">
+							   <div id="mp-quick-setup-tab-metric-system" class="psource-tab-panel">
 								<div class="mp_tab_content">
 
 									<div class="mp_tab_content_block">
@@ -146,7 +146,7 @@ class WPMUDEV_Field_Quick_Setup extends WPMUDEV_Field {
 							</div><!-- mp-quick-setup-tab-metric-system -->
 							
 
-							<div id="mp-quick-setup-tab-payment-gateway" class="mp_tab">
+							   <div id="mp-quick-setup-tab-payment-gateway" class="psource-tab-panel">
 								<div class="mp_tab_content">
 									<div id="mp-content-payment-gateway" class="mp_tab_content_payment_gateway">
 										<?php do_action( 'mp_wizard_payment_gateway_section' ) ?>
@@ -162,10 +162,10 @@ class WPMUDEV_Field_Quick_Setup extends WPMUDEV_Field {
 								<!-- end mp_tab_navigation -->
 							</div>
 							<!-- end payment gateway tab section -->
-						</div><!-- end mp_tabs_content -->
+						   </div><!-- end psource-tabs-content -->
 
-					</div><!-- end mp_quick_setup_tabs -->
-				</div><!-- end mp_content-tabs -->
+					   </div><!-- end psource-tabs -->
+				   </div><!-- end mp_content-tabs -->
 
 			</div><!-- end mp_quick_setup_content_step-2 -->
 			<?php

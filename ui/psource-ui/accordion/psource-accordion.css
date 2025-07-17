@@ -1,0 +1,16 @@
+.psource-accordion-content {
+  display: none;
+  padding: 1em;
+}
+.psource-accordion-item.active .psource-accordion-content {
+  display: block;
+}
+.psource-accordion-header {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: #f5f5f5;
+  border: none;
+  padding: 1em;
+  font-size: 1em;
+}
