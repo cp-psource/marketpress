@@ -97,7 +97,7 @@ class MP_Admin {
 		<a href="#" class="mp-dismissed-deprecated-notice"><i class="dashicons dashicons-no-alt"></i></a>
 		</div>
 		<?php
-	}*/
+	}
 
 	public function print_deprecated_notice_scripts(){
 	if(!current_user_can('manage_options')){
@@ -122,7 +122,7 @@ class MP_Admin {
 				})
 			</script>
 		<?php
-	}
+	}*/
 
 	function admin_head() {
 		if ( 'mp_order' == get_current_screen()->post_type ) {
@@ -242,8 +242,8 @@ class MP_Admin {
 				wp_enqueue_style( 'mp-product-admin', mp_plugin_url( 'includes/admin/ui/css/admin-product.css' ), array( 'mp-font-awesome' ), MP_VERSION );
 				wp_enqueue_script( 'mp-repeatable-fields', mp_plugin_url( 'includes/admin/ui/js/repeatable-fields.js' ), array( 'jquery' ), MP_VERSION );
 
-				// Use modern UI instead of jQuery UI
-				wp_enqueue_script( 'mp-product-admin', mp_plugin_url( 'includes/admin/ui/js/admin-product.js' ), array( 'jquery', 'mp-repeatable-fields', 'mp-modern-ui' ), MP_VERSION );
+				wp_enqueue_style( 'jquery-smoothness', mp_plugin_url( 'includes/admin/ui/smoothness/jquery-ui-1.10.4.custom.css' ), '', MP_VERSION );
+				wp_enqueue_script( 'mp-product-admin', mp_plugin_url( 'includes/admin/ui/js/admin-product.js' ), array( 'jquery', 'mp-repeatable-fields', 'jquery-ui-datepicker' ), MP_VERSION );
 
 				$ajax_nonce = wp_create_nonce( "mp-ajax-nonce" );
 
@@ -295,9 +295,7 @@ class MP_Admin {
 		$quick_setup = mp_get_get_value( 'quick_setup_step' );
 		if ( isset( $quick_setup ) ) {
 			//wp_enqueue_style( 'mp-quick-setup', mp_plugin_url( 'includes/admin/ui/css/quick-setup.css' ), array(), MP_VERSION );
-			
-			// Use modern UI instead of jQuery UI tabs
-			wp_enqueue_script( 'mp-quick-setup', mp_plugin_url( 'includes/admin/ui/js/quick-setup.js' ), array( 'jquery', 'mp-modern-ui' ), MP_VERSION );
+			wp_enqueue_script( 'mp-quick-setup', mp_plugin_url( 'includes/admin/ui/js/quick-setup.js' ), array( 'jquery', 'jquery-ui-tabs' ), MP_VERSION );
 		}
 
 		wp_enqueue_style( 'mp-admin', mp_plugin_url( 'includes/admin/ui/css/admin.css' ), array(), MP_VERSION );

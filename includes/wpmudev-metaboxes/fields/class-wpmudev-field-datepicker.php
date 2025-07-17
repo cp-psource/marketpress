@@ -135,8 +135,7 @@ class WPMUDEV_Field_Datepicker extends WPMUDEV_Field {
 	 * @access public
 	 */
 	public function enqueue_scripts() {
-		// Use modern UI instead of jQuery UI datepicker
-		wp_enqueue_script( 'mp-modern-ui' );
+		wp_enqueue_script( 'jquery-ui-datepicker' );
 	}
 
 	/**
@@ -146,8 +145,7 @@ class WPMUDEV_Field_Datepicker extends WPMUDEV_Field {
 	 * @access public
 	 */
 	public function enqueue_styles() {
-		// Use modern UI styles instead of jQuery UI
-		wp_enqueue_style( 'mp-modern-ui-css' );
+		wp_enqueue_style( 'jquery-ui-smoothness-theme', WPMUDEV_Metabox::class_url( 'ui/smoothness/jquery-ui.min.css' ), false, WPMUDEV_METABOX_VERSION );
 	}
 
 	/**

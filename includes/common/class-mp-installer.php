@@ -55,8 +55,8 @@ class MP_Installer {
 			return;
 		}
 
-		// Use modern UI instead of jQuery UI progressbar
-		wp_enqueue_script( 'mp-db-update', mp_plugin_url( 'includes/admin/ui/js/db-update.js' ), array( 'mp-modern-ui' ), MP_VERSION );
+		wp_enqueue_style( 'jquery-smoothness', mp_plugin_url( 'includes/admin/ui/smoothness/jquery-ui-1.10.4.custom.css' ), '', MP_VERSION );
+		wp_enqueue_script( 'mp-db-update', mp_plugin_url( 'includes/admin/ui/js/db-update.js' ), array( 'jquery-ui-progressbar' ), MP_VERSION );
 		wp_localize_script( 'mp-db-update', 'mp_db_update', array(
 			'error_text'  => __( 'An error occurred while updating. Please refresh this page and try again.', 'mp' ),
 			'progressbar' => array(
