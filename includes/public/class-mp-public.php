@@ -944,6 +944,17 @@ class MP_Public {
 			remove_meta_box('commentstatusdiv', 'product', 'side');
 		}
 	}
+	
+	/**
+     * Kompatibilitätsfunktion für get_comments_number Filter
+     *
+     * @since 3.3.5
+     * @access public
+     */
+    public function maybe_zero_comments_number( $count, $post_id ) {
+        // Gibt immer die tatsächliche Anzahl zurück, kann aber angepasst werden
+        return $count;
+    }
 }
 
 MP_Public::get_instance();
